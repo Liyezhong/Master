@@ -2008,6 +2008,13 @@ signals:
      *  \brief  Definition/Declaration of signal sigResumeToProcessing
      */
     /****************************************************************************/
+    void sigResumeToLevelSensorHeating();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigResumeToProcessing
+     */
+    /****************************************************************************/
     void sigResumeToProcessing();
     /****************************************************************************/
     /*!

@@ -172,12 +172,12 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_PssmFillingHeatingRVState.data(), entered(), mp_SchedulerThreadController, OnFillingHeatingRV());
 
     mp_PssmFillingHeatingRVState->addTransition(this, SIGNAL(sigRVRodHeatingReady()), mp_PssmFillingLevelSensorHeatingState.data());
-    mp_PssmFillingHeatingRVState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
-    mp_PssmPause->addTransition(this, SIGNAL(sigRVRodHeatingReady()), mp_PssmFillingLevelSensorHeatingState.data());
+    mp_PssmFillingHeatingRVState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());  
 
     mp_PssmFillingLevelSensorHeatingState->addTransition(this, SIGNAL(sigLevelSensorHeatingReady()), mp_PssmFillingState.data());
     mp_PssmFillingLevelSensorHeatingState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
     CONNECTSIGNALSLOT(mp_PssmFillingState.data(), entered(), mp_SchedulerThreadController, Fill());
+    mp_PssmPause->addTransition(this, SIGNAL(sigResumeToLevelSensorHeating()), mp_PssmFillingLevelSensorHeatingState.data());
 
     mp_PssmFillingState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
     mp_PssmPause->addTransition(this, SIGNAL(sigLevelSensorHeatingReady()), mp_PssmFillingState.data());
@@ -2346,13 +2346,9 @@ void CSchedulerStateMachine::OnNotifyResume()
 {
     mp_SchedulerThreadController->StopTimer();
     SchedulerStateMachine_t previousState = this->GetPreviousState();
-    if(previousState == PSSM_FILLING_RVROD_HEATING)
+    if(previousState == PSSM_FILLING_RVROD_HEATING ||previousState == PSSM_FILLING_LEVELSENSOR_HEATING)
     {
-        emit sigRVRodHeatingReady();
-    }
-    else if(previousState == PSSM_FILLING_LEVELSENSOR_HEATING)
-    {
-        emit sigLevelSensorHeatingReady();
+        emit sigResumeToLevelSensorHeating();
     }
     else if((previousState == PSSM_FILLING) || (previousState == PSSM_RV_MOVE_TO_SEAL))
     {

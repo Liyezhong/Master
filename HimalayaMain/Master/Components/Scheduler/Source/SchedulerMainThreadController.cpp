@@ -889,6 +889,12 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
 
+    // Enable pause button
+    MsgClasses::CmdProgramAcknowledge* commandPtrPauseEnable(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_PAUSE_ENABLE));
+    Q_ASSERT(commandPtrPauseEnable);
+    fRef = GetNewCommandRef();
+    SendCommand(fRef, Global::CommandShPtr_t(commandPtrPauseEnable));
+
     qint64 now = QDateTime::currentMSecsSinceEpoch();
 
     if (now <= m_TimeStamps.ProposeSoakStartTime)
@@ -906,6 +912,11 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
         offset = now - m_PauseStartTime;
     }
 
+    if (offset < 1000) //If offset is less than one second, we just ignore this.
+    {
+        return;
+    }
+
     // Send time update to GUI
     MsgClasses::CmdUpdateProgramEndTime* commandUpdateProgramEndTime(new MsgClasses::CmdUpdateProgramEndTime(5000, offset/1000));
     Q_ASSERT(commandUpdateProgramEndTime);
@@ -916,7 +927,10 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     m_EndTimeAndStepTime.UserSetEndTime += offset;
     QDateTime endTime = QDateTime::fromMSecsSinceEpoch(m_EndTimeAndStepTime.UserSetEndTime);
 
-    RaiseEvent(EVENT_SCHEDULER_PAUSE_ENDTIME_UPDATE, QStringList()<<endTime.toString("yyyy-MM-dd hh:mm"));
+    if (offset > 1000*60) //If offset is less than one minute, we will NOT notify end user
+    {
+        RaiseEvent(EVENT_SCHEDULER_PAUSE_ENDTIME_UPDATE, QStringList()<<endTime.toString("yyyy-MM-dd hh:mm"));
+    }
 }
 
 void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
@@ -1198,6 +1212,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                    //dismiss the prompt of pausing
                    SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
                    m_bWaitToPause = false;
+                   // Stop heating level sensor
+                   mp_HeatingStrategy->StopTemperatureControl("LevelSensor");
                    LogDebug(QString("Program Step Beginning Pause"));
                    m_SchedulerMachine->NotifyPause(SM_UNDEF);
                    return;
@@ -1235,6 +1251,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 //dismiss the prompt of waiting for pause
                 SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
                 m_bWaitToPause = false;
+                // Stop heating level sensor
+                mp_HeatingStrategy->StopTemperatureControl("LevelSensor");
                 LogDebug(QString("Program Step Beginning Pause"));
                 m_SchedulerMachine->NotifyPause(SM_UNDEF);
                 return;
@@ -1684,8 +1702,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         m_CurrentStepState = PSSM_PAUSE;
         if(CTRL_CMD_START == ctrlCmd)
         {
-            // resume the program
-            emit NotifyResume();
             LogDebug("The program is resume from pasue.");
             m_IsResumeFromPause = true;
 
@@ -1694,6 +1710,10 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             Q_ASSERT(commandPtrFinish);
             Global::tRefType fRef = GetNewCommandRef();
             SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+
+            m_TickTimer.stop();
+            // resume the program
+            emit NotifyResume();
         }
         else if(CTRL_CMD_USER_RESPONSE_PAUSE_ALARM == ctrlCmd)//get from user's response and EventConfig.xml
         {
@@ -2011,11 +2031,8 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         }
         if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_PAUSE)
         {
-            QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
-            quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
-            if ((QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="2")
-                    || (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="3")
-                    || (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="4"))
+            SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
+            if (PSSM_FILLING == currentState || PSSM_RV_MOVE_TO_SEAL == currentState || PSSM_PROCESSING == currentState)
             {
                 m_PauseStartTime = 0;
                 this->SendOutErrMsg(DCL_ERR_DEV_INTER_PAUSE, false);
@@ -2023,8 +2040,23 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             }
             else
             {
+                switch (currentState)
+                {
+                case PSSM_FILLING_LEVELSENSOR_HEATING:
+                case PSSM_FILLING_RVROD_HEATING:
+                    m_StateAtPause = currentState;
+                    break;
+                case PSSM_RV_MOVE_TO_TUBE:
+                case PSSM_DRAINING:
+                    m_StateAtPause = PSSM_RV_POS_CHANGE;
+                    break;
+                case PSSM_RV_POS_CHANGE:
+                    m_StateAtPause = PSSM_STEP_PROGRAM_FINISH;
+                    break;
+                default:
+                    break;
+                }
                 m_PauseStartTime = QDateTime::currentMSecsSinceEpoch();
-                m_StateAtPause = m_SchedulerMachine->GetCurrentState();
                 return CTRL_CMD_PAUSE;
             }
 
@@ -2238,26 +2270,61 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (cmd == "rs_pause_cmd_yes")
         {
             m_PauseStartTime = QDateTime::currentMSecsSinceEpoch();
-            m_StateAtPause = m_SchedulerMachine->GetCurrentState();
-            QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
-            quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
-            if ((QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="2")
-                    || (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="3")
-                    || (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="4"))
+            SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
+            if (PSSM_FILLING == currentState || PSSM_RV_MOVE_TO_SEAL == currentState || PSSM_PROCESSING == currentState)
             {
                 LogDebug("Input CTRL_CMD_RS_PAUSE_CMD_YES");
+                m_StateAtPause = currentState;
                 return CTRL_CMD_RS_PAUSE_CMD_YES;
             }
             else
             {
-                LogDebug("Input CTRL_CMD_PAUSE");                
+                switch (currentState)
+                {
+                case PSSM_FILLING_LEVELSENSOR_HEATING:
+                case PSSM_FILLING_RVROD_HEATING:
+                    m_StateAtPause = currentState;
+                    break;
+                case PSSM_RV_MOVE_TO_TUBE:
+                case PSSM_DRAINING:
+                    m_StateAtPause = PSSM_RV_POS_CHANGE;
+                    break;
+                case PSSM_RV_POS_CHANGE:
+                    m_StateAtPause = PSSM_STEP_PROGRAM_FINISH;
+                    break;
+                default:
+                    break;
+                }
+                LogDebug("Input CTRL_CMD_PAUSE");
                 return CTRL_CMD_PAUSE;
             }
         }
         if (cmd == "rs_pause_cmd_no")
         {
             m_PauseStartTime = QDateTime::currentMSecsSinceEpoch();
-            m_StateAtPause = m_SchedulerMachine->GetCurrentState();
+            SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
+            switch (currentState)
+            {
+            case PSSM_FILLING_LEVELSENSOR_HEATING:
+            case PSSM_FILLING_RVROD_HEATING:
+                m_StateAtPause = currentState;
+                break;
+            case PSSM_FILLING:
+            case PSSM_RV_MOVE_TO_SEAL:
+            case PSSM_PROCESSING:
+                m_StateAtPause = PSSM_PROCESSING;
+                break;
+            case PSSM_RV_MOVE_TO_TUBE:
+            case PSSM_DRAINING:
+                m_StateAtPause = PSSM_RV_POS_CHANGE;
+                break;
+            case PSSM_RV_POS_CHANGE:
+                m_StateAtPause = PSSM_STEP_PROGRAM_FINISH;
+                break;
+            default:
+                break;
+            }
+            LogDebug("Select CTRL_CMD_PAUSE_NO");
             return CTRL_CMD_PAUSE;
         }
         if (cmd == "rs_pause_cmd_cancel")
@@ -2637,6 +2704,7 @@ void SchedulerMainThreadController::SendCoverLidOpenMsg()
 
 void SchedulerMainThreadController::OnEnterPssMStepFin()
 {
+    CheckResuemFromPause(PSSM_STEP_PROGRAM_FINISH);
     m_PssmStepFinSeq = 0;
     m_TickTimer.start();
 }
