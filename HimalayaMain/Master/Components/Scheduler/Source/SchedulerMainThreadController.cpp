@@ -769,6 +769,7 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
                     }
                     if(m_WasPressureIdle)
                     {
+                        RaiseEvent(EVENT_SCHEDULER_DRAIN_10S_NOT_OPEN_RETORT_LID,QStringList(), false); // remove the msg
                         ReleasePressure();
                     }
                     m_RVPositioinChSeqForIdle = 0;
