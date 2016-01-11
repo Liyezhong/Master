@@ -1590,15 +1590,16 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         m_CurrentStepState = PSSM_PAUSE;
         if(CTRL_CMD_START == ctrlCmd)
         {
-            // resume the program
-            emit NotifyResume();
-            LogDebug("The program is resume from pasue.");
-
             // tell the main controller the program is resuming
             MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
             Q_ASSERT(commandPtrFinish);
             Global::tRefType fRef = GetNewCommandRef();
             SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+
+            m_TickTimer.stop();
+            // resume the program
+            emit NotifyResume();
+            LogDebug("The program is resume from pasue.");
         }
         else if(CTRL_CMD_USER_RESPONSE_PAUSE_ALARM == ctrlCmd)//get from user's response and EventConfig.xml
         {
