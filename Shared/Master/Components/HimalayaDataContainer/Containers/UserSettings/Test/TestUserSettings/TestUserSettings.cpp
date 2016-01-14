@@ -61,7 +61,7 @@ void TestUserSettingsTest::testCase1()
 
 void TestUserSettingsTest::utTestCmdTone()
 {
-    MsgClasses::CmdAlarmToneTest tone(10, 0, 5, false);
+    MsgClasses::CmdAlarmToneTest tone(10, 0, 5, Global::ALARM_WARNING);
 
     MsgClasses::CmdAlarmToneTest *almTone = new MsgClasses::CmdAlarmToneTest;
     almTone->setBusyStateAllowed(false);
