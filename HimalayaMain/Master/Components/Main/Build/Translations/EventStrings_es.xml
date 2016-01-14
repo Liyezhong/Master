@@ -243,6 +243,7 @@
         <string id="67176201" text1="¡Error de ID %1! ¡Llame al servicio!" text2=""/>
         <string id="67176202" text1="¡Error de ID %1! ¡Fallo en el sistema de escape! ¡Informe al servicio!" text2=""/>
         <string id="67176203" text1="¡Error de ID %1! ¡Llame al servicio!" text2=""/>
+        <string id="67176204" text1="¡Error de ID %1! Retire y proteja las muestras.  ¡Llame al servicio!" text2=""/>
         <string id="67176207" text1="¡El sistema de alarma local no está conectado! Conecte el dispositivo con el sistema de alarma local" text2=""/>
         <string id="67176208" text1="¡Cierre la cubierta del horno de parafina!" text2=""/>
         <string id="67176209" text1="Cierre la tapa de la retorta y confirme con el botón Reintentar." text2=""/>
@@ -285,7 +286,6 @@
         <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
         <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
         <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
-        <string id="67176204" text1="Error ID %1! Please call service!" text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>

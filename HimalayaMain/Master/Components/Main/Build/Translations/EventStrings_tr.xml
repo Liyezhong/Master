@@ -243,6 +243,7 @@
         <string id="67176201" text1="Hata ID %1! Lütfen servisi arayın!" text2=""/>
         <string id="67176202" text1="Hata ID %1! Egzoz sisteminde hata! Lütfen servise bilgi verin!" text2=""/>
         <string id="67176203" text1="Hata ID %1! Lütfen servisi arayın!" text2=""/>
+        <string id="67176204" text1="Hata ID %1! Lütfen numuneleri kaldırın ve güvenlik altına alın.  Lütfen servisi arayın!" text2=""/>
         <string id="67176207" text1="Yerel alarm sistemi bağlanmadı! Lütfen cihazı yerel alarm sistemine bağlayın" text2=""/>
         <string id="67176208" text1="Lütfen parafin fırınının kapağını kapatın!" text2=""/>
         <string id="67176209" text1="Lütfen haznenin kapağını kapatın ve Tekrar dene butonuyla onaylayın." text2=""/>
@@ -285,7 +286,6 @@
         <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
         <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
         <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
-        <string id="67176204" text1="Error ID %1! Please call service!" text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>

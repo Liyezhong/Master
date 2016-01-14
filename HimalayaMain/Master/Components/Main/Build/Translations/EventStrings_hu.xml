@@ -243,6 +243,7 @@
         <string id="67176201" text1="Hiba azonosítója: %1. Hívja a szervizt." text2=""/>
         <string id="67176202" text1="Hiba azonosítója: %1. Az elszívórendszer meghibásodott! Tájékoztassa a szervizt!" text2=""/>
         <string id="67176203" text1="Hiba azonosítója: %1. Hívja a szervizt." text2=""/>
+        <string id="67176204" text1="Hiba azonosítója: %1. Távolítsa el a mintát, és helyezze biztonságos helyre.  Hívja a szervizt." text2=""/>
         <string id="67176207" text1="A helyi riasztórendszer nincs csatlakoztatva! Csatlakoztassa az eszközt a helyi riasztórendszerhez." text2=""/>
         <string id="67176208" text1="Zárja le a paraffinkemence fedelét!" text2=""/>
         <string id="67176209" text1="Zárja le a vízelvonó henger fedelét, és nyomja meg az Ismét gombot." text2=""/>
@@ -285,7 +286,6 @@
         <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
         <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
         <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
-        <string id="67176204" text1="Error ID %1! Please call service!" text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>

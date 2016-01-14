@@ -243,6 +243,7 @@
         <string id="67176201" text1="Błąd ID %1!  Prosimy wezwać serwis." text2=""/>
         <string id="67176202" text1="Błąd ID %1!  System odprowadzania gazów nie działa! Prosimy o kontakt z serwisem!" text2=""/>
         <string id="67176203" text1="Błąd ID %1!  Prosimy wezwać serwis." text2=""/>
+        <string id="67176204" text1="Błąd ID %1!  Prosimy o wyjęcie i zabezpieczenie próbek.  Prosimy wezwać serwis." text2=""/>
         <string id="67176207" text1="System lokalnego alarmu nie jest podłączony! Prosimy o podłączenie urządzenia do systemu lokalnego alarmu" text2=""/>
         <string id="67176208" text1="Prosimy o zamknięcie pokrywy grzałki parafiny!" text2=""/>
         <string id="67176209" text1="Prosimy o zamknięcie pokrywy retorty i naciśnięcie przycisku Ponów." text2=""/>
@@ -285,7 +286,6 @@
         <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
         <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
         <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
-        <string id="67176204" text1="Error ID %1! Please call service!" text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>

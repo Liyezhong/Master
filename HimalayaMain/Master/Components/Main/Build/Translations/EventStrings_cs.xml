@@ -243,6 +243,7 @@
         <string id="67176201" text1="ID chyby %1! Volejte servis!" text2=""/>
         <string id="67176202" text1="ID chyby %1!  Systém odsávání selhal! Informujte servis!" text2=""/>
         <string id="67176203" text1="ID chyby %1!  Volejte servis!" text2=""/>
+        <string id="67176204" text1="ID chyby %1!  Vyjměte a uložte vzorky.  Volejte servis!" text2=""/>
         <string id="67176207" text1="Není připojen místní systém alarmu! Propojte zařízení s místním systémem alarmu." text2=""/>
         <string id="67176208" text1="Zavřete kryt parafínové pícky!" text2=""/>
         <string id="67176209" text1="Zavřete víčko retorty a zkontrolujte tlačítko znovuspuštění." text2=""/>
@@ -285,7 +286,6 @@
         <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
         <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
         <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
-        <string id="67176204" text1="Error ID %1! Please call service!" text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>

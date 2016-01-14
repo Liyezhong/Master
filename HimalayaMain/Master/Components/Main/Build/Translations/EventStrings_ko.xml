@@ -243,6 +243,7 @@
         <string id="67176201" text1="오류 ID %1! 서비스 문의 하십시오." text2=""/>
         <string id="67176202" text1="오류 ID %1! 배기 시스템 고장! 서비스 문의 하십시오." text2=""/>
         <string id="67176203" text1="오류 ID %1! 서비스 문의 하십시오." text2=""/>
+        <string id="67176204" text1="오류 ID %1! 검체를 꺼내서 잘 보관하시고 서비스 문의 하십시오!" text2=""/>
         <string id="67176207" text1="검사실 알람 시스템과 연결되지 않았습니다. 검사실 알람 시스템과 기기를 연결하십시오" text2=""/>
         <string id="67176208" text1="파라핀 오븐의 덮개를 닫아 주십시오." text2=""/>
         <string id="67176209" text1="리토르트 덮개를 닫고 재시작 버튼을 눌러 주십시오." text2=""/>
@@ -285,7 +286,6 @@
         <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
         <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
         <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
-        <string id="67176204" text1="Error ID %1! Please call service!" text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>

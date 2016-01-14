@@ -243,6 +243,7 @@
         <string id="67176201" text1="错误 %1！请联系维修人员！" text2=""/>
         <string id="67176202" text1="错误 %1！排气系统故障！请通知维修人员！" text2=""/>
         <string id="67176203" text1="错误 %1！请联系维修人员！" text2=""/>
+        <string id="67176204" text1="错误 %1！请取出样品。请联系维修人员！" text2=""/>
         <string id="67176207" text1="本地警报系统未连接！请将设备连接至本地警报系统" text2=""/>
         <string id="67176208" text1="请关闭蜡箱门！" text2=""/>
         <string id="67176209" text1="请关闭脱水缸盖，并点击“重试”按钮。" text2=""/>
@@ -285,7 +286,6 @@
         <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
         <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
         <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
-        <string id="67176204" text1="Error ID %1! Please call service!" text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>
