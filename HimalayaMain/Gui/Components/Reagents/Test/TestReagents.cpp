@@ -204,7 +204,7 @@ void CTestReagents::utTestReagentWidget() {
     DataManager::CReagent ragt2;
     ragtRmsWgt->UpdateReagent(ragt2);
     ragtRmsWgt->AddReagent(ragt);
-    ragtRmsWgt->RemoveReagent("");
+    //ragtRmsWgt->RemoveReagent("");
     ragtRmsWgt->RMSChanged(Global::RMS_OFF);
     ragtRmsWgt->RMSCleaningChanged(Global::RMS_OFF);
     ragtRmsWgt->OnUserRoleChanged();
@@ -229,7 +229,7 @@ void CTestReagents::utTestReagentWidget() {
     ragtStatWgt->RetranslateUI();
     ragtStatWgt->ResetButtons();
     ragtStatWgt->ControlColumnShow();
-    ragtStatWgt->IsProcessReagentExpired();
+    ragtStatWgt->IsReagentExpired();
     ragtStatWgt->SetUserSettings(new DataManager::CUserSettings);
     ragtStatWgt->SetPtrToMainWindow(p_DataConnector, new DataManager::CDataReagentList);
 //    ragtStatWgt->OnSetAsEmpty();

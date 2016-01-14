@@ -86,8 +86,10 @@ CModifyReagentRMSDlg::CModifyReagentRMSDlg(QWidget *p_Parent, KeyBoard::CKeyBoar
     mp_MessageDlg->SetButtonText(1, m_strOK);
     mp_MessageDlg->HideButtons();
     m_RMSOption = Global::RMS_OFF;
-
-    CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
+    if (mp_MainWindow)
+    {
+        CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
+    }
 }
 
 /****************************************************************************/

@@ -131,8 +131,8 @@ void CTestSettings::utTestSettingsWidget() {
     alarmSetDlg->OnPlayTone();
     DataManager::CUserSettings us = DataManager::CUserSettings();
     alarmSetDlg->AlarmSettingsChanged(us);
-    alarmSetDlg->PlayTestTone(0, 0, false);
-    alarmSetDlg->PlayTestTone(0, 0, true);
+    alarmSetDlg->PlayTestTone(0, 0, Global::ALARM_WARNING);
+    alarmSetDlg->PlayTestTone(0, 0, Global::ALARM_ERROR);
     delete alarmSetDlg;
 
     //------
@@ -148,8 +148,8 @@ void CTestSettings::utTestSettingsWidget() {
     alarmSetWgt->OnProcessStateChanged();
     alarmSetWgt->UpdateLabels();
     alarmSetWgt->AlarmSettingsChanged(us);
-    alarmSetWgt->PlayTestTone(0, 0, false);
-    alarmSetWgt->PlayTestTone(0, 0, true);
+    alarmSetWgt->PlayTestTone(0, 0, Global::ALARM_WARNING);
+    alarmSetWgt->PlayTestTone(0, 0, Global::ALARM_ERROR);
     delete alarmSetWgt;
     //---
 

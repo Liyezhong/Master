@@ -40,7 +40,9 @@ CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, Main
     m_strCancel(tr("Cancel")),
     m_strClose(tr("Close"))
 {
-    CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
+    if (mp_MainWindow) {
+        CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
+    }
     mp_Ui->setupUi(GetContentFrame());
     m_ProcessRunning = false ;
     SetButtonGroup();
