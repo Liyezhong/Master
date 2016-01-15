@@ -1362,7 +1362,7 @@ void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands
     QString fileName(QString("languagefile%1.qm").arg(m_LanguageChangeCount));
     if (QFile::exists(fileName))
     {
-        QFile::remove(fileName);
+        (void)QFile::remove(fileName);
     }
 
     mp_LanguageFile = new QFile(fileName);
@@ -1662,7 +1662,7 @@ void CDataConnector::OnUserSettingsAck(Global::tRefType Ref, const Global::AckOK
     if (Ack.GetStatus() == false) {
         if (Ack.GetText().length() > 0) {
             ShowMessageDialog(Ack.GetType(), Ack.GetText());
-            mp_MessageDlg->exec();
+            (void)mp_MessageDlg->exec();
         }
         emit RevertChangedUserSettings();
     }

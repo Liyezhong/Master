@@ -302,6 +302,7 @@ public slots:
      *  \param  ActionType = operation type, eg.start/pause/abort
      *  \param  delayTime = the time to delay
      *  \param  runDuration = the time from now to End datetime
+     *  \param  reagentExpiredFlag = the flag of expired reagent.
      */
     /****************************************************************************/
     void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType,

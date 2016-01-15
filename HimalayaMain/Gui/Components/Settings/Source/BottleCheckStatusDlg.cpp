@@ -236,7 +236,7 @@ namespace Settings {
                 messageDlg.SetText(m_strReportMsg);
                 messageDlg.SetButtonText(1, m_strOK);
                 messageDlg.HideButtons();
-                messageDlg.exec();
+                (void)messageDlg.exec();
                 return;
             }
         }

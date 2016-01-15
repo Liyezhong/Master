@@ -303,7 +303,7 @@ void CDashboardWidget::OnProgramStartReadyUpdated()
             ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
             ConfirmationMessageDlg.SetButtonText(1, CommonString::strOK);
             ConfirmationMessageDlg.HideButtons();
-            ConfirmationMessageDlg.exec();
+            (void)ConfirmationMessageDlg.exec();
             m_ShowReadyStartPrompt = false;
         }
     }
@@ -594,8 +594,8 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
                 mp_MainWindow->SetTabWidgetIndex();
                 emit SwitchToFavoritePanel();
             }
-			delete mp_RemoveSpecimenDlg;
-			mp_RemoveSpecimenDlg = NULL;
+            delete mp_RemoveSpecimenDlg;
+            mp_RemoveSpecimenDlg = NULL;
      }
 }
 
@@ -726,7 +726,7 @@ void CDashboardWidget::OnProgramCompleted(DataManager::CompletedProgramType_t co
         mp_RemoveSpecimenWhenCompletedDlg->SetTitle(CommonString::strInforMsg);
         mp_RemoveSpecimenWhenCompletedDlg->SetText(strTemp);
         m_ShowReadyStartPrompt = true;
-        mp_RemoveSpecimenWhenCompletedDlg->exec();
+        (void)mp_RemoveSpecimenWhenCompletedDlg->exec();
         bExecSubsequent = true;
     }
     else if (!IsRetortContaminated && (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) != 'C'))
@@ -972,7 +972,7 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram(QString& reagentExpiredFlag
         messageDlg.SetText(m_checkMachinePrompt);
         messageDlg.SetButtonText(1, CommonString::strOK);
         messageDlg.HideButtons();
-        messageDlg.exec();
+        (void)messageDlg.exec();
     }
 
     if (m_bWaitRotaryValveHeatingPrompt)
