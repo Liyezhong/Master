@@ -456,8 +456,8 @@ void CRetort::RetranslateUI()
         }
     }
     else {
-        AddItem(1, Service::RETORT_LEVEL_SENSOR_HEATING);
-        AddItem(2, Service::RETORT_HEATING_EMPTY);
+        //AddItem(1, Service::RETORT_LEVEL_SENSOR_HEATING);
+        AddItem(1, Service::RETORT_HEATING_EMPTY);
     }
 
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size

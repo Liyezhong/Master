@@ -172,6 +172,12 @@ void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
             mp_Ui->labelCurTempBottom2->setText(Status.value("RightSensorTemp"));
         }
     }
+
+    if (m_TestCaseId == Service::RETORT_LEVEL_SENSOR_HEATING)  {
+        if (mp_Ui->label->text() != Status.value("labelText")) {
+            mp_Ui->label->setText(Status.value("labelText"));
+        }
+    }
     if (Status.value("Duration") != NULL) {
         mp_Ui->labelDuration->setText(Status.value("Duration"));
     }

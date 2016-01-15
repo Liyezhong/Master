@@ -40,6 +40,7 @@
 #include "DeviceControl/Include/DeviceProcessing/DeviceLifeCycleRecord.h"
 #include "DataManager/Containers/InstrumentHistory/Include/InstrumentHistory.h"
 #include <QDebug>
+#include <QApplication>
 
 //lint -e613
 //lint -e505
@@ -927,6 +928,241 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
 
 
     Service::ModuleTestStatus testStat;
+
+    int duration = durTime.hour() * 60 * 60 + durTime.minute() * 60 + durTime.second();
+    int waitSeconds = 0;
+    qreal curTemp = 0;
+    int totalSeconds = 0;
+    int remainder = duration % 10;
+    int dd = 2*60;
+    bool isTouched = false;
+
+    duration -= remainder;
+
+    p_TestCase->ResetResult();
+    int num = 10;
+    while(num) {
+        curTemp = mp_TempLSensor->GetTemperature();
+        if (curTemp == -1) {
+            mp_Utils->Pause(100);
+            num--;
+        }
+        else {
+            break;
+        }
+    }
+
+    if (curTemp <ambLow || curTemp > ambHigh) {
+        QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_LEVEL_SENSOR_TEMP_NO_MATCH.arg(curTemp).arg(ambLow).arg(ambHigh);
+        SetFailReason(Id, FailureMsg);
+        p_TestCase->SetStatus(false);
+        p_TestCase->AddResult("OutOfRange", "1");
+        goto ERROR_EXIT;
+    }
+
+    // pre-heating
+    (void)mp_TempLSensor->SetTemperaturePid(132, ControllerGainHigh,ResetTimeHigh, DerivativeTimeHigh);
+    (void)mp_TempLSensor->StartTemperatureControl(TargetTemperature, TargetDropRange);
+    p_TestCase->AddResult("UsedTime", "00:00:00");
+    p_TestCase->AddResult("TargetTemp", QString(">115"));
+    (void)testStat.insert("TargetTemp", QString(">115"));
+    (void)testStat.insert("Duration", "00:02:00");
+    (void)testStat.insert("labelText", QApplication::translate("Core::CStartup", "Pre-heating...", 0, QApplication::UnicodeUTF8));
+
+
+    while(!m_UserAbort && dd) {
+        QTime EndTime = QTime().currentTime().addSecs(1);
+
+        curTemp = mp_TempLSensor->GetTemperature();
+        if (curTemp > 115) {
+            isTouched = true;
+            break;
+        }
+        (void)testStat.insert("UsedTime", QTime().addSecs(120-dd).toString("hh:mm:ss"));
+        (void)testStat.insert("CurrentTemp", QString("%1").arg(curTemp));
+        emit RefreshTestStatustoMain(testCaseName, testStat);
+
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        if (MSec <= 0) {
+            MSec = 1000;
+        }
+        mp_Utils->Pause(MSec);
+        dd--;
+    }
+    (void)mp_TempLSensor->StopTemperatureControl();
+    if (!isTouched) {
+        if (m_UserAbort) {
+            m_UserAbort = false;
+            p_TestCase->AddResult("FailReason", "Abort");
+        }
+        p_TestCase->AddResult("TargetTemp",  QString(">115"));
+        p_TestCase->AddResult("CurrentTemp", QString("%1").arg(curTemp));
+        p_TestCase->AddResult("Duration", "00:02:00");
+        p_TestCase->AddResult("UsedTime", QTime().addSecs(120-dd).toString("hh:mm:ss"));
+        return -1;
+    }
+    // cooling
+    dd = 15*60; // 15 min
+    isTouched = false;
+    p_TestCase->AddResult("UsedTime", "00:00:00");
+    p_TestCase->AddResult("TargetTemp", QString("<35"));
+    (void)testStat.insert("TargetTemp", QString("<35"));
+    (void)testStat.insert("Duration", "00:15:00");
+    (void)testStat.insert("labelText",
+                          QApplication::translate("Core::CStartup", "Cooling...", 0, QApplication::UnicodeUTF8));
+
+    while(!m_UserAbort && dd) {
+        QTime EndTime = QTime().currentTime().addSecs(1);
+
+        curTemp = mp_TempLSensor->GetTemperature();
+        if (curTemp < 35) {
+            isTouched = true;
+            break;
+        }
+        (void)testStat.insert("UsedTime", QTime().addSecs(900-dd).toString("hh:mm:ss"));
+        (void)testStat.insert("CurrentTemp", QString("%1").arg(curTemp));
+        emit RefreshTestStatustoMain(testCaseName, testStat);
+
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        if (MSec <= 0) {
+            MSec = 1000;
+        }
+        mp_Utils->Pause(MSec);
+        dd--;
+    }
+    if (!isTouched) {
+        if (m_UserAbort) {
+            m_UserAbort = false;
+            p_TestCase->AddResult("FailReason", "Abort");
+        }
+        p_TestCase->AddResult("TargetTemp",  QString("<35"));
+        p_TestCase->AddResult("CurrentTemp", QString("%1").arg(curTemp));
+        p_TestCase->AddResult("Duration", "00:15:00");
+        p_TestCase->AddResult("UsedTime", QTime().addSecs(900-dd).toString("hh:mm:ss"));
+        return -1;
+    }
+    //
+    (void)testStat.insert("TargetTemp", QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
+    (void)testStat.insert("Duration", durTime.toString());
+    (void)testStat.insert("labelText", QApplication::translate("Core::CStartup", "Heating...", 0, QApplication::UnicodeUTF8));
+
+    p_TestCase->AddResult("UsedTime", "00:00:00");
+    p_TestCase->AddResult("TargetTemp", QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
+    waitSeconds = duration;
+
+    for(int i=0; i<3; i++) {
+        if (i==0) {
+            (void)mp_TempLSensor->StopTemperatureControl();
+            (void)mp_TempLSensor->SetTemperaturePid(132, ControllerGainHigh,ResetTimeHigh, DerivativeTimeHigh);
+            (void)mp_TempLSensor->StartTemperatureControl(TargetTemperature, TargetDropRange);
+            mp_Utils->Pause(200);
+        }
+        else if (i==1){
+            (void)mp_TempLSensor->StopTemperatureControl();
+            (void)mp_TempLSensor->SetTemperaturePid(132, ControllerGainLow,ResetTimeLow, DerivativeTimeLow);
+            (void)mp_TempLSensor->StartTemperatureControl(TargetTemperature, TargetDropRange);
+            mp_Utils->Pause(200);
+        }
+        else {
+            waitSeconds = remainder;
+        }
+
+        while (!m_UserAbort && waitSeconds) {
+            QTime EndTime = QTime().currentTime().addSecs(1);
+
+            curTemp = mp_TempLSensor->GetTemperature();
+
+            if (totalSeconds == 10 &&
+                    (curTemp > 93 || curTemp < 71)) {  // (82-11) ~ (82+11)
+                goto ERROR_EXIT;
+            }
+            else if (i==0 && curTemp >= ExchangeTemperature) {
+                break;
+            }
+            else if (i==2 && (curTemp<MinTemperature||curTemp>MaxTemperature)) {
+                goto ERROR_EXIT;
+            }
+
+            if (curTemp != -1) {
+                (void)testStat.insert("UsedTime", QTime().addSecs(totalSeconds).toString("hh:mm:ss"));
+                (void)testStat.insert("CurrentTemp", QString("%1").arg(curTemp));
+                emit RefreshTestStatustoMain(testCaseName, testStat);
+            }
+
+            int MSec = QTime().currentTime().msecsTo(EndTime);
+            if (MSec <= 0) {
+                MSec = 1000;
+            }
+            mp_Utils->Pause(MSec);
+
+            -- waitSeconds;
+
+            totalSeconds++;
+        }
+        if (m_UserAbort ||
+                (i==0 && waitSeconds==0) ||
+                (i==1 && waitSeconds==0 && curTemp<MinTemperature)) {
+            if (m_UserAbort) {
+                m_UserAbort = false;
+                p_TestCase->AddResult("FailReason", "Abort");
+            }
+            goto ERROR_EXIT;
+        }
+    }
+    if (m_UserAbort) {
+        m_UserAbort = false;
+        p_TestCase->AddResult("FailReason", "Abort");
+    }
+
+    (void)mp_TempLSensor->StopTemperatureControl();
+
+    p_TestCase->AddResult("TargetTemp",  QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
+    p_TestCase->AddResult("CurrentTemp", QString("%1").arg(curTemp));
+    p_TestCase->AddResult("Duration", durTime.toString());
+    p_TestCase->AddResult("UsedTime", QTime().addSecs(totalSeconds).toString("hh:mm:ss"));
+    return 0;
+
+ERROR_EXIT:
+    (void)mp_TempLSensor->StopTemperatureControl();
+    p_TestCase->AddResult("TargetTemp",  QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
+    p_TestCase->AddResult("CurrentTemp", QString("%1").arg(curTemp));
+    p_TestCase->AddResult("Duration", durTime.toString());
+    p_TestCase->AddResult("UsedTime", QTime().addSecs(totalSeconds).toString("hh:mm:ss"));
+    return -1;
+}
+
+#if 0
+qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating11()
+{
+    const quint16 TargetTemperature = 115;
+    const quint16 ControllerGainHigh = 120;
+    const quint16 ResetTimeHigh = 1212;
+    const quint16 DerivativeTimeHigh = 80;
+
+    const quint16 ControllerGainLow = 200;
+    const quint16 ResetTimeLow = 1000;
+    const quint16 DerivativeTimeLow = 0;
+
+    const quint16 TargetDropRange = 6;
+    const quint16 OverTemperature = 135;
+
+    const quint16 MinTemperature = 110;
+    const quint16 MaxTemperature = 120;
+    const quint16 ExchangeTemperature = 110;
+
+    Service::ModuleTestCaseID Id = Service::RETORT_LEVEL_SENSOR_HEATING;
+
+    QString testCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(testCaseName);
+
+    QTime durTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
+
+    qreal ambLow  = p_TestCase->GetParameter("AmbTempLow").toDouble();
+    qreal ambHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
+
+
+
+    Service::ModuleTestStatus testStat;
     (void)testStat.insert("TargetTemp", QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
     (void)testStat.insert("Duration", durTime.toString());
 
@@ -1042,6 +1278,7 @@ ERROR_EXIT:
     p_TestCase->AddResult("UsedTime", QTime().addSecs(totalSeconds).toString("hh:mm:ss"));
     return -1;
 }
+#endif
 
 qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
 {
