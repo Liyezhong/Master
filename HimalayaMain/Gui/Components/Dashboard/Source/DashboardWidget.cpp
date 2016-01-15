@@ -1409,7 +1409,7 @@ Wear respirator properly to prevent the potential harzad of reagent vapor. Don't
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
     m_strProgramComplete  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed!", 0, QApplication::UnicodeUTF8);
     m_strProgramCompleteSuccessfully  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed successfully!", 0, QApplication::UnicodeUTF8);
-    m_strProgramCompleteSafeReagent  = QApplication::translate("Dashboard::CDashboardWidget", "Safe Reagent has completed! Program \"%1\" has aborted!", 0, QApplication::UnicodeUTF8);
+    m_strProgramCompleteSafeReagent  = QApplication::translate("Dashboard::CDashboardWidget", "The safe reagent has been drained completed! The program \"%1\" was aborted!", 0, QApplication::UnicodeUTF8);
 
     m_strRetortNotLock = QApplication::translate("Dashboard::CDashboardWidget", "Please close and lock the retort, then try again!", 0, QApplication::UnicodeUTF8);
     m_strNotStartRMSOFF = QApplication::translate("Dashboard::CDashboardWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);

@@ -652,12 +652,12 @@
         <translation>Entrer la valeur du jour</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="460"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="462"/>
         <source>Enter Reagent Name</source>
         <translation>Entrer le nom du réactif</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="534"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="536"/>
         <source>%1</source>
         <translation></translation>
     </message>
@@ -1694,6 +1694,11 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1412"/>
+        <source>The safe reagent has been drained completed! The program &quot;%1&quot; was aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1421"/>
         <source>Retort temperature is too high. Please allow the retort to cool down before inserting specimens and starting the next program.</source>
         <translation type="unfinished"></translation>
@@ -1732,11 +1737,6 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1411"/>
         <source>Program &quot;%1&quot; has completed successfully!</source>
         <translation>Le programme &quot;%1&quot; s&apos;est terminé correctement !</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1412"/>
-        <source>Safe Reagent has completed! Program &quot;%1&quot; has aborted!</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1414"/>
@@ -2752,7 +2752,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentGroupColorDlg.ui" line="285"/>
-        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="135"/>
+        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="137"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -2762,13 +2762,13 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="138"/>
+        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="140"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="132"/>
-        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="140"/>
+        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="134"/>
+        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="142"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -2806,82 +2806,82 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="557"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="559"/>
         <source>Information Message</source>
         <translation>Message d&apos;information</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="558"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="560"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="563"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="565"/>
         <source>Cassettes until change</source>
         <translation>Cassettes jusq remplac</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="566"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="568"/>
         <source>Cycles until change</source>
         <translation>Cycles jusq remplac</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="569"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="571"/>
         <source>Days until change</source>
         <translation>Jours jusq remplac</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="572"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="574"/>
         <source>Please enter the reagent Name</source>
         <translation>Veuillez entrer le nom de réactif</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="575"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="577"/>
         <source>Reagent name shall not contain &apos;leica&apos;.</source>
         <translation>Le nom du réactif ne doit pas contenir &apos;leica&apos;.</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="578"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="580"/>
         <source>The same reagent name is in use already. Please change the reagent name.</source>
         <translation>Ce nom de réactif est déjà utilisé. Veuillez modifier le nom du réactif.</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="581"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="583"/>
         <source>Please enter valid data</source>
         <translation>Veuillez entrer des données valides</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="584"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="586"/>
         <source>Please select reagent group</source>
         <translation>Veuillez sélectionner un groupe de réactifs</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="587"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="589"/>
         <source>Failed to add the reagent. Please contact service.</source>
         <translation>L&apos;ajout du réactif a échoué. Veuillez contacter le centre de services.</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="590"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="592"/>
         <source>Failed to copy the reagent. Please contact service.</source>
         <translation>La copie du réactif a échoué. Veuillez contacter le centre de services.</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="593"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="595"/>
         <source>Please enter the number of cassettes</source>
         <translation>Veuillez entrer le nombre de cassettes</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="596"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="598"/>
         <source>Enter Cycle Value</source>
         <translation>Entrer la valeur du cycle</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="599"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="601"/>
         <source>Enter Day Value</source>
         <translation>Entrer la valeur du jour</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="602"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="604"/>
         <source>Enter Reagent Name</source>
         <translation>Entrer le nom du réactif</translation>
     </message>
@@ -3695,7 +3695,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>Réseau</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/ParametersWidget.cpp" line="101"/>
+        <location filename="../../Settings/Source/ParametersWidget.cpp" line="102"/>
         <source>Parameter</source>
         <translation>Paramètre</translation>
     </message>

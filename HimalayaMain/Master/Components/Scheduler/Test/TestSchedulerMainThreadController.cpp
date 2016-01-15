@@ -227,7 +227,7 @@ void TestSchedulerMainThreadController::TestSlots()
 
     m_pSchedulerMainController->CheckSensorTempOverange();
 
-    m_pSchedulerMainController->FillRsTissueProtect("S1", false);
+    m_pSchedulerMainController->FillRsTissueProtect("S1", false, false);
 
     m_pSchedulerMainController->StopFillRsTissueProtect("S1");
 
