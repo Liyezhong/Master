@@ -501,13 +501,13 @@
 			<Step ID="1" Type="MSG" StringID="67176201" ButtonType="OK" StatusBar="YES"/>
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>
 		</Event>
-		<Event Code="" ErrorID="512040530" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE"  ServiceString="67175989" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="512040530" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE"  ServiceString="67175988" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_HeatingErr30sRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
 			<Step ID="1" Type="MSG" StringID="67176204" ButtonType="OK" StatusBar="YES" NextStepOnTimeOut="3" TimeOut="15m"/>
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>
 			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
-		<Event Code="" ErrorID="512040533" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE" ServiceString="67175989" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="512040533" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE" ServiceString="67175988" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_HeatingErr30sRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
 			<Step ID="1" Type="MSG" StringID="67176201" ButtonType="OK" StatusBar="YES"/>
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>

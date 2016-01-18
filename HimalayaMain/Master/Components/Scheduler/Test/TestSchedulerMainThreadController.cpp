@@ -83,7 +83,7 @@ public:
         EXPECT_CALL(*mp_IDeviceProcessing, ALVaccum(_))
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
-        EXPECT_CALL(*mp_IDeviceProcessing, ALFilling(_,_))
+        EXPECT_CALL(*mp_IDeviceProcessing, ALFilling(_,_,_))
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
         EXPECT_CALL(*mp_IDeviceProcessing, ALDraining(_,_,_))

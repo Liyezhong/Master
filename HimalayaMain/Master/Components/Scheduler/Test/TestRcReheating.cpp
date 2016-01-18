@@ -95,18 +95,6 @@ void TestRcReheating::UTAllCase()
 {
     if(mp_ReHeating)
     {
-        mp_ReHeating->SetScenario(200);
-        quint32 scenario = mp_ReHeating->GetScenario();
-        QVERIFY(scenario == 200);
-
-        mp_ReHeating->SetNeedRunCleaning(false);
-        bool ret = mp_ReHeating->GetNeedRunCleaning();
-        QVERIFY(!ret);
-
-        mp_ReHeating->SetReagentID("RG1");
-        QString tmp = mp_ReHeating->GetReagentID();
-        QCOMPARE(tmp, QString("RG1"));
-
         mp_ReHeating->HandleWorkFlow("", DCL_ERR_FCT_CALL_SUCCESS);
 
         mp_ReHeating->HandleInint();

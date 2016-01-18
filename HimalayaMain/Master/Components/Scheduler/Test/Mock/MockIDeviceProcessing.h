@@ -109,7 +109,7 @@ public:
     MOCK_METHOD3(IDForceDraining, ReturnCode_t(quint32 RVPos, float targetPressure, const QString&));
     MOCK_METHOD1(ALStopCmdExec, ReturnCode_t(quint8 CmdType));
 
-    MOCK_METHOD2(ALFilling, ReturnCode_t(quint32 DelayTime, bool EnableInsufficientCheck));
+    MOCK_METHOD3(ALFilling, ReturnCode_t(quint32 DelayTime, bool EnableInsufficientCheck, bool SafeReagent4Paraffin));
 
     MOCK_METHOD0(ALGetRecentPressure, qreal());
 
@@ -151,6 +151,7 @@ public:
 
     //! Position the oven cover
     MOCK_METHOD1(RVReqMoveToRVPosition, ReturnCode_t(RVPosition_t RVPosition));
+    MOCK_METHOD1(RVReqMoveToCurrentTubePosition, ReturnCode_t(RVPosition_t RVPosition));
 
     //! Request actual oven cover position
     MOCK_METHOD0(RVReqActRVPosition, RVPosition_t());
