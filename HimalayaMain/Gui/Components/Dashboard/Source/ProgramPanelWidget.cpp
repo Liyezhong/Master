@@ -249,7 +249,6 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
         if(CheckPreConditionsToPauseProgram())
         {
             mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_PAUSE);
-            emit ProgramActionStopped(DataManager::PROGRAM_STATUS_PAUSED);//pause EndTime countdown
         } else {
             // Take Necessary Action
         }

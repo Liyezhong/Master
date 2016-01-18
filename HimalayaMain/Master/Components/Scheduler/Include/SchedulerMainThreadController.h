@@ -394,6 +394,11 @@ typedef enum
         bool    m_IsFirstProcessingForDelay;                  ///< is first enter processing for delay time
         QString m_ReagentExpiredFlag;                         ///< Reagent expired flag
         QMap<DeviceControl::ReturnCode_t,quint8> m_RetCodeCounterList;      //!< Counter list for Error ReturnCode
+        qint64  m_PauseStartTime;                             ///< Start time of pause command
+        bool    m_bWaitToPauseCmdYes;                         ///< flag to indicate if PauseYes command is selected
+        bool    m_IsResumeFromPause;                          ///< flag to indicate if we are resuming from pause state
+        SchedulerStateMachine_t m_StateAtPause;               ///< The state when pause occurs
+
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
@@ -1563,6 +1568,16 @@ protected:
          */
         /****************************************************************************/
         void SetRetCodeCounter(DeviceControl::ReturnCode_t RetCode, quint8 val) { m_RetCodeCounterList[RetCode] = val; }
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Actions and messages for resming from pause
+         *  \param  currentState, current program state
+         *  \return void
+         *
+         */
+        /****************************************************************************/
+        void CheckResuemFromPause(SchedulerStateMachine_t currentState);
 
     public slots:
 

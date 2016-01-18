@@ -645,16 +645,17 @@ signals:
     void CancelRetortCoverOpenMessagePrompt();
     /****************************************************************************/
     /*!
-     *  \brief  Declaration of signal ShowPauseMsgDialog
+     *  \brief  Declaration of signal ShowMsgDialog
+     *  \param  msgBoxType = message box type
      */
     /****************************************************************************/
-    void ShowPauseMsgDialog();
+    void ShowMsgDialog(DataManager::MsgBoxType_t msgBoxType);
     /****************************************************************************/
     /*!
-     *  \brief  Declaration of signal DismissPauseMsgDialog
+     *  \brief  Declaration of signal DismissMsgDialog
      */
     /****************************************************************************/
-    void DismissPauseMsgDialog();
+    void DismissMsgDialog();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal TissueProtectPassed
@@ -879,6 +880,12 @@ signals:
      */
     /****************************************************************************/
     void EnableBottleCheck(bool bEnabled);
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of signal ProgramActionStopped
+     */
+    /****************************************************************************/
+    void ProgramActionStopped(DataManager::ProgramStatusType_t);
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);
 

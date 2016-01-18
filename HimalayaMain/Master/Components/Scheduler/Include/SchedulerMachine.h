@@ -527,6 +527,14 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function NotifyDrain4Pause
+     *  \param PreviousState = SchedulerStateMachine_t type parameter
+     */
+    /****************************************************************************/
+    void NotifyDrain4Pause(SchedulerStateMachine_t PreviousState);
+
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function NotifyResumeDrain
      */
     /****************************************************************************/
@@ -1598,6 +1606,13 @@ signals:
      */
     /****************************************************************************/
     void sigPause();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigDrain4Pause
+     */
+    /****************************************************************************/
+    void sigDrain4Pause();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal sigResumeToSelftest
@@ -1987,6 +2002,13 @@ signals:
      */
     /****************************************************************************/
     void sigStateChange();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigResumeToProcessing
+     */
+    /****************************************************************************/
+    void sigResumeToLevelSensorHeating();
 
     /****************************************************************************/
     /*!

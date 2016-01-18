@@ -321,6 +321,15 @@ void CRcReHeating::CheckTheTemperature()
 
 void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
+    //For the scenarios 2*3 (except 203)and 2*5, we always consider power failure failed.
+    if ((QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="3" && 203 != m_LastScenario)
+            || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="5"))
+    {
+        mp_SchedulerThreadController->LogDebug(QString("Position of Rotary Valve is uncertain in the scenario %1").arg(m_LastScenario));
+        mp_StateMachine->OnTasksDone(false);
+        return;
+    }
+
     //For the scenarios 200, 203, 260, 2*1 and 2*7, we always consider power failure succeeded.
     if(200 == m_LastScenario || 203 == m_LastScenario || 260 == m_LastScenario
             || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="1")

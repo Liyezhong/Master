@@ -181,11 +181,11 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, PowerFailureMsg(),
                       this, OnPowerFailureMsg());
 
-    CONNECTSIGNALSLOT(mp_DataConnector, ShowPauseMsgDialog(),
-                      this, OnShowPauseMsgDialog());
+    CONNECTSIGNALSLOT(mp_DataConnector, ShowMsgDialog(DataManager::MsgBoxType_t),
+                      this, OnShowMsgDialog(DataManager::MsgBoxType_t));
 
-    CONNECTSIGNALSLOT(mp_DataConnector, DismissPauseMsgDialog(),
-                      this, OnDismissPauseMsgDialog());
+    CONNECTSIGNALSLOT(mp_DataConnector, DismissMsgDialog(),
+                      this, OnDismissMsgDialog());
 
     CONNECTSIGNALSLOT(mp_DataConnector, WaitRotaryValveHeatingPrompt(),
                       this, OnWaitRotaryValveHeatingPrompt());
@@ -205,8 +205,12 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSIGNAL(this, OnInteractStart(), ui->containerPanelWidget, OnInteractStart());
 
     CONNECTSIGNALSIGNAL(this, UpdateProgram(DataManager::CProgram&), ui->programPanelWidget, UpdateProgram(DataManager::CProgram&));
+	
+	CONNECTSIGNALSLOT(mp_DataConnector, CoolingDown(), this, OnCoolingDown());
+	
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramActionStopped(DataManager::ProgramStatusType_t),
+                        ui->programPanelWidget, ProgramActionStopped(DataManager::ProgramStatusType_t));
 
-    CONNECTSIGNALSLOT(mp_DataConnector, CoolingDown(), this, OnCoolingDown());
 }
 
 CDashboardWidget::~CDashboardWidget()
@@ -443,11 +447,19 @@ void CDashboardWidget::OnPowerFailureMsg()
 }
 
 
-void CDashboardWidget::OnShowPauseMsgDialog()
+void CDashboardWidget::OnShowMsgDialog(DataManager::MsgBoxType_t msgBoxType_t)
 {
     mp_PausingMsgDlg = new MainMenu::CMessageDlg(this);
     mp_PausingMsgDlg->SetIcon(QMessageBox::Information);
-    mp_PausingMsgDlg->SetText(m_strItIsPausing);
+    if (DataManager::PAUSE_MSG == msgBoxType_t)
+    {
+         mp_PausingMsgDlg->SetText(m_strItIsPausing);
+    mp_PausingMsgDlg->SetTextFormat(Qt::PlainText);
+    else if (DataManager::REUSME_MSG == msgBoxType_t)
+    {
+         mp_PausingMsgDlg->SetText(m_strItIsResuming);
+    }
+
     mp_PausingMsgDlg->SetTextFormat(Qt::PlainText);
     mp_PausingMsgDlg->HideAllButtons();
     (void)mp_PausingMsgDlg->exec();
@@ -455,7 +467,7 @@ void CDashboardWidget::OnShowPauseMsgDialog()
     mp_PausingMsgDlg = NULL;
 }
 
-void CDashboardWidget::OnDismissPauseMsgDialog()
+void CDashboardWidget::OnDismissMsgDialog()
 {
     if (mp_PausingMsgDlg)
     {

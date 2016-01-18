@@ -21,7 +21,6 @@
 		</Event>
 		<Event Code="" ErrorID="520060005" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RC_ReHeating" NextStepOnFail="1" NextStepOnSuccess="1"/>
-			<Step ID="1" Type="MSG" StringID="67176215" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="520060201" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176224" ButtonType="OK" StatusBar="YES"/>
@@ -36,6 +35,12 @@
 		<Event Code="" ErrorID="520070400" ErrorType="ERROR" AlarmType="" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Abort" NextStepOnFail="1"/>
 			<Step ID="1" Type="MSG" StringID="67176223" ButtonType="OK" StatusBar="YES"/>
+		</Event>
+		<Event Code="" ErrorID="520070700" ErrorType="INFO" AlarmType="" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="67176229" ButtonType="YES_NO_CANCEL" NextStepOnClickYES="1" NextStepOnClickNO="2" NextStepOnClickCANCEL="3" NextStepOnTimeOut="3" TimeOut="30s" StatusBar="YES"/>
+			<Step ID="1" Type="ACT" Action="RS_PAUSE_CMD_YES"/>
+			<Step ID="2" Type="ACT" Action="RS_PAUSE_CMD_NO"/>
+			<Step ID="3" Type="ACT" Action="RS_PAUSE_CMD_CANCEL"/>
 		</Event>
 		<Event Code="" ErrorID="520070001" ErrorType="ERROR" AlarmType="" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176219" ButtonType="OK" StatusBar="YES"/>
@@ -1363,7 +1368,10 @@
 	     <Step ID="0" Type="MSG" StringID="67175204" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67175205" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_OVEN_PAUSE" LogLevel="High" UserLog="TRUE">
-	     <Step ID="0" Type="MSG" StringID="67175205" ButtonType="" StatusBar=""/>
+	     <Step ID="0" Type="MSG" StringID="67175205" ButtonType="OK" StatusBar=""/>
+	    </Event>
+	    <Event Code="" ErrorID="67175230" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_PAUSE_ENDTIME_UPDATE" LogLevel="High" UserLog="TRUE">
+	     <Step ID="0" Type="MSG" StringID="67175230" ButtonType="OK" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67175206" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_RELEASE_PREASURE" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175206" ButtonType="" StatusBar=""/>

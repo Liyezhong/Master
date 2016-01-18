@@ -216,6 +216,8 @@
         <string id="67175202" text1="Still need %1 to heat oven for melting paraffin." text2=""/>
         <string id="67175203" text1="Aborting program…" text2=""/>
         <string id="67175204" text1="Program aborted." text2=""/>
+        <string id="67175205" text1="The program has been paused." text2=""/>
+        <string id="67175230" text1="Because user paused the program, the program end time will be update to %1." text2=""/>
         <string id="67175207" text1="Draining…" text2=""/>
         <string id="67175208" text1="Waiting to fill paraffin." text2=""/>
         <string id="67175209" text1="Heating the level sensor for filling" text2=""/>
@@ -268,6 +270,7 @@
         <string id="16973842" text1="selecting timeout" text2=""/>
         <string id="67176227" text1="Paraffin temperature in paraffin bath is higher than %1. Please check paraffin melting status." text2=""/>
         <string id="67176228" text1="Paraffin temperature in paraffin bath is lower than %1. Please check paraffin melting status." text2=""/>
+        <string id="67176229" text1="Click Yes to drain the retort empty for adding new baskets;Click No and the reagnet remains in the retort;Click Cancel to cancel the pause operation.Wear respirator properly to prevent the potential hazard of reagent vapor.Don't touch the level sensor.It's hot!" text2=""/>
         <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
         <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
         <string id="67176212" text1="Please check reagent bottles status, if reagent level is lower than the minimum level, please add reagent to the bottle within 15 minutes." text2=""/>
