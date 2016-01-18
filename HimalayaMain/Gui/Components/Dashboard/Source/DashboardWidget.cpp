@@ -1490,7 +1490,7 @@ void CDashboardWidget::OnUserRoleChanged()
 
     if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
     {
-        if (m_ProgramStatus == ProgramRunning)
+        if (m_ProgramStatus == ProgramRunning || m_ProgramStatus == Paused)
         {
             if (m_CurProgramStepIndex < 3)
             {
