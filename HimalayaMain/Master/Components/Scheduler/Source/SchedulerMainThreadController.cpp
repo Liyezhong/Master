@@ -898,16 +898,20 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     SendCommand(fRef, Global::CommandShPtr_t(commandPtrPauseEnable));
 
     qint64 now = QDateTime::currentMSecsSinceEpoch();
-
-    if (now <= m_TimeStamps.ProposeSoakStartTime)
-    {
-        return;
-    }
-
     qint64 offset = 0;
-    if (m_TimeStamps.ProposeSoakStartTime > m_PauseStartTime)
+    if (PSSM_FILLING_LEVELSENSOR_HEATING == m_StateAtPause || PSSM_FILLING_RVROD_HEATING == m_StateAtPause
+            || PSSM_FILLING == m_StateAtPause || PSSM_RV_MOVE_TO_SEAL == m_StateAtPause || PSSM_PROCESSING == m_StateAtPause)
     {
-        offset = now - m_TimeStamps.ProposeSoakStartTime;
+        if ((now-m_PauseStartTime) > m_delayTime*1000)
+        {
+            offset = now - m_PauseStartTime - m_delayTime*1000;
+            m_delayTime = 0;
+        }
+        else
+        {
+            offset = 0;
+            m_delayTime -= (now-m_PauseStartTime)/1000;
+        }
     }
     else
     {
@@ -1481,6 +1485,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         m_lastPVTime = now;
                     }
                     m_IsInSoakDelay = false;
+                    m_delayTime = 0;
                 }
                 else if(m_CurProgramStepInfo.isPressure && m_CurProgramStepInfo.isVacuum)
                 {
