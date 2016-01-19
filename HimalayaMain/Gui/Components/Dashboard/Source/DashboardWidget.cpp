@@ -1439,6 +1439,7 @@ Please confirm modifying Paraffin temperature.", 0, QApplication::UnicodeUTF8);
     m_strReadyStartProgram = QApplication::translate("Dashboard::CDashboardWidget", "Ready to start a new program.", 0, QApplication::UnicodeUTF8);
     m_checkMachinePrompt = QApplication::translate("Dashboard::CDashboardWidget", "Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter.\
  Reinstall the retort filter after cleaning. Load the specimens into the retort and make sure that the retort is locked.", 0, QApplication::UnicodeUTF8);
+    m_strItIsResuming = QApplication::translate("Dashboard::CDashboardWidget", "Resuming...\nDon't open the retort lid and unplug any reagent bottles.", 0, QApplication::UnicodeUTF8);
 
 }
 
