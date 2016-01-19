@@ -1506,7 +1506,7 @@ void CDashboardWidget::OnUserRoleChanged()
             }
 
             //Abort
-            if (m_CurProgramStepIndex == 0)
+            if (m_CurProgramStepIndex == 0 || m_ProgramStatus == Paused)
             {
                 ui->programPanelWidget->EnableStartButton(true);
             }
