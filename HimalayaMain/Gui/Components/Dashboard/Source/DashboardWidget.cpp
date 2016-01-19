@@ -454,7 +454,8 @@ void CDashboardWidget::OnShowMsgDialog(DataManager::MsgBoxType_t msgBoxType_t)
     if (DataManager::PAUSE_MSG == msgBoxType_t)
     {
          mp_PausingMsgDlg->SetText(m_strItIsPausing);
-    mp_PausingMsgDlg->SetTextFormat(Qt::PlainText);
+         mp_PausingMsgDlg->SetTextFormat(Qt::PlainText);
+    }
     else if (DataManager::REUSME_MSG == msgBoxType_t)
     {
          mp_PausingMsgDlg->SetText(m_strItIsResuming);
