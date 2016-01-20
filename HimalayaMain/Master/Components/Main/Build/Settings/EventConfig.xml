@@ -675,16 +675,16 @@
 			<Step ID="0" Type="MSG" StringID="67176207" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
 		    <Step ID="1" Type="ACT" Action="Rs_CheckLocalalarmStatus"/>
 		</Event>
-		<Event Code="" ErrorID="511040021" ErrorType="INFO" AlarmType="" LogLevel="High" UserLog="FALSE"  ServiceString="67176015" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="511040021" ErrorType="INFO" AlarmType="AL_DEVICE" LogLevel="High" UserLog="FALSE"  ServiceString="67176015" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176195" ButtonType="OK" StatusBar="YES"/>
 		</Event>
-		<Event Code="" ErrorID="512040052" ErrorType="INFO" AlarmType="" LogLevel="High" UserLog="FALSE"  ServiceString="67176016" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="512040052" ErrorType="INFO" AlarmType="AL_DEVICE" LogLevel="High" UserLog="FALSE"  ServiceString="67176016" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176195" ButtonType="OK" StatusBar="YES"/>
 		</Event>
-		<Event Code="" ErrorID="511040101" ErrorType="INFO" AlarmType="" LogLevel="High" UserLog="FALSE" ServiceString="67176017" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="511040101" ErrorType="INFO" AlarmType="AL_DEVICE" LogLevel="High" UserLog="FALSE" ServiceString="67176017" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176193" ButtonType="OK" StatusBar="YES"/>
 		</Event>
-		<Event Code="" ErrorID="511040221" ErrorType="INFO" AlarmType="" LogLevel="High" UserLog="FALSE" ServiceString="67176018" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="511040221" ErrorType="INFO" AlarmType="AL_DEVICE" LogLevel="High" UserLog="FALSE" ServiceString="67176018" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176192" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="511040231" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="FALSE" ServiceString="67176020" EventSource="SCHEDULER">
