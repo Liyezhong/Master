@@ -878,6 +878,7 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
 
 void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t currentState)
 {
+
     if (!m_IsResumeFromPause || currentState != m_StateAtPause)
     {
         return;
@@ -2028,10 +2029,13 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
     {
         if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_START)
         {
-            m_NewProgramID = pCmdProgramAction->GetProgramID();
-            m_delayTime = pCmdProgramAction->DelayTime();
-            m_ReagentExpiredFlag = pCmdProgramAction->GetReagentExpiredFlag();
-            LogDebug(QString("Get the delay time: %1 seconds.").arg(m_delayTime));
+            if (PSSM_PAUSE != m_CurrentStepState)
+            {
+                m_NewProgramID = pCmdProgramAction->GetProgramID();
+                m_delayTime = pCmdProgramAction->DelayTime();
+                m_ReagentExpiredFlag = pCmdProgramAction->GetReagentExpiredFlag();
+                LogDebug(QString("Get the delay time: %1 seconds.").arg(m_delayTime));
+            }
             return CTRL_CMD_START;
         }
         if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_PAUSE)
@@ -5536,9 +5540,20 @@ void SchedulerMainThreadController::OnFillingHeatingRV()
     {
         mp_HeatingStrategy->Init260ParamList();
         RaiseEvent(EVENT_SCHEDULER_WAITING_FOR_FILLING_PARAFFIN);
+        this->EnablePauseButton();
     }
 
-    this->EnablePauseButton();
+    m_TickTimer.start();
+}
+
+void SchedulerMainThreadController::OnEnterHeatingLevelSensor()
+{
+    RaiseEvent(EVENT_SCHEDULER_HEATING_LEVEL_SENSOR_FOR_FILLING);
+    CheckResuemFromPause(PSSM_FILLING_LEVELSENSOR_HEATING);
+    if(m_CurProgramStepInfo.reagentGroup != "RG6")
+    {
+       this->EnablePauseButton();
+    }
     m_TickTimer.start();
 }
 

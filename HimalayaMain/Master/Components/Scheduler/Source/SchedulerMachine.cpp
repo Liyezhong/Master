@@ -85,7 +85,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_PssmPreTestState.data(), entered(), this, OnEnterPretest());
     mp_PssmFillingHeatingRVState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmFillingLevelSensorHeatingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    CONNECTSIGNALSLOT(mp_PssmFillingLevelSensorHeatingState.data(), entered(), this, OnEnterHeatingLevelSensor());
+    CONNECTSIGNALSLOT(mp_PssmFillingLevelSensorHeatingState.data(), entered(), mp_SchedulerThreadController, OnEnterHeatingLevelSensor());
     mp_PssmFillingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmRVMoveToSealState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmProcessingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
@@ -2423,10 +2423,5 @@ void CSchedulerStateMachine::OnEnterPretest()
      mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_PRETEST);
      mp_SchedulerThreadController->StartTimer();
 }
-void CSchedulerStateMachine::OnEnterHeatingLevelSensor()
-{
-    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_HEATING_LEVEL_SENSOR_FOR_FILLING);
-    mp_SchedulerThreadController->CheckResuemFromPause(PSSM_FILLING_LEVELSENSOR_HEATING);
-    mp_SchedulerThreadController->StartTimer();
-}
+
 }
