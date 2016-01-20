@@ -49,8 +49,8 @@ public:
     /*!
       * \brief constructor
       * \param TimeOut = time out
-      * \stationID = station ID
-      * \bottleCheckStatusType = bottle check status type
+      * \param stationID = station ID
+      * \param bottleCheckStatusType = bottle check status type
     */
     CmdBottleCheckReply(int TimeOut, const QString& stationID, DataManager::BottleCheckStatusType_t bottleCheckStatusType);
 

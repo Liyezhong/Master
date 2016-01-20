@@ -1414,7 +1414,7 @@ void CDashboardWidget::RetranslateUI()
     m_strTissueProtectPassed_Warning = QApplication::translate("Dashboard::CDashboardWidget", "Tissue safety process has completed with warning. Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "The oven cover is open. Please close it then click the OK button.", 0, QApplication::UnicodeUTF8);
     m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened. Please close it and then click OK. \
-Wear respirator properly to prevent the potential harzad of reagent vapor. Don't touch the level sensor. It's hot!", 0, QApplication::UnicodeUTF8);
+Wear respirator properly to prevent the potential hazard of reagent vapor. Don't touch the level sensor. It's hot!", 0, QApplication::UnicodeUTF8);
     m_strItIsPausing = QApplication::translate("Dashboard::CDashboardWidget", "Pausing...\nDon't open the retort lid and unplug any reagent bottles.", 0, QApplication::UnicodeUTF8);
     m_strWaitRotaryValveHeatingPrompt = QApplication::translate("Dashboard::CDashboardWidget", "Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press \"Ok\" button.", 0, QApplication::UnicodeUTF8);

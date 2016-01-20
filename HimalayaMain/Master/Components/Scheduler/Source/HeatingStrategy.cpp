@@ -41,7 +41,13 @@
 /*lint -e506 */
 
 namespace Scheduler{
-
+/****************************************************************************/
+ /*!
+ *  \brief  delay a period
+ *  \param  the time to be delayed in seconds - int
+ *  \return from DelaySomeTime
+ */
+/****************************************************************************/
 static void DelaySomeTime(int DelayTime)
 {
     if(DelayTime > 0)
