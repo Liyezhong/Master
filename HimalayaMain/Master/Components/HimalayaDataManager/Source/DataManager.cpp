@@ -85,7 +85,7 @@ quint32 CDataManager::InitializeDataContainer()
     DeviceControl::DeviceLifeCycleRecord deviceLifeCycleRecord;
     deviceLifeCycleRecord.ReadRecord();
 
-    uint activeCarbonFilterLifeTime = -1;
+    int activeCarbonFilterLifeTime = -1;
     uint carbonFilter_FirstRecord_Flag = 0;
     
     DeviceControl::ModuleLifeCycleRecord* pModuleLifeCycleRecord = deviceLifeCycleRecord.m_ModuleLifeCycleMap.value("LA");
@@ -94,7 +94,7 @@ quint32 CDataManager::InitializeDataContainer()
         DeviceControl::PartLifeCycleRecord* pPartLifeCycleRecord = pModuleLifeCycleRecord->m_PartLifeCycleMap.value("AL_pressure_ctrl");
         if (pPartLifeCycleRecord)
         {
-            activeCarbonFilterLifeTime = pPartLifeCycleRecord->m_ParamMap.value("ActiveCarbonFilter_LifeTime").toUInt();
+            activeCarbonFilterLifeTime = pPartLifeCycleRecord->m_ParamMap.value("ActiveCarbonFilter_LifeTime").toInt();
             carbonFilter_FirstRecord_Flag = pPartLifeCycleRecord->m_ParamMap.value("CarbonFilter_FirstRecord_Flag").toUInt();
         }
     }

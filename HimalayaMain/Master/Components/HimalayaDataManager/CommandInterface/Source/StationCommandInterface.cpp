@@ -21,7 +21,6 @@
 #include "HimalayaMasterThread/Include/HimalayaMasterThreadController.h"
 #include "DataManager/Helper/Include/DataManagerEventCodes.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"
-#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 
 namespace DataManager {
 /****************************************************************************/
