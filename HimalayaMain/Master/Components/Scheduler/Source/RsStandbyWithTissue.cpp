@@ -65,6 +65,12 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
     {
     case SHUTDOWN_FAILED_HEATER:
         mp_SchedulerController->LogDebug("RS_Standby_WithTissue or RS_Standby, in state SHUTDOWN_FAILD_HEATER");
+
+        //For open retort LID, we need stop level sensor
+        if (DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR == mp_SchedulerController->GetCurErrEventID())
+        {
+             mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
+        }
         if (true == mp_SchedulerController->ShutdownFailedHeaters())
         {
             if (0 == m_StandbyType) // RS_Standby_WithTissue

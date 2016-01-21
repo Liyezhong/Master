@@ -50,6 +50,7 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     m_PressureDriftOffset = 0.0;
     m_PressureCalibrationCounter = 0;
     m_PressureSealingChkSeq = 0;
+    m_SealingCheckTimes = 0;
     m_MoveToTubeSeq = 0;
     m_IsLoged = 0;
     m_IsAbortRecv = false;
@@ -363,7 +364,15 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 else
                 {
                     m_PressureSealingChkSeq = 0;
-                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                    if (0 == m_SealingCheckTimes)
+                    {
+                        m_CurrentState = PRESSURE_SEALING_CHECKING;
+                        m_SealingCheckTimes++;
+                    }
+                    else
+                    {
+                        mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                    }
                 }
             }
         }
@@ -423,6 +432,7 @@ void CProgramPreTest::ResetVarList(bool resume)
     m_PressureCalibrationCounter = 0;
     m_PressureDriftOffset = 0.0;
     m_PressureSealingChkSeq = 0;
+    m_SealingCheckTimes = 0;
     m_MoveToTubeSeq = 0;
     m_IsLoged = 0;
     m_IsAbortRecv = false;

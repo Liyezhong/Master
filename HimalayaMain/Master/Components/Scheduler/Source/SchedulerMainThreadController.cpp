@@ -1206,8 +1206,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
-                SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
-                m_bWaitToPause = true;
+                // Stop heating level sensor
+                mp_HeatingStrategy->StopTemperatureControl("LevelSensor");
+                LogDebug(QString("Program Step Beginning Pause"));
+                m_SchedulerMachine->NotifyPause(SM_UNDEF);
+                return;
             }
 
             if(mp_HeatingStrategy->Check260SensorsTemp())
@@ -1215,14 +1218,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 LogDebug("Program Step Heating Rotary Valve heating rod OK");
                 if (m_bWaitToPause)
                 {
-                   //dismiss the prompt of pausing
-                   SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
-                   m_bWaitToPause = false;
-                   // Stop heating level sensor
-                   mp_HeatingStrategy->StopTemperatureControl("LevelSensor");
-                   LogDebug(QString("Program Step Beginning Pause"));
-                   m_SchedulerMachine->NotifyPause(SM_UNDEF);
-                   return;
+
                 }
                 m_SchedulerMachine->NotifyRVRodHeatingReady();
             }
@@ -1244,25 +1240,17 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 
         if(CTRL_CMD_PAUSE == ctrlCmd)
         {
-            SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
-            m_bWaitToPause = true;
+            // Stop heating level sensor
+            mp_HeatingStrategy->StopTemperatureControl("LevelSensor");
+            LogDebug(QString("Program Step Beginning Pause"));
+            m_SchedulerMachine->NotifyPause(SM_UNDEF);
+            return;
         }
 
         if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
         {
             m_IsProcessing = false;
             LogDebug("Program Step Heating Level sensor stage OK");
-            if (m_bWaitToPause)
-            {
-                //dismiss the prompt of waiting for pause
-                SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
-                m_bWaitToPause = false;
-                // Stop heating level sensor
-                mp_HeatingStrategy->StopTemperatureControl("LevelSensor");
-                LogDebug(QString("Program Step Beginning Pause"));
-                m_SchedulerMachine->NotifyPause(SM_UNDEF);
-                return;
-            }
             m_SchedulerMachine->NotifyLevelSensorHeatingReady();
         }
         else

@@ -44,6 +44,7 @@ CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController, CSche
     ,m_PressureCalibrationCounter(0)
     ,m_ReleasePressureTime(0)
     ,m_IsLoged(0)
+    ,m_IsMeltingMsgSend(false)
 {
 }
 
@@ -299,10 +300,24 @@ void CRcReHeating::CheckTheTemperature()
     }
     else if(271 <= m_LastScenario && m_LastScenario <= 277)
     {
+        if (!m_IsMeltingMsgSend)
+        {
+            quint32 remainingTime = (mp_SchedulerThreadController->GetOvenHeatingRemainingTime())/60000;
+
+            if(remainingTime>1)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_MELTPARAFFIN_TIME, QStringList()<<QString::number(remainingTime));
+            }
+            m_IsMeltingMsgSend = true;
+        }
         // for parrafin program
         qint64 CurrentTime = QDateTime::currentMSecsSinceEpoch();
         if((CurrentTime - m_StartHeatingTime) > mp_SchedulerThreadController->GetOvenHeatingRemainingTime() )
         {
+            //Remove the message box
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_MELTPARAFFIN_TIME,QStringList(), false);
+            m_IsMeltingMsgSend = false; //reset to initial value
+
             if(mp_SchedulerThreadController->GetHeatingStrategy()->Check260SensorsTemp(true))
             {
                 m_CurrentStep = GET_RV_POSOTION;

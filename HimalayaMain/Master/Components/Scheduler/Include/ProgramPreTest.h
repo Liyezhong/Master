@@ -142,6 +142,7 @@ private:
     quint8  m_PressureCalibrationCounter;                           //!< Counter of Pressure Calibratoin
     qint64  m_ReleasePressureTime;                                  //!< Time of releasing pressure
     quint32 m_PressureSealingChkSeq;                                //!< Sequence of Sealing checking
+    quint8  m_SealingCheckTimes;                                    //!< Times of sealing check
     quint32 m_MoveToTubeSeq;                                        //!< Sequence of moving to tube
     quint8  m_IsLoged;                                              //!< Whether loged
     bool    m_IsAbortRecv;                                          //!< Flag to indicate if CTRL_CMD_ABORT was received

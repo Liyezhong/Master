@@ -152,6 +152,7 @@ const quint32 EVENT_SCHEDULER_POWER_FAILURE_NOREAGENT_STEP = SCHEDULER_BASE_ID +
 const quint32 EVENT_SCHEDULER_POWER_FAILURE_RVMOVING_STEP = SCHEDULER_BASE_ID + 0x0302; ///< Reheating for 2*3 or 2*5 step.
 const quint32 EVENT_SCHEDULER_POWER_FAILURE_SOAKING_STEP = SCHEDULER_BASE_ID + 0x0303; ///< Reheating for 2*4 step.
 const quint32 EVENT_SCHEDULER_POWER_FAILURE_FILLINGDRAINING_STEP = SCHEDULER_BASE_ID + 0x0304; ///< Reheating for 2*2 or 2*6 step.
+const quint32 EVENT_SCHEDULER_POWER_FAILURE_MELTPARAFFIN_TIME = SCHEDULER_BASE_ID + 0x0305; ///< Because of power failure, the instrument will take %1 min to melt paraffin.
 
 // 2. IDLE state
 const quint32 EVENT_SCHEDULER_IN_IDLE_STATE = SCHEDULER_BASE_ID + 0x0310; ///< Scheduler enters the idle state.

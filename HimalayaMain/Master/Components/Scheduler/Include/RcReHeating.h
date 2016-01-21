@@ -193,6 +193,7 @@ private:
     quint8                          m_PressureCalibrationCounter;       //!< Counter of Pressure Calibratoin
     qint64                          m_ReleasePressureTime;              //!< Time of releasing pressure
     quint8                          m_IsLoged;                          //!< Whether loged
+    bool                            m_IsMeltingMsgSend;                 //!< flag for melting message sent or not
 };
 
 }

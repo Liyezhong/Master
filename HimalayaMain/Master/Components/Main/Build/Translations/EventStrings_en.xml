@@ -655,6 +655,7 @@
         <string id="67175170" text1="Reheating for 2*3 or 2*5 step." text2=""/>
         <string id="67175171" text1="Reheating for 2*4 step." text2=""/>
         <string id="67175172" text1="Reheating for 2*2 or 2*6 step." text2=""/>
+        <string id="67175173" text1="Because of power failure, the instrument will take %1 min to melt paraffin." text2=""/>
         <string id="67175184" text1="Scheduler enters the idle state." text2=""/>
         <string id="67175185" text1="Scheduler enters the error state." text2=""/>
         <string id="67175201" text1="Set the rotary valve position to %1." text2=""/>
