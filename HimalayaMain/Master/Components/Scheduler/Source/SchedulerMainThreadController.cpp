@@ -1716,6 +1716,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             Global::tRefType fRef = GetNewCommandRef();
             SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
 
+            MsgClasses::CmdProgramAcknowledge* commandPtrRunBegin(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
+            Q_ASSERT(commandPtrRunBegin);
+            fRef = GetNewCommandRef();
+            SendCommand(fRef, Global::CommandShPtr_t(commandPtrRunBegin));
+
             m_TickTimer.stop();
             // resume the program
             emit NotifyResume();
