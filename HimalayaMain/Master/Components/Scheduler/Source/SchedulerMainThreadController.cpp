@@ -898,12 +898,6 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPtrPauseEnable));
 
-    // Enable start button
-    MsgClasses::CmdProgramAcknowledge* commandPtrStartEnable(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_START_ENABLE));
-    Q_ASSERT(commandPtrStartEnable);
-    fRef = GetNewCommandRef();
-    SendCommand(fRef, Global::CommandShPtr_t(commandPtrStartEnable));
-
     qint64 now = QDateTime::currentMSecsSinceEpoch();
     qint64 offset = 0;
     if (PSSM_FILLING_LEVELSENSOR_HEATING == m_StateAtPause || PSSM_FILLING_RVROD_HEATING == m_StateAtPause
