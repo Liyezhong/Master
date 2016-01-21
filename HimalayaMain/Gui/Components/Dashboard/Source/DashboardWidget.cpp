@@ -803,7 +803,17 @@ void CDashboardWidget::OnProgramRunBegin()
     {
         if (isResumeRun)
         {
-            ui->programPanelWidget->EnablePauseButton(true);//enable pause button
+            if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
+            {
+                if (m_CurProgramStepIndex < 3)
+                {
+                    ui->programPanelWidget->EnablePauseButton(true);
+                }
+            }
+            else
+            {
+                ui->programPanelWidget->EnablePauseButton(true);
+            }
         }
 
         if (m_CurProgramStepIndex > 0 && MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator) // operator can't abort program when beginning the second step.
@@ -1519,9 +1529,12 @@ void CDashboardWidget::OnUserRoleChanged()
     }
     else //Supervior or service
     {
-        if (m_ProgramStatus == ProgramRunning)
+        if (m_ProgramStatus == ProgramRunning || m_ProgramStatus == Paused)
         {
-            ui->programPanelWidget->EnablePauseButton(m_ProgramStageStatus == Enabled);
+            if (m_ProgramStatus == ProgramRunning)
+            {
+                ui->programPanelWidget->EnablePauseButton(m_ProgramStageStatus == Enabled);
+            }
             ui->programPanelWidget->EnableStartButton(true);
         }
     }
