@@ -906,12 +906,20 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
         if ((now-m_PauseStartTime) > m_delayTime*1000)
         {
             offset = now - m_PauseStartTime - m_delayTime*1000;
+            if (m_CurProgramStepIndex == 0)
+            {
+                m_CurProgramStepInfo.durationInSeconds -= m_delayTime;
+            }
             m_delayTime = 0;
         }
         else
         {
             offset = 0;
             m_delayTime -= (now-m_PauseStartTime)/1000;
+            if (m_CurProgramStepIndex == 0)
+            {
+                m_CurProgramStepInfo.durationInSeconds -= (now-m_PauseStartTime)/1000;
+            }
         }
     }
     else
@@ -931,8 +939,8 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     SendCommand(tfRef, Global::CommandShPtr_t(commandUpdateProgramEndTime));
 
     // Update end time and prompt the MSG box to info end user
-    m_EndTimeAndStepTime.UserSetEndTime += offset;
-    QDateTime endTime = QDateTime::fromMSecsSinceEpoch(m_EndTimeAndStepTime.UserSetEndTime);
+    m_EndTimeAndStepTime.EndTime += offset;
+    QDateTime endTime = QDateTime::fromMSecsSinceEpoch(m_EndTimeAndStepTime.EndTime);
 
     if (offset > 1000*60) //If offset is less than one minute, we will NOT notify end user
     {
