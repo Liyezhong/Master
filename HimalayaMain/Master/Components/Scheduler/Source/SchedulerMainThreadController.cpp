@@ -901,7 +901,7 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     qint64 now = QDateTime::currentMSecsSinceEpoch();
     qint64 offset = 0;
     if (PSSM_FILLING_LEVELSENSOR_HEATING == m_StateAtPause || PSSM_FILLING_RVROD_HEATING == m_StateAtPause
-            || PSSM_FILLING == m_StateAtPause || PSSM_RV_MOVE_TO_SEAL == m_StateAtPause || PSSM_PROCESSING == m_StateAtPause)
+            || PSSM_FILLING == m_StateAtPause || PSSM_RV_MOVE_TO_SEAL == m_StateAtPause)
     {
         if ((now-m_PauseStartTime) > m_delayTime*1000)
         {
@@ -922,6 +922,29 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
             }
         }
     }
+    else if (PSSM_PROCESSING == m_StateAtPause)
+    {
+        if (now <= m_TimeStamps.ProposeSoakStartTime)
+        {
+            return;
+        }
+        if (now > m_TimeStamps.ProposeSoakStartTime)
+        {
+            m_CurProgramStepInfo.durationInSeconds -= m_delayTime;
+            m_IsProcessing = false;
+            m_delayTime = 0;
+            if (m_PauseStartTime <= m_TimeStamps.ProposeSoakStartTime)
+            {
+                offset = now - m_TimeStamps.ProposeSoakStartTime;
+            }
+            else
+            {
+                m_CurProgramStepInfo.durationInSeconds -= (m_PauseStartTime - m_TimeStamps.ProposeSoakStartTime)/1000;
+                offset = now - m_PauseStartTime;
+            }
+
+        }
+    }
     else
     {
         offset = now - m_PauseStartTime;
@@ -939,8 +962,8 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     SendCommand(tfRef, Global::CommandShPtr_t(commandUpdateProgramEndTime));
 
     // Update end time and prompt the MSG box to info end user
-    m_EndTimeAndStepTime.EndTime += offset;
-    QDateTime endTime = QDateTime::fromMSecsSinceEpoch(m_EndTimeAndStepTime.EndTime);
+    m_EndTimeAndStepTime.UserSetEndTime += offset;
+    QDateTime endTime = QDateTime::fromMSecsSinceEpoch(m_EndTimeAndStepTime.UserSetEndTime);
 
     if (offset > 1000*60) //If offset is less than one minute, we will NOT notify end user
     {
@@ -3855,6 +3878,8 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
         }
         m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
         LogDebug(QString("The duration time:%1 seconds.").arg(m_CurProgramStepInfo.durationInSeconds));
+        LogDebug(QString("m_TimeStamps.ProposeSoakStartTime is: %1").arg(QDateTime::fromMSecsSinceEpoch(m_TimeStamps.ProposeSoakStartTime).toString("yyyy-MM-dd hh:mm")));
+        LogDebug(QString("m_TimeStamps.CurStepSoakStartTime: %1").arg(QDateTime::fromMSecsSinceEpoch(m_TimeStamps.CurStepSoakStartTime).toString("yyyy-MM-dd hh:mm")));
         m_lastPVTime = 0;
         m_completionNotifierSent = false;
 
@@ -4677,12 +4702,15 @@ void SchedulerMainThreadController::Pause()
     //First of all, release pressure
     m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,this), false);
 
+#if 0
     //update the remaining time for the current step
     if (PSSM_PROCESSING == m_CurrentStepState)
     {
         m_IsProcessing = false;
         m_CurProgramStepInfo.durationInSeconds = m_CurProgramStepInfo.durationInSeconds - ((QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.CurStepSoakStartTime) / 1000);
     }
+#endif
+
     LogDebug("SchedulerMainThreadController Paused");
     m_TimeStamps.PauseStartTime = QDateTime::currentMSecsSinceEpoch();
     m_Is5MinPause = false;

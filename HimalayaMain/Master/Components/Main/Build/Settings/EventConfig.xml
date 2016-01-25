@@ -184,7 +184,7 @@
 		</Event>
 		<Event Code="" ErrorID="513010461" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE"  ServiceString="67175948" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
-			<Step ID="1" Type="MSG" StringID="67176209" ButtonType="RETRY" NextStepOnTimeOut="5" TimeOut="15m" NextStepOnClickRetry="2" StatusBar="YES"/>>
+			<Step ID="1" Type="MSG" StringID="67176209" ButtonType="RETRY" NextStepOnTimeOut="5" TimeOut="15m" NextStepOnClickRetry="2" StatusBar="YES" ButtonEnableCondition="RT_LID_OPEN_CLOSE"/>
 			<Step ID="2" Type="ACT" Action="RC_Check_RTLock" NextStepOnFail="4" NextStepOnSuccess="3"/>
 			<Step ID="3" Type="ACT" Action="RC_Restart"/>
 			<Step ID="4" Type="MSG" StringID="67176204" ButtonType="OK" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES"/>
@@ -192,7 +192,7 @@
 		</Event>
 		<Event Code="" ErrorID="513010462" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67175948" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="1"/>
-			<Step ID="1" Type="MSG" StringID="67176209" ButtonType="RETRY" NextStepOnClickRetry="2" StatusBar="YES"/>>
+			<Step ID="1" Type="MSG" StringID="67176209" ButtonType="RETRY" NextStepOnClickRetry="2" StatusBar="YES" ButtonEnableCondition="RT_LID_OPEN_CLOSE"/>
 			<Step ID="2" Type="ACT" Action="RC_Check_RTLock" NextStepOnFail="4" NextStepOnSuccess="3"/>
 			<Step ID="3" Type="ACT" Action="RC_Restart"/>
 			<Step ID="4" Type="MSG" StringID="67176203" ButtonType="OK" StatusBar="YES"/>
