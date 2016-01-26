@@ -1243,7 +1243,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2066"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
-        <translation>RCServerからの新規ソフトウェアのダウンロードに失敗しました。サービス窓口へご連絡ください。</translation>
+        <translation>RCサーバーからの新規ソフトウェアのダウンロードに失敗しました。サービス窓口へご連絡ください。</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2071"/>
@@ -3604,7 +3604,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="141"/>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="243"/>
         <source>Enable RemoteCare Events</source>
-        <translation>RemoteCareイベントを有効化</translation>
+        <translation>リモートケアイベントを有効化</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="179"/>
