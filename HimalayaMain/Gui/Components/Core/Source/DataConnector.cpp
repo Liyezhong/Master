@@ -1996,6 +1996,10 @@ void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClas
         {
             mp_MesgBoxManager->EnableOKButton();
         }
+        else
+        {
+            mp_MesgBoxManager->SetRTLidStatusOpen();
+        }
         emit RetortLockStatusChanged(Command);
     }
     else if (Command.LockType() == DataManager::PARAFFIN_BATH_LOCK)

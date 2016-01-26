@@ -924,25 +924,43 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     }
     else if (PSSM_PROCESSING == m_StateAtPause)
     {
-        if (now <= m_TimeStamps.ProposeSoakStartTime)
+        if (!m_IsProcessing) //First time to enter soak scenario
         {
-            return;
-        }
-        if (now > m_TimeStamps.ProposeSoakStartTime)
-        {
-            m_CurProgramStepInfo.durationInSeconds -= m_delayTime;
-            m_IsProcessing = false;
-            m_delayTime = 0;
-            if (m_PauseStartTime <= m_TimeStamps.ProposeSoakStartTime)
+            if ((now - m_PauseStartTime) >= m_delayTime*1000)
             {
-                offset = now - m_TimeStamps.ProposeSoakStartTime;
+                offset = now - m_PauseStartTime - m_delayTime*1000;
+                m_CurProgramStepInfo.durationInSeconds -= m_delayTime;
+                m_delayTime = 0;
             }
             else
             {
-                m_CurProgramStepInfo.durationInSeconds -= (m_PauseStartTime - m_TimeStamps.ProposeSoakStartTime)/1000;
-                offset = now - m_PauseStartTime;
+                m_CurProgramStepInfo.durationInSeconds -= (now-m_PauseStartTime)/1000;
+                m_delayTime -= (now-m_PauseStartTime)/1000;
+                return;
             }
+        }
+        else
+        {
+            if (now <= m_TimeStamps.ProposeSoakStartTime)
+            {
+                return;
+            }
+            if (now > m_TimeStamps.ProposeSoakStartTime)
+            {
+                m_CurProgramStepInfo.durationInSeconds -= m_delayTime;
+                m_IsProcessing = false;
+                m_delayTime = 0;
+                if (m_PauseStartTime <= m_TimeStamps.ProposeSoakStartTime)
+                {
+                    offset = now - m_TimeStamps.ProposeSoakStartTime;
+                }
+                else
+                {
+                    m_CurProgramStepInfo.durationInSeconds -= (m_PauseStartTime - m_TimeStamps.ProposeSoakStartTime)/1000;
+                    offset = now - m_PauseStartTime;
+                }
 
+            }
         }
     }
     else
@@ -1280,7 +1298,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 
         if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
         {
-            m_IsProcessing = false;
+            //m_IsProcessing = false;
             LogDebug("Program Step Heating Level sensor stage OK");
             m_SchedulerMachine->NotifyLevelSensorHeatingReady();
         }
@@ -1505,7 +1523,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         m_lastPVTime = now;
                     }
                     m_IsInSoakDelay = false;
-                    m_delayTime = 0;
                 }
                 else if(m_CurProgramStepInfo.isPressure && m_CurProgramStepInfo.isVacuum)
                 {
@@ -2064,6 +2081,7 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         }
         if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_PAUSE)
         {
+
             SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
             if (PSSM_FILLING == currentState || PSSM_RV_MOVE_TO_SEAL == currentState || PSSM_PROCESSING == currentState)
             {
@@ -3649,7 +3667,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 #else
     if (1 == strctHWMonitor.RemoteAlarmStatus && m_RemoteAlarmPreviousStatus < 1) //alarm was unplugged
     {
-        RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, m_CurrentScenario, true);
+        RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, Scenario, true);
         m_RemoteAlarmPreviousStatus = 1;
     }
     else if(0 == strctHWMonitor.RemoteAlarmStatus && m_RemoteAlarmPreviousStatus == 1)// alarm was plugged
@@ -3659,7 +3677,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     }
     if (1 == strctHWMonitor.LocalAlarmStatus && m_LocalAlarmPreviousStatus < 1) //alarm was unplugged
     {
-        RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, m_CurrentScenario, true);
+        RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, Scenario, true);
         m_LocalAlarmPreviousStatus = 1;
     }
     else if(0 == strctHWMonitor.LocalAlarmStatus && m_LocalAlarmPreviousStatus == 1) //alarm was unplugged
@@ -4175,7 +4193,6 @@ void SchedulerMainThreadController::Fill()
     {
         cmd->SetEnableInsufficientCheck(true);
     }
-    m_SchedulerCommandProcessor->pushCmd(cmd);
 
     // acknowledge to gui
     MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(15000,m_CurProgramStepInfo.stationID , true, true, false));
@@ -5759,20 +5776,21 @@ void SchedulerMainThreadController::CompleteRsAbort()
 
 void SchedulerMainThreadController::SendOutErrMsg(ReturnCode_t EventId, bool IsErrorMsg)
 {
+    quint32 scenario =  GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(), m_CurProgramStepInfo.reagentGroup);
     //First of all, we added one workaround for scenario 7 (bottle check)
-    if (7 == m_CurrentScenario)
+    if (7 == scenario)
     {
         m_SchedulerMachine->CheckNonRVErr4BottleCheck(EventId);
     }
     bool ret = false;
-    ret = RaiseError(0, EventId, m_CurrentScenario, true);
+    ret = RaiseError(0, EventId, scenario, true);
     if(!ret)
     {
         //log
-        QString temp = QString::number(EventId) + QString::number(m_CurrentScenario);
+        QString temp = QString::number(EventId) + QString::number(scenario);
         if(-1 == m_UnknownErrorLogVector.indexOf(temp))
         {
-            RaiseEvent(EVENT_SCHEDULER_UNKNOW_ERROR, QStringList()<<QString("[%1]").arg(EventId)<<QString("[%1]").arg(m_CurrentScenario));
+            RaiseEvent(EVENT_SCHEDULER_UNKNOW_ERROR, QStringList()<<QString("[%1]").arg(EventId)<<QString("[%1]").arg(scenario));
             m_UnknownErrorLogVector.push_back(temp);
         }
     }

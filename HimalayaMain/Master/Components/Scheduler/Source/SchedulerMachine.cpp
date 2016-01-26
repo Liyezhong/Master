@@ -177,7 +177,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmFillingLevelSensorHeatingState->addTransition(this, SIGNAL(sigLevelSensorHeatingReady()), mp_PssmFillingState.data());
     mp_PssmFillingLevelSensorHeatingState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
     CONNECTSIGNALSLOT(mp_PssmFillingState.data(), entered(), mp_SchedulerThreadController, Fill());
-    mp_PssmPause->addTransition(this, SIGNAL(sigResumeToLevelSensorHeating()), mp_PssmFillingLevelSensorHeatingState.data());
+    mp_PssmPause->addTransition(this, SIGNAL(sigResumeToLevelSensorHeating()), mp_PssmFillingHeatingRVState.data());
 
     mp_PssmFillingState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
     mp_PssmPause->addTransition(this, SIGNAL(sigLevelSensorHeatingReady()), mp_PssmFillingState.data());
