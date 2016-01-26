@@ -17,7 +17,6 @@
  *
  */
 /****************************************************************************/
-
 #include "Core/Include/DataContainer.h"
 #include "Core/Include/DataConnector.h"
 #include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataExport.h"
@@ -1995,10 +1994,12 @@ void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClas
         if (Command.IsLocked())
         {
             mp_MesgBoxManager->EnableOKButton();
+            mp_MesgBoxManager->SetRTLidLocked(true);
+
         }
         else
         {
-            mp_MesgBoxManager->SetRTLidStatusOpen();
+            mp_MesgBoxManager->SetRTLidLocked(false);
         }
         emit RetortLockStatusChanged(Command);
     }

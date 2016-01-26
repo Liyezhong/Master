@@ -4194,6 +4194,8 @@ void SchedulerMainThreadController::Fill()
         cmd->SetEnableInsufficientCheck(true);
     }
 
+    m_SchedulerCommandProcessor->pushCmd(cmd);
+
     // acknowledge to gui
     MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(15000,m_CurProgramStepInfo.stationID , true, true, false));
     Q_ASSERT(commandPtr);
