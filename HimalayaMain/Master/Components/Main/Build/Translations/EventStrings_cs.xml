@@ -268,24 +268,25 @@
         <string id="16973842" text1="volba časového limitu" text2=""/>
         <string id="67176227" text1="Teplota parafínu v parafínové lázni je vyšší než %1. Zkontrolujte stav tavení parafínu." text2=""/>
         <string id="67176228" text1="Teplota parafínu v parafínové lázni je nižší než %1. Zkontrolujte stav tavení parafínu." text2=""/>
-        <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
-        <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
-        <string id="67176212" text1="Please check reagent bottles status, if reagent level is lower than the minimum level, please add reagent to the bottle within 15 minutes." text2=""/>
-        <string id="67176192" text1="Error ID %1! Draining time more than 2 minutes." text2=""/>
-        <string id="67176193" text1="Error ID %1! Filling time more than 2 minutes." text2=""/>
-        <string id="67176195" text1="Error ID %1! Sealing failed in processing scenario." text2=""/>
-        <string id="67176221" text1="Error ID %1! In whole soaking, some process interval time out 4 minutes." text2=""/>
-        <string id="67176222" text1="Error ID %1! Process end time out." text2=""/>
-        <string id="67174402" text1="Error happened during Slaves initializing %1." text2=""/>
-        <string id="67175226" text1="Finish processing of the last step and wait for user confirming to drain the retort." text2=""/>
-        <string id="67176215" text1="The rotary valve position is uncertain due to power failure. Please call for service." text2=""/>
-        <string id="67176229" text1="Click Yes to drain the retort empty for adding new baskets; Click No and the reagent remains in the retort; Click Cancel to cancel the pause operation. Wear respirator properly to prevent the potential hazard of reagent vapor. Don't touch the level sensor. It's hot!" text2=""/>
-        <string id="67175205" text1="The program has been paused." text2=""/>
-        <string id="67175230" text1="Because user paused the program, the program end time will be updated to %1." text2=""/>
-        <string id="67175188" text1="Draining for 10 seconds. Do not open the retort lid." text2=""/>
-        <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
-        <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
-        <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
+        <string id="67176215" text1="Poloha rotačního ventilu je nejistá z důvodu výpadku proudu. Volejte servis." text2=""/>
+        <string id="67176229" text1="Pro vypuštění retorty klepněte na Ano, abyste mohli vkládat nové koše. Klepnete-li na Ne, činidlo zůstane v retortě. Klepnete-li na Zrušit, je operace pauzy zrušena. Používejte důsledně respirátor, abyste vyloučili potenciální riziko výparů činidel. Nedotýkejte se snímače hladiny. Je horký!" text2=""/>
+        <string id="67175205" text1="Program byl pozastaven." text2=""/>
+        <string id="67175230" text1="Protože uživatel pozastavil program, je doba konce programu aktualizována na %1." text2=""/>
+        <string id="67175188" text1="Vypouštění 10 sekund. Neotevírejte víčko retorty." text2=""/>
+        <string id="67175187" text1="Zavřete retortu a stiskněte tlačítko OK." text2=""/>
+        <string id="67176214" text1="Program byl přerušen výpadkem proudu. Přerušte program." text2=""/>
+        <string id="50331778" text1="Prostor pro nástroje je plný. Volejte servis." text2=""/>
+        <string id="67175225" text1="Spusťte program %1. Správce potvrzen stisknutím tlačítka &quot;Ano&quot; pro spuštění programu s prošlým činidlem:%2, %3." text2=""/>
+        <string id="67176213" text1="Zkontrolujte stav parafínu v parafínové lázni, je-li hladina parafínu nižší než minimální úroveň, přidejte během 15 minut do parafínové lázně tekutý parafín." text2=""/>
+        <string id="67176212" text1="Zkontrolujte stav lahví s činidly, je-li hladina činidla nižší než minimální hodnota, přidejte během 15 minut do lahve činidlo." text2=""/>
+        <string id="67176192" text1="Chyba ID %1! Doba vypouštění delší než 2 minuty." text2=""/>
+        <string id="67176193" text1="Chyba ID %1! Doba plnění delší než 2 minuty." text2=""/>
+        <string id="67176195" text1="Chyba ID %1! Porucha těsnění v procesu zpracování." text2=""/>
+        <string id="67176221" text1="Chyba ID %1! V celkovém napouštění některý interval procesu delší než 4 minuty." text2=""/>
+        <string id="67176222" text1="Chyba ID %1! Doba konce procesu uplynula." text2=""/>
+        <string id="67174402" text1="Při spuštění vedlejších jednotek %1 došlo k chybě." text2=""/>
+        <string id="67175226" text1="Ukončete zpracování posledního kroku a počkejte, až uživatel potvrdí vypuštění retorty." text2=""/>
+        <string id="67175173" text1="Kvůli výpadku proudu nástroji rozpuštění parafínu zabere %1 MINs." text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>

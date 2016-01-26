@@ -2,7 +2,7 @@
 <strings version="1">
     <language name="ko">
         <string id="17039372" text1="시나리오 %2을 실행하는 동안 %1 오류가 발생했으며 수정조치 %3을 실시했습니다. 실행 결과는 %4 입니다. " text2=""/>
-        <string id="16973834" text1="이벤트 로그 기록이 불활성화되었습니다. 서비스 직원에게 문의하십시오." text2=""/>
+        <string id="16973834" text1="이벤트 로그 기록이 불활성화되었습니다. 서비스 문의 하십시오." text2=""/>
         <string id="17235997" text1="자세한 사항은 사용자 로그를 확인하십시오." text2=""/>
         <string id="17235976" text1="언어 %1에 대한 번역문을 찾을 수 없습니다." text2=""/>
         <string id="17235977" text1="비밀번호 조건을 충족하지 않습니다. 비밀번호 길이는 4~16 글자 사이여야 합니다." text2=""/>
@@ -10,7 +10,7 @@
         <string id="19267585" text1="시약 이름 %1은 이미 사용 중입니다. 다른 시약 이름을 지정하십시오." text2=""/>
         <string id="19267599" text1="%1에 실패했습니다." text2=""/>
         <string id="17236009" text1="시약에 대한 정보 모듈을 초기화하는데 실패했습니다." text2=""/>
-        <string id="17760274" text1="사용자 설정 저장 실패. 서비스 직원에게 문의하십시오." text2=""/>
+        <string id="17760274" text1="사용자 설정 저장 실패. 서비스 문의 하십시오." text2=""/>
         <string id="17235998" text1="시스템 전원을 끄는 과정에서 XML %1 기록 실패." text2=""/>
         <string id="17236013" text1="InstrumentHistory.xml 읽기 실패." text2=""/>
         <string id="17236011" text1="Station.xml 검증 실패." text2=""/>
@@ -84,7 +84,7 @@
         <string id="17891336" text1="설치 완료. USB 드라이브를 제거하고 장비를 재시작하십시오." text2=""/>
         <string id="17891337" text1="장비가 롤백 데이터를 업데이트하고 있습니다. 이 작업을 방해하지 마십시오." text2=""/>
         <string id="17891338" text1="소프트웨어 업데이트 진행 중 … 이 작업을 방해하지 마십시오." text2=""/>
-        <string id="17891339" text1="예기치 않은 오류 발생. 서비스 지원을 받으십시오." text2=""/>
+        <string id="17891339" text1="예기치 않은 오류 발생. 서비스 문의 하십시오." text2=""/>
         <string id="16973837" text1="취소" text2=""/>
         <string id="16973840" text1="계속" text2=""/>
         <string id="16973839" text1="아니오" text2=""/>
@@ -236,7 +236,7 @@
         <string id="67176025" text1="로터리 밸브가 정상 작동하지 않습니다. 로터리 밸브를 점검하십시오." text2=""/>
         <string id="67176026" text1="장비에 기술적인 문제가 발생하여 프로토콜을 완료할 수 없습니다." text2=""/>
         <string id="67176194" text1="오류 ID %1! 건조 과정에 밀봉 실패." text2=""/>
-        <string id="67176196" text1="오류 ID %1! 파라핀배쓰의 덮개가 열렸습니다. 새 파라핀을 녹이시겠습니까?" text2=""/>
+        <string id="67176196" text1="오류 ID %1! 파라핀배스의 덮개가 열렸습니다. 새 파라핀을 녹이시겠습니까?" text2=""/>
         <string id="67176198" text1="사용자 매뉴얼에 따라 리토르트 상단과 밀봉 고무링을 청소해 주십시오." text2=""/>
         <string id="67176199" text1="사용자 매뉴얼에 따라 시약 확인을 실시하십시오." text2=""/>
         <string id="67176200" text1="리토르트를 비우는데 실패했습니다! 사용자 매뉴얼에 따라 리토르트 상단과 밀봉 고무링을 청소해 주십시오." text2=""/>
@@ -266,26 +266,27 @@
         <string id="19267603" text1="사용자가 %1 시약을 삭제했습니다." text2=""/>
         <string id="19267604" text1="사용자가 시약을 수정했습니다: %1, 처리가능 카세트 수: %2, 처리가능 싸이클 수: %3, 처리가능 일 수:: %4, 시약그룹: %5." text2=""/>
         <string id="16973842" text1="선택 시간 초과" text2=""/>
-        <string id="67176227" text1="파라핀 배쓰의 파라핀 온도가 %1보다 높습니다. 파라핀 녹은 상태를 확인하십시오." text2=""/>
-        <string id="67176228" text1="파라핀 배쓰의 파라핀 온도가 %1보다 낮습니다. 파라핀 녹은 상태를 확인하십시오." text2=""/>
-        <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
-        <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
-        <string id="67176212" text1="Please check reagent bottles status, if reagent level is lower than the minimum level, please add reagent to the bottle within 15 minutes." text2=""/>
-        <string id="67176192" text1="Error ID %1! Draining time more than 2 minutes." text2=""/>
-        <string id="67176193" text1="Error ID %1! Filling time more than 2 minutes." text2=""/>
-        <string id="67176195" text1="Error ID %1! Sealing failed in processing scenario." text2=""/>
-        <string id="67176221" text1="Error ID %1! In whole soaking, some process interval time out 4 minutes." text2=""/>
-        <string id="67176222" text1="Error ID %1! Process end time out." text2=""/>
-        <string id="67174402" text1="Error happened during Slaves initializing %1." text2=""/>
-        <string id="67175226" text1="Finish processing of the last step and wait for user confirming to drain the retort." text2=""/>
-        <string id="67176215" text1="The rotary valve position is uncertain due to power failure. Please call for service." text2=""/>
-        <string id="67176229" text1="Click Yes to drain the retort empty for adding new baskets; Click No and the reagent remains in the retort; Click Cancel to cancel the pause operation. Wear respirator properly to prevent the potential hazard of reagent vapor. Don't touch the level sensor. It's hot!" text2=""/>
-        <string id="67175205" text1="The program has been paused." text2=""/>
-        <string id="67175230" text1="Because user paused the program, the program end time will be updated to %1." text2=""/>
-        <string id="67175188" text1="Draining for 10 seconds. Do not open the retort lid." text2=""/>
-        <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
-        <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
-        <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
+        <string id="67176227" text1="파라핀 배스의 파라핀 온도가 %1보다 높습니다. 파라핀 녹은 상태를 확인하십시오." text2=""/>
+        <string id="67176228" text1="파라핀 배스의 파라핀 온도가 %1보다 낮습니다. 파라핀 녹은 상태를 확인하십시오." text2=""/>
+        <string id="67176215" text1="로터리 밸브 위치가 정확하지 않아 전원이 차단되었습니다. 서비스 문의하십시오." text2=""/>
+        <string id="67176229" text1="새 바구니 추가를 위해 예를 눌러 리토르트를 비워주십시오. 리토르트 내 시약을 유지하고 싶다면 아니오를 누르십시오; 작동 일시정지를 취소하려면 취소를 누르십시오. 유해시약 증기로 인한 위험이 있으니 보호장치를 착용하십시오. 레벨 센서가 뜨거우니 만지지 마십시오. " text2=""/>
+        <string id="67175205" text1="프로그램이 일시정지 되었습니다." text2=""/>
+        <string id="67175230" text1="사용자가 프로그램을 일시정지하여, 프로그램 종료시간이 %1로 업데이트 될 예정입니다." text2=""/>
+        <string id="67175188" text1="10초간 배출 중입니다. 리토르트 뚜껑을 열지 마십시오." text2=""/>
+        <string id="67175187" text1="리토르트를 잠그고, 확인 버튼을 누르십시오." text2=""/>
+        <string id="67176214" text1="전원공급이 차단되어 프로그램이 멈췄습니다. 프로그램을 중지해 주십시오." text2=""/>
+        <string id="50331778" text1="장비 보관소가 가득 찼습니다. 서비스 문의 하십시오." text2=""/>
+        <string id="67175225" text1="프로그램 %1이 시작됩니다. 유효기간이 지난 시약 :%2, %3을 이용해 프로그램을 시작할 수 있도록 관리자가 &quot;예&quot;  버튼을 눌러 허락하였습니다." text2=""/>
+        <string id="67176213" text1="파라핀배스의 파라핀 상태를 확인하고, 파라핀 잔여량이 최소량보다 낮은 경우 15분 내로 파라핀을 추가하십시오." text2=""/>
+        <string id="67176212" text1="시약병의 상태를 확인하고, 시약 잔여량이 최소량보다 낮은 경우 15분 내로 시약을 추가하십시오." text2=""/>
+        <string id="67176192" text1="오류 ID %1! 배출 시간이 2분 이상 경과되었습니다. " text2=""/>
+        <string id="67176193" text1="오류 ID %1! 주입 시간이 2분 이상 경과되었습니다. " text2=""/>
+        <string id="67176195" text1="오류 ID %1! 작업 과정의 밀봉 실패" text2=""/>
+        <string id="67176221" text1="오류 ID %1! 전체 담금단계 중 일부 작업 간격 시간이 4분 초과되었습니다." text2=""/>
+        <string id="67176222" text1="오류 ID %1! 작업 종료 시간이 초과되었습니다." text2=""/>
+        <string id="67174402" text1="장치 초기화 %1 동안 오류가 발생하였습니다." text2=""/>
+        <string id="67175226" text1="마지막 단계의 작업이 완료되어 리토르트로부터 시약 배출에 대한 사용자의 확인을 기다리고 있습니다." text2=""/>
+        <string id="67175173" text1="Because of power failure, the instrument will take %1 MINs to melt paraffin." text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>

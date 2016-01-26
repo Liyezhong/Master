@@ -268,24 +268,25 @@
         <string id="16973842" text1="selecionando timeout" text2=""/>
         <string id="67176227" text1="A temperatura da parafina no banho de parafina é mais alta que %1. Verifique o status de derretimento da parafina." text2=""/>
         <string id="67176228" text1="A temperatura da parafina no banho de parafina é mais baixa que %1. Verifique o status de derretimento da parafina." text2=""/>
-        <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
-        <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
-        <string id="67176212" text1="Please check reagent bottles status, if reagent level is lower than the minimum level, please add reagent to the bottle within 15 minutes." text2=""/>
-        <string id="67176192" text1="Error ID %1! Draining time more than 2 minutes." text2=""/>
-        <string id="67176193" text1="Error ID %1! Filling time more than 2 minutes." text2=""/>
-        <string id="67176195" text1="Error ID %1! Sealing failed in processing scenario." text2=""/>
-        <string id="67176221" text1="Error ID %1! In whole soaking, some process interval time out 4 minutes." text2=""/>
-        <string id="67176222" text1="Error ID %1! Process end time out." text2=""/>
-        <string id="67174402" text1="Error happened during Slaves initializing %1." text2=""/>
-        <string id="67175226" text1="Finish processing of the last step and wait for user confirming to drain the retort." text2=""/>
-        <string id="67176215" text1="The rotary valve position is uncertain due to power failure. Please call for service." text2=""/>
-        <string id="67176229" text1="Click Yes to drain the retort empty for adding new baskets; Click No and the reagent remains in the retort; Click Cancel to cancel the pause operation. Wear respirator properly to prevent the potential hazard of reagent vapor. Don't touch the level sensor. It's hot!" text2=""/>
-        <string id="67175205" text1="The program has been paused." text2=""/>
-        <string id="67175230" text1="Because user paused the program, the program end time will be updated to %1." text2=""/>
-        <string id="67175188" text1="Draining for 10 seconds. Do not open the retort lid." text2=""/>
-        <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
-        <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
-        <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
+        <string id="67176215" text1="A posição da válvula giratória é indeterminada devido a uma falha na alimentação. Ligue para a assistência técnica." text2=""/>
+        <string id="67176229" text1="Clique em Sim para drenar a retorta e esvaziá-la a fim de adicionar novos cestos; Clique em Não e o reagente permanece na retorta; Clique em Cancelar para cancelar a operação de pausa. Use corretamente o respirador para evitar risco em potencial devido a vapor do reagente. Não toque no sensor de nível. Ele está quente!" text2=""/>
+        <string id="67175205" text1="O programa foi pausado." text2=""/>
+        <string id="67175230" text1="Devido ao usuário pausar o programa, o tempo final do programa será atualização em 1%." text2=""/>
+        <string id="67175188" text1="Drenagem por 10 segundos. Não abra a tampa da retorta." text2=""/>
+        <string id="67175187" text1="Trave a retorna e pressione o botão ok." text2=""/>
+        <string id="67176214" text1="O programa foi interrompido por uma falha na alimentação. Aborte o programa." text2=""/>
+        <string id="50331778" text1="O armazenamento do aparelho está cheio. Ligue para a assistência técnica." text2=""/>
+        <string id="67175225" text1="Iniciar programa 1%. Reconhecimento do supervisor pressionando o botão &quot;Sim&quot; para iniciar o Programa com reagente vencido:2%, 3%." text2=""/>
+        <string id="67176213" text1="Verifique o status da parafina no banho de parafina, se o nível da mesma esteja mais baixo do que o nível mínimo, adicione parafina líquida no banho por 15 minutos." text2=""/>
+        <string id="67176212" text1="Verifique o status dos frascos de reagente, se o nível de reagente estiver mais baixo que o mínimo, adicione reagente ao frasco por 15 minutos." text2=""/>
+        <string id="67176192" text1="Erro ID 1%! O tempo de drenagem supera 2 minutos." text2=""/>
+        <string id="67176193" text1="Erro ID 1%! O tempo de drenagem supera 2 minutos." text2=""/>
+        <string id="67176195" text1="Erro ID 1%! Falha na vedação no cenário de processamento." text2=""/>
+        <string id="67176221" text1="Erro ID 1%! Em banho total, alguns processos têm intervalo de 4 minutos." text2=""/>
+        <string id="67176222" text1="Erro ID 1%! Limite de tempo do fim do processo." text2=""/>
+        <string id="67174402" text1="Ocorreu erro durante a inicialização dos Escravos 1%." text2=""/>
+        <string id="67175226" text1="Finalize o processamento da última etapa e aguarde a confirmação do usuário para drenar a retorta." text2=""/>
+        <string id="67175173" text1="Devido à falha elétrica, o aparelho consome %1 MINs para derreter a parafina." text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>

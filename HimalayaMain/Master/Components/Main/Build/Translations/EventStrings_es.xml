@@ -268,24 +268,25 @@
         <string id="16973842" text1="selección del tiempo de espera" text2=""/>
         <string id="67176227" text1="La temperatura de la parafina en el baño de parafina es superior a %1. Compruebe el estado de fusión de la parafina." text2=""/>
         <string id="67176228" text1="La temperatura de la parafina en el baño de parafina es inferior a %1. Compruebe el estado de fusión de la parafina." text2=""/>
-        <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
-        <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
-        <string id="67176212" text1="Please check reagent bottles status, if reagent level is lower than the minimum level, please add reagent to the bottle within 15 minutes." text2=""/>
-        <string id="67176192" text1="Error ID %1! Draining time more than 2 minutes." text2=""/>
-        <string id="67176193" text1="Error ID %1! Filling time more than 2 minutes." text2=""/>
-        <string id="67176195" text1="Error ID %1! Sealing failed in processing scenario." text2=""/>
-        <string id="67176221" text1="Error ID %1! In whole soaking, some process interval time out 4 minutes." text2=""/>
-        <string id="67176222" text1="Error ID %1! Process end time out." text2=""/>
-        <string id="67174402" text1="Error happened during Slaves initializing %1." text2=""/>
-        <string id="67175226" text1="Finish processing of the last step and wait for user confirming to drain the retort." text2=""/>
-        <string id="67176215" text1="The rotary valve position is uncertain due to power failure. Please call for service." text2=""/>
-        <string id="67176229" text1="Click Yes to drain the retort empty for adding new baskets; Click No and the reagent remains in the retort; Click Cancel to cancel the pause operation. Wear respirator properly to prevent the potential hazard of reagent vapor. Don't touch the level sensor. It's hot!" text2=""/>
-        <string id="67175205" text1="The program has been paused." text2=""/>
-        <string id="67175230" text1="Because user paused the program, the program end time will be updated to %1." text2=""/>
-        <string id="67175188" text1="Draining for 10 seconds. Do not open the retort lid." text2=""/>
-        <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
-        <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
-        <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
+        <string id="67176215" text1="La posición de la válvula rotativa no es segura debido a un fallo en la alimentación eléctrica. Llame al Servicio Técnico." text2=""/>
+        <string id="67176229" text1="Pulse «Sí» para vaciar la retorta y poder añadir cestas nuevas. Pulse «No» para que el reactivo permanezca en la retorta. Pulse «Cancelar» para cancelar la operación de pausa. Colóquese el respirador correctamente para evitar el peligro potencial de inhalar vapores de los reactivos. No toque el sensor de nivel. Está caliente." text2=""/>
+        <string id="67175205" text1="Se ha pausado el programa." text2=""/>
+        <string id="67175230" text1="Puesto que el usuario ha pausado el programa, el tiempo de finalización se ha actualizado y pasa a ser %1." text2=""/>
+        <string id="67175188" text1="Vaciando durante 10 segundos. No abra el tapa de la retorta." text2=""/>
+        <string id="67175187" text1="Cierre la retorta y pulse «Aceptar»." text2=""/>
+        <string id="67176214" text1="El programa se ha interrumpido por un fallo de alimentación eléctrica. Anule el programa." text2=""/>
+        <string id="50331778" text1="El espacio de almacenamiento del instrumento está lleno. Llame al Servicio Técnico." text2=""/>
+        <string id="67175225" text1="Inicie el programa %1. Al presionar el botón &quot;Sí&quot; el administrador confirmó el inicio del programa con el reactivo caducado:%2, %3." text2=""/>
+        <string id="67176213" text1="Compruebe el estado de la parafina del baño de parafina. Si el nivel de parafina es inferior al nivel mínimo, añada parafina líquida al baño de parafina en un plazo de 15 minutos." text2=""/>
+        <string id="67176212" text1="Compruebe el estado de las botellas de reactivos. Si el nivel de reactivo es inferior al nivel mínimo, añada reactivo a la botella en un plazo de 15 minutos." text2=""/>
+        <string id="67176192" text1="Error ID %1. Tiempo de vaciado superior a 2 minutos." text2=""/>
+        <string id="67176193" text1="Error ID %1. Tiempo de llenado superior a 2 minutos." text2=""/>
+        <string id="67176195" text1="Error ID %1. Fallo del anillo obturador durante el procesamiento." text2=""/>
+        <string id="67176221" text1="Error ID %1. Durante el empapado algún intervalo del proceso se ha excedido en 4 minutos." text2=""/>
+        <string id="67176222" text1="Error ID %1. Se ha excedido el tiempo de finalización del proceso." text2=""/>
+        <string id="67174402" text1="Se ha producido un error al inicializar los dispositivos secundarios %1." text2=""/>
+        <string id="67175226" text1="Fin del procesamiento del último paso, a la espera de que el usuario confirme el vaciado de la retorta." text2=""/>
+        <string id="67175173" text1="Debido a un corte eléctrico, el instrumento necesitará %1 MINs para fundir la parafina." text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>

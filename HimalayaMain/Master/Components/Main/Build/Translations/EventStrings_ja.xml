@@ -268,24 +268,25 @@
         <string id="16973842" text1="タイムアウトの選択" text2=""/>
         <string id="67176227" text1="パラフィンバスのパラフィン温度が%1よりも高温です。パラフィン溶解ステータスをチェックしてください。" text2=""/>
         <string id="67176228" text1="パラフィンバスのパラフィン温度が%1よりも低温です。パラフィン溶解ステータスをチェックしてください。" text2=""/>
-        <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
-        <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
-        <string id="67176212" text1="Please check reagent bottles status, if reagent level is lower than the minimum level, please add reagent to the bottle within 15 minutes." text2=""/>
-        <string id="67176192" text1="Error ID %1! Draining time more than 2 minutes." text2=""/>
-        <string id="67176193" text1="Error ID %1! Filling time more than 2 minutes." text2=""/>
-        <string id="67176195" text1="Error ID %1! Sealing failed in processing scenario." text2=""/>
-        <string id="67176221" text1="Error ID %1! In whole soaking, some process interval time out 4 minutes." text2=""/>
-        <string id="67176222" text1="Error ID %1! Process end time out." text2=""/>
-        <string id="67174402" text1="Error happened during Slaves initializing %1." text2=""/>
-        <string id="67175226" text1="Finish processing of the last step and wait for user confirming to drain the retort." text2=""/>
-        <string id="67176215" text1="The rotary valve position is uncertain due to power failure. Please call for service." text2=""/>
-        <string id="67176229" text1="Click Yes to drain the retort empty for adding new baskets; Click No and the reagent remains in the retort; Click Cancel to cancel the pause operation. Wear respirator properly to prevent the potential hazard of reagent vapor. Don't touch the level sensor. It's hot!" text2=""/>
-        <string id="67175205" text1="The program has been paused." text2=""/>
-        <string id="67175230" text1="Because user paused the program, the program end time will be updated to %1." text2=""/>
-        <string id="67175188" text1="Draining for 10 seconds. Do not open the retort lid." text2=""/>
-        <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
-        <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
-        <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
+        <string id="67176215" text1="電源障害のため、ロータリーバルブ位置が不明です。ライカマイクロシステムズに連絡してください。" text2=""/>
+        <string id="67176229" text1="新しいバスケットを追加するためにレトルトを空にするには「はい」をクリックします。 「いいえ」をクリックすると、試薬がレトルト内に入ったままとなります。 一時停止をキャンセルするには、「キャンセル」をクリックします。 試薬蒸気の危険を防ぐために呼吸用保護具を着用してください。 液位センサーに触れないでください。高温です。" text2=""/>
+        <string id="67175205" text1="プログラムが一時停止しています。" text2=""/>
+        <string id="67175230" text1="ユーザーがプログラムを一時停止したため、プログラム終了時間が %1 までに更新されます。" text2=""/>
+        <string id="67175188" text1="10 秒間の排出。 レトルト蓋を開けないでください。" text2=""/>
+        <string id="67175187" text1="レトルトをロックし、「OK」ボタンを押してください。" text2=""/>
+        <string id="67176214" text1="プログラムが電源障害によって中断されました。プログラムを中止してください。" text2=""/>
+        <string id="50331778" text1="装置の保存容器が満杯です。ライカマイクロシステムズに連絡してください。" text2=""/>
+        <string id="67175225" text1="プログラム %1 をスタートします。期限切れ試薬:%2, %3 を使用してプログラムをスタートするために、「はい」ボタンを押して管理者が確認しました。" text2=""/>
+        <string id="67176213" text1="パラフィン槽内のパラフィンの状態を確認し、パラフィンレベルが最低レベルよりも低い場合には、15 分以内に液体パラフィンをパラフィン槽に追加してください。" text2=""/>
+        <string id="67176212" text1="試薬ボトルの状態を確認し、試薬レベルが最低レベルよりも低い場合には、15 分以内に試薬をボトルに追加してください。" text2=""/>
+        <string id="67176192" text1="エラー ID %1! 排出時間が 2 分以上。" text2=""/>
+        <string id="67176193" text1="エラー ID %1! 充填時間が 2 分以上。" text2=""/>
+        <string id="67176195" text1="エラー ID %1! 処理中のシール不良。" text2=""/>
+        <string id="67176221" text1="エラー ID %1! 浸漬全体で、いくつかのプロセスインターバルが 4 分タイムアウト。" text2=""/>
+        <string id="67176222" text1="エラー ID %1! プロセス終了のタイムアウト。" text2=""/>
+        <string id="67174402" text1="スレーブの初期化 %1 中に発生したエラー。" text2=""/>
+        <string id="67175226" text1="最後のステップの処理を終え、レトルトを排出するためにユーザーが確認するまでお待ちください。" text2=""/>
+        <string id="67175173" text1="電源障害により装置はパラフィン溶融に %1 MINs かかります。" text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>

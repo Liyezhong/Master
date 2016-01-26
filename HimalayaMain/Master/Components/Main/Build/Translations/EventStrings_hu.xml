@@ -268,24 +268,25 @@
         <string id="16973842" text1="időtúllépés kiválasztása" text2=""/>
         <string id="67176227" text1="A paraffinfürdőben lévő paraffin hőmérséklete nagyobb, mint %1. Ellenőrizze a paraffin olvadási állapotát." text2=""/>
         <string id="67176228" text1="A paraffinfürdőben lévő paraffin hőmérséklete kisebb, mint %1. Ellenőrizze a paraffin olvadási állapotát." text2=""/>
-        <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
-        <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
-        <string id="67176212" text1="Please check reagent bottles status, if reagent level is lower than the minimum level, please add reagent to the bottle within 15 minutes." text2=""/>
-        <string id="67176192" text1="Error ID %1! Draining time more than 2 minutes." text2=""/>
-        <string id="67176193" text1="Error ID %1! Filling time more than 2 minutes." text2=""/>
-        <string id="67176195" text1="Error ID %1! Sealing failed in processing scenario." text2=""/>
-        <string id="67176221" text1="Error ID %1! In whole soaking, some process interval time out 4 minutes." text2=""/>
-        <string id="67176222" text1="Error ID %1! Process end time out." text2=""/>
-        <string id="67174402" text1="Error happened during Slaves initializing %1." text2=""/>
-        <string id="67175226" text1="Finish processing of the last step and wait for user confirming to drain the retort." text2=""/>
-        <string id="67176215" text1="The rotary valve position is uncertain due to power failure. Please call for service." text2=""/>
-        <string id="67176229" text1="Click Yes to drain the retort empty for adding new baskets; Click No and the reagent remains in the retort; Click Cancel to cancel the pause operation. Wear respirator properly to prevent the potential hazard of reagent vapor. Don't touch the level sensor. It's hot!" text2=""/>
-        <string id="67175205" text1="The program has been paused." text2=""/>
-        <string id="67175230" text1="Because user paused the program, the program end time will be updated to %1." text2=""/>
-        <string id="67175188" text1="Draining for 10 seconds. Do not open the retort lid." text2=""/>
-        <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
-        <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
-        <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
+        <string id="67176215" text1="A forgószelep pozíciója áramellátási probléma miatt nem biztos. Hívja a szervizt." text2=""/>
+        <string id="67176229" text1="Kattintson az Igen elemre, ha a vízelvonó hengert szeretné teljesen leüríteni új kosarak behelyezése céljából; Ha a Nem elemre kattint, a vegyszer a vízelvonó hengerben marad; Kattintson a Mégse elemre a szüneteltetés befejezéséhez. Viselje megfelelően a gázmaszkot a vegyszer gőzének belégzésével járó veszélyek elkerülése érdekében. Ne érintse meg a szintérzékelőt. Forró!" text2=""/>
+        <string id="67175205" text1="A program szüneteltetve." text2=""/>
+        <string id="67175230" text1="Mivel a felhasználó szüneteltette a programot, annak befejezési időpontja a következőre módosul: %1." text2=""/>
+        <string id="67175188" text1="Kiürítés 10 másodpercre. Ne nyissa ki a vízelvonó hengert." text2=""/>
+        <string id="67175187" text1="Zárja be a vízelvonó hengert, majd kattintson az OK gombra." text2=""/>
+        <string id="67176214" text1="A program áramellátási probléma miatt megszakadt. Szakítsa meg a programot." text2=""/>
+        <string id="50331778" text1="A berendezés tárolója megtelt. Hívja a szervizt." text2=""/>
+        <string id="67175225" text1="Indítsa el a(z) %1 programot. A felettes által elfogadva az &quot;Igen&quot gomb megnyomásával; a program indítása lejárt vegyszerrel: %2, %3." text2=""/>
+        <string id="67176213" text1="Ellenőrizze a paraffin szintjét a paraffinfürdőben. Ha a paraffin szintje alacsonyabb a minimális értéknél, 15 percen belül adagoljon folyékony paraffint a paraffinfürdőbe." text2=""/>
+        <string id="67176212" text1="Ellenőrizze a vegyszeres palackok állapotát. Ha a vegyszer szintje alacsonyabb a minimális értéknél, 15 percen belül adagoljon vegyszert a palackba." text2=""/>
+        <string id="67176192" text1="Hiba azonosítója: %1! Az ürítési idő hosszabb, mint 2 perc." text2=""/>
+        <string id="67176193" text1="Hiba azonosítója: %1! A feltöltési idő hosszabb, mint 2 perc." text2=""/>
+        <string id="67176195" text1="Hiba azonosítója: %1! A tömítés sikertelen a feldolgozási szakaszban." text2=""/>
+        <string id="67176221" text1="Hiba azonosítója: %1! A teljes áztatás során egyes folyamatok időtartama nem lehet hosszabb 4 percnél." text2=""/>
+        <string id="67176222" text1="Hiba azonosítója: %1! A folyamat túllépte a megengedett időt." text2=""/>
+        <string id="67174402" text1="Hiba történt az alárendeltek inicializálásakor (%1)." text2=""/>
+        <string id="67175226" text1="Fejezze be az utolsó lépést, és várjon, amíg a felhasználó megerősíti a vízelvonó henger ürítését." text2=""/>
+        <string id="67175173" text1="Áramellátási hiba miatt a berendezésnek %1 MINs-re van szüksége a paraffin megolvadásáig." text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>
