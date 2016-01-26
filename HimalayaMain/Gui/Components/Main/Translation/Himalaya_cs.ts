@@ -668,8 +668,8 @@
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="110"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="281"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="289"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="558"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="566"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="569"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="582"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
@@ -680,27 +680,30 @@
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="124"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="548"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="559"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="574"/>
         <source>Yes</source>
         <translation>Ano</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="549"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="560"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="575"/>
         <source>No</source>
         <translation>Ne</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="553"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="564"/>
         <source>Continue</source>
         <translation>Pokračovat</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="554"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="565"/>
         <source>Stop</source>
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="559"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="570"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="576"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
@@ -1150,7 +1153,7 @@ výměny</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1124"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2036"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2047"/>
         <source>Information</source>
         <translation>Informace</translation>
     </message>
@@ -1161,9 +1164,9 @@ výměny</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1127"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2038"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2128"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2151"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2049"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2139"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2162"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -1228,57 +1231,57 @@ výměny</translation>
         <translation>Aktualizace softwaru ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2043"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2054"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>Je k dispozici nový software. Klepnutím na &apos;Vzdálená aktualizace SW&apos; spusťte aktualizaci.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2049"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2060"/>
         <source>New software is not available.</source>
         <translation>Nový software není k dispozici.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2055"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2066"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
         <translation>Nepodařilo se stáhnout nový software z RCServeru. Obraťte se na servis.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2060"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2071"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>Stažení nového softwaru ze vzdáleného serveru je dokončeno.  Stisknutím „Ok“ spusťte aktualizaci softwaru.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2067"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2078"/>
         <source>Software update failed.</source>
         <translation>Aktualizace softwaru se nezdařila.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2096"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2107"/>
         <source>Now download the update package from the remote server. Please wait...</source>
         <translation>Nyní si stáhněte aktualizační balíček ze vzdáleného serveru. Čekejte ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2126"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2137"/>
         <source>Confirmation Message</source>
         <translation>Potvrzující zpráva</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2130"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2141"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2133"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2144"/>
         <source>Remote Session has been requested by a remote user.</source>
         <translation>Vzdálená relace byla požadována vzdáleným uživatelem.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2149"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2160"/>
         <source>Information Message</source>
         <translation>Informační hlášení</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2154"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2165"/>
         <source>Remote session has been ended by the remote user.</source>
         <translation>Vzdálená relace byla ukončena vzdáleným uživatelem.</translation>
     </message>
@@ -1618,160 +1621,171 @@ výměny</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1392"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1415"/>
         <source>No safe reagent for the Program step &quot;%1&quot; of &quot;%2&quot;. Would you like to continue?</source>
         <translation>Není bezpečné činidlo pro programový krok &quot;%1&quot; z &quot;%2&quot;. Přejete si pokračovat?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1393"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1416"/>
         <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station.  A station can be used only once in the program. Please assign a separate station for the reagent of this step.</source>
         <translation>Programový krok &quot;%1&quot; z &quot;%2&quot; nemůže nalézt příslušnou stanici činidla. Stanici lze použít pouze jednou během programu. Přiřaďte činidlu v tomto kroku samostatnou stanici.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1394"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1417"/>
         <source>You cannot start the program, because Station &quot;%1&quot; is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;.</source>
         <translation>Nemůžete spustit program, protože je stanice &quot;%1&quot; nastavena jako prázdná v programovém kroku &quot;%2&quot; z &quot;%3&quot;.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1395"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1418"/>
         <source>Program cannot start because the paraffin is not melted completely and the first program step is not a fixation reagent.</source>
         <translation>Program nelze spustit, neboť parafín není zcela roztavený a prvním krokem programu není fixace činidla.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1396"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1419"/>
         <source>You can start program in %1 hours %2 minutes %3 seconds.</source>
         <translation>Můžete spustit program za %1 hod %2 min %3 s.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1397"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1420"/>
         <source>Program will be delayed briefly in the first step as the paraffin is not melted completely. Would you like to continue?</source>
         <translation>Program se v prvním kroku krátce zpozdí, protože parafín není zcela roztavený. Přejete si pokračovat?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1398"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1421"/>
         <source>Enter number of Cassettes:</source>
         <translation>Zadejte počet kazet:</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1399"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1422"/>
         <source>Program &quot;%1&quot; has completed! Would you like to drain the retort?</source>
         <translation>Program &quot;%1&quot; skončil! Přejete si vypustit retortu?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1400"/>
-        <source>Tissue safety process has completed successfully. Would you like to drain the retort?</source>
-        <translation>Proces zabezpečení tkáně byl úspěšně dokončen. Přejete si vypustit retortu?</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1401"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1424"/>
         <source>Tissue safety process has completed with warning. Would you like to drain the retort?</source>
         <translation>Proces zabezpečení tkáně byl dokončen s výstrahou. Přejete si vypustit retortu?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1402"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1425"/>
         <source>The oven cover is open. Please close it then click the OK button.</source>
         <translation>Je otevřený kryt pícky. Zavřete jej a poté klepněte na tlačítko OK.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1403"/>
-        <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential harzad of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1405"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1428"/>
         <source>Pausing...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pauza…
+Neotevírejte víčko retorty a odpojte všechny lahve s činidly.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1408"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1431"/>
         <source>The retort is contaminated. Please start the cleaning program.</source>
-        <translation type="unfinished"></translation>
+        <translation>Retorta je kontaminovaná. Spusťte čisticí program.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1412"/>
-        <source>The safe reagent has been drained completed! The program &quot;%1&quot; was aborted!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1421"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1444"/>
         <source>Retort temperature is too high. Please allow the retort to cool down before inserting specimens and starting the next program.</source>
-        <translation type="unfinished"></translation>
+        <translation>Teplota retorty je příliš vysoká. Před vložením vzorků a spuštěním dalšího programu nechejte retortu vychladnout.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1426"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1449"/>
         <source>Ready to start a new program.</source>
-        <translation type="unfinished"></translation>
+        <translation>Spuštění nového programu připraveno.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1427"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1450"/>
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning. Load the specimens into the retort and make sure that the retort is locked.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zkontrolujte hladinu všech činidel a vyčistěte snímač hladiny retorty, těsnicí kroužek retorty a filtr retorty.
+Po vyčištění znovu instalujte filtr retorty. Vložte vzorky do retorty a přesvědčte se, že je retorta uzavřená.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1406"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1429"/>
         <source>Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.</source>
         <translation>Přístroj je předehřátý. Čekací doba na připravení přístroje k použití může být až 30 minut.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1407"/>
-        <source>Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press &quot;Ok&quot; button.</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1423"/>
+        <source>The specimens have been safeguarded by filling the retort with a safe reagent. Would you like to drain the safe reagent?</source>
+        <translation>Vzorky byly zajištěny naplněním retorty bezpečným činidlem. Chcete vypustit bezpečné činidlo?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1409"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1426"/>
+        <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential hazard of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
+        <translation>Bylo otevřeno víčko retorty. Zavřete je a poté klepněte na OK.
+Používejte důsledně respirátor, abyste vyloučili potenciální riziko výparů činidel.
+Nedotýkejte se snímače hladiny. Je horký!</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1430"/>
+        <source>Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press &quot;Ok&quot; button.</source>
+        <translation>Odstraňte vzorek a zavřete retortu. Přesvědčte se, že vzorek je odstraněn a retorta je prázdná, a potom stiskněte tlačítko &quot;OK&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1432"/>
         <source>Program &quot;%1&quot; is aborted!</source>
         <translation>Program &quot;%1&quot; je přerušen!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1410"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1433"/>
         <source>Program &quot;%1&quot; has completed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Program %1 byl dokončen.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1411"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1434"/>
         <source>Program &quot;%1&quot; has completed successfully!</source>
         <translation>Program &quot;%1&quot; se úspěšně dokončil!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1414"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1435"/>
+        <source>The safe reagent has been drained completely. The program &quot;%1&quot; was aborted!</source>
+        <translation>Bezpečné činidlo bylo úplně vypuštěno. Program &quot;%1&quot; byl přerušen.</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1437"/>
         <source>Please close and lock the retort, then try again!</source>
         <translation>Uzavřete a zajistěte retortu a zkuste znovu!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1415"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1438"/>
         <source>Leica Program can&apos;t be operated with RMS OFF.</source>
         <translation>Program Leica nelze použít s vypnutým Systémem správy činidel (RMS).</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1416"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1439"/>
         <source>Reagents needed for this program are expired. Please replace the expired ones with fresh reagents! Program will not start.</source>
         <translation>Činidla potřebná pro tento program exspirovala. Vyměňte exspirovaná činidla za čerstvá! Program se nespustí.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1417"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1440"/>
         <source>Do you really want to start the Program with Expired Reagents?</source>
         <translation>Skutečně si přejete spustit program s exspirovanými činidly?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1418"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1441"/>
         <source>Please enter the number of new-added cassettes:</source>
         <translation>Zadejte počet nově přidaných kazet:</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1419"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1442"/>
         <source>Did you add new cassettes?</source>
         <translation>Přidali jste nové kazety?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1420"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1443"/>
         <source>Because the wait time is more than five minutes, the instrument will be re-heated and filled with safe reagents.</source>
         <translation>Poněvadž čekací doba překračuje pět minut, přístroj se znovu zahřeje a bude naplněn bezpečnými činidly.</translation>
     </message>
     <message utf8="true">
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1422"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1445"/>
         <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!Please confirm modifying Paraffin temperature.</source>
         <translation>Spuštění zvoleného programu není možné, poněvadž se teplota parafínu liší od nastavené teploty parafínové lázně (odchylka 2 °C). Program lze ihned spustit, pokud bude teplota parafínu v tomto programu přizpůsobena teplotě parafínové lázně. Program nebude možné spustit po dobu až 15 hodin, pokud bude teplota parafínové lázně vyšší nebo rovna teplotě parafínu v programu! Potvrďte úpravu teploty parafínu.</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1452"/>
+        <source>Resuming...
+Don&apos;t open the retort lid and unplug any reagent bottles.</source>
+        <translation>Obnovení...
+Neotevírejte víčko retorty a odpojte všechny lahve s činidly.</translation>
     </message>
 </context>
 <context>
@@ -1900,27 +1914,27 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>Podrobnosti programu</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="179"/>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="180"/>
         <source>Aborting...</source>
         <translation>Ruší se...</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="180"/>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="181"/>
         <source>Aborted.</source>
         <translation>Zrušeno.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="181"/>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="182"/>
         <source>Completed!</source>
         <translation>Hotovo!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="182"/>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="183"/>
         <source>Station</source>
         <translation>Stanice</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="183"/>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="184"/>
         <source>Temp.</source>
         <translation>Teplota</translation>
     </message>
@@ -3136,7 +3150,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message utf8="true">
         <location filename="../../Dashboard/Forms/ScreenSaverWidget.ui" line="70"/>
         <source>In processing…</source>
-        <translation type="unfinished"></translation>
+        <translation>Zpracovává se…</translation>
     </message>
 </context>
 <context>

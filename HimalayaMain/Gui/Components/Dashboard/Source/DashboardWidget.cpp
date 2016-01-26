@@ -1420,7 +1420,7 @@ void CDashboardWidget::RetranslateUI()
     m_strPromptProgramDelay =  QApplication::translate("Dashboard::CDashboardWidget", "Program will be delayed briefly in the first step as the paraffin is not melted completely. Would you like to continue?", 0, QApplication::UnicodeUTF8);
     m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Enter number of Cassettes:", 0, QApplication::UnicodeUTF8);
     m_strProgramWillComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
-    m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "Tissue safety process has completed successfully. Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
+    m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "The specimens have been safeguarded by filling the retort with a safe reagent. Would you like to drain the safe reagent?", 0, QApplication::UnicodeUTF8);
     m_strTissueProtectPassed_Warning = QApplication::translate("Dashboard::CDashboardWidget", "Tissue safety process has completed with warning. Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "The oven cover is open. Please close it then click the OK button.", 0, QApplication::UnicodeUTF8);
     m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened. Please close it and then click OK. \
@@ -1432,7 +1432,7 @@ Wear respirator properly to prevent the potential hazard of reagent vapor. Don't
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
     m_strProgramComplete  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed!", 0, QApplication::UnicodeUTF8);
     m_strProgramCompleteSuccessfully  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed successfully!", 0, QApplication::UnicodeUTF8);
-    m_strProgramCompleteSafeReagent  = QApplication::translate("Dashboard::CDashboardWidget", "The safe reagent has been drained completed! The program \"%1\" was aborted!", 0, QApplication::UnicodeUTF8);
+    m_strProgramCompleteSafeReagent  = QApplication::translate("Dashboard::CDashboardWidget", "The safe reagent has been drained completely. The program \"%1\" was aborted!", 0, QApplication::UnicodeUTF8);
 
     m_strRetortNotLock = QApplication::translate("Dashboard::CDashboardWidget", "Please close and lock the retort, then try again!", 0, QApplication::UnicodeUTF8);
     m_strNotStartRMSOFF = QApplication::translate("Dashboard::CDashboardWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);

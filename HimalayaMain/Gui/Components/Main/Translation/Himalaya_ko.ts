@@ -668,8 +668,8 @@
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="110"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="281"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="289"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="558"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="566"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="569"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="582"/>
         <source>Ok</source>
         <translation>확인</translation>
     </message>
@@ -680,27 +680,30 @@
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="124"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="548"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="559"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="574"/>
         <source>Yes</source>
         <translation>예</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="549"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="560"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="575"/>
         <source>No</source>
         <translation>아니오</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="553"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="564"/>
         <source>Continue</source>
         <translation>계속</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="554"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="565"/>
         <source>Stop</source>
         <translation>중지</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="559"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="570"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="576"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
@@ -1112,7 +1115,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1112"/>
         <source>Communication error. Please try again or contact your local service.</source>
-        <translation>통신 오류. 다시 시도하시거나 서비스 센터에 문의하십시오.</translation>
+        <translation>통신 오류. 다시 시도하시거나 서비스 문의 하십시오.</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1113"/>
@@ -1151,7 +1154,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1124"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2036"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2047"/>
         <source>Information</source>
         <translation>정보</translation>
     </message>
@@ -1162,9 +1165,9 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1127"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2038"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2128"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2151"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2049"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2139"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2162"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
@@ -1226,60 +1229,60 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1335"/>
         <source>Updating the software ...</source>
-        <translation>소프트웨어 업데이느 중 …</translation>
+        <translation>소프트웨어 업데이트 중 …</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2043"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2054"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>새 소프트웨어 이용가능. &apos;원격 SW 업데이트&apos;를 클릭하여 업데이트를 시작하십시오.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2049"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2060"/>
         <source>New software is not available.</source>
         <translation>새로운 소프트웨어가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2055"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2066"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
-        <translation>RC 서버로 부터 새로운 소프트웨어를 다운로드하는데 실패했습니다. 서비스 직원에게 문의하세요.</translation>
+        <translation>RC 서버로 부터 새로운 소프트웨어를 다운로드하는데 실패했습니다. 서비스 문의 하십시오.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2060"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2071"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>리모트 서버를 통해 새로운 소프트웨어를 다운로드 완료했습니다. 새 소프트웨어를 시작하려면 &quot;확인&quot;을 누르십시오.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2067"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2078"/>
         <source>Software update failed.</source>
         <translation>소프트웨어 업데이트 실패</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2096"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2107"/>
         <source>Now download the update package from the remote server. Please wait...</source>
         <translation>리모트 서버로부터 업데이트 페키지를 내려받는 중입니다. 잠시 기다려 주십시오 ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2126"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2137"/>
         <source>Confirmation Message</source>
         <translation>확인 메시지</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2130"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2141"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2133"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2144"/>
         <source>Remote Session has been requested by a remote user.</source>
         <translation>원격 사용자로부터 원격 세션이 요청되었습니다.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2149"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2160"/>
         <source>Information Message</source>
         <translation>정보 메시지</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2154"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2165"/>
         <source>Remote session has been ended by the remote user.</source>
         <translation>리모트 사용자가 리모트 세션을 종료하였습니다.</translation>
     </message>
@@ -1620,160 +1623,172 @@ Date</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1392"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1415"/>
         <source>No safe reagent for the Program step &quot;%1&quot; of &quot;%2&quot;. Would you like to continue?</source>
         <translation>&quot;%1&quot; 의 &quot;%2&quot; 단계를 위한 안전시약이 없습니다. 계속 진행 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1393"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1416"/>
         <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station.  A station can be used only once in the program. Please assign a separate station for the reagent of this step.</source>
         <translation>&quot;%2&quot;의 프로그램 단계 &quot;%1&quot;가 해당 시약 스테이션을 찾을 수 없습니다. 프로그램에서 하나의 스테이션만 사용될 수 있습니다. 이 단계의 시약을 위해 별개의 스테이션을 지정하십시오.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1394"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1417"/>
         <source>You cannot start the program, because Station &quot;%1&quot; is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;.</source>
         <translation>&quot;%2&quot; 의 &quot;%3&quot; 단계에 &quot;%1&quot; 스테이션이 Empty로 지정되어 있어 프로그램을 시작할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1395"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1418"/>
         <source>Program cannot start because the paraffin is not melted completely and the first program step is not a fixation reagent.</source>
         <translation>파라핀이 완전히 녹지 않았고 첫 단계가 고정시약이 아니므로, 프로그램을 시작할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1396"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1419"/>
         <source>You can start program in %1 hours %2 minutes %3 seconds.</source>
         <translation>프로그램을 %1시간 %2분 %3초 뒤에 시작할 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1397"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1420"/>
         <source>Program will be delayed briefly in the first step as the paraffin is not melted completely. Would you like to continue?</source>
         <translation>파라핀이 완전히 녹지 않았으므로 첫 단계가 다소 지연됩니다. 계속하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1398"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1421"/>
         <source>Enter number of Cassettes:</source>
-        <translation>카세트 수 입력:</translation>
+        <translation>카세트 개수를 입력하십시오:</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1399"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1422"/>
         <source>Program &quot;%1&quot; has completed! Would you like to drain the retort?</source>
         <translation>&quot;%1&quot; 프로그램이 완료되었습니다! 리토르트를 비우시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1400"/>
-        <source>Tissue safety process has completed successfully. Would you like to drain the retort?</source>
-        <translation>조직 안전보관처리가 성공적으로 완료되었습니다. 리토르트를 비우시겠습니까?</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1401"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1424"/>
         <source>Tissue safety process has completed with warning. Would you like to drain the retort?</source>
         <translation>조직 안전보관처리가 경고와 함께 완료되었습니다. 리토르트를 비우시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1402"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1425"/>
         <source>The oven cover is open. Please close it then click the OK button.</source>
         <translation>오븐의 덮개가 열려 있습니다. 덮개를 덮고 다시 &apos;확인&apos;을 눌러 주십시오.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1403"/>
-        <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential harzad of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1405"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1428"/>
         <source>Pausing...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
-        <translation type="unfinished"></translation>
+        <translation>일시정지 중…
+리토르트 뚜껑을 열지 마시고, 시약통을 분리하지 마십시오.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1408"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1431"/>
         <source>The retort is contaminated. Please start the cleaning program.</source>
-        <translation type="unfinished"></translation>
+        <translation>리토르트가 오염되었습니다. 클리닝 프로그램을 시작해 주십시오.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1412"/>
-        <source>The safe reagent has been drained completed! The program &quot;%1&quot; was aborted!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1421"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1444"/>
         <source>Retort temperature is too high. Please allow the retort to cool down before inserting specimens and starting the next program.</source>
-        <translation type="unfinished"></translation>
+        <translation>리토르트 내부 온도가 너무 높습니다. 리토르트 온도가 내려간 후에 검체를 넣고 프로그램을 시작하십시오.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1426"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1449"/>
         <source>Ready to start a new program.</source>
-        <translation type="unfinished"></translation>
+        <translation>새로운 프로그램을 시작할 준비가 되었습니다.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1427"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1450"/>
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning. Load the specimens into the retort and make sure that the retort is locked.</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 시약의 레벨을 확인하고 리토르트 레벨 센서, 리토르트의 밀봉 고무링 및 리토르트 필터를 청소해 주십시오.
+청소 후 리토르트 필터를 다시 설치합니다. 리토르트에 검체를 넣고 리토르트가 잠겨 있는지 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1406"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1429"/>
         <source>Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.</source>
         <translation>장비 예열 중입니다. 장비가 사용 가능할 때까지 대기 시간은 30분 미만입니다.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1407"/>
-        <source>Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press &quot;Ok&quot; button.</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1423"/>
+        <source>The specimens have been safeguarded by filling the retort with a safe reagent. Would you like to drain the safe reagent?</source>
+        <translation>안전 시약으로 리토르트가 채워져 검체가 보호되고 있습니다. 안전 시약을 비워내시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1409"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1426"/>
+        <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential hazard of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
+        <translation>리토르트 뚜껑이 열려있습니다. 뚜껑을 닫고 &quot;&quot;확인&quot;&quot;을 눌러주십시오.
+유해시약 증기로 인한 위험이 있으니 보호장치를 착용하십시오.
+레벨 센서가 뜨거우니 만지지 마십시오.</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1430"/>
+        <source>Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press &quot;Ok&quot; button.</source>
+        <translation>검체를 제거하고 리토르트를 잠그십시오. 
+검체가 제거되어 리토르트가 비어있는지 확인하고 &quot;확인&quot; 버튼을 누르십시오. </translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1432"/>
         <source>Program &quot;%1&quot; is aborted!</source>
         <translation>&quot;%1&quot; 프로그램이 중단되었습니다!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1410"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1433"/>
         <source>Program &quot;%1&quot; has completed!</source>
-        <translation type="unfinished"></translation>
+        <translation>프로그램 &quot;%1&quot;이 완료되었습니다!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1411"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1434"/>
         <source>Program &quot;%1&quot; has completed successfully!</source>
         <translation>&quot;%1&quot; 프로그램이 성공적으로 완료되었습니다!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1414"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1435"/>
+        <source>The safe reagent has been drained completely. The program &quot;%1&quot; was aborted!</source>
+        <translation>안전시약이 완벽하게 배출되었습니다. 프로그램 &quot;%1&quot; 은 중지되었습니다!</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1437"/>
         <source>Please close and lock the retort, then try again!</source>
         <translation>리토르트 덮개를 덮고 잠근 후 다시 시도하십시오!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1415"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1438"/>
         <source>Leica Program can&apos;t be operated with RMS OFF.</source>
         <translation>RMS가 꺼져있을 때는 라이카 프로그램을 실행할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1416"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1439"/>
         <source>Reagents needed for this program are expired. Please replace the expired ones with fresh reagents! Program will not start.</source>
         <translation>이 프로그램 운영에 필요한 시약의 유효기간이 경과했습니다. 새로운 시약으로 교체해 주십시오! 프로그램이 시작되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1417"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1440"/>
         <source>Do you really want to start the Program with Expired Reagents?</source>
         <translation>유효기간이 지난 시약으로 프로그램을 작동하길 원하십니까?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1418"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1441"/>
         <source>Please enter the number of new-added cassettes:</source>
         <translation>새로 추가한 카세트의 수량을 입력하십시오:</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1419"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1442"/>
         <source>Did you add new cassettes?</source>
         <translation>새 카세트를 추가하셨습니까?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1420"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1443"/>
         <source>Because the wait time is more than five minutes, the instrument will be re-heated and filled with safe reagents.</source>
         <translation>대기 시간이 5분 이상이므로, 장비를 다시 예열하고 안전 시약을 주입합니다.</translation>
     </message>
     <message utf8="true">
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1422"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1445"/>
         <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!Please confirm modifying Paraffin temperature.</source>
         <translation>파라핀 온도가 지정된 파라핀배스 온도와 차이가 있어서 (2°C 차이) 선택한 프로그램을 실행할 수가 없습니다. 프로그램 상의 파라핀 온도를 파라핀배스의 온도에 맞게 조정하면, 프로그램을 즉시 실행할 수 있습니다. 온도가 맞지 않으면 최장 15시간 동안 프로그램을 실행하지 않습니다. 파라핀 온도를 조정하십시오.</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1452"/>
+        <source>Resuming...
+Don&apos;t open the retort lid and unplug any reagent bottles.</source>
+        <translation>재시작 중…
+리토르트 뚜껑을 열지 마시고, 시약통을 분리하지 마십시오.</translation>
     </message>
 </context>
 <context>
@@ -1902,27 +1917,27 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>프로그램 상세내역</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="179"/>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="180"/>
         <source>Aborting...</source>
-        <translation>중지중</translation>
+        <translation>중지중...</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="180"/>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="181"/>
         <source>Aborted.</source>
         <translation>중지완료</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="181"/>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="182"/>
         <source>Completed!</source>
         <translation>완료!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="182"/>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="183"/>
         <source>Station</source>
         <translation>스테이션</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="183"/>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="184"/>
         <source>Temp.</source>
         <translation>온도</translation>
     </message>
@@ -2092,7 +2107,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DialogFrame.ui" line="14"/>
         <source>Dialog</source>
-        <translation>대화</translation>
+        <translation>다이얼로그</translation>
     </message>
 </context>
 <context>
@@ -2855,12 +2870,12 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="589"/>
         <source>Failed to add the reagent. Please contact service.</source>
-        <translation>시약 추가 실패. 서비스 직원에게 문의하세요.</translation>
+        <translation>시약 추가 실패. 서비스 문의 하십시오.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="592"/>
         <source>Failed to copy the reagent. Please contact service.</source>
-        <translation>시약 복사 실패. 서비스 직원에게 문의하세요.</translation>
+        <translation>시약 복사 실패. 서비스 문의 하십시오.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="595"/>
@@ -3138,7 +3153,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message utf8="true">
         <location filename="../../Dashboard/Forms/ScreenSaverWidget.ui" line="70"/>
         <source>In processing…</source>
-        <translation type="unfinished"></translation>
+        <translation>진행중…</translation>
     </message>
 </context>
 <context>
