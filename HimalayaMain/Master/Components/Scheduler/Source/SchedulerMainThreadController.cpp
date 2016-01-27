@@ -892,6 +892,15 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
 
+    //For the sceanrios PSSM_RV_MOVE_TO_TUBE, PSSM_DRAINING and PSSM_RV_POS_CHANGE in last step, SW will just return
+    if (IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
+    {
+        if (PSSM_RV_MOVE_TO_TUBE == currentState || PSSM_DRAINING == currentState || PSSM_RV_POS_CHANGE == currentState)
+        {
+            return;
+        }
+    }
+
     // Enable pause button
     MsgClasses::CmdProgramAcknowledge* commandPtrPauseEnable(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_PAUSE_ENABLE));
     Q_ASSERT(commandPtrPauseEnable);
