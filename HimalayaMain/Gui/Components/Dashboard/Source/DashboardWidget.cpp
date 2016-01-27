@@ -1504,16 +1504,19 @@ void CDashboardWidget::OnUserRoleChanged()
     {
         if (m_ProgramStatus == ProgramRunning || m_ProgramStatus == Paused)
         {
-            if (m_CurProgramStepIndex < 3)
+            if (m_ProgramStatus == ProgramRunning)
             {
-                if (m_ProgramStageStatus == Enabled)
+                if (m_CurProgramStepIndex < 3)
                 {
-                    ui->programPanelWidget->EnablePauseButton(true);
+                    if (m_ProgramStageStatus == Enabled)
+                    {
+                        ui->programPanelWidget->EnablePauseButton(true);
+                    }
+                 }
+                else// >3rd step
+                {
+                    ui->programPanelWidget->EnablePauseButton(false);
                 }
-             }
-            else// >3rd step
-            {
-                ui->programPanelWidget->EnablePauseButton(false);
             }
 
             //Abort
