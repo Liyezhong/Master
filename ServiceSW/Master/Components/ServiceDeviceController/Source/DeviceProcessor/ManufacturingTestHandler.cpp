@@ -909,7 +909,6 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     const quint16 DerivativeTimeLow = 0;
 
     const quint16 TargetDropRange = 6;
-    const quint16 OverTemperature = 135;
 
     const quint16 MinTemperature = 110;
     const quint16 MaxTemperature = 120;
