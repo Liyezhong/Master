@@ -982,6 +982,7 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
         return;
     }
 
+    LogDebug(QString("Pause resuming has compensated %1 seconds").arg(offset/1000));
     // Send time update to GUI
     MsgClasses::CmdUpdateProgramEndTime* commandUpdateProgramEndTime(new MsgClasses::CmdUpdateProgramEndTime(5000, offset/1000));
     Q_ASSERT(commandUpdateProgramEndTime);
@@ -1217,6 +1218,29 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerMachine->SendResumeRVMoveTube();
                 break;
             case PSSM_DRAINING:
+                if (m_bWaitToPause || m_bWaitToPauseCmdYes)
+                {
+                     //dismiss the prompt of waiting for pause
+                    SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+                    if (m_bWaitToPause)
+                    {
+                        m_bWaitToPause = false;
+                        m_SchedulerMachine->UpdateCurrentState(PSSM_DRAINING);
+                    }
+                    if (m_bWaitToPauseCmdYes)
+                    {
+                        m_bWaitToPauseCmdYes = false;
+                        m_SchedulerMachine->UpdateCurrentState(PSSM_FILLING_RVROD_HEATING);
+                    }
+                    LogDebug(QString("Program Step Beginning Pause"));
+                    m_SchedulerMachine->NotifyPause(SM_UNDEF);
+                    return;
+                }
+                else
+                {
+                    m_SchedulerMachine->SendResumeRVPosChange();
+                }
+                break;
             case PSSM_RV_POS_CHANGE:
                 m_SchedulerMachine->SendResumeRVPosChange();
                 break;
@@ -3191,7 +3215,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
         if(Cmd.ProgramRunDuration() > 0) // start new program
         {
             QDateTime EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(Cmd.ProgramRunDuration());
-            m_EndTimeAndStepTime.UserSetEndTime = QDateTime::currentDateTime().addSecs(Cmd.ProgramRunDuration()).toMSecsSinceEpoch();
+            m_EndTimeAndStepTime.UserSetEndTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(Cmd.ProgramRunDuration()).toMSecsSinceEpoch();
             if(ProgramNameID == 0)
             {
                 RaiseEvent(EVENT_SCHEDULER_REC_START_PROGRAM, QStringList()<<ProgramName
@@ -5809,6 +5833,15 @@ void SchedulerMainThreadController::SendOutErrMsg(ReturnCode_t EventId, bool IsE
     {
         if(IsErrorMsg)
         {
+            // When SW Pause and Resumming, we dismiss the GUI message
+            if (m_bWaitToPause || m_bWaitToPauseCmdYes)
+            {
+                SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+            }
+            if (m_IsResumeFromPause)
+            {
+                SendProgramAcknowledge(DISMISS_RESUME_MSG_DLG);
+            }
             m_SchedulerMachine->SendErrorSignal();
             m_IsErrorStateForHM = true;
         }

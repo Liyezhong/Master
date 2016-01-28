@@ -166,6 +166,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVPosChange()), mp_PssmRVPosChangeState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeDryStep()), mp_PssmCleaningDryStep.data());
     mp_PssmInitState->addTransition(this, SIGNAL(SigRunBottleCheck()), mp_PssmBottleCheckState.data());
+    mp_PssmInitState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
 
     mp_PssmPreTestState->addTransition(mp_ProgramPreTest.data(), SIGNAL(TasksDone()), mp_PssmFillingHeatingRVState.data());
 
