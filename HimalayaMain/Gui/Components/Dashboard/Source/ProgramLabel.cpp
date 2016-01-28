@@ -24,7 +24,6 @@ void CProgramLabel::setText(const QString &txt, bool highlight)
     else {
         QLabel::setText(QString(""));
     }
-    repaint();
 }
 
 void CProgramLabel::setHighlight(bool flag)
@@ -36,7 +35,6 @@ void CProgramLabel::setHighlight(bool flag)
     else {
         QLabel::setText("");
     }
-    repaint();
 }
 
 void CProgramLabel::paintEvent(QPaintEvent * e)

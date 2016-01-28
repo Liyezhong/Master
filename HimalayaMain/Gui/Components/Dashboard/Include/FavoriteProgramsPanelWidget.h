@@ -115,7 +115,7 @@ namespace Dashboard {
          *  \brief  Definition/Declaration of OnFavProgramButtonClicked
          */
         /****************************************************************************/
-        void OnFavProgramButtonClicked();
+        void OnFavProgramButtonClicked(int);
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of OnProcessStateChanged
@@ -174,13 +174,6 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void SetButtonGroup();
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function UpdateProgLabel
-         *
-         */
-        /****************************************************************************/
-        void UpdateProgLabel(void);
 
         QMap<int, CProgramLabel*> m_mapLabel;///< (label Id <--> QLabel)
         Ui::CFavoriteProgramsPanelWidget *ui;       ///<  Definition/Declaration of variable ui

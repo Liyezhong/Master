@@ -26,11 +26,7 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *p) :
 {
     ui->setupUi(this);
     SetButtonGroup();
-    CONNECTSIGNALSLOT(ui->BtnProgram1, clicked(bool), this, OnFavProgramButtonClicked());
-    CONNECTSIGNALSLOT(ui->BtnProgram2, clicked(bool), this, OnFavProgramButtonClicked());
-    CONNECTSIGNALSLOT(ui->BtnProgram3, clicked(bool), this, OnFavProgramButtonClicked());
-    CONNECTSIGNALSLOT(ui->BtnProgram4, clicked(bool), this, OnFavProgramButtonClicked());
-    CONNECTSIGNALSLOT(ui->BtnProgram5, clicked(bool), this, OnFavProgramButtonClicked());
+   
     AddItemsToFavoritePanel(false);
 }
 
@@ -58,17 +54,12 @@ void CFavoriteProgramsPanelWidget ::SetButtonGroup()
     (void)m_mapLabel.insert(2, ui->lblPrg3);
     (void)m_mapLabel.insert(3, ui->lblPrg4);
     (void)m_mapLabel.insert(4, ui->lblPrg5);
-}
-
-void CFavoriteProgramsPanelWidget::UpdateProgLabel()
-{
-    for (int i = 0; i < m_mapLabel.count(); ++ i) {
-        CProgramLabel* label = m_mapLabel.value(i);
-        label->setHighlight(false);
-    }
-
-    CProgramLabel* label = m_mapLabel.value(m_LastSelectedButtonId);
-    label->setText(SELECTED_PROGRAM_NAME, true);
+    CONNECTSIGNALSLOT(&m_ButtonGroup, buttonClicked(int), this, OnFavProgramButtonClicked(int));
+    CONNECTSIGNALSLOT(ui->BtnProgram1, toggled(bool), ui->lblPrg1, setHighlight(bool));
+    CONNECTSIGNALSLOT(ui->BtnProgram2, toggled(bool), ui->lblPrg2, setHighlight(bool));
+    CONNECTSIGNALSLOT(ui->BtnProgram3, toggled(bool), ui->lblPrg3, setHighlight(bool));
+    CONNECTSIGNALSLOT(ui->BtnProgram4, toggled(bool), ui->lblPrg4, setHighlight(bool));
+    CONNECTSIGNALSLOT(ui->BtnProgram5, toggled(bool), ui->lblPrg5, setHighlight(bool));
 }
 
 void CFavoriteProgramsPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector)
@@ -171,9 +162,8 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
         m_ButtonGroup.button(j)->setIcon(QIcon(strIconName));
         CProgramLabel* label = m_mapLabel.value(j);
         label->setText(ProgramName);
-        CONNECTSIGNALSLOT(m_ButtonGroup.button(j), toggled(bool), label, setHighlight(bool));
     }
-
+  
     m_OnlyAddCleaningProgram = bOnlyAddCleaningProgram;
 }
 
@@ -201,8 +191,9 @@ void CFavoriteProgramsPanelWidget::UndoProgramSelection()
     emit UpdateFavProgram();
 }
 
-void CFavoriteProgramsPanelWidget::OnFavProgramButtonClicked()
+void CFavoriteProgramsPanelWidget::OnFavProgramButtonClicked(int btnIndex)
 {
+    Q_UNUSED(btnIndex);
     if (m_IsInFavProgramButtonClicked)
         return;
     m_IsInFavProgramButtonClicked = true;
@@ -231,7 +222,7 @@ void CFavoriteProgramsPanelWidget::OnResetFocus(bool rst)
             m_ButtonGroup.setExclusive(false);
             m_ButtonGroup.button(m_LastCanBeSelectedButtonId)->setChecked(true);
             m_ButtonGroup.setExclusive(true);
-            OnFavProgramButtonClicked();
+            OnFavProgramButtonClicked(0);
         }
         else {
             m_LastSelectedButtonId = -1;
