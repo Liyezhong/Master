@@ -1999,6 +1999,7 @@ void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClas
         }
         else
         {
+            mp_MesgBoxManager->DisableOKButton();
             mp_MesgBoxManager->SetRTLidLocked(false);
         }
         emit RetortLockStatusChanged(Command);
