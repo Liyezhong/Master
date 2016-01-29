@@ -4760,6 +4760,8 @@ void SchedulerMainThreadController::Pause()
     // Update currrent scenario
     this->UpdateCurrentScenario();
 
+    // Disable pause button
+    this->DisablePauseButton();
     //First of all, release pressure
     m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,this), false);
 
