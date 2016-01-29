@@ -5582,7 +5582,8 @@ void SchedulerMainThreadController::OnBackToBusy()
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPtrRcRestart));
 
-    if ((PSSM_PROCESSING != m_CurrentStepState) && (-1 != m_CurProgramStepIndex))
+    //If SW is in progress of pausing, we will update time at here. We will do that in CheckResuemFromPause
+    if ((!m_bWaitToPause && !m_bWaitToPauseCmdYes) && (-1 != m_CurProgramStepIndex))
     {
         qint64 delta = (QDateTime::currentMSecsSinceEpoch() - m_TimeStamps.SystemErrorStartTime) / 1000;
         MsgClasses::CmdUpdateProgramEndTime* commandUpdateProgramEndTime(new MsgClasses::CmdUpdateProgramEndTime(5000, delta));
