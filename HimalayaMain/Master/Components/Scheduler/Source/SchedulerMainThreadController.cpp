@@ -2800,6 +2800,8 @@ void SchedulerMainThreadController::OnEnterPssMProgFin()
 
 void SchedulerMainThreadController::OnEnterDryStepState()
 {
+    // Update current scenario
+    this->UpdateCurrentScenario();
     m_CleaningDry.CurrentState = CDS_READY;
     m_CleaningDry.StepStartTime = 0;
     m_CleaningDry.warningReport = false;
@@ -3902,6 +3904,8 @@ void SchedulerMainThreadController::ReleasePressure()
 
 void SchedulerMainThreadController::OnEnterPssmProcessing()
 {
+    // Update current sceanrio
+    this->UpdateCurrentScenario();
     CheckResuemFromPause(PSSM_PROCESSING);
     m_IsReleasePressureOfSoakFinish = false;
     // We only release pressure if neither P or V exists.
@@ -4201,7 +4205,8 @@ bool SchedulerMainThreadController::MoveRV(RVPosition_type type)
 void SchedulerMainThreadController::Fill()
 {
     RaiseEvent(EVENT_SCHEDULER_START_FILLING);
-
+    //Update current scenario
+    this->UpdateCurrentScenario();
     CheckResuemFromPause(PSSM_FILLING);
     CmdALFilling* cmd  = new CmdALFilling(500, this);
 
@@ -4655,7 +4660,8 @@ void SchedulerMainThreadController::RCForceDrain()
 void SchedulerMainThreadController::Drain()
 {
     RaiseEvent(EVENT_SCHEDULER_DRAINING);
-
+    // Update current scenario
+    this->UpdateCurrentScenario();
     CheckResuemFromPause(PSSM_DRAINING);
     CmdALDraining* cmd  = new CmdALDraining(500, this);
 
@@ -4751,6 +4757,9 @@ void SchedulerMainThreadController::Pause()
 {
     RaiseEvent(EVENT_SCHEDULER_OVEN_PAUSE);
 
+    // Update currrent scenario
+    this->UpdateCurrentScenario();
+
     //First of all, release pressure
     m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,this), false);
 
@@ -4824,6 +4833,11 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
         }
     }
     return ret;
+}
+
+void SchedulerMainThreadController::UpdateCurrentScenario()
+{
+    m_CurrentScenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(), m_CurProgramStepInfo.reagentGroup);
 }
 
 quint32 SchedulerMainThreadController::GetSecondsForMeltingParaffin()
@@ -5580,7 +5594,8 @@ void SchedulerMainThreadController::OnBackToBusy()
 
 void SchedulerMainThreadController::OnFillingHeatingRV()
 {
-
+    // Update current sceanrio
+    this->UpdateCurrentScenario();
     CheckResuemFromPause(PSSM_FILLING_RVROD_HEATING);
     quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
     MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
@@ -5629,6 +5644,8 @@ void SchedulerMainThreadController::OnFillingHeatingRV()
 
 void SchedulerMainThreadController::OnEnterHeatingLevelSensor()
 {
+    // Update current sceanrio
+    this->UpdateCurrentScenario();
     RaiseEvent(EVENT_SCHEDULER_HEATING_LEVEL_SENSOR_FOR_FILLING);
     CheckResuemFromPause(PSSM_FILLING_LEVELSENSOR_HEATING);
     if(m_CurProgramStepInfo.reagentGroup != "RG6")
@@ -5811,21 +5828,20 @@ void SchedulerMainThreadController::CompleteRsAbort()
 
 void SchedulerMainThreadController::SendOutErrMsg(ReturnCode_t EventId, bool IsErrorMsg)
 {
-    quint32 scenario =  GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(), m_CurProgramStepInfo.reagentGroup);
     //First of all, we added one workaround for scenario 7 (bottle check)
-    if (7 == scenario)
+    if (7 == m_CurrentScenario)
     {
         m_SchedulerMachine->CheckNonRVErr4BottleCheck(EventId);
     }
     bool ret = false;
-    ret = RaiseError(0, EventId, scenario, true);
+    ret = RaiseError(0, EventId, m_CurrentScenario, true);
     if(!ret)
     {
         //log
-        QString temp = QString::number(EventId) + QString::number(scenario);
+        QString temp = QString::number(EventId) + QString::number(m_CurrentScenario);
         if(-1 == m_UnknownErrorLogVector.indexOf(temp))
         {
-            RaiseEvent(EVENT_SCHEDULER_UNKNOW_ERROR, QStringList()<<QString("[%1]").arg(EventId)<<QString("[%1]").arg(scenario));
+            RaiseEvent(EVENT_SCHEDULER_UNKNOW_ERROR, QStringList()<<QString("[%1]").arg(EventId)<<QString("[%1]").arg(m_CurrentScenario));
             m_UnknownErrorLogVector.push_back(temp);
         }
     }

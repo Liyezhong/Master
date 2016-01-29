@@ -1299,6 +1299,13 @@ protected:
         quint32 GetCurrentScenario() const {  return m_CurrentScenario; }
 
         /****************************************************************************/
+        /**
+         *  \brief Update current secenario in Scheduler
+         *  \return void
+         */
+        /****************************************************************************/
+        void UpdateCurrentScenario();
+        /****************************************************************************/
         /*!
          *  \brief  Check the oven lock status
          *  \return qint16, 0 - lose, 1 - open

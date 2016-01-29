@@ -434,6 +434,8 @@ void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
 
 void CSchedulerStateMachine::OnRVMoveToSeal()
 {
+    //Update Scheduler's current scenario
+    mp_SchedulerThreadController->UpdateCurrentScenario();
     mp_SchedulerThreadController->CheckResuemFromPause(PSSM_RV_MOVE_TO_SEAL);
     mp_SchedulerThreadController->MoveRV(SEAL_POS);
     mp_SchedulerThreadController->StartTimer();
@@ -441,6 +443,8 @@ void CSchedulerStateMachine::OnRVMoveToSeal()
 
 void CSchedulerStateMachine::InitRVMoveToTubeState()
 {
+    //Update scheduler's current scenario
+    mp_SchedulerThreadController->UpdateCurrentScenario();
     mp_SchedulerThreadController->CheckResuemFromPause(PSSM_RV_MOVE_TO_TUBE);
     m_PssmMVTubeSeq = 0;
     mp_SchedulerThreadController->Pressure();
@@ -457,6 +461,8 @@ void CSchedulerStateMachine::OnEnterErrorRcRestartState()
 
 void CSchedulerStateMachine::OnEnterBottleCheckState()
 {
+    // Update scheduler's current scenario
+    mp_SchedulerThreadController->UpdateCurrentScenario();
     m_BottleCheckSeq = 0;
     m_PressureCalibrationSeq = 0;
     m_ReleasePressureTime = 0;
@@ -473,6 +479,8 @@ void CSchedulerStateMachine::OnEnterBottleCheckState()
 
 void CSchedulerStateMachine::OnRVMoveToNextTube()
 {
+    // Update Scheduler's current scenario
+    mp_SchedulerThreadController->UpdateCurrentScenario();
     mp_SchedulerThreadController->CheckResuemFromPause(PSSM_RV_POS_CHANGE);
     mp_SchedulerThreadController->MoveRV(NEXT_TUBE_POS);
     mp_SchedulerThreadController->StartTimer();
@@ -2422,6 +2430,8 @@ void CSchedulerStateMachine::OnEnterBusyState()
 void CSchedulerStateMachine::OnEnterPretest()
 {
      mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_PRETEST);
+     // Update current Scenario
+     mp_SchedulerThreadController->UpdateCurrentScenario();
      mp_SchedulerThreadController->StartTimer();
 }
 
