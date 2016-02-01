@@ -5589,6 +5589,7 @@ void SchedulerMainThreadController::OnBackToBusy()
     if ((!m_IsResumeFromPause && !m_bWaitToPause && !m_bWaitToPauseCmdYes) && (-1 != m_CurProgramStepIndex))
     {
         qint64 delta = (QDateTime::currentMSecsSinceEpoch() - m_TimeStamps.SystemErrorStartTime) / 1000;
+        m_EndTimeAndStepTime.UserSetEndTime += delta;
         MsgClasses::CmdUpdateProgramEndTime* commandUpdateProgramEndTime(new MsgClasses::CmdUpdateProgramEndTime(5000, delta));
         Q_ASSERT(commandUpdateProgramEndTime);
         Global::tRefType tfRef = GetNewCommandRef();
