@@ -285,7 +285,7 @@ void CDashboardDateTimeWidget::OnRequestASAPDateTime()
     emit RequestAsapDateTime();
 }
 
-void CDashboardDateTimeWidget::OnGetASAPDateTime(int asapDateTime, bool bIsFirstStepFixation)
+void CDashboardDateTimeWidget::OnGetASAPDateTime(int asapDateTime, bool bIsFirstStepFixation, bool bNeedUpdateUI)
 {
     m_ASAPDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapDateTime);
     if (m_IsClickedOK)
@@ -388,12 +388,15 @@ void CDashboardDateTimeWidget::OnGetASAPDateTime(int asapDateTime, bool bIsFirst
         }
         else
         {
-            DisabledWheel(false);
-            if (mp_UserSetting) {
-                RefreshDateTime(mp_UserSetting->GetTimeFormat());
+            if (bNeedUpdateUI)
+            {
+                DisabledWheel(false);
+                if (mp_UserSetting) {
+                    RefreshDateTime(mp_UserSetting->GetTimeFormat());
+                }
+                mp_Ui->btnOK->setText(tr("OK"));
+                mp_Ui->btnOK->setEnabled(true);
             }
-            mp_Ui->btnOK->setText(tr("OK"));
-            mp_Ui->btnOK->setEnabled(true);
         }
     }
 }

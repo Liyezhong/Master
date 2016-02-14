@@ -147,9 +147,10 @@ public slots:
      *  \brief  processing slot when Get ASAP DateTime
      *  \param asapDateTime = as soon as possible datetime
      *  \param bIsFirstStepFixation = whether the first step is fixation reagent or not
+     *  \param bNeedUpdateUI = whether update GUI or not
      */
     /****************************************************************************/
-    void OnGetASAPDateTime(int asapDateTime, bool bIsFirstStepFixation);
+    void OnGetASAPDateTime(int asapDateTime, bool bIsFirstStepFixation, bool bNeedUpdateUI);
 
 signals:
     /****************************************************************************/

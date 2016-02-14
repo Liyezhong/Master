@@ -32,6 +32,8 @@ namespace Dashboard {
     class CFavoriteProgramsPanelWidget;
     }
 
+    class CStackedLabel;
+
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of class Dashboard::CFavoriteProgramsPanelWidget
@@ -175,7 +177,7 @@ namespace Dashboard {
         /****************************************************************************/
         void SetButtonGroup();
 
-        QMap<int, CProgramLabel*> m_mapLabel;///< (label Id <--> QLabel)
+        QMap<int, CStackedLabel*> m_mapLabel;///< (label Id <--> QLabel)
         Ui::CFavoriteProgramsPanelWidget *ui;       ///<  Definition/Declaration of variable ui
         QButtonGroup m_ButtonGroup;       ///<  Definition/Declaration of variable m_ButtonGroup
         Core::CDataConnector *mp_DataConnector;                     //!< Global data container

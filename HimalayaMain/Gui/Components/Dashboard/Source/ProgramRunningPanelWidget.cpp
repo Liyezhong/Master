@@ -212,6 +212,9 @@ void CProgramRunningPanelWidget::OnUserSetEndDateTime(const QDateTime& dateTime)
 
 void CProgramRunningPanelWidget::UpdateDateTime()
 {
+    if (!this->isVisible())
+        return;
+
     QString DateStr;
     QString TimeStr;
 
@@ -271,7 +274,20 @@ void CProgramRunningPanelWidget::UpdateDateTime()
     }
     ui->lblEndtime->setText(DateTimeStr);
 }
-
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function showEvent
+ *
+ *  \param p_Event = QShowEvent type parameter
+ *
+ *  \return from showEvent
+ */
+/****************************************************************************/
+void CProgramRunningPanelWidget::showEvent(QShowEvent *p_Event)
+{
+    Q_UNUSED(p_Event);
+    UpdateDateTime();
+}
 void CProgramRunningPanelWidget::ProgramSelected(QString& programId, int asapEndTime,
                                                  bool bIsFirstStepFixation,
                                                  QList<QString>& selectedStationList, int firstProgramStepIndex)

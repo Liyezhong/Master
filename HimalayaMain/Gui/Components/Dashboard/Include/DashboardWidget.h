@@ -543,9 +543,11 @@ private slots:
      *  \brief  Definition/Declaration of signal SendAsapDateTime
      *  \param asapDateTime = as soon as possible datetime
      *  \param bIsFirstStepFixation = whether the first step is fixation reagent or not
+     *  \param bNeedUpdateUI = whether update GUI or not
+     *
      */
     /****************************************************************************/
-    void SendAsapDateTime(int asapDateTime, bool bIsFirstStepFixation);
+    void SendAsapDateTime(int asapDateTime, bool bIsFirstStepFixation, bool bNeedUpdateUI);
 
 };
 

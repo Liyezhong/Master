@@ -62,15 +62,7 @@ public:
     void setText(const QString &text, bool highlight = false);
 
 public slots:
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function setText
-     *
-     *  \param flag =  enable/disable highlight flag
-     *
-     */
-    /****************************************************************************/
-    void setHighlight(bool flag);
+
 
 protected:
     /****************************************************************************/
@@ -81,8 +73,8 @@ protected:
      */
     /****************************************************************************/
     void paintEvent(QPaintEvent * event);
-    QString content;       ///<  Definition/Declaration of variable m_Text
-    bool textHighlight;    ///<  whether the text shall be highlighted or not
+    QString m_Content;       ///<  Definition/Declaration of variable m_Text
+    QPixmap m_PixmapContent; ///<  text pixmap
 };
 
 } // end namespace Dashboard

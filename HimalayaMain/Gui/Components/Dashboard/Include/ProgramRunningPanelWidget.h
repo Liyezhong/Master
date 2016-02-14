@@ -171,6 +171,16 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void changeEvent(QEvent *p_Event);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function showEvent
+         *
+         *  \param p_Event = QShowEvent type parameter
+         *
+         *  \return from showEvent
+         */
+        /****************************************************************************/
+        void showEvent(QShowEvent *p_Event);
 
     signals:
         /****************************************************************************/

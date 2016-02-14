@@ -49,18 +49,19 @@ void CFavoriteProgramsPanelWidget ::SetButtonGroup()
     m_ButtonGroup.addButton(ui->BtnProgram5, 4);
 
     m_mapLabel.clear();
-    (void)m_mapLabel.insert(0, ui->lblPrg1);
-    (void)m_mapLabel.insert(1, ui->lblPrg2);
-    (void)m_mapLabel.insert(2, ui->lblPrg3);
-    (void)m_mapLabel.insert(3, ui->lblPrg4);
-    (void)m_mapLabel.insert(4, ui->lblPrg5);
+    (void)m_mapLabel.insert(0, ui->stackedWidget1);
+    (void)m_mapLabel.insert(1, ui->stackedWidget2);
+    (void)m_mapLabel.insert(2, ui->stackedWidget3);
+    (void)m_mapLabel.insert(3, ui->stackedWidget4);
+    (void)m_mapLabel.insert(4, ui->stackedWidget5);
     CONNECTSIGNALSLOT(&m_ButtonGroup, buttonClicked(int), this, OnFavProgramButtonClicked(int));
-    CONNECTSIGNALSLOT(ui->BtnProgram1, toggled(bool), ui->lblPrg1, setHighlight(bool));
-    CONNECTSIGNALSLOT(ui->BtnProgram2, toggled(bool), ui->lblPrg2, setHighlight(bool));
-    CONNECTSIGNALSLOT(ui->BtnProgram3, toggled(bool), ui->lblPrg3, setHighlight(bool));
-    CONNECTSIGNALSLOT(ui->BtnProgram4, toggled(bool), ui->lblPrg4, setHighlight(bool));
-    CONNECTSIGNALSLOT(ui->BtnProgram5, toggled(bool), ui->lblPrg5, setHighlight(bool));
+    CONNECTSIGNALSLOT(ui->BtnProgram1, toggled(bool), ui->stackedWidget1, setHighlight(bool));
+    CONNECTSIGNALSLOT(ui->BtnProgram2, toggled(bool), ui->stackedWidget2, setHighlight(bool));
+    CONNECTSIGNALSLOT(ui->BtnProgram3, toggled(bool), ui->stackedWidget3, setHighlight(bool));
+    CONNECTSIGNALSLOT(ui->BtnProgram4, toggled(bool), ui->stackedWidget4, setHighlight(bool));
+    CONNECTSIGNALSLOT(ui->BtnProgram5, toggled(bool), ui->stackedWidget5, setHighlight(bool));
 }
+
 
 void CFavoriteProgramsPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector)
 {
@@ -80,8 +81,10 @@ void CFavoriteProgramsPanelWidget::UpdateProgram(DataManager::CProgram &Program)
             const QString name = Program.GetName();
             DataManager::CProgram *prog = const_cast<DataManager::CProgram *>(mp_ProgramList->GetProgram(ProgramId));
             prog->SetName(name);
-            CProgramLabel* label = m_mapLabel.value(j);
+            CStackedLabel* label = m_mapLabel.value(j);
             label->setText(name);
+            label->setHighlight(false);
+            label->setVisible(true);
         }
 
         QString ProgramName = mp_ProgramList->GetProgram(ProgramId)->GetName();
@@ -124,8 +127,8 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
             btn->setEnabled(false);
             btn->setIcon(QIcon(""));
 
-            CProgramLabel* label = m_mapLabel.value(i);
-            label->setText("");
+            CStackedLabel* label = m_mapLabel.value(i);
+            label->setVisible(false);
         }
     }
 
@@ -160,8 +163,10 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
         //enable this button and use it
         m_ButtonGroup.button(j)->setEnabled(true);
         m_ButtonGroup.button(j)->setIcon(QIcon(strIconName));
-        CProgramLabel* label = m_mapLabel.value(j);
+        CStackedLabel* label = m_mapLabel.value(j);
         label->setText(ProgramName);
+        label->setHighlight(false);
+        label->setVisible(true);
     }
   
     m_OnlyAddCleaningProgram = bOnlyAddCleaningProgram;
@@ -264,8 +269,9 @@ void CFavoriteProgramsPanelWidget::RetranslateUI()
         QString ProgramId = m_FavProgramIDs.at(j);
         QString ProgramName = mp_ProgramList->GetProgram(ProgramId)->GetName();
 
-        CProgramLabel* label = m_mapLabel.value(j);
-        label->setText(ProgramName);
+        CStackedLabel* label = m_mapLabel.value(j);
+        label->setText(ProgramName, label->IsTextHighlight());
+        label->setHighlight(label->IsTextHighlight());
     }
 
     if (!m_NewSelectedProgramId.isEmpty())

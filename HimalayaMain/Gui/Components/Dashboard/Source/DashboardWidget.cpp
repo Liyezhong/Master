@@ -84,7 +84,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), ui->programPanelWidget, OnSelectEndDateTime(const QDateTime &));
 
     CONNECTSIGNALSLOT(mp_wdgtDateTime, RequestAsapDateTime(), this, RequestAsapDateTime());
-    CONNECTSIGNALSLOT(this, SendAsapDateTime(int, bool), mp_wdgtDateTime, OnGetASAPDateTime(int, bool));
+    CONNECTSIGNALSLOT(this, SendAsapDateTime(int, bool, bool), mp_wdgtDateTime, OnGetASAPDateTime(int, bool, bool));
 
     CONNECTSIGNALSIGNAL(this, ResetFocus(bool), ui->programPanelWidget, ResetFocus(bool));
     CONNECTSIGNALSIGNAL(this, AddItemsToFavoritePanel(bool), ui->programPanelWidget, AddItemsToFavoritePanel(bool));
@@ -1375,7 +1375,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     m_bIsFirstStepFixation = IsFixationInFirstStep();
     emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_bIsFirstStepFixation, m_StationList, cmd.GetFirstProgramStepIndex());
     emit ProgramSelected(m_SelectedProgramId, m_StationList);
-    emit SendAsapDateTime(asapEndTime, m_bIsFirstStepFixation);
+    emit SendAsapDateTime(asapEndTime, m_bIsFirstStepFixation, false);
     emit UpdateSelectedStationList(m_StationList);
     m_ProgramStageStatus = Undefined;
 }
@@ -1468,7 +1468,7 @@ void CDashboardWidget::RequestAsapDateTime()
 
     m_AsapEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 
-    emit SendAsapDateTime(asapEndTime, m_bIsFirstStepFixation);
+    emit SendAsapDateTime(asapEndTime, m_bIsFirstStepFixation, true);
 }
 
 void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd)
