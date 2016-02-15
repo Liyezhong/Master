@@ -933,43 +933,26 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     }
     else if (PSSM_PROCESSING == m_StateAtPause)
     {
-        if (!m_IsProcessing) //First time to enter soak scenario
+        if (now <= m_TimeStamps.ProposeSoakStartTime)
         {
-            if ((now - m_PauseStartTime) >= m_delayTime*1000)
+            m_CurProgramStepInfo.durationInSeconds -= (now-m_PauseStartTime)/1000;
+            return;
+        }
+        if (now > m_TimeStamps.ProposeSoakStartTime)
+        {
+            m_CurProgramStepInfo.durationInSeconds -= m_delayTime;
+            m_IsProcessing = false;
+            m_delayTime = 0;
+            if (m_PauseStartTime <= m_TimeStamps.ProposeSoakStartTime)
             {
-                offset = now - m_PauseStartTime - m_delayTime*1000;
-                m_CurProgramStepInfo.durationInSeconds -= m_delayTime;
-                m_delayTime = 0;
+                offset = now - m_TimeStamps.ProposeSoakStartTime;
             }
             else
             {
-                m_CurProgramStepInfo.durationInSeconds -= (now-m_PauseStartTime)/1000;
-                m_delayTime -= (now-m_PauseStartTime)/1000;
-                return;
+                m_CurProgramStepInfo.durationInSeconds -= (m_PauseStartTime - m_TimeStamps.ProposeSoakStartTime)/1000;
+                offset = now - m_PauseStartTime;
             }
-        }
-        else
-        {
-            if (now <= m_TimeStamps.ProposeSoakStartTime)
-            {
-                return;
-            }
-            if (now > m_TimeStamps.ProposeSoakStartTime)
-            {
-                m_CurProgramStepInfo.durationInSeconds -= m_delayTime;
-                m_IsProcessing = false;
-                m_delayTime = 0;
-                if (m_PauseStartTime <= m_TimeStamps.ProposeSoakStartTime)
-                {
-                    offset = now - m_TimeStamps.ProposeSoakStartTime;
-                }
-                else
-                {
-                    m_CurProgramStepInfo.durationInSeconds -= (m_PauseStartTime - m_TimeStamps.ProposeSoakStartTime)/1000;
-                    offset = now - m_PauseStartTime;
-                }
 
-            }
         }
     }
     else
@@ -3925,6 +3908,10 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
             {
                 m_IsFirstProcessingForDelay = false;
                 m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
+            }
+            else
+            {
+                m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
             }
         }
         else
