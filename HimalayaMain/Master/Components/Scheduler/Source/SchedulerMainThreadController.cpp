@@ -911,24 +911,26 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     qint64 offset = 0;
     if (PSSM_FILLING_LEVELSENSOR_HEATING == m_StateAtPause || PSSM_FILLING_RVROD_HEATING == m_StateAtPause
             || PSSM_FILLING == m_StateAtPause || PSSM_RV_MOVE_TO_SEAL == m_StateAtPause)
-    {
-        if ((now-m_PauseStartTime) > m_delayTime*1000)
+    {        
+        if (m_CurProgramStepIndex == 0)
         {
-            offset = now - m_PauseStartTime - m_delayTime*1000;
-            if (m_CurProgramStepIndex == 0)
+            if ((now-m_PauseStartTime) > m_delayTime*1000)
             {
+                offset = now - m_PauseStartTime - m_delayTime*1000;
                 m_CurProgramStepInfo.durationInSeconds -= m_delayTime;
+                m_delayTime = 0;
             }
-            m_delayTime = 0;
+            else
+            {
+                offset = 0;
+                m_delayTime -= (now-m_PauseStartTime)/1000;
+                m_CurProgramStepInfo.durationInSeconds -= (now-m_PauseStartTime)/1000;
+                return;
+            }
         }
         else
         {
-            offset = 0;
-            m_delayTime -= (now-m_PauseStartTime)/1000;
-            if (m_CurProgramStepIndex == 0)
-            {
-                m_CurProgramStepInfo.durationInSeconds -= (now-m_PauseStartTime)/1000;
-            }
+            offset = now - m_PauseStartTime;
         }
     }
     else if (PSSM_PROCESSING == m_StateAtPause)
