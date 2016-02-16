@@ -935,7 +935,6 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     {
         if (now <= m_TimeStamps.ProposeSoakStartTime)
         {
-            m_CurProgramStepInfo.durationInSeconds -= (now-m_PauseStartTime)/1000;
             return;
         }
         if (now > m_TimeStamps.ProposeSoakStartTime)
