@@ -31,6 +31,7 @@
 #include <Dashboard/Include/ProgramRunningPanelWidget.h>
 #include <Dashboard/Include/CassetteNumberInputWidget.h>
 #include <Dashboard/Include/ProgramLabel.h>
+#include <Dashboard/Include/StackedLabel.h>
 #include <Dashboard/Include/ProgramPanelWidget.h>
 #include <Dashboard/Include/IconTitlePanelFrame.h>
 #include <QVBoxLayout>
@@ -126,9 +127,14 @@ void CTestDashboard::utTestDashboard()
 
     CProgramLabel *progLabel = new CProgramLabel;
     progLabel->setText("program label");
-    progLabel->setHighlight(false);
-    progLabel->setHighlight(true);
+    progLabel->setText("program label", true);
 
+    CStackedLabel *stackedLabel = new CStackedLabel();
+    stackedLabel->setText("StackLabel", true);
+    stackedLabel->setText("StackLabel", false);
+    stackedLabel->setHighlight(true);
+    stackedLabel->setHighlight(false);
+    stackedLabel->IsTextHighlight();
 //    CProgramPanelWidget *progPanel = new CProgramPanelWidget;
 //    progPanel->ChangeStartButtonToStartState();
 //    progPanel->ChangeStartButtonToStopState();
