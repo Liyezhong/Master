@@ -940,18 +940,28 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
             return;
         }
         if (now > m_TimeStamps.ProposeSoakStartTime)
-        {
-            m_CurProgramStepInfo.durationInSeconds -= m_delayTime;
-            m_IsProcessing = false;
-            m_delayTime = 0;
-            if (m_PauseStartTime <= m_TimeStamps.ProposeSoakStartTime)
+        {           
+            if (m_CurProgramStepIndex == 0)
             {
-                offset = now - m_TimeStamps.ProposeSoakStartTime;
+                m_CurProgramStepInfo.durationInSeconds -= m_delayTime;
+                m_IsProcessing = false;
+                m_delayTime = 0;
+                if (m_PauseStartTime <= m_TimeStamps.ProposeSoakStartTime)
+                {
+                    offset = now - m_TimeStamps.ProposeSoakStartTime;
+                }
+                else
+                {
+                    m_CurProgramStepInfo.durationInSeconds -= (m_PauseStartTime - m_TimeStamps.ProposeSoakStartTime)/1000;
+                    offset = now - m_PauseStartTime;
+                }
             }
             else
             {
+                m_IsProcessing = false;
                 m_CurProgramStepInfo.durationInSeconds -= (m_PauseStartTime - m_TimeStamps.ProposeSoakStartTime)/1000;
                 offset = now - m_PauseStartTime;
+
             }
 
         }
