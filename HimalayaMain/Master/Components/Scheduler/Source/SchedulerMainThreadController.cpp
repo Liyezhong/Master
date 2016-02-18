@@ -5729,19 +5729,19 @@ void SchedulerMainThreadController::GetStringIDList(quint32 ErrorID,
         case 513040161:
         case 513040163:
             EventStringParList<<QString("%1").arg(ErrorID);
-            EventRDStringParList<<QString("%1").arg(m_CurrentBottlePosition.StationID);
+            EventRDStringParList<<QString("%1").arg(m_CurProgramStepInfo.stationID);
             break;
         case 513040203:
         case 513040201:
             EventStringParList<<QString("%1").arg(ErrorID);
-            EventRDStringParList<<QString("%1").arg(m_CurrentBottlePosition.StationID)<<QString("%1").arg(m_SchedulerCommandProcessor->HardwareMonitor().PressureAL);
+            EventRDStringParList<<QString("%1").arg(m_CurProgramStepInfo.stationID)<<QString("%1").arg(m_SchedulerCommandProcessor->HardwareMonitor().PressureAL);
             break;
         case 513040014:
         case 513040241:
         case 511040101:
         case 511040221:
             EventStringParList<<QString("%1").arg(ErrorID);
-            EventRDStringParList<<QString("%1").arg(m_CurrentBottlePosition.StationID);
+            EventRDStringParList<<QString("%1").arg(m_CurProgramStepInfo.stationID);
             break;
         case 513040501:
         case 512040520:
