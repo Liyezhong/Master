@@ -672,8 +672,7 @@
 			<Step ID="1" Type="ACT" Action="null"/>
 	    </Event>
 		<Event Code="" ErrorID="67175225" ErrorType="INFO" AlarmType="" LogLevel="High" UserLog="TRUE"  EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="67175225" ButtonType="OK"/>
-			<Step ID="1" Type="ACT" Action="null"/>
+			<Step ID="0" Type="MSG" StringID="67175225" ButtonType=""/>
 		</Event>
 		<Event Code="" ErrorID="512050411" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67176014" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176207" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>

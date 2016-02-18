@@ -1063,42 +1063,42 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             if(mp_DataManager && mp_DataManager->GetProgramList() && mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID))
             {
                 const DataManager::CProgram* program = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID);
-                quint32 EVENT_CODE_START_PROGRAM = EVENT_SCHEDULER_START_PROGRAM;
-                Global::tTranslatableStringList  translatableStringList;
-                QStringList paramStringList;
                 if (!m_ReagentExpiredFlag.isEmpty())
                 {
                     int index = m_ReagentExpiredFlag.indexOf(':');
                     QString reagentID = m_ReagentExpiredFlag.left(index);
                     QString stationID = m_ReagentExpiredFlag.mid(index + 1);
                     CReagent* reagent = mp_DataManager->GetReagentList()->GetReagent(reagentID);
-                    EVENT_CODE_START_PROGRAM = EVENT_SCHEDULER_START_PROGRAM_WITH_EXPIRED_REAGENT;
+                    Global::tTranslatableStringList  expiredTranslatableStringList;
+                    QStringList expiredParamStringList;
                     if(program->IsLeicaProgram()) {
-                        translatableStringList << Global::TranslatableString(program->GetNameID().toUInt())
+                        expiredTranslatableStringList << Global::TranslatableString(program->GetNameID().toUInt())
                                                << Global::TranslatableString(reagent->GetReagentNameID().toUInt())
                                                << stationID;
+                        Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_START_PROGRAM_WITH_EXPIRED_REAGENT, expiredTranslatableStringList);
                     }
                     else {
-                        paramStringList << program->GetName() << reagent->GetReagentName() << stationID;
-                    }
-                }
-                else {
-                    if(program->IsLeicaProgram()) {
-                        translatableStringList << Global::TranslatableString(program->GetNameID().toUInt());
-                    }
-                    else {
-                        paramStringList << program->GetName();
+                        expiredParamStringList << program->GetName() << reagent->GetReagentName() << stationID;
+                        RaiseEvent(EVENT_SCHEDULER_START_PROGRAM_WITH_EXPIRED_REAGENT, expiredParamStringList);
                     }
                 }
 
+                Global::tTranslatableStringList  translatableStringList;
+                QStringList paramStringList;
+                if(program->IsLeicaProgram()) {
+                    translatableStringList << Global::TranslatableString(program->GetNameID().toUInt());
+                }
+                else {
+                    paramStringList << program->GetName();
+                }
 
                 if(program->IsLeicaProgram())
                 {
-                    Global::EventObject::Instance().RaiseEvent(EVENT_CODE_START_PROGRAM, translatableStringList);
+                    Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_START_PROGRAM, translatableStringList);
                 }
                 else
                 {
-                    RaiseEvent(EVENT_CODE_START_PROGRAM, paramStringList);
+                    RaiseEvent(EVENT_SCHEDULER_START_PROGRAM, paramStringList);
                 }
             }
 
@@ -5620,6 +5620,17 @@ void SchedulerMainThreadController::OnBackToBusy()
         Global::tRefType tfRef = GetNewCommandRef();
         SendCommand(tfRef, Global::CommandShPtr_t(commandUpdateProgramEndTime));
     }
+
+    //Show pausing related message box again
+    if (m_bWaitToPause || m_bWaitToPauseCmdYes)
+    {
+        SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+    }
+    if (m_IsResumeFromPause)
+    {
+        SendProgramAcknowledge(SHOW_RESUME_MSG_DLG);
+    }
+
 }
 
 void SchedulerMainThreadController::OnFillingHeatingRV()
