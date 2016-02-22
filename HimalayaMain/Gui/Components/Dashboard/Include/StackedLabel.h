@@ -8,11 +8,26 @@ namespace Ui {
 class StackedLabel;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition of class CStackedLabel, it is used to show the favorite programs
+ *
+ */
+/****************************************************************************/
 class CStackedLabel : public QStackedWidget
 {
     Q_OBJECT
     
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Constructor of class CStackedLabel
+     *
+     *  \param parent = the parent of this widget
+     *
+     *  \return from CStackedLabel
+     */
+    /****************************************************************************/
     explicit CStackedLabel(QWidget *parent = 0);
     ~CStackedLabel();
    /****************************************************************************/
@@ -28,7 +43,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  check this label is in highlight or not
-     *
+     *  \return from IsTextHighlight
      *
      */
     /****************************************************************************/
