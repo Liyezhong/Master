@@ -914,15 +914,14 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     {        
         if (m_CurProgramStepIndex == 0)
         {
-            if ((now-m_PauseStartTime) > m_delayTime*1000)
+            if ((now-m_PauseStartTime) > static_cast<qint64>(m_delayTime*1000))
             {
-                offset = now - m_PauseStartTime - m_delayTime*1000;
+                offset = now - m_PauseStartTime - static_cast<qint64>(m_delayTime*1000);
                 m_CurProgramStepInfo.durationInSeconds -= m_delayTime;
                 m_delayTime = 0;
             }
             else
             {
-                offset = 0;
                 m_delayTime -= (now-m_PauseStartTime)/1000;
                 m_CurProgramStepInfo.durationInSeconds -= (now-m_PauseStartTime)/1000;
                 return;
@@ -940,15 +939,14 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
         {
             if (m_CurProgramStepIndex == 0)
             {
-                if ((now-m_PauseStartTime) > m_delayTime*1000)
+                if ((now-m_PauseStartTime) > static_cast<qint64>(m_delayTime*1000))
                 {
-                    offset = now - m_PauseStartTime - m_delayTime*1000;
+                    offset = now - m_PauseStartTime - static_cast<qint64>(m_delayTime*1000);
                     m_CurProgramStepInfo.durationInSeconds -= m_delayTime;
                     m_delayTime = 0;
                 }
                 else
                 {
-                    offset = 0;
                     m_delayTime -= (now-m_PauseStartTime)/1000;
                     m_CurProgramStepInfo.durationInSeconds -= (now-m_PauseStartTime)/1000;
                     return;
