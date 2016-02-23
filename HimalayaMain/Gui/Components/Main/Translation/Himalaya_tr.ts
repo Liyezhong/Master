@@ -87,7 +87,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="35"/>
         <source>Bottle Check failed! Please check the details in the Bottle Check status list.</source>
-        <translation>Şişe Kontrolü başarısız oldu! Lütfen Şişe Kontrolü durum listesindeki detayları kontrol edin.</translation>
+        <translation>Bidon Kontrolü başarısız oldu! Lütfen Bidon Kontrolü durum listesindeki detayları kontrol edin.</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="36"/>
@@ -102,7 +102,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="40"/>
         <source>Bottle check</source>
-        <translation>Şişe kontrolü</translation>
+        <translation>Bidon kontrolü</translation>
     </message>
 </context>
 <context>
@@ -460,7 +460,7 @@
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MenuGroup.cpp" line="42"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MenuGroup.cpp" line="108"/>
         <source>Menu</source>
-        <translation></translation>
+        <translation>Menü</translation>
     </message>
 </context>
 <context>
@@ -619,7 +619,7 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="46"/>
         <source>Cycles until change</source>
-        <translation>Dğşkl. kdr kln skls s.</translation>
+        <translation>Dğşkl. kdr kln döngü s.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="47"/>
@@ -644,7 +644,7 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="53"/>
         <source>Enter Cycle Value</source>
-        <translation>Siklus Değerini Girin</translation>
+        <translation>Döngü Değerini Girin</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="54"/>
@@ -896,7 +896,7 @@
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="296"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="306"/>
         <source>Cycles until change</source>
-        <translation>Dğşkl. kdr kln skls s.</translation>
+        <translation>Dğşkl. kdr kln döngü s.</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="298"/>
@@ -1346,7 +1346,7 @@ Tarihi</translation>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="734"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="753"/>
         <source>Cycles until change</source>
-        <translation>Dğşkl. kdr kln skls s.</translation>
+        <translation>Dğşkl. kdr kln döngü s.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="737"/>
@@ -1678,10 +1678,8 @@ Tarihi</translation>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1428"/>
         <source>Pausing...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
-        <translatorcomment>Duraklatılıyor...
-Hazne kapağını açmayın ve reaktif şişelerinden hiçbirinin fişini çekmeyin.</translatorcomment>
-        <translation>Pausing…
-Don&apos;t open the retort lid and unplug any reagent bottles.</translation>
+        <translation>Duraklatılıyor...
+Hazne kapağını açmayın ve reaktif şişelerinden hiçbirinin fişini çekmeyin.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1431"/>
@@ -2839,7 +2837,7 @@ Hazne kapağını açmayın ve reaktif şişelerinden hiçbirinin fişini çekme
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="568"/>
         <source>Cycles until change</source>
-        <translation>Dğşkl. kdr kln skls s.</translation>
+        <translation>Dğşkl. kdr kln döngü s.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="571"/>
@@ -2889,7 +2887,7 @@ Hazne kapağını açmayın ve reaktif şişelerinden hiçbirinin fişini çekme
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="598"/>
         <source>Enter Cycle Value</source>
-        <translation>Siklus Değerini Girin</translation>
+        <translation>Döngü Değerini Girin</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="601"/>
@@ -3332,7 +3330,7 @@ Hazne kapağını açmayın ve reaktif şişelerinden hiçbirinin fişini çekme
     <message>
         <location filename="../../Settings/Forms/BottleCheckStatusDlg.ui" line="26"/>
         <source>Bottle check status:</source>
-        <translation>Şişe kontrol durumu:</translation>
+        <translation>Bidon kontrol durumu:</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/BottleCheckStatusDlg.ui" line="55"/>
@@ -3387,12 +3385,12 @@ Hazne kapağını açmayın ve reaktif şişelerinden hiçbirinin fişini çekme
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="161"/>
         <source>Bottle Check failed! Please check the details in the Bottle Check status list.</source>
-        <translation>Şişe Kontrolü başarısız oldu! Lütfen Şişe Kontrolü durum listesindeki detayları kontrol edin.</translation>
+        <translation>Bidon Kontrolü başarısız oldu! Lütfen Bidon Kontrolü durum listesindeki detayları kontrol edin.</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="162"/>
         <source>Bottle check</source>
-        <translation>Şişe kontrolü</translation>
+        <translation>Bidon kontrolü</translation>
     </message>
 </context>
 <context>
@@ -3872,7 +3870,7 @@ Hazne kapağını açmayın ve reaktif şişelerinden hiçbirinin fişini çekme
     <message>
         <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="145"/>
         <source>Bottle check</source>
-        <translation>Şişe kontrolü</translation>
+        <translation>Bidon kontrolü</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="203"/>

@@ -72,10 +72,12 @@ public:
     static QString NAME; ///< Command name.
     /*!
       * \brief get station id
+      * \return from StationID, get the station ID
     */
     inline QString StationID() const { return m_StationID; }
     /*!
       * \brief get bottle check status type
+      * \return from BottleCheckStatusType, get the results of bottle check
     */
     inline DataManager::BottleCheckStatusType_t BottleCheckStatusType() const { return m_BottleCheckStatusType; }
 private:

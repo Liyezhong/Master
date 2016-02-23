@@ -433,7 +433,7 @@
     <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="50"/>
         <source>Installation</source>
-        <translation>Plaatsing van het apparaat</translation>
+        <translation>Installatie</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="277"/>
@@ -1235,7 +1235,7 @@ datum</translation>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2054"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
-        <translation>Nieuwe software is beschikbaar. Klik op &apos;SW-update op afstand&apos; om de update te starten.</translation>
+        <translation>Nieuwe software is beschikbaar. Klik op &quot;SW-update op afstand&quot; om de update te starten.</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2060"/>
@@ -1698,8 +1698,7 @@ Open het retortdeksel niet en koppel eventuele reagensflessen los.</translation>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1450"/>
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning. Load the specimens into the retort and make sure that the retort is locked.</source>
-        <translation>Controleer het niveau van alle reagentia en reinig de retortniveausensor, de afdichtring van de retort en het retortfilter.
-Plaats het retortfilter weer na reiniging. Laad de preparaten in de retort en zorg dat de retort is afgesloten. </translation>
+        <translation>Controleer het niveau van alle reagentia en reinig de retortniveausensor, de afdichtring van de retort en het retortfilter. Plaats the retort filter terug na het reinigen. Laad de specimens in de retort en controleer of de retort is vergrendeld.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1429"/>
@@ -1714,15 +1713,12 @@ Plaats het retortfilter weer na reiniging. Laad de preparaten in de retort en zo
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1426"/>
         <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential hazard of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
-        <translation>Het deksel van de retort is geopend. Sluit het deksel en klik op OK.
-Draag adembescherming op de juiste wijze om aan de potentiële gevaren van reagensdampen te ontsnappen.
-Raak de niveausensor niet aan. Deze is heet!</translation>
+        <translation>Het deksel van de retort is geopend. Sluit het deksel en klik op OK. Neem beschermende maatregelen voor potentiëel schadelijk dampen. Raak de niveausensore niet aan, deze kunnen heet zijn!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1430"/>
         <source>Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press &quot;Ok&quot; button.</source>
-        <translation>Verwijder de preparaten en sluit de retort af.
-Bevestig dat de preparaten zijn verwijderd en dat de retort leeg is; druk dan op de OK-knop.</translation>
+        <translation>Verwijder de preparaten en sluit de retort af. Bevestig dat de preparaten zijn verwijdered en de retort leef is, druk daarna op &quot;OK&quot;.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1432"/>
@@ -1732,7 +1728,7 @@ Bevestig dat de preparaten zijn verwijderd en dat de retort leeg is; druk dan op
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1433"/>
         <source>Program &quot;%1&quot; has completed!</source>
-        <translation>Programma &quot;%1&quot; is uitgevoerd!</translation>
+        <translation>Programma &quot;%1&quot; is voltooid!!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1434"/>
@@ -3500,7 +3496,7 @@ Open het retortdeksel niet en koppel eventuele reagensflessen los.</translation>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="88"/>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="156"/>
         <source>SoftwareVersion: </source>
-        <translation>Softwareversie</translation>
+        <translation>Softwareversie: </translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="108"/>
@@ -3511,7 +3507,7 @@ Open het retortdeksel niet en koppel eventuele reagensflessen los.</translation>
     <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="151"/>
         <source>Installation</source>
-        <translation>Plaatsing van het apparaat</translation>
+        <translation>Installatie</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="152"/>
@@ -3680,7 +3676,7 @@ Open het retortdeksel niet en koppel eventuele reagensflessen los.</translation>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="143"/>
         <source>Installation</source>
-        <translation>Plaatsing van het apparaat</translation>
+        <translation>Installatie</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="154"/>
@@ -3690,7 +3686,7 @@ Open het retortdeksel niet en koppel eventuele reagensflessen los.</translation>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="165"/>
         <source>Data Mgmt.</source>
-        <translation>Data-man.</translation>
+        <translation>Data Mgmt.</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="176"/>

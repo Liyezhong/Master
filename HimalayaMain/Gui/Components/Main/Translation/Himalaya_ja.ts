@@ -140,7 +140,7 @@
     <message>
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="123"/>
         <source>The total number of cassettes should be between 1 and 200.</source>
-        <translation>カセットの合計数は1から200の間である必要があります。</translation>
+        <translation>カセットの合計数は1～200個です。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="126"/>
@@ -150,7 +150,7 @@
     <message>
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="127"/>
         <source>Add more cassettes:</source>
-        <translation>さらにカセットを追加：</translation>
+        <translation>カセットを追加：</translation>
     </message>
 </context>
 <context>
@@ -498,12 +498,12 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="77"/>
         <source>Do you really want to delete the selected program step?</source>
-        <translation>選択したプログラムステップを削除しますか?</translation>
+        <translation>選択したステップを削除しますか?</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="78"/>
         <source>Please enter a valid Program Name</source>
-        <translation>有効なプログラム名を入力してください</translation>
+        <translation>プログラム名を入力してください</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="79"/>
@@ -527,12 +527,12 @@
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="405"/>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="440"/>
         <source>Edit Program Step</source>
-        <translation>プログラムステップの編集</translation>
+        <translation>ステップの編集</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="425"/>
         <source>New Program Step</source>
-        <translation>新規プログラムステップ</translation>
+        <translation>新規ステップ</translation>
     </message>
 </context>
 <context>
@@ -614,17 +614,17 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="45"/>
         <source>Cassettes until change</source>
-        <translation>変更までのカセット数</translation>
+        <translation>交換までのカセット数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="46"/>
         <source>Cycles until change</source>
-        <translation>変更までのサイクル数</translation>
+        <translation>交換までのサイクル数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="47"/>
         <source>Days until change</source>
-        <translation>変更までの日数</translation>
+        <translation>交換までの日数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="48"/>
@@ -733,12 +733,12 @@
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="52"/>
         <source>IP address is not correct</source>
-        <translation>IPアドレスが不正です。</translation>
+        <translation>IPアドレスに誤りがあります。</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="53"/>
         <source>Network port is not correct.</source>
-        <translation>ネットワークポートが不正です。</translation>
+        <translation>ネットワークポートに誤りがあります。</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="56"/>
@@ -782,7 +782,7 @@
     <message>
         <location filename="../../Programs/Source/ProgramModel.cpp" line="250"/>
         <source>Name</source>
-        <translation>氏名</translation>
+        <translation>プログラム名</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramModel.cpp" line="252"/>
@@ -808,12 +808,12 @@
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="22"/>
         <source>Aborted.</source>
-        <translation>中止されました。</translation>
+        <translation>中止しました。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="23"/>
         <source>Completed!</source>
-        <translation>完了しました!</translation>
+        <translation>完了しました。</translation>
     </message>
 </context>
 <context>
@@ -890,19 +890,19 @@
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="294"/>
         <source>Cassettes until change</source>
-        <translation>変更までのカセット数</translation>
+        <translation>交換までのカセット数</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="296"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="306"/>
         <source>Cycles until change</source>
-        <translation>変更までのサイクル数</translation>
+        <translation>交換までのサイクル数</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="298"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="308"/>
         <source>Days until change</source>
-        <translation>変更までの日数</translation>
+        <translation>交換までの日数</translation>
     </message>
 </context>
 <context>
@@ -964,9 +964,8 @@
         <source>Cassettes
 since
 change</source>
-        <translation>変更から
-のカセッ
-ト数</translation>
+        <translation>使用カセ
+ット数</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="373"/>
@@ -974,9 +973,8 @@ change</source>
         <source>Cycles
 since
 change</source>
-        <translation>変更から
-のサイク
-ル</translation>
+        <translation>使用サイ
+クル数</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="375"/>
@@ -989,7 +987,8 @@ Date</source>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="388"/>
         <source>Exchange
 Date</source>
-        <translation>交換日付</translation>
+        <translation>交換した
+日付</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="390"/>
@@ -1114,7 +1113,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1112"/>
         <source>Communication error. Please try again or contact your local service.</source>
-        <translation>通信エラー。再試行するか、お近くのサービス窓口へ連絡してください。</translation>
+        <translation>通信エラー。再試行するか、サービスへ連絡してください。</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1113"/>
@@ -1218,7 +1217,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1140"/>
         <source>Getting the daily run log file ...</source>
-        <translation>日次ログファイルを取得中 ...</translation>
+        <translation>ログファイルを取得中 …</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1333"/>
@@ -1243,7 +1242,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2066"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
-        <translation>RCサーバーからの新規ソフトウェアのダウンロードに失敗しました。サービス窓口へご連絡ください。</translation>
+        <translation>RCServerからの新規ソフトウェアのダウンロードに失敗しました。サービスへご連絡ください。</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2071"/>
@@ -1338,19 +1337,19 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="731"/>
         <source>Cassettes until change</source>
-        <translation>変更までのカセット数</translation>
+        <translation>交換までのカセット数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="734"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="753"/>
         <source>Cycles until change</source>
-        <translation>変更までのサイクル数</translation>
+        <translation>交換までのサイクル数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="737"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="756"/>
         <source>Days until change</source>
-        <translation>変更までの日数</translation>
+        <translation>交換までの日数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="748"/>
@@ -1402,9 +1401,8 @@ Date</source>
         <source>Cassettes
 since
 change</source>
-        <translation>変更から
-のカセッ
-ト数</translation>
+        <translation>使用カセ
+ット数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="483"/>
@@ -1412,9 +1410,8 @@ change</source>
         <source>Cycles
 since
 change</source>
-        <translation>変更から
-のサイク
-ル</translation>
+        <translation>使用サイ
+クル数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="486"/>
@@ -1427,7 +1424,8 @@ Date</source>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="505"/>
         <source>Exchange
 Date</source>
-        <translation>交換日付</translation>
+        <translation>交換した
+日付</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="507"/>
@@ -1563,17 +1561,17 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="267"/>
         <source>Program End Date/Time cannot be earlier than the ASAP End Date/Time.</source>
-        <translation>プログラム終了の日付と時刻をASAP終了の日付と時刻よりも前にすることはできません。</translation>
+        <translation>プログラム終了の日時をASAPの日時よりも前にはできません。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="268"/>
         <source>Program End Date/Time cannot be later than one week.</source>
-        <translation>プログラム終了の日付と時刻を1週間後以降にすることはできません。</translation>
+        <translation>プログラム終了の日時は1週間以内に設定してください。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="269"/>
         <source>Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a fixation reagent.</source>
-        <translation>最初のプログラムステップが固定試薬ではないため、プログラム終了の日付と時刻をASAP終了の日付と時刻よりも後にすることはできません。</translation>
+        <translation>最初のステップが固定試薬ではないため、遅延スタートすることができません。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="270"/>
@@ -1624,22 +1622,22 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1415"/>
         <source>No safe reagent for the Program step &quot;%1&quot; of &quot;%2&quot;. Would you like to continue?</source>
-        <translation>プログラムステップ&quot;%1&quot; / &quot;%2&quot;には安全な試薬がありません。続行しますか?</translation>
+        <translation>ステップ &quot;%1&quot; / &quot;%2&quot; には安全な試薬がありません。続行しますか?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1416"/>
         <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station.  A station can be used only once in the program. Please assign a separate station for the reagent of this step.</source>
-        <translation>プログラムステップ&quot;%1&quot; / &quot;%2&quot;は、対応する試薬ステーションを見つけられません。ステーションはプログラム内で1度しか使用できません。このステップの試薬には別のステーションを割り当ててください。</translation>
+        <translation>ステップ &quot;%1&quot; / &quot;%2&quot; は、対応する試薬ステーションを見つけられません。ステーションはプログラム内で1度しか使用できません。このステップの試薬には別のステーションを割り当ててください。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1417"/>
         <source>You cannot start the program, because Station &quot;%1&quot; is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;.</source>
-        <translation>ステーションが&quot;%1&quot;プログラムステップ&quot;%2&quot; / &quot;%3&quot;で空に設定されているため、プログラムを開始できません。</translation>
+        <translation>ステップ&quot;%2&quot; / &quot;%3&quot;で使用するステーションが&quot;%1&quot;が空に設定されているため、プログラムを開始できません。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1418"/>
         <source>Program cannot start because the paraffin is not melted completely and the first program step is not a fixation reagent.</source>
-        <translation>パラフィンが完全に溶解しておらず、最初のプログラムステップが固定試薬ではないため、プログラムが開始できません。</translation>
+        <translation>パラフィンが完全に溶融しておらず、最初のステップが固定試薬ではないため、プログラムを開始できません。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1419"/>
@@ -1649,7 +1647,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1420"/>
         <source>Program will be delayed briefly in the first step as the paraffin is not melted completely. Would you like to continue?</source>
-        <translation>パラフィンが完全に溶解していないため、プログラムが最初のステップで若干遅延します。続行しますか?</translation>
+        <translation>パラフィンが完全に溶融していないため、最初のステップで遅延します。続行しますか？</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1421"/>
@@ -1659,34 +1657,34 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1422"/>
         <source>Program &quot;%1&quot; has completed! Would you like to drain the retort?</source>
-        <translation>プログラム&quot;%1&quot;が完了しました! レトルトから排液しますか?</translation>
+        <translation>プログラム &quot;%1&quot; が完了しました。レトルトから排液しますか?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1424"/>
         <source>Tissue safety process has completed with warning. Would you like to drain the retort?</source>
-        <translation>組織保全プロセスが完了しましたが、警告があります。レトルトから排液しますか?</translation>
+        <translation>組織保護システムが作動しました。エラーがあります。レトルトから排液しますか?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1425"/>
         <source>The oven cover is open. Please close it then click the OK button.</source>
-        <translation>オーブンカバーが開いています。ふたを閉めて[OK]ボタンをクリックしてください。</translation>
+        <translation>オーブンカバーが開いています。カバーを閉めて[OK]ボタンをクリックしてください。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1428"/>
         <source>Pausing...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>一時停止中です…
-レトルト蓋を開かないで、試薬ボトルを外してください。</translation>
+レトルト蓋を開けないでください。試薬ボトルを外さないでください。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1431"/>
         <source>The retort is contaminated. Please start the cleaning program.</source>
-        <translation>レトルトが汚染されています。クリーニングプログラムを開始してください。</translation>
+        <translation>レトルトが汚れています。クリーニングプログラムを開始してください。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1444"/>
         <source>Retort temperature is too high. Please allow the retort to cool down before inserting specimens and starting the next program.</source>
-        <translation>レトルト温度が高すぎます。レトルト温度が下がってから、試料を挿入して次のプログラムを開始してください。</translation>
+        <translation>レトルト温度が高すぎます。レトルト温度が下がってから試料をセットし、プログラムを開始してください。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1449"/>
@@ -1696,13 +1694,12 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1450"/>
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning. Load the specimens into the retort and make sure that the retort is locked.</source>
-        <translation>すべての試薬のレベルを確認し、レトルト液位センサー、レトルトのシールリングおよびレトルトフィルターをクリーニングします。
-クリーニング後にレトルトフィルターを再度取り付けます。試料をレトルトにセットし、レトルトがロックされていることを確認します。</translation>
+        <translation>すべての試薬のレベルを確認し、レトルト液位センサー、レトルトのシールリングおよびレトルトフィルターをクリーニングしてください。クリーニング後にレトルトフィルターを再度取り付けてください。試料をレトルトにセットし、レトルトがロックされていることを確認してください。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1429"/>
         <source>Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.</source>
-        <translation>装置の予熱中です。装置が使用できるようになるまでの待機時間は最大で30分です。</translation>
+        <translation>装置の予熱中です。待機時間は最大で30分です。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1423"/>
@@ -1712,20 +1709,19 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1426"/>
         <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential hazard of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
-        <translation>レトルト蓋が開いています。レトルト蓋を閉じ、「OK」をクリックします。
-試薬蒸気の危険を防ぐために呼吸用保護具を着用してください。
+        <translation>レトルト蓋が開いています。レトルト蓋を閉じ、「OK」をクリックしてください。
+試薬蒸気の危険を防ぐためにマスクを着用してください。
 液位センサーに触れないでください。高温です。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1430"/>
         <source>Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press &quot;Ok&quot; button.</source>
-        <translation>試料を取り除き、レトルトをロックします。
-試料が取り除かれ、レトルトが空になっていることを確認し、「OK」ボタンを押してください。</translation>
+        <translation>試料を取り除き、レトルトをロックしてください。試料が取り除かれ、レトルトが空になっていることを確認し、「OK」ボタンを押してください。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1432"/>
         <source>Program &quot;%1&quot; is aborted!</source>
-        <translation>プログラム&quot;%1&quot;が中止されました!</translation>
+        <translation>プログラム &quot;%1&quot; を中止しました。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1433"/>
@@ -1735,7 +1731,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1434"/>
         <source>Program &quot;%1&quot; has completed successfully!</source>
-        <translation>プログラム&quot;%1&quot;が正常に完了しました!</translation>
+        <translation>プログラム &quot;%1&quot; が正常に完了しました。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1435"/>
@@ -1750,17 +1746,17 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1438"/>
         <source>Leica Program can&apos;t be operated with RMS OFF.</source>
-        <translation>ライカプログラムは RMS をオフにして動作できません。</translation>
+        <translation>LeicaプログラムはRMSがオフの場合、使用できません。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1439"/>
         <source>Reagents needed for this program are expired. Please replace the expired ones with fresh reagents! Program will not start.</source>
-        <translation>このプログラムに必要な試薬は使用期限が切れています。試用期限が切れた試薬を新しい試薬と交換してください! プログラムが開始しません。</translation>
+        <translation>このプログラムに必要な試薬は使用期限が切れています。試用期限が切れた試薬を交換してください。 プログラムを開始できません。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1440"/>
         <source>Do you really want to start the Program with Expired Reagents?</source>
-        <translation>使用期限切れの試薬でプログラムを開始しますか?</translation>
+        <translation>使用期限切れの試薬でプログラムを開始しますか？</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1441"/>
@@ -1775,19 +1771,19 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1443"/>
         <source>Because the wait time is more than five minutes, the instrument will be re-heated and filled with safe reagents.</source>
-        <translation>時間が5分以上であるため、装置が再度加熱され、安全な試薬で満たされます。</translation>
+        <translation>5分以上経過しました。装置を再加熱し、安全な試薬で満たします。</translation>
     </message>
     <message utf8="true">
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1445"/>
         <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!Please confirm modifying Paraffin temperature.</source>
-        <translation>選択したプログラムを開始できません。パラフィン温度が設定したパラフィンバス温度と異なります(誤差2°C)。このプログラムのパラフィン温度が、パラフィンバス温度に適合するように調整されると、プログラムを直ちに開始できます。パラフィンバス温度を上げてパラフィンプログラム温度と同じにすると、プログラムは15時まで開始できません。パラフィン温度の変更を確認してください。</translation>
+        <translation>選択したプログラムを開始できません。パラフィン温度が設定したパラフィン槽の温度と異なります(誤差2℃)。パラフィン槽の設定温度を確認してください。パラフィン槽の設定温度を上げると、プログラムは最大15時間開始できません。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1452"/>
         <source>Resuming...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>再開中です..
-レトルト蓋を開かないで、試薬ボトルを外してください。</translation>
+レトルト蓋を開けないでください。試薬ボトルを外さないでください。</translation>
     </message>
 </context>
 <context>
@@ -1845,7 +1841,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="115"/>
         <source>Would you like to abort the program?</source>
-        <translation>プログラムを中止しますか?</translation>
+        <translation>プログラムを中止しますか？</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="117"/>
@@ -1913,7 +1909,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="179"/>
         <source>Program Details</source>
-        <translation>プログラム詳細</translation>
+        <translation>詳細</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="180"/>
@@ -1923,12 +1919,12 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="181"/>
         <source>Aborted.</source>
-        <translation>中止されました。</translation>
+        <translation>中止しました。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="182"/>
         <source>Completed!</source>
-        <translation>完了しました!</translation>
+        <translation>完了しました。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="183"/>
@@ -1956,17 +1952,17 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1045"/>
         <source>Please enter text</source>
-        <translation>テキストを入力してください。</translation>
+        <translation>テキスト入力してください</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1051"/>
         <source>The entered text is too short. The length must be at least %1 characters.</source>
-        <translation>入力されたテキストが短すぎます。テキスト長は%1以上でなければなりません。</translation>
+        <translation>入力されたテキストが短すぎます。%1文字以上で入力してください。</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1058"/>
         <source>The entered text is too long. The length must not be greater than %1 characters.</source>
-        <translation>入力されたテキストが長すぎます。テキスト長は%1文字を超えてはなりません。</translation>
+        <translation>入力されたテキストが長すぎます。%1文字以内で入力してください。</translation>
     </message>
 </context>
 <context>
@@ -2409,7 +2405,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="764"/>
         <source>The Program name cannot be empty!</source>
-        <translation>プログラム名を空白にはできません!</translation>
+        <translation>プログラム名を入力してください。</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="770"/>
@@ -2419,12 +2415,12 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1021"/>
         <source>Edit Program Step</source>
-        <translation>プログラムステップの編集</translation>
+        <translation>ステップの編集</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1022"/>
         <source>New Program Step</source>
-        <translation>新規プログラムステップ</translation>
+        <translation>新規ステップ</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1023"/>
@@ -2449,7 +2445,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1036"/>
         <source>Do you really want to delete the selected program step?</source>
-        <translation>選択したプログラムステップを削除しますか?</translation>
+        <translation>選択したステップを削除しますか?</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1037"/>
@@ -2459,7 +2455,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1038"/>
         <source>Please select a Program Icon</source>
-        <translation>プログラムアイコンを選択してください</translation>
+        <translation>アイコンを選択してください</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1039"/>
@@ -2511,7 +2507,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramStepDlg.ui" line="104"/>
         <source>Pressure/Vacuum type</source>
-        <translation>圧力/減圧タイプ</translation>
+        <translation>加圧/減圧</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramStepDlg.ui" line="110"/>
@@ -2572,7 +2568,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message utf8="true">
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="656"/>
         <source>The set temperature of paraffin baths differs from the temperature of the program by more than 2℃. Higher paraffin temperature may damage the tissue. Would you like to continue?</source>
-        <translation>設定されたパラフィンバスの温度がプログラムの温度と2℃以上異なります。パラフィン温度が高いと組織を傷める可能性があります。続行しますか?</translation>
+        <translation>設定されたパラフィン槽の温度がプログラムの温度と2℃以上異なります。パラフィン温度が高いと組織を傷める可能性があります。続行しますか?</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="660"/>
@@ -2600,7 +2596,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="593"/>
         <source>Name</source>
-        <translation>氏名</translation>
+        <translation>プログラム名</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="595"/>
@@ -2728,22 +2724,22 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="452"/>
         <source>Would you like to set Station %1 as empty?</source>
-        <translation>ステーション%1を空に設定しますか?</translation>
+        <translation>ステーション%1を空に設定しますか？</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="455"/>
         <source>Would you like to reset data for Station %1?</source>
-        <translation>ステーション%1のデータをリセットしますか?</translation>
+        <translation>ステーション%1のデータをリセットしますか？</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="458"/>
         <source>Would you like to set Station %1 as full?</source>
-        <translation>ステーション%1をフルに設定しますか?</translation>
+        <translation>ステーション%1を満杯に設定しますか？</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="461"/>
         <source>Please check that the retort is empty and clean prior starting bottle check and then press &quot;yes&quot;. Bottle check function will require approximately 7 minutes.</source>
-        <translation>ボトルチェック開始前にレトルトが空で清潔であることをチェックしてから[はい]を押してください。ボトルチェック機能には、約7分必要です。</translation>
+        <translation>ボトルチェック開始前にレトルトが空で洗浄済であることを確認してから[はい]を押してください。ボトルチェック機能には、約7分必要です。</translation>
     </message>
 </context>
 <context>
@@ -2809,7 +2805,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="154"/>
         <source>Cassettes until change:</source>
-        <translation>変更までのカセット数:</translation>
+        <translation>交換までのカセット数:</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="174"/>
@@ -2829,17 +2825,17 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="565"/>
         <source>Cassettes until change</source>
-        <translation>変更までのカセット数</translation>
+        <translation>交換までのカセット数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="568"/>
         <source>Cycles until change</source>
-        <translation>変更までのサイクル数</translation>
+        <translation>交換までのサイクル数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="571"/>
         <source>Days until change</source>
-        <translation>変更までの日数</translation>
+        <translation>交換までの日数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="574"/>
@@ -2869,7 +2865,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="589"/>
         <source>Failed to add the reagent. Please contact service.</source>
-        <translation>試薬の追加に失敗しました。サービス窓口へご連絡ください。</translation>
+        <translation>試薬の追加に失敗しました。サービスへご連絡ください。</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="592"/>
@@ -2899,12 +2895,12 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="719"/>
         <source>Do you really want to change the RMS controlling mode?  If reagents are being replaced, please reset data for those reagents on the Status page.</source>
-        <translation>RMSコントロールモードを変更しますか?  試薬を交換している場合は、ステータスページのこれらの試訳データをリセットしてください。</translation>
+        <translation>RMSモードを変更しますか？試薬を交換した場合は、試薬ステータスをリセットしてください。</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="721"/>
         <source>Do you really want to turn off RMS mode? Longer than the recommended use of cleaning reagents can cause paraffin blockages in reagent lines. The cleaning program can be run as usual. However, the reagent quality must be controlled carefully.</source>
-        <translation>RMSモードをオフにしますか? 洗浄試薬を推奨時間よりも長く使用すると、試薬ライン内でパラフィンがブロックされる可能性があります。洗浄プログラムは通常通り実行できますが、 試薬の品質管理に注意が必要です。</translation>
+        <translation>RMSモードをオフにしますか？洗浄試薬を推奨回数よりも多く使用すると、機器内部でパラフィンが詰まる可能性があります。洗浄プログラムは通常通り実行できますが、洗浄 試薬の交換をお勧めします。</translation>
     </message>
 </context>
 <context>
@@ -2969,7 +2965,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="42"/>
         <source>Processing Reagents</source>
-        <translation>試薬の処理</translation>
+        <translation>処理用試薬</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="57"/>
@@ -2997,7 +2993,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="115"/>
         <source>Cleaning Reagents</source>
-        <translation>クリーニング試薬</translation>
+        <translation>洗浄試薬</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="198"/>
@@ -3382,7 +3378,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="161"/>
         <source>Bottle Check failed! Please check the details in the Bottle Check status list.</source>
-        <translation>ボトルチェックに失敗しました! ボトルチェックステータスリストで詳細をチェックしてください。</translation>
+        <translation>ボトルチェックに失敗しました。ボトルチェックステータスリストで詳細を確認してください。</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="162"/>
@@ -3477,7 +3473,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="49"/>
         <source>Undefined instrument</source>
-        <translation>未定義装置</translation>
+        <translation>未定義の装置</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="59"/>
@@ -3640,12 +3636,12 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="254"/>
         <source>IP address is not correct</source>
-        <translation>IPアドレスが不正です。</translation>
+        <translation>IPアドレスに誤りがあります。</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="255"/>
         <source>Network port is not correct.</source>
-        <translation>ネットワークポートが不正です。</translation>
+        <translation>ネットワークポートに誤りがあります。</translation>
     </message>
 </context>
 <context>
@@ -3746,7 +3742,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="211"/>
         <source>International: dd.mm.yyyy</source>
-        <translation>国外：dd.mm.yyyy</translation>
+        <translation>インターナショナル：dd.mm.yyyy</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="218"/>
@@ -3779,7 +3775,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="22"/>
         <source>Preventive Maintenance Reminder [Days]</source>
-        <translation>予防メンテナンスリマインダ[日]</translation>
+        <translation>メンテナンス推奨日【日】</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="36"/>
@@ -3801,7 +3797,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="98"/>
         <source>Active carbon filter [Days]</source>
-        <translation>有効な活性炭フィルター [日間]</translation>
+        <translation>活性炭フィルター [日間]</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="123"/>
@@ -3836,7 +3832,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="321"/>
         <source>If the instrument is shut down now, you may have to wait %1 hours to ensure the paraffin is melted before running the next program. Do you really want to shut down your instrument?</source>
-        <translation>装置を今シャットダウンすると、次のプログラムを実行する前にパラフィンが溶解するまで%1時間待機しなければならない可能性があります。装置をシャットダウンしますか?</translation>
+        <translation>装置をシャットダウンするとパラフィンを溶融するために、%1時間プログラムを実行できません。装置をシャットダウンしますか？</translation>
     </message>
 </context>
 <context>
@@ -3862,7 +3858,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="38"/>
         <source>Paraffin bath temperature</source>
-        <translation>パラフィンバス温度：</translation>
+        <translation>パラフィン槽の温度：</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="145"/>
@@ -3882,12 +3878,12 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="295"/>
         <source>Do you really want to change the paraffin bath temperature?</source>
-        <translation>パラフィンバス温度を変更しますか?</translation>
+        <translation>パラフィン槽の温度を変更しますか?</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="297"/>
         <source>The paraffin melting temperature has been changed. Please click &quot;Yes&quot; to start remelting paraffin, and it will take %1 hours before using paraffin. If you want to skip the process of remelting paraffin, please visually confirm all paraffin are completely melted, then click &quot;No&quot; to use paraffin immediately.</source>
-        <translation>パラフィン溶解温度を変更しました。パラフィンの再溶解を開始するには、&quot;はい&quot; をクリックします。パラフィンの使用まで %1時間かかります。パラフィンの再溶解プロセスをスキップしたい場合は、すべてのパラフィンが完全に溶解したことを目視で確認し、&quot;いいえ&quot; をクリックして直ちにパラフィンを使用します。</translation>
+        <translation>パラフィン溶融温度を変更しました。パラフィンの再溶融を開始するには、&quot;はい&quot;を押してください。パラフィンの使用まで %1時間かかります。パラフィンの再溶融をスキップしたい場合は、すべてのパラフィンが完全に溶融したことを確認し、&quot;いいえ&quot;を押してください。</translation>
     </message>
 </context>
 <context>
