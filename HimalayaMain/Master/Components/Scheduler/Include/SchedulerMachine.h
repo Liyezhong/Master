@@ -729,7 +729,6 @@ public:
      *  \brief  Definition/Declaration of function EnterRcReHeating
      *  \param  Scenario = qint32
      *  \param  StationID = QString
-     *  \param  NeedResume = bool
      *  \param  Is5MinTimeOut = bool
      */
     /****************************************************************************/

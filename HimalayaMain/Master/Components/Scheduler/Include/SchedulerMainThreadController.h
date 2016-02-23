@@ -82,7 +82,7 @@ typedef struct {
 } ProgramStepInfor;
 
 const qint64 TIME_FOR_FIX_TIME = 180;    ///< seconds for fix time
-const quint64 EVENTID_ALARM_FOR_DRAIN = 610000100; // Event ID for alarm Draining
+const quint64 EVENTID_ALARM_FOR_DRAIN = 610000100; ///< Event ID for alarm Draining
 
 #define TIME_FOR_CLEANING_DRY_STEP            720    ///< seconds spending in dry step
 #define TIME_FOR_HEATING_LEVEL_SENSOR         30     ///< seconds for heating level sensor
@@ -1064,6 +1064,7 @@ protected:
          *
          *  \iparam    Event  event id
          *  \iparam    Parameters paramter list
+         *  \iparam    Active flag to check active behavior
          */
          /****************************************************************************/
         inline void RaiseEvent(const quint32 Event, const QStringList& Parameters = QStringList(), bool Active = true)
@@ -1588,7 +1589,7 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Actions and messages for resming from pause
-         *  \param  currentState, current program state
+         *  \param  currentState - current program state
          *  \return void
          *
          */
