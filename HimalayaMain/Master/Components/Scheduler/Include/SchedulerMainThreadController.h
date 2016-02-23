@@ -1575,6 +1575,8 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Get the value for the specific element
+         *  \param  RetCode - return code
+         *  \return quint8
          */
         /****************************************************************************/
         quint8 GetRetCodeCounter(DeviceControl::ReturnCode_t RetCode) const { return m_RetCodeCounterList[RetCode]; }
@@ -1582,6 +1584,9 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Set value for the specific element
+         *  \param  RetCode - return code
+         *  \param  val - value of return code
+         *  \return void
          */
         /****************************************************************************/
         void SetRetCodeCounter(DeviceControl::ReturnCode_t RetCode, quint8 val) { m_RetCodeCounterList[RetCode] = val; }
