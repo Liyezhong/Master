@@ -343,7 +343,7 @@ typedef enum
         quint32 m_CurrentScenario;                            ///< Current Scenario
         QSharedPointer<HeatingStrategy> mp_HeatingStrategy;   ///< Definition/Declaration of variable mp_HeatingStrategy
         Global::tRefType    m_RefCleanup;                     ///< Command reference of the cleanup command
-        int m_delayTime;
+        qint64 m_delayTime;                                   ///< Delay time set by user
         bool m_IsInSoakDelay;                                 ///< Delay in Soak
         bool m_IsPrecheckMoveRV;                            ///< precheck done move rv
         qint64 m_lastPVTime;                                  ///< Time for last PV operation
