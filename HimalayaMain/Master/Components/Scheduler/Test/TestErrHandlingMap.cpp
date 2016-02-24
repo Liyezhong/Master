@@ -311,7 +311,7 @@ void TestErrHandlingMap::initTestCase()
     QVERIFY(ret);
 
     ret = false;
-    QString ReagentFilePath = "../Settings/ReagentStations.xml";
+    QString ReagentFilePath = AbsCurrentPath+ "/../../../Main/Build/Settings/ReagentStations.xml";
     ret = ReadReagentList(ReagentFilePath);
     QVERIFY(ret);
 }
