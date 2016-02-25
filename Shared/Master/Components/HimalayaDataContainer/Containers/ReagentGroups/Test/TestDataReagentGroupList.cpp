@@ -114,7 +114,7 @@ void TestDataReagentGroupList::utTestReagentGroup() {
 
     QCOMPARE(p_ReagentGroup1->GetGroupID(), QString("RG1"));
     QCOMPARE(p_ReagentGroup1->GetGroupNameID(), QString("1234"));
-    QCOMPARE(p_ReagentGroup1->GetReagentGroupName(), QString("1234"));
+    QCOMPARE(p_ReagentGroup1->GetReagentGroupName(), QString("\"1234\":"));
     QCOMPARE(p_ReagentGroup1->IsCleaningReagentGroup(), false);
     QCOMPARE(p_ReagentGroup1->IsParraffin(), false);
     QCOMPARE(p_ReagentGroup1->GetGroupColor(), QString("D9FFD9"));
