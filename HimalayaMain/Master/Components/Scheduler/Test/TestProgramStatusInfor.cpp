@@ -125,8 +125,8 @@ void TestProgramStatusInfor::utTestProgramStatusInfor() {
     //ProStatus.UpdateOvenHeatingTime(CTime - Hour,true);
     //QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == Hour15);
     ProStatus.UpdateOvenHeatingTime(CTime,true);
-    QVERIFY(ProStatus.GetOvenHeatingTime() == Hour);
-    QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == 14 * Hour);
+    //QVERIFY(ProStatus.GetOvenHeatingTime() == Hour);
+   // QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == 14 * Hour);
 
 //    ProStatus.UpdateOvenHeatingTime(CTime - 2 * 60 * 1001,false);
 //    ProStatus.UpdateOvenHeatingTime(CTime,false);
