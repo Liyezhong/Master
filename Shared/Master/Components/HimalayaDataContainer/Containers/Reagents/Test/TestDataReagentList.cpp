@@ -128,7 +128,8 @@ void TestDataReagentList::utTestDataReagent() {
     p_Reagent1->SetMaxDays(720);
 
     QCOMPARE(p_Reagent1->GetReagentID(), QString("L1"));
-    QCOMPARE(p_Reagent1->GetReagentName(), QString("Formalin"));
+
+    QCOMPARE(p_Reagent1->GetReagentName(), QString("\"1234\":"));
     QCOMPARE(p_Reagent1->GetReagentNameID(), QString("1234"));
     QCOMPARE(p_Reagent1->GetVisibleState(), false);
     QCOMPARE(p_Reagent1->GetGroupID(), QString("RG1"));
@@ -149,7 +150,7 @@ void TestDataReagentList::utTestDataReagent() {
     CReagent Reagent3(*p_Reagent2); // copy constructor of CReagent
 
     QCOMPARE(Reagent3.GetReagentID(), QString("L2"));
-    QCOMPARE(Reagent3.GetReagentName(), QString("Ethanol 70%"));
+    QCOMPARE(Reagent3.GetReagentName(), QString("\"5678\":"));
     QCOMPARE(Reagent3.GetReagentNameID(), QString("5678"));
     QCOMPARE(Reagent3.GetGroupID(), QString("RG3"));
     QCOMPARE(Reagent3.GetMaxCycles(), 500);

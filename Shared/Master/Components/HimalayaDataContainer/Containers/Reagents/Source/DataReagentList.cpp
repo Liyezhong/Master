@@ -1007,6 +1007,10 @@ bool CDataReagentList::CheckForUniquePropeties(const CReagent* p_Reagent, bool e
     bool Result = true;
     QString ID = const_cast<CReagent*>(p_Reagent)->GetReagentID();
     CReagent* oldReagent = m_ReagentList.value(ID);
+
+    if (excludeSeft && !oldReagent)
+        return false;
+
     bool isHave = false;
     if (excludeSeft)
     {
