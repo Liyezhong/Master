@@ -88,6 +88,11 @@ public:
 
         EXPECT_CALL(*mp_IDeviceProcessing, ALDraining(_,_,_))
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ResetActiveCarbonFilterLifeTime())
+                .WillRepeatedly(Return());
+        EXPECT_CALL(*mp_IDeviceProcessing, PerTurnOnMainRelay())
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
     }
 
     ~TestSchedulerMainThreadController()
@@ -213,11 +218,11 @@ void TestSchedulerMainThreadController::TestSlots()
 
     m_pSchedulerMainController->ReleasePressure();
 
-    m_pSchedulerMainController->OnEnterPssmProcessing();
+   //m_pSchedulerMainController->OnEnterPssmProcessing();
 
-    m_pSchedulerMainController->IsRVRightPosition(TUBE_POS), true;
+   m_pSchedulerMainController->IsRVRightPosition(TUBE_POS), true;
 
-    m_pSchedulerMainController->MoveRV(TUBE_POS), false;
+   m_pSchedulerMainController->MoveRV(TUBE_POS), false;
 
     //m_pSchedulerMainController->Fill();
 
@@ -225,33 +230,33 @@ void TestSchedulerMainThreadController::TestSlots()
 
     m_pSchedulerMainController->RestartFailedHeaters();
 
-    m_pSchedulerMainController->CheckSensorTempOverange();
+    //m_pSchedulerMainController->CheckSensorTempOverange();
 
-    m_pSchedulerMainController->FillRsTissueProtect("S1", false, false);
+    //m_pSchedulerMainController->FillRsTissueProtect("S1", false, false);
 
-    m_pSchedulerMainController->StopFillRsTissueProtect("S1");
+    //m_pSchedulerMainController->StopFillRsTissueProtect("S1");
 
-    m_pSchedulerMainController->CheckSlaveTempModulesCurrentRange(2);
+   // m_pSchedulerMainController->CheckSlaveTempModulesCurrentRange(2);
 
-    m_pSchedulerMainController->OnStopFill();
+    //m_pSchedulerMainController->OnStopFill();
 
-    m_pSchedulerMainController->RCDrain();
+   m_pSchedulerMainController->RCDrain();
 
-    m_pSchedulerMainController->Drain();
+  // m_pSchedulerMainController->Drain();
 
-    m_pSchedulerMainController->RcDrainAtOnce();
+  // m_pSchedulerMainController->RcDrainAtOnce();
 
-    m_pSchedulerMainController->OnBeginDrain();
+   //m_pSchedulerMainController->OnBeginDrain();
 
-    m_pSchedulerMainController->OnStopDrain();
+   m_pSchedulerMainController->OnStopDrain();
 
-    m_pSchedulerMainController->Pressure();
+   m_pSchedulerMainController->Pressure();
 
-    m_pSchedulerMainController->HighPressure();
+   m_pSchedulerMainController->HighPressure();
 
-    m_pSchedulerMainController->Vaccum();
+   m_pSchedulerMainController->Vaccum();
 
-    m_pSchedulerMainController->AllStop();
+   m_pSchedulerMainController->AllStop();
 
     //m_pSchedulerMainController->Pause();
 
@@ -272,7 +277,7 @@ void TestSchedulerMainThreadController::TestSlots()
 
     m_pSchedulerMainController->OnSystemError();
 
-    m_pSchedulerMainController->OnFillingHeatingRV();
+    //m_pSchedulerMainController->OnFillingHeatingRV();
 
     m_pSchedulerMainController->OnPreTestDone();
 

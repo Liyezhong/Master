@@ -182,7 +182,7 @@ QString TestErrHandlingMap::GetSafeReagentType(const QString& Scenario)
 
 void TestErrHandlingMap::UTAll()
 {
-    QFile file("../Settings/ErrHandlingEventScenario.csv");
+    QFile file(QCoreApplication::applicationDirPath()+"/../Settings/ErrHandlingEventScenario.csv");
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         //if the file not exist, create it again
@@ -311,7 +311,7 @@ void TestErrHandlingMap::initTestCase()
     QVERIFY(ret);
 
     ret = false;
-    QString ReagentFilePath = AbsCurrentPath+ "/../../../Main/Build/Settings/ReagentStations.xml";
+    QString ReagentFilePath = AbsCurrentPath+ "/../Settings/ReagentStations.xml";
     ret = ReadReagentList(ReagentFilePath);
     QVERIFY(ret);
 }
