@@ -129,7 +129,7 @@ void TestDataReagentGroupList::utTestReagentGroup() {
 
     QCOMPARE(ReagentGroup3.GetGroupID(), QString("RG2"));
     QCOMPARE(ReagentGroup3.GetGroupNameID(), QString("50331654"));
-    QCOMPARE(ReagentGroup3.GetReagentGroupName(), QString("Water"));
+    QCOMPARE(ReagentGroup3.GetReagentGroupName(), QString("\"50331654\":"));
     QCOMPARE(ReagentGroup3.IsCleaningReagentGroup(), false);
     QCOMPARE(ReagentGroup3.IsParraffin(), false);
     QCOMPARE(ReagentGroup3.GetGroupColor(), QString("A9B7FF"));
