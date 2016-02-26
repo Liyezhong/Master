@@ -895,7 +895,25 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
         return;
     }
     ImportTypeList.clear();
+    QProcess Md5sumProcess;
+    QProcess RollbackProcess;
+    Md5sumProcess.start(Global::SystemPaths::Instance().GetScriptsPath()
+                        + QString("/EBox-Utils.sh") , QStringList() <<
+                        QString("update_md5sum_for_settings"));
+    (void)Md5sumProcess.waitForFinished();
+    // update the rollback directory also
+    Md5sumProcess.start(Global::SystemPaths::Instance().GetScriptsPath()
+                        + QString("/EBox-Utils.sh") , QStringList() <<
+                        QString("update_settings_to_rollback"));
+    (void)Md5sumProcess.waitForFinished();
 
+    // need to upate rollback files;
+    RollbackProcess.start(Global::SystemPaths::Instance().GetScriptsPath()
+                    + QString("/EBox-Utils.sh") , QStringList() <<
+                    QString("update_settings_to_rollback"));
+    (void)RollbackProcess.waitForFinished();
+
+    (void)QProcess::startDetached("sync &");
     // multiple files can be imported. At max three files can be imported.
     for (qint32 Counter = 0; Counter < FileList.count(); Counter++) {
         if (!ImportArchiveFiles(TypeOfImport, FileList.value(Counter))) {
@@ -958,8 +976,7 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
     }
 
     // update the rollback checksum value
-    QProcess Md5sumProcess;
-    QProcess RollbackProcess;
+
     Md5sumProcess.start(Global::SystemPaths::Instance().GetScriptsPath()
                         + QString("/EBox-Utils.sh") , QStringList() <<
                         QString("update_md5sum_for_settings"));
