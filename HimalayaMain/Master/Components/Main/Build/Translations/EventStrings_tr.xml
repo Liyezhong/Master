@@ -56,12 +56,12 @@
         <string id="16843294" text1="Açık" text2=""/>
         <string id="16843314" text1="RYS temizleme durumu %1 olarak değiştirildi." text2=""/>
         <string id="16843315" text1="Kaset" text2=""/>
-        <string id="16843316" text1="Siklus" text2=""/>
+        <string id="16843316" text1="döngü" text2=""/>
         <string id="16843317" text1="Gün" text2=""/>
         <string id="16843292" text1="Alarm hata sesi değiştirildi" text2=""/>
-        <string id="16843301" text1="Alarm hata sesinin yüksekliği değiştirildi" text2=""/>
+        <string id="16843301" text1="Alarm hata sesinin şiddeti değiştirildi" text2=""/>
         <string id="16843291" text1="Alarm ikaz sesi değiştirildi" text2=""/>
-        <string id="16843300" text1="Alarm ikaz sesinin yüksekliği değiştirildi" text2=""/>
+        <string id="16843300" text1="Alarm ikaz sesinin şiddeti değiştirildi" text2=""/>
         <string id="16843288" text1="Tarih formatı %1 olarak değiştirildi" text2=""/>
         <string id="16843272" text1="Dil ayarı: %1" text2=""/>
         <string id="16843275" text1="Ağ Ayarları değiştirildi" text2=""/>
@@ -104,7 +104,7 @@
         <string id="33817101" text1="Grup doğrulaması başarısız oldu. Kullanıcı ayarları veri modülü başlatılmadı." text2=""/>
         <string id="33818114" text1="Adım %2 ve Adım %3 için %1 Reaktifleri uyumlu değil." text2=""/>
         <string id="33817861" text1="Ses düzeyi parametresi izin verilen aralığın dışında." text2=""/>
-        <string id="33817860" text1="Ses yüksekliği parametresi izin verilen aralığın dışında." text2=""/>
+        <string id="33817860" text1="Ses şiddeti parametresi izin verilen aralığın dışında." text2=""/>
         <string id="33817859" text1="Ses periyotu parametresi izin verilen aralığın dışında." text2=""/>
         <string id="33816577" text1="%1, geçerli bir Program ID değil." text2=""/>
         <string id="33816578" text1="%1 cihazına ait servis bilgilerini alırken hata oluştu" text2=""/>
@@ -176,25 +176,25 @@
         <string id="50331768" text1="Programa devam edilemiyor. Duraklama süresi 15 dakikayı aştı." text2=""/>
         <string id="50331651" text1="Biyopsi" text2=""/>
         <string id="50331652" text1="Temzl. Progr." text2=""/>
-        <string id="50331650" text1="Bütün gece" text2=""/>
-        <string id="50331671" text1="Alkol temizleniyor" text2=""/>
-        <string id="50331670" text1="Ksilen temizleniyor" text2=""/>
+        <string id="50331650" text1="gece takibi" text2=""/>
+        <string id="50331671" text1="temizlik alkolü" text2=""/>
+        <string id="50331670" text1="temizlik ksileni" text2=""/>
         <string id="50331666" text1="%100 etanol" text2=""/>
         <string id="50331662" text1="%70 etanol" text2=""/>
         <string id="50331663" text1="%80 etanol" text2=""/>
         <string id="50331664" text1="%90 etanol" text2=""/>
         <string id="50331665" text1="%95 etanol" text2=""/>
         <string id="50331661" text1="Formalin" text2=""/>
-        <string id="50331660" text1="Alkol temizleniyor" text2=""/>
-        <string id="50331659" text1="Eritici temizleniyor" text2=""/>
-        <string id="50331657" text1="Temizleniyor" text2=""/>
-        <string id="50331656" text1="Sudan arındırma, mutlak" text2=""/>
-        <string id="50331655" text1="Sudan arındırma, seyreltilmiş" text2=""/>
-        <string id="50331653" text1="Sabitleme" text2=""/>
+        <string id="50331660" text1="temizlik alkolü" text2=""/>
+        <string id="50331659" text1="temizlik kimyasalı" text2=""/>
+        <string id="50331657" text1="temizleyici" text2=""/>
+        <string id="50331656" text1="dehidrasyon, saf" text2=""/>
+        <string id="50331655" text1="dehidrasyon, seyreltilmiş" text2=""/>
+        <string id="50331653" text1="fiksasyon" text2=""/>
         <string id="50331658" text1="Parafin" text2=""/>
         <string id="50331654" text1="Su" text2=""/>
         <string id="50331668" text1="Parafin" text2=""/>
-        <string id="50331669" text1="Su işleniyor" text2=""/>
+        <string id="50331669" text1="takip suyu" text2=""/>
         <string id="50331667" text1="Ksilen" text2=""/>
         <string id="67174416" text1="Cihaz kullanıcı tarafından kapatılıyor." text2=""/>
         <string id="67174417" text1="%1 kurtarma işlemini yapın." text2=""/>
@@ -207,8 +207,8 @@
         <string id="67174656" text1="Otomatik testi başlat." text2=""/>
         <string id="67174733" text1="Otomatik test başarılı." text2=""/>
         <string id="67174912" text1="Ön testi başlat." text2=""/>
-        <string id="67174927" text1="Şişe kontrolünü başlat." text2=""/>
-        <string id="67174928" text1="Şişe kontrolü başarılı." text2=""/>
+        <string id="67174927" text1="bidon kontrolünü başlat." text2=""/>
+        <string id="67174928" text1="bidon kontrolü başarılı." text2=""/>
         <string id="67174929" text1="Ön test başarılı." text2=""/>
         <string id="67175168" text1="%1 programının %2 adımında tamamlanmamış olduğu saptandı." text2=""/>
         <string id="67175186" text1="Tamamlanmamış program listesini içeren sistem dosyası eksik. Lütfen depolama alanının zarar görüp görmediğini kontrol edin." text2=""/>
@@ -233,12 +233,12 @@
         <string id="67175424" text1="Ön kontrol yapılıyor" text2=""/>
         <string id="67175425" text1="Kurutma işlemi" text2=""/>
         <string id="67176012" text1="Hava Sistemi: Vakum, hedef değere ulaşmadı. Vakum değeri maksimum %1 kPa oldu. " text2=""/>
-        <string id="67176025" text1="Döner Kapak normal çalışmıyor. Lütfen Döner Kapağı kontrol edin." text2=""/>
+        <string id="67176025" text1="rotary valf normal çalışmıyor. Lütfen rotary valfi kontrol edin." text2=""/>
         <string id="67176026" text1="Cihaz bazı teknik sorunlarla karşılaştı ve protokol tamamlanamadı." text2=""/>
         <string id="67176194" text1="Hata ID %1!  Kuru senaryoda sızdırmazlık hatası." text2=""/>
-        <string id="67176196" text1="Hata ID %1!  Mum banyosu fırınının kapağı açık, taze parafini şimdi eritmek istiyor musunuz?" text2=""/>
+        <string id="67176196" text1="Hata ID %1!  parafin banyosu fırınının kapağı açık, taze parafini şimdi eritmek istiyor musunuz?" text2=""/>
         <string id="67176198" text1="Lütfen sızdırmazlık halkasını ve haznenin üst bölümünü kullanım kılavuzunda açıklandığı biçimde temizleyin." text2=""/>
-        <string id="67176199" text1="Lütfen şişeleri kullanım kılavuzuna göre kontrol edin." text2=""/>
+        <string id="67176199" text1="Lütfen bidonları kullanım kılavuzuna göre kontrol edin." text2=""/>
         <string id="67176200" text1="Haznenin tahliyesi başarısız oldu! Lütfen sızdırmazlık halkasını ve haznenin üst bölümünü kullanım kılavuzunda açıklandığı biçimde temizleyin." text2=""/>
         <string id="67176201" text1="Hata ID %1! Lütfen servisi arayın!" text2=""/>
         <string id="67176202" text1="Hata ID %1! Egzoz sisteminde hata! Lütfen servise bilgi verin!" text2=""/>
@@ -256,35 +256,35 @@
         <string id="67176220" text1="Lütfen seviye sensörünü temizleyin." text2=""/>
         <string id="67176223" text1="Hata ID %1!  İptal başarısız oldu." text2=""/>
         <string id="67176224" text1="Temzl. Progr. da enerji arızası. Program otomatik olarak yeniden başlatıldı." text2=""/>
-        <string id="67176225" text1="Hata ID %1! Döner Kapak anormal çalışıyor. Lütfen servisi arayın!" text2=""/>
+        <string id="67176225" text1="Hata ID %1! rotary valf anormal çalışıyor. Lütfen servisi arayın!" text2=""/>
         <string id="67176226" text1="Hata ID %1! Cihaz bazı teknik sorunlarla karşılaştı ve protokol tamamlanamadı." text2=""/>
         <string id="19202061" text1="Kullanıcı %1 istasyonunu sıfırladı." text2=""/>
         <string id="19202062" text1="Kullanıcı %1 istasyonundaki reaktifi %2 olarak değiştirdi." text2=""/>
         <string id="19202063" text1="Kullanıcı %1 istasyonunu dolu olarak ayarladı." text2=""/>
         <string id="19202064" text1="Kullanıcı %1 istasyonunu boş olarak ayarladı." text2=""/>
-        <string id="19267602" text1="Kullanıcı şu reaktifi ekledi: %1, Değişikliğe kadar kalan kaset sayısı:%2, değişikliğe kadar kalan siklus sayısı:%3, Değişikliğe kadar kalan gün sayısı:%4, Reaktif Grubu: %5." text2=""/>
+        <string id="19267602" text1="Kullanıcı şu reaktifi ekledi: %1, Değişikliğe kadar kalan kaset sayısı:%2, değişikliğe kadar kalan döngü sayısı:%3, Değişikliğe kadar kalan gün sayısı:%4, Reaktif Grubu: %5." text2=""/>
         <string id="19267603" text1="Kullanıcı, reaktifi sildi %1." text2=""/>
-        <string id="19267604" text1="Kullanıcı reaktifi güncelledi:  %1, Değişikliğe kadar kalan kaset sayısı:%2, değişikliğe kadar kalan siklus sayısı:%3, Değişikliğe kadar kalan gün sayısı:%4, Reaktif Grubu: %5." text2=""/>
+        <string id="19267604" text1="Kullanıcı reaktifi güncelledi:  %1, Değişikliğe kadar kalan kaset sayısı:%2, değişikliğe kadar kalan döngü sayısı:%3, Değişikliğe kadar kalan gün sayısı:%4, Reaktif Grubu: %5." text2=""/>
         <string id="16973842" text1="zaman aşımı seçiliyor" text2=""/>
         <string id="67176227" text1="Parafin banyosundaki parafin sıcaklığı %1 değerinden yüksek. Lütfen parafinin erime durumunu kontrol edin." text2=""/>
         <string id="67176228" text1="Parafin banyosundaki parafin sıcaklığı %1 değerinden düşük. Lütfen parafinin erime durumunu kontrol edin." text2=""/>
-        <string id="67176215" text1="Elektrik arızası nedeniyle döner valfin pozisyonu belirsiz. Lütfen servisi arayın." text2=""/>
+        <string id="67176215" text1="Elektrik arızası nedeniyle döner valfin(rotary valfin) pozisyonu belirsiz. Lütfen servisi arayın." text2=""/>
         <string id="67176229" text1="Yeni sepetler eklemek için hazneyi boşaltmak istiyorsanız Evet'i tıklayın; Hayır seçeneğini tıklarsanız reaktif hazne içinde kalır; Çalışma duraklatmayı iptal etmek için İptal üzerine tıklayın. Reaktif buharın olası tehlikelerini engellemek için solunum cihazını doğru biçimde takın. Seviye sensörüne dokunmayın. Sıcaktır!" text2=""/>
         <string id="67175205" text1="Program duraklatıldı." text2=""/>
         <string id="67175230" text1="Kullanıcı programı duraklattığı için program bitiş zamanı %1 olarak güncellenecek." text2=""/>
         <string id="67175188" text1="10 saniye süreyle boşaltılıyor. Hazne kapağını açmayın." text2=""/>
         <string id="67175187" text1="Hazneyi kilitleyin ve sonra OK tuşuna basın." text2=""/>
         <string id="67176214" text1="Elektrik arızası nedeniyle program kesintiye uğradı. Lütfen programı iptal edin." text2=""/>
-        <string id="50331778" text1="Alet deposu dolu. Lütfen servisi arayın." text2=""/>
+        <string id="50331778" text1="cihaz deposu dolu. Lütfen servisi arayın." text2=""/>
         <string id="67175225" text1="%1 programını başlat. &quot;Evet&quot; tuşuna basarak süpervizor bilgilendirildi Süresi geçen reaktif %2, %3 ile program başlatılacak." text2=""/>
         <string id="67176213" text1="Lütfen parafin havuzundaki parafin durumunu kontrol edin; eğer parafin seviyesi minimum seviyenin altındaysa lütfen 15 dakika içinde parafin havuzuna sıvı parafin ekleyin." text2=""/>
-        <string id="67176212" text1="Lütfen reaktif şişelerinin durumunu kontrol edin; eğer reaktif seviyesi minimum seviyenin altındaysa, lütfen 15 dakika içinde şişeye reaktif ekleyin." text2=""/>
+        <string id="67176212" text1="Lütfen reaktif bidonlarının durumunu kontrol edin; eğer reaktif seviyesi minimum seviyenin altındaysa, lütfen 15 dakika içinde bidona reaktif ekleyin." text2=""/>
         <string id="67176192" text1="Hata ID %1! Boşaltma süresi 2 dakikadan uzun." text2=""/>
         <string id="67176193" text1="Hata ID %1! Doldurma süresi 2 dakikadan uzun." text2=""/>
         <string id="67176195" text1="Hata ID %1! İşleme senaryosunda sızdırmazlık başarısız oldu." text2=""/>
-        <string id="67176221" text1="Hata ID %1! Tamamen daldırma sırasında bazı proses aralığı zaman aşımı 4 dakika." text2=""/>
-        <string id="67176222" text1="Hata ID %1! Proses bitişi zaman aşımı." text2=""/>
-        <string id="67174402" text1="Slave'leri başlangıç durumuna getirme %1 sırasında hata oluştu." text2=""/>
+        <string id="67176221" text1="Hata ID %1! Tamamen daldırma sırasında bazı işlem aralığı zaman aşımı 4 dakika." text2=""/>
+        <string id="67176222" text1="Hata ID %1! işlem bitişi zaman aşımı." text2=""/>
+        <string id="67174402" text1="Diskleri başlangıç durumuna getirme %1 sırasında hata oluştu." text2=""/>
         <string id="67175226" text1="Son adımı işlemeyi tamamla ve hazneyi boşaltmak için kullanıcı onayını bekle." text2=""/>
         <string id="67175173" text1="Elektrik arızasından dolayı ünitenin parafini eritmesi %1 MINs sürecektir." text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>

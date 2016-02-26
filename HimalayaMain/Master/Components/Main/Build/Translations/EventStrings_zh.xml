@@ -269,23 +269,24 @@
         <string id="67176227" text1="蜡缸中的石蜡温度高于 %1。请检查熔蜡状态。" text2=""/>
         <string id="67176228" text1="蜡缸中的石蜡温度低于 %1。请检查熔蜡状态。" text2=""/>
         <string id="67176215" text1="由于发生电源故障，无法确定旋转阀的位置。请联系维修人员。" text2=""/>
-        <string id="67176229" text1="单击“是”，为添加新篮排空脱水缸； 单击“否”，试剂仍保留在脱水缸中； 单击“取消”，取消暂停操作。 请正确佩戴防毒面具，避免溶液蒸汽的潜在危害。 不得触碰液位传感器。它很烫！" text2=""/>
+        <string id="67176229" text1="单击“是”，排空脱水缸并添加组织； 单击“否”，不排空脱水缸并添加组织； 单击“取消”， 返回； 请正确佩戴防毒面具，避免试剂蒸汽的潜在危害。 不得触碰液位传感器, 防止烫伤！" text2=""/>
         <string id="67175205" text1="程序已暂停。" text2=""/>
-        <string id="67175230" text1="由于用户暂停了程序，因此程序结束时间将更新为 %1。" text2=""/>
+        <string id="67175230" text1="由于用户暂停程序，程序结束时间将更新为 %1。" text2=""/>
         <string id="67175188" text1="排液 10 秒。 不得打开脱水缸盖。" text2=""/>
-        <string id="67175187" text1="锁定脱水缸，然后按下“确定”按钮。" text2=""/>
-        <string id="67176214" text1="电源故障，程序已中断。请终止程序。" text2=""/>
-        <string id="50331778" text1="仪器存储已满。请联系维修人员。" text2=""/>
+        <string id="67175187" text1="关闭脱水缸，然后按下“确定”按钮。" text2=""/>
+        <string id="67176214" text1="由于断电，程序无法继续。请终止程序。" text2=""/>
+        <string id="50331778" text1="仪器存储卡已满。请联系维修人员。" text2=""/>
         <string id="67175225" text1="开始程序 %1。管理员按下&quot;是&quot;按钮确认，使用过期试剂 %2、%3 开始程序。" text2=""/>
-        <string id="67176213" text1="请检查蜡缸中的石蜡状态，如果石蜡低于最低液位，请在 15 分钟内向蜡缸中添加液体石蜡。" text2=""/>
-        <string id="67176212" text1="请检查试剂瓶状态，如果试剂低于最低液位，请在 15 分钟内向瓶中添加试剂。" text2=""/>
+        <string id="67176213" text1="请检查蜡缸中的石蜡液位，如果低于最低液位，请在 15 分钟内向蜡缸中添加液体石蜡并超过最低液位。" text2=""/>
+        <string id="67176212" text1="请检查试剂瓶的液位，如果低于最低液位，请在 15 分钟内向瓶中添加试剂并超过最低液位。" text2=""/>
         <string id="67176192" text1="错误 ID %1！排液时间超过 2 分钟。" text2=""/>
         <string id="67176193" text1="错误 ID %1！填充时间超过 2 分钟。" text2=""/>
-        <string id="67176195" text1="错误 ID %1！在脱水情况下密封失败。" text2=""/>
-        <string id="67176221" text1="错误 ID %1！在整个浸泡过程中，部分程序间隔时间超过 4 分钟。" text2=""/>
+        <string id="67176195" text1="错误 ID %1！密封测试失败。" text2=""/>
+        <string id="67176221" text1="错误 ID %1！在整个程序中，某些步骤间隔时间超过 4 分钟。" text2=""/>
         <string id="67176222" text1="错误 ID %1！程序结束时间超时。" text2=""/>
-        <string id="67174402" text1="从属设备初始化 %1 时发生错误。" text2=""/>
-        <string id="67175226" text1="完成最后一个步骤的脱水，并等待用户确认脱水缸排液。" text2=""/>
+        <string id="67174402" text1="硬件初始化 %1 时发生错误。" text2=""/>
+        <string id="67175226" text1="完成最后一个步骤，等待用户确认排空脱水缸。" text2=""/>
+        <string id="67175173" text1="由于断电，仪器将需要 %1 分钟来熔化石蜡。" text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>

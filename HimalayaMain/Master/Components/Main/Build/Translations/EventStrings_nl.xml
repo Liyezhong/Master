@@ -43,7 +43,7 @@
         <string id="17629215" text1="Export mislukt. Zipopdracht niet gevonden in het systeem." text2=""/>
         <string id="17629214" text1="Export mislukt. Bestanden kunnen niet worden gezipt." text2=""/>
         <string id="17629216" text1="Export mislukt. Zippen duurt te lang." text2=""/>
-        <string id="16846862" text1="Gebruiker bevestigd door drukken knop: %1" text2=""/>
+        <string id="16846862" text1="Gebruiker bevestigd door te drukken op knop: %1" text2=""/>
         <string id="16846854" text1="Debug" text2=""/>
         <string id="16846851" text1="Storing" text2=""/>
         <string id="16846850" text1="Fatale fout" text2=""/>
@@ -78,7 +78,7 @@
         <string id="19005442" text1="Software-update is mislukt" text2=""/>
         <string id="19005443" text1="Rollback van software-update is mislukt" text2=""/>
         <string id="19005447" text1="Software-update is gelukt" text2=""/>
-        <string id="19005448" text1="De huidige software is nieuwer dan het updatepakket. Software-update is geannuleerd zonder updating." text2=""/>
+        <string id="19005448" text1="De huidige software is nieuwer dan het updatepakket. Software-update is geannuleerd zonder update." text2=""/>
         <string id="17891331" text1="Systeem-initialisatie voltooid" text2=""/>
         <string id="17891335" text1="Schakel het apparaat uit met de schakelaar aan de achterzijde." text2=""/>
         <string id="17891336" text1="Installatie is voltooid.  Verwijder de USB-stick en start het apparaat opnieuw op." text2=""/>
@@ -91,7 +91,7 @@
         <string id="16973836" text1="OK" text2=""/>
         <string id="16973841" text1="Stoppen" text2=""/>
         <string id="16973838" text1="Ja" text2=""/>
-        <string id="33619990" text1="Kan datum en tijd niet meer dan 24 uur van die van huidig systeem wijzigen." text2=""/>
+        <string id="33619990" text1="Kan datum en tijd niet meer dan 24 uur van die van het huidige systeem wijzigen." text2=""/>
         <string id="33619991" text1="Gebruiker heeft huidige datum/tijd van het systeem ingesteld op %1" text2=""/>
         <string id="33817094" text1="Groepsverificatie is mislukt. Datamodule met basisgegevens is niet geïnitialiseerd." text2=""/>
         <string id="33817095" text1="Groepsverificatie is mislukt. Type datamodule is ongeldig." text2=""/>
@@ -260,8 +260,8 @@
         <string id="67176226" text1="Fout-ID %1! Het apparaat heeft technische problemen en kan het protocol niet voltooien." text2=""/>
         <string id="19202061" text1="Gebruik heeft station %1 gereset." text2=""/>
         <string id="19202062" text1="Gebruiker heeft het reagens in station %1 gewijzigd in %2." text2=""/>
-        <string id="19202063" text1="Gebruiker het station %1 ingesteld op vol." text2=""/>
-        <string id="19202064" text1="Gebruiker het station %1 ingesteld op leeg." text2=""/>
+        <string id="19202063" text1="Gebruiker heeft het station %1 ingesteld op vol." text2=""/>
+        <string id="19202064" text1="Gebruiker heeft het station %1 ingesteld op leeg." text2=""/>
         <string id="19267602" text1="Gebruiker heeft het volgende reagens toegevoegd: %1, Cassettes tot wijziging:%2, Cycli tot wijziging:%3, Dagen tot wijziging:%4, Reagensgroep: %5." text2=""/>
         <string id="19267603" text1="Gebruiker heeft reagens %1 gewist." text2=""/>
         <string id="19267604" text1="Gebruiker heeft het volgende reagens toegevoegd: %1, Cassettes tot wijziging:%2, Cycli tot wijziging:%3, Dagen tot wijziging:%4, Reagensgroep: %5." text2=""/>
