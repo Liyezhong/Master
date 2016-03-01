@@ -721,7 +721,7 @@
         <string id="67175998" text1="RotaryValve: Moving from tube position %1 to %2, lower limiter is %3, internal steps is %4." text2=""/>
         <string id="67175999" text1="RotaryValve: Moving from tube position %1 to %2 failed before or after processing tissue. Lower limiter is %3, internal steps is %4." text2=""/>
         <string id="67176000" text1="RotaryValve: Temperature Sensor 2 of Rotary Valve cannot reach the target temperature before start of paraffin process step. Please check the heating function of Rotary Valve." text2=""/>
-        <string id="67176003" text1="Draining of retort to station 1% failed during processing or cleaning! Draining time exceeds 4 minutes." text2=""/>
+        <string id="67176003" text1="Draining of retort to station %1 failed during processing or cleaning! Draining time exceeds 4 minutes." text2=""/>
         <string id="67176004" text1="Heated reagent tube: The tube cannot heat to target temperature in 15min. Please perform self-test and confirm the tube status." text2=""/>
         <string id="67176005" text1="Voltage monitoring: DC 5V error." text2=""/>
         <string id="67176006" text1="Voltage monitoring: DC 24V error." text2=""/>
@@ -733,8 +733,8 @@
         <string id="67176014" text1="Remote / Local Alarm: Please check the connection of the external local alarm system." text2=""/>
         <string id="67176015" text1="Air System: Pressure did not reach target value during processing. The pressure reached max. %1 kPa." text2=""/>
         <string id="67176016" text1="Air System: Vacuum did not reach target value during processing. The vacuum reached max. %1 kPa." text2=""/>
-        <string id="67176017" text1="Filling of retort from station no. 1% failed during processing! Filling time exceeds 2 minutes." text2=""/>
-        <string id="67176018" text1="Draining of retort to station 1% failed during processing or cleaning! Draining time exceeds 2 minutes." text2=""/>
+        <string id="67176017" text1="Filling of retort from station no. %1 failed during processing! Filling time exceeds 2 minutes." text2=""/>
+        <string id="67176018" text1="Draining of retort to station %1 failed during processing or cleaning! Draining time exceeds 2 minutes." text2=""/>
         <string id="67176019" text1="Error ID%1!The AC voltage is not stable." text2=""/>
         <string id="67176020" text1="In whole soaking, some process interval time out 4 minutes." text2=""/>
         <string id="67176021" text1="Process end time out." text2=""/>
