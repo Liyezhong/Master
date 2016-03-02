@@ -844,7 +844,7 @@
 		<Event Code="" ErrorID="16846858" ErrorType="Info" AlarmType="" Name="EVENT_GLOBAL_SET_DATE_TIME" LogLevel="Low" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="16846858" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="16846863" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="Low" UserLog="TRUE" EventSource="Main">
+		<Event Code="" ErrorID="16846863" ErrorType="ERROR" AlarmType="AL_REMOTE" Name="EVENT_SHUTDOWN_REQUEST_TOUSER" LogLevel="Low" UserLog="TRUE" EventSource="Main">
 			<Step ID="0" Type="MSG" StringID="67176218" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
 			<Step ID="1" Type="ACT" Action="RS_Shutdown"/>
 		</Event>
