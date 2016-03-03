@@ -4862,7 +4862,12 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
 
 void SchedulerMainThreadController::UpdateCurrentScenario()
 {
-    m_CurrentScenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(), m_CurProgramStepInfo.reagentGroup);
+    SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
+    quint32 state = currentState & 0xFF;
+    if (state == SM_INIT || state == SM_IDLE || state == SM_BUSY)
+    {
+        m_CurrentScenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(), m_CurProgramStepInfo.reagentGroup);
+    }
 }
 
 quint32 SchedulerMainThreadController::GetSecondsForMeltingParaffin()
