@@ -5526,8 +5526,6 @@ void SchedulerMainThreadController::HandleRmtLocAlarm(quint32 ctrlcmd)
         opcode = 0;
         break;
     case CTRL_CMD_ALARM_ALL_OFF:
-        opcode = -1;
-        break;
     case CTRL_CMD_POWER_FAILURE_MEG:
     case CTRL_CMD_DRAIN_SR:
         Global::AlarmHandler::Instance().reset();
