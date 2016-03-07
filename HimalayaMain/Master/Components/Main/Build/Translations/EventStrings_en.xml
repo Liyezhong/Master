@@ -709,9 +709,9 @@
         <string id="67175983" text1="Pressure Sensor: Incorrect zero-value during pre-test. Please check zero-value at ambient pressure. If it is abnormal (>3Kpa), please retry with open retort lid. If still abnormal, exchange the pressure sensor." text2=""/>
         <string id="67175984" text1="Pressure Sensor: The pressure value during processing is out of the range [-100, +100] kPa. Please check function of pressure sensor and exchange if necessary." text2=""/>
         <string id="67175985" text1="Exhaust system: Exhaust fan does not work due to no or insufficient current flow. Please check voltage on according connector. If proper voltage is present, exchange exhaust fan." text2=""/>
-        <string id="67175986" text1="Heated reagent tube: The temperature is lower than the melting point at %1 ℃." text2=""/>
+        <string id="67175986" text1="Heated air tube: The temperature is lower than the melting point at %1 ℃." text2=""/>
         <string id="67175987" text1="Heated air tube: The temperature during is lower than the melting point at %1 ℃." text2=""/>
-        <string id="67175988" text1="Heated reagent tube: The temperature is out of range at %1℃." text2=""/>
+        <string id="67175988" text1="Heated air tube: The temperature is out of range at %1℃." text2=""/>
         <string id="67175989" text1="Heated air tube: The temperature is lower than the melting point at %1 ℃." text2=""/>
         <string id="67175990" text1="Retort or Oven heating: Function of heating pad is incorrect. Please check the heating wire and measure resistance of the heating pad. If OK, then ASB5 should be checked!" text2=""/>
         <string id="67175991" text1="Retort or Waxbath heating: Function of heating pad is incorrect. Please check the heating wire and measure resistance of the heating pad. If OK, then ASB5 should be checked!" text2=""/>
