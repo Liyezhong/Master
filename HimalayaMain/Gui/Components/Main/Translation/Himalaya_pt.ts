@@ -1678,8 +1678,8 @@ Date</source>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1428"/>
         <source>Pausing...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
-        <translation>Pausando…
-Não abra a tampa da retorta e desconecte os frascos de reagente.</translation>
+        <translation>Em Pausa…
+Não abra a tampa da retorta nem desligue os reservatórios de reagents.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1431"/>
@@ -1699,8 +1699,7 @@ Não abra a tampa da retorta e desconecte os frascos de reagente.</translation>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1450"/>
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning. Load the specimens into the retort and make sure that the retort is locked.</source>
-        <translation>Verifique o nível de todos os reagentes e limpe o sensor de nível da retorta, o anel de vedação e o filtro da retorta.
-Reinstale o filtro da retorta após a limpeza. Carregue as amostras na retorta e certifique-se de que ela esteja travada. </translation>
+        <translation>Verifique o nível de todos os reagentes e limpe o sensor de nível da retorta, o anel de vedação e o filtro da retorta.Reinstale o filtro da retorta após a limpeza. Coloque as amostras na retorta, feche e certifique-se de que a mesma está travada.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1429"/>
@@ -1715,9 +1714,7 @@ Reinstale o filtro da retorta após a limpeza. Carregue as amostras na retorta e
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1426"/>
         <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential hazard of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
-        <translation>A tampa da retorta foi aberta. Feche a tampa e clique em OK.
-Use corretamente o respirador para evitar risco em potencial devido a vapor do reagente.
-Não toque no sensor de nível. Ele está quente!</translation>
+        <translation>A tampa da retorta foi aberta. Feche a tampa e clique em OK.Use equipamento de proteção adequado. Não toque no sensor de nível. Ele está quente!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1430"/>
@@ -1789,7 +1786,7 @@ Confirme se a amostra foi removida e a retorta está vazia, depois pressione o b
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1452"/>
         <source>Resuming...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
-        <translation>Retomando..
+        <translation>Reiniciando...
 Não abra a tampa da retorta e desconecte os frascos de reagente.</translation>
     </message>
 </context>

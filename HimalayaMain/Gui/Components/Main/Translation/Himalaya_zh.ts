@@ -1654,7 +1654,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1422"/>
         <source>Program &quot;%1&quot; has completed! Would you like to drain the retort?</source>
-        <translation>程序 &quot;%1&quot; 已完成！是否排空脱水缸？</translation>
+        <translation>程序 &quot;%1&quot; 已结束！是否排空脱水缸？</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1424"/>
@@ -1671,12 +1671,12 @@ Date</source>
         <source>Pausing...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>暂停…
-不得打开脱水缸盖或拔出任何溶剂瓶。</translation>
+不要打开脱水缸盖或拔出任何试剂瓶</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1431"/>
         <source>The retort is contaminated. Please start the cleaning program.</source>
-        <translation>脱水缸已被污染。请开始清洁程序。</translation>
+        <translation>脱水缸有残留的试剂。请开始清洁程序。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1444"/>
@@ -1686,13 +1686,12 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1449"/>
         <source>Ready to start a new program.</source>
-        <translation>新程序已启动就绪。</translation>
+        <translation>设备已就绪，请开始新程序。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1450"/>
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning. Load the specimens into the retort and make sure that the retort is locked.</source>
-        <translation>请检查所有试剂液位，并清洁脱水缸液位传感器、脱水缸密封圈以及脱水缸过滤器。
-清洁后，重新安装脱水缸过滤器。样品载入脱水缸，并确保脱水缸已锁定。</translation>
+        <translation>请检查所有试剂液位，并清洁脱水缸液位传感器、脱水缸密封圈以及脱水缸过滤网。清洁后，重新安装脱水缸过滤网。将样品放入脱水缸，并确保脱水缸已锁定。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1429"/>
@@ -1702,19 +1701,17 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1423"/>
         <source>The specimens have been safeguarded by filling the retort with a safe reagent. Would you like to drain the safe reagent?</source>
-        <translation>系统已用一种安全试剂填充脱水缸来保护样品。是否排空安全试剂？</translation>
+        <translation>脱水缸已被安全试剂填充来保护样品。是否排空安全试剂？</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1426"/>
         <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential hazard of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
-        <translation>脱水缸盖已打开。请关闭盖子，然后单击“确定”。
-请正确佩戴防毒面具，避免溶液蒸汽的潜在危害。
-不得触碰液位传感器。它很烫！</translation>
+        <translation>脱水缸盖已打开。请关闭盖子，然后单击“确定”。请正确佩戴防毒面具，避免试剂蒸汽的潜在危害。不得触碰液位传感器。防止烫伤！</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1430"/>
         <source>Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press &quot;Ok&quot; button.</source>
-        <translation>请取走样品并锁定脱水缸。确认样品已取走，脱水缸已排空，然后按下“确定”按钮。</translation>
+        <translation>请拿出样品并关闭脱水缸。确认样品已取出，脱水缸已排空，然后按下“确定”按钮。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1432"/>
@@ -1734,7 +1731,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1435"/>
         <source>The safe reagent has been drained completely. The program &quot;%1&quot; was aborted!</source>
-        <translation>安全试剂已被完全排尽。程序 &quot;%1&quot; 被终止。</translation>
+        <translation>脱水缸已排空。程序 &quot;%1&quot; 已结束。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1437"/>
@@ -1780,8 +1777,8 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1452"/>
         <source>Resuming...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
-        <translation>继续..
-不得打开脱水缸盖或拔出任何溶剂瓶。</translation>
+        <translation>继续...
+不要打开脱水缸盖或拔出任何试剂瓶。</translation>
     </message>
 </context>
 <context>

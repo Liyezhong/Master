@@ -140,7 +140,7 @@
     <message>
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="123"/>
         <source>The total number of cassettes should be between 1 and 200.</source>
-        <translation>Gesamtkassettenanzahl sollte zwischen 1 und 200 liegen.</translation>
+        <translation>Gesamtkassettenanzahl muss zwischen 1 und 200 liegen.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="126"/>
@@ -1677,7 +1677,7 @@ datum</translation>
         <source>Pausing...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>Pause...
-Retortendeckel nicht öffnen und keine Reagenzienflaschen öffnen.</translation>
+Retortendeckel nicht öffnen und keine Reagenzienflaschen herausziehen.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1431"/>
@@ -1788,7 +1788,7 @@ Prüfen, ob Proben entnommen wurden und Retorte leer ist. Anschließend &quot;OK
         <source>Resuming...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>Wird fortgesetzt...
-Retortendeckel nicht öffnen und keine Reagenzienflaschen öffnen.</translation>
+Retortendeckel nicht öffnen und keine Reagenzienflaschen herausziehen.</translation>
     </message>
 </context>
 <context>
