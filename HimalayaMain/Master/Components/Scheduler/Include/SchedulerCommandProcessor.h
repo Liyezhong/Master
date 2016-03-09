@@ -243,12 +243,6 @@ signals:
      */
     /****************************************************************************/
     void DCLConfigurationFinished(ReturnCode_t RetCode);
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of signal NewCmdAdded
-     */
-    /****************************************************************************/
-    void NewCmdAdded();
 
     /****************************************************************************/
     /*!
@@ -325,6 +319,7 @@ signals:
     /****************************************************************************/
     void ReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp);
 public slots:
+
     /****************************************************************************/
     /**
      * @brief thread's callback function
@@ -391,16 +386,6 @@ public slots:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot OnNewCmdAdded
-     */
-    /****************************************************************************/
-    virtual void OnNewCmdAdded()
-    {
-        this->OnNewCmdAdded4Slot();
-    }
-
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of slot OnShutDownDevice
      */
     /****************************************************************************/
@@ -427,7 +412,17 @@ public slots:
     /****************************************************************************/
     virtual void OnResetActiveCarbonFilterLifetime()
     {
-        this ->OnResetActiveCarbonFilterLifetime4Slot();
+        this->OnResetActiveCarbonFilterLifetime4Slot();
+    }
+
+    /****************************************************************************/
+    /**
+     *  \brief For advancing the time
+     */
+    /****************************************************************************/
+    virtual void OnTickTimer()
+    {
+        this->OnTickTimer4Slot();
     }
 
 private:
@@ -508,18 +503,29 @@ private:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function OnNewCmdAdded4Slot
+     *  \brief  Definition/Declaration of function OnTickTimer4Slot
      *
-     *  \return from OnNewCmdAdded4Slot
+     *  \return from OnTickTimer4Slot
      */
     /****************************************************************************/
-    virtual void OnNewCmdAdded4Slot() = 0;
+    virtual void OnTickTimer4Slot() = 0;
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function OnShutDownDevice4Slot
+     *
+     *  \return from OnShutDownDevice4Slot
+     */
+    /****************************************************************************/
     virtual void OnShutDownDevice4Slot()= 0 ;
     virtual void OnNotifySavedServiceInfor4Slot(const QString& deviceType) = 0;
     virtual void OnResetActiveCarbonFilterLifetime4Slot() = 0;
 
     SchedulerCommandProcessorBase(const SchedulerCommandProcessorBase&);              			///< Not implemented.
     const SchedulerCommandProcessorBase& operator=(const SchedulerCommandProcessorBase&);		///< Not implemented.
+
+protected:
+    QTimer m_TickTimer;       ///<  Definition/Declaration of variable m_TickTimer
 };
 
 
@@ -702,15 +708,15 @@ private:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function OnNewCmdAdded4Slot
+     *  \brief  Definition/Declaration of function OnShutDownDevice4Slot
      *
-     *  \return from OnNewCmdAdded4Slot
+     *  \return from OnShutDownDevice4Slot
      */
     /****************************************************************************/
-    virtual void OnNewCmdAdded4Slot();
     virtual void OnShutDownDevice4Slot();
     virtual void OnNotifySavedServiceInfor4Slot(const QString& deviceType);
     virtual void OnResetActiveCarbonFilterLifetime4Slot();
+    virtual void OnTickTimer4Slot();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ExecuteCmd
@@ -722,15 +728,12 @@ private:
     SchedulerCommandProcessor(const SchedulerCommandProcessor&);                      ///< Not implemented.
     const SchedulerCommandProcessor& operator=(const SchedulerCommandProcessor&);     ///< Not implemented.
 
-
 private:
     SchedulerMainThreadController *mp_SchedulerThreadController;       ///<  Definition/Declaration of variable mp_SchedulerThreadController
     DP *mp_IDeviceProcessing;       ///<  Definition/Declaration of variable mp_IDeviceProcessing
 
     QQueue<Scheduler::SchedulerCommandShPtr_t> m_Cmds;       ///<  Definition/Declaration of variable m_Cmds
     QMutex m_CmdMutex;       ///<  Definition/Declaration of variable m_CmdMutex
-    bool   m_IsRunning;      ///< Flag to indicate if the function ExecuteCmd is running
-
 };
 
 } // end of namespace Scheduler

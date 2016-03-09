@@ -98,7 +98,8 @@ SchedulerCommandProcessor<DP>::SchedulerCommandProcessor(SchedulerMainThreadCont
     mp_SchedulerThreadController(controller),
     mp_IDeviceProcessing(NULL)
 {
-    m_IsRunning = false;
+    //timer setting
+
 }
 template <class DP>
 SchedulerCommandProcessor<DP>::~SchedulerCommandProcessor()
@@ -111,6 +112,7 @@ SchedulerCommandProcessor<DP>::~SchedulerCommandProcessor()
     }
     CATCHALL_DTOR();
 #endif
+    m_TickTimer.stop();
 }
 
 template <class DP>
@@ -179,20 +181,18 @@ void SchedulerCommandProcessor<DP>::run4Slot()
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportDrainingTimeOut2Min(), this, ReportDrainingTimeOut2Min());
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&),
                      this, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&));
-    CONNECTSIGNALSLOT(this, NewCmdAdded(), this, OnNewCmdAdded());
+    CONNECTSIGNALSLOT(&m_TickTimer, timeout(), this, OnTickTimer());
     CONNECTSIGNALSLOT(this, SigShutDownDevice(), this, OnShutDownDevice());
     CONNECTSIGNALSLOT(this, SigNotifySavedServiceInfor(const QString&), this, OnNotifySavedServiceInfor(const QString&));
     CONNECTSIGNALSLOT(this, SigResetActiveCarbonFilterLifetime(), this, OnResetActiveCarbonFilterLifetime());
+    m_TickTimer.setInterval(500);
+    m_TickTimer.start();
 
 }
 
 template <class DP>
-void SchedulerCommandProcessor<DP>::OnNewCmdAdded4Slot()
+void SchedulerCommandProcessor<DP>::OnTickTimer4Slot()
 {
-    if (m_IsRunning)
-    {
-       return;
-    }
     Scheduler::SchedulerCommandShPtr_t scmd;
     while (newCmdComing(scmd))
     {
@@ -202,7 +202,6 @@ void SchedulerCommandProcessor<DP>::OnNewCmdAdded4Slot()
             mp_SchedulerThreadController->PushDeviceControlCmdQueue(scmd);
         }
     }
-    m_IsRunning = false;
 }
 
 template <class DP>
@@ -219,7 +218,6 @@ void SchedulerCommandProcessor<DP>:: pushCmd4Slot(CmdSchedulerCommandBase* cmd, 
     m_CmdMutex.lock();
     m_Cmds.push_front(Scheduler::SchedulerCommandShPtr_t(cmd));
     m_CmdMutex.unlock();
-    emit NewCmdAdded();
 }
 
 template <class DP>
@@ -306,7 +304,6 @@ void SchedulerCommandProcessor<DP>::ThrowError4Slot(quint32 instanceID, quint16 
 template <class DP>
 void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_t& scmd)
 {
-    m_IsRunning = true;
     QString cmdName = scmd->GetName();
 
         if ("Scheduler::StartConfigurationService" == cmdName)
