@@ -41,6 +41,7 @@
 #include "DataManager/Containers/InstrumentHistory/Include/InstrumentHistory.h"
 #include <QDebug>
 #include <QApplication>
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 //lint -e613
 //lint -e505
@@ -935,6 +936,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     int remainder = duration % 10;
     int dd = 2*60;
     bool isTouched = false;
+    int steadyNum = 0;
 
     duration -= remainder;
 
@@ -1070,11 +1072,25 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
             QTime EndTime = QTime().currentTime().addSecs(1);
 
             curTemp = mp_TempLSensor->GetTemperature();
-
+#if 0
             if (totalSeconds == 10 &&
                     (curTemp > 93 || curTemp < 71)) {  // (82-11) ~ (82+11)
                 goto ERROR_EXIT;
             }
+#else
+            if (i==1 && steadyNum<5) {
+                if (curTemp >=MinTemperature && curTemp <= MaxTemperature) {
+                    steadyNum++;
+                }
+                else {
+                    steadyNum=0;
+                }
+
+                if (steadyNum == 5) {
+                    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Level sensor temperatue is steady at %1 seconds.").arg(waitSeconds-5));
+                }
+            }
+#endif
             else if (i==0 && curTemp >= ExchangeTemperature) {
                 break;
             }
@@ -1119,6 +1135,8 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     p_TestCase->AddResult("CurrentTemp", QString("%1").arg(curTemp));
     p_TestCase->AddResult("Duration", durTime.toString());
     p_TestCase->AddResult("UsedTime", QTime().addSecs(totalSeconds).toString("hh:mm:ss"));
+
+
     return 0;
 
 ERROR_EXIT:
