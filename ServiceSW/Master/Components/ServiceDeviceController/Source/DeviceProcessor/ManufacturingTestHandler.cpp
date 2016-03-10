@@ -937,6 +937,8 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     int dd = 2*60;
     bool isTouched = false;
     int steadyNum = 0;
+    int steadyTime = 0;
+    bool isOver = false;
 
     duration -= remainder;
 
@@ -1078,7 +1080,11 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
                 goto ERROR_EXIT;
             }
 #else
-            if (i==1 && steadyNum<6) {
+            if (i==1 && curTemp > MaxTemperature) {
+                isOver = true;
+            }
+
+            if (isOver && steadyNum<6) {
                 if (curTemp >=MinTemperature && curTemp <= MaxTemperature) {
                     steadyNum++;
                 }
@@ -1087,11 +1093,12 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
                 }
 
                 if (steadyNum == 6) {
-                    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Level sensor temperatue is steady at %1 seconds.").arg(waitSeconds-5));
+                    steadyTime = totalSeconds - 5 ;
                 }
             }
 #endif
             else if (i==0 && curTemp >= ExchangeTemperature) {
+                steadyTime = totalSeconds;
                 break;
             }
             else if (i==2 && (curTemp<MinTemperature||curTemp>MaxTemperature)) {
@@ -1136,7 +1143,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     p_TestCase->AddResult("Duration", durTime.toString());
     p_TestCase->AddResult("UsedTime", QTime().addSecs(totalSeconds).toString("hh:mm:ss"));
 
-
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Level sensor temperatue is steady at %1 seconds.").arg(steadyTime));
     return 0;
 
 ERROR_EXIT:
