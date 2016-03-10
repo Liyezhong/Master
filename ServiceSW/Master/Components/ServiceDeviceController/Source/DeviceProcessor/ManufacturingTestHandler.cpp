@@ -1078,7 +1078,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
                 goto ERROR_EXIT;
             }
 #else
-            if (i==1 && steadyNum<5) {
+            if (i==1 && steadyNum<6) {
                 if (curTemp >=MinTemperature && curTemp <= MaxTemperature) {
                     steadyNum++;
                 }
@@ -1086,7 +1086,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
                     steadyNum=0;
                 }
 
-                if (steadyNum == 5) {
+                if (steadyNum == 6) {
                     Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Level sensor temperatue is steady at %1 seconds.").arg(waitSeconds-5));
                 }
             }
