@@ -1253,7 +1253,10 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
     }
     else
     {
-        ui->programPanelWidget->EnableStartButton(true, true);
+        if (!Core::CGlobalHelper::GetSystemErrorStatus())
+        {
+            ui->programPanelWidget->EnableStartButton(true, true);
+        }
         ui->programPanelWidget->ResetInFavProgramButtonClicked();
     }
 }
