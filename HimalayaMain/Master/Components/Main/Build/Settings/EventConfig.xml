@@ -21,6 +21,7 @@
 		</Event>
 		<Event Code="" ErrorID="520060005" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RC_ReHeating" NextStepOnFail="1" NextStepOnSuccess="1"/>
+			<Step ID="1" Type="MSG" StringID="67176215" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="520060201" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176224" ButtonType="OK" StatusBar="YES"/>
