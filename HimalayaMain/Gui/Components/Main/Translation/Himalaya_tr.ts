@@ -964,7 +964,7 @@
         <source>Cassettes
 since
 change</source>
-        <translation>Değişiklikten
+        <translation>Değişimden
 sonraki kaset
 sayısı</translation>
     </message>
@@ -974,7 +974,7 @@ sayısı</translation>
         <source>Cycles
 since
 change</source>
-        <translation>Değişiklikten
+        <translation>Değişimden
 sonraki siklus
 sayısı</translation>
     </message>
@@ -1679,7 +1679,7 @@ Tarihi</translation>
         <source>Pausing...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>Duraklatılıyor...
-Hazne kapağını açmayın ve reaktif şişelerinden hiçbirinin fişini çekmeyin.</translation>
+Hazne kapağını açmayın ve reaktif şişelerinden hiçbirini yerinden çıkarmayın.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1431"/>
@@ -1699,7 +1699,7 @@ Hazne kapağını açmayın ve reaktif şişelerinden hiçbirinin fişini çekme
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1450"/>
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning. Load the specimens into the retort and make sure that the retort is locked.</source>
-        <translation>Lütfen tüm reaktiflerin seviyesini kontrol edin ve hazne seviye sensörünü, haznenin halka contasını ve hazne filtresini temizleyin.
+        <translation>Lütfen tüm reaktiflerin seviyesini kontrol edin ve hazne seviye sensörünü, haznenin kapak contasını ve hazne filtresini temizleyin.
 Temizleme sonrasında hazne filtresini yeniden takın. Numuneleri hazneye yükleyin ve haznenin kilitlendiğinden emin olun. </translation>
     </message>
     <message>
@@ -1716,7 +1716,7 @@ Temizleme sonrasında hazne filtresini yeniden takın. Numuneleri hazneye yükle
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1426"/>
         <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential hazard of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
         <translation>Haznenin kapağı açıldı. Lütfen kapağı kapatın ve TAMAM&apos;ı tıklayın.
-Reaktif buharın olası tehlikelerini engellemek için solunum cihazını doğru biçimde takın.
+Reaktif buharının olası tehlikelerini engellemek için solunum cihazını doğru biçimde takın.
 Seviye sensörüne dokunmayın. Sıcaktır!</translation>
     </message>
     <message>
@@ -1790,7 +1790,7 @@ Numunenin çıkarıldığından ve haznenin boş olduğundan emin olun ve sonra 
         <source>Resuming...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>Devam ediyor...
-Hazne kapağını açmayın ve reaktif şişelerinden hiçbirinin fişini çekmeyin.</translation>
+Hazne kapağını açmayın ve reaktif şişelerinden hiçbirini yerinden çıkarmayın.</translation>
     </message>
 </context>
 <context>

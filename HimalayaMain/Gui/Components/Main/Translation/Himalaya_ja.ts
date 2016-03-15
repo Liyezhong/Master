@@ -1657,7 +1657,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1422"/>
         <source>Program &quot;%1&quot; has completed! Would you like to drain the retort?</source>
-        <translation>プログラム &quot;%1&quot; が完了しました。レトルトから排液しますか?</translation>
+        <translation>プログラム &quot;%1&quot; を完了しました。レトルトから排液しますか?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1424"/>
@@ -1674,12 +1674,12 @@ Date</source>
         <source>Pausing...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>一時停止中です…
-レトルト蓋を開けないでください。試薬ボトルを外さないでください。</translation>
+レトルトの蓋を閉めたまま、試薬ボトルを外してください。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1431"/>
         <source>The retort is contaminated. Please start the cleaning program.</source>
-        <translation>レトルトが汚れています。クリーニングプログラムを開始してください。</translation>
+        <translation>レトルトが汚れています。洗浄プログラムを開始してください。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1444"/>
@@ -1689,7 +1689,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1449"/>
         <source>Ready to start a new program.</source>
-        <translation>新規プログラムを開始する準備ができています。</translation>
+        <translation>次のプログラムを開始することができます。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1450"/>
@@ -1709,14 +1709,14 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1426"/>
         <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential hazard of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
-        <translation>レトルト蓋が開いています。レトルト蓋を閉じ、「OK」をクリックしてください。
-試薬蒸気の危険を防ぐためにマスクを着用してください。
-液位センサーに触れないでください。高温です。</translation>
+        <translation>レトルトの蓋が開いています。レトルトの蓋を閉じ、「OK」を押してください。
+試薬蒸気を吸い込まないようにマスクを着用してください。
+レベルセンサーに触れないでください。高温です。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1430"/>
         <source>Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press &quot;Ok&quot; button.</source>
-        <translation>試料を取り除き、レトルトをロックしてください。試料が取り除かれ、レトルトが空になっていることを確認し、「OK」ボタンを押してください。</translation>
+        <translation>試料を取り出し、レトルトをロックします。試料が取り出され、レトルトが空になっていることを確認し、「OK」ボタンを押してください。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1432"/>
@@ -1726,17 +1726,17 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1433"/>
         <source>Program &quot;%1&quot; has completed!</source>
-        <translation>プログラム &quot;%1&quot; が完了しました!</translation>
+        <translation>プログラム &quot;%1&quot; を完了しました。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1434"/>
         <source>Program &quot;%1&quot; has completed successfully!</source>
-        <translation>プログラム &quot;%1&quot; が正常に完了しました。</translation>
+        <translation>プログラム &quot;%1&quot; を正常に完了しました。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1435"/>
         <source>The safe reagent has been drained completely. The program &quot;%1&quot; was aborted!</source>
-        <translation>安全な試薬が完全に排出されました。プログラム &quot;%1&quot; が中止されました!</translation>
+        <translation>安全な試薬が完全に排出されました。プログラム &quot;%1&quot; を中止しました。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1437"/>
@@ -1783,7 +1783,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <source>Resuming...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>再開中です..
-レトルト蓋を開けないでください。試薬ボトルを外さないでください。</translation>
+レトルトの蓋を閉めたまま、試薬ボトルを外してください。</translation>
     </message>
 </context>
 <context>
