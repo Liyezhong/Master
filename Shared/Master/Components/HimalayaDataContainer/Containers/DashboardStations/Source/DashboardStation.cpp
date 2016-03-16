@@ -43,7 +43,7 @@ CDashboardStation::CDashboardStation() :
     m_DashboardStationName("UNDEFINED"),
     m_IsParaffinBath(false),
     m_ReagentID("-1"),
-    m_ReagentExchangeDate(QDate::fromString("1986-01-01", "yyyy-MM-dd")),
+    m_ReagentExchangeDate(QDate::fromString("1986-01-01", "yyyy-MM-dd hh:mm:ss")),
     m_ReagentActualCassettes(0),
     m_ReagentActualCycles(0),
     m_ReagentStatus("Empty"),
@@ -68,7 +68,7 @@ CDashboardStation::CDashboardStation(const QString ID)
     m_DashboardStationStatus = INVALID_STATUS;
     m_DashboardStationType = INVALID_STATION;
     m_IsParaffinBath = false;
-    m_ReagentExchangeDate = QDate::fromString("1986-01-01", "yyyy-MM-dd");
+    m_ReagentExchangeDate = QDateTime::fromString("1986-01-01 00:00:00", "yyyy-MM-dd hh:mm:ss");
     m_ReagentActualCassettes = 0;
     m_ReagentActualCycles = 0;
     m_ReagentStatus = "Empty";
@@ -188,7 +188,7 @@ bool CDashboardStation::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool
 
     XmlStreamWriter.writeStartElement("Reagent");
     XmlStreamWriter.writeAttribute("ID", GetDashboardReagentID());
-    XmlStreamWriter.writeAttribute("ExchangeDate", GetDashboardReagentExchangeDate().toString("yyyy-MM-dd"));
+    XmlStreamWriter.writeAttribute("ExchangeDate", GetDashboardReagentExchangeDate().toString("yyyy-MM-dd hh:mm:ss"));
     XmlStreamWriter.writeAttribute("ActualCassettes", QString::number(GetDashboardReagentActualCassettes()));
     XmlStreamWriter.writeAttribute("ActualCycles", QString::number(GetDashboardReagentActualCycles()));
     XmlStreamWriter.writeAttribute("Status", GetDashboardReagentStatus());
@@ -259,8 +259,8 @@ bool CDashboardStation::DeserializeContent(QXmlStreamReader& XmlStreamReader, bo
         qDebug() << "### attribute <ExchangeDate> is missing => abort reading";
         return false;
     }
-    QString Date = XmlStreamReader.attributes().value("ExchangeDate").toString();
-    SetDashboardReagentExchangeDate(QDate::fromString(Date, "yyyy-MM-dd"));
+    QString DateTime = XmlStreamReader.attributes().value("ExchangeDate").toString();
+    SetDashboardReagentExchangeDate(QDateTime::fromString(DateTime, "yyyy-MM-dd hh:mm:ss"));
 
     // Reagent ActualCassettes
     if (!XmlStreamReader.attributes().hasAttribute("ActualCassettes")) {
@@ -319,7 +319,7 @@ void CDashboardStation::ResetData(void)
 {
     m_ReagentActualCassettes = 0;
     m_ReagentActualCycles    = 0;
-    m_ReagentExchangeDate    = QDate::currentDate();
+    m_ReagentExchangeDate    = QDateTime::currentDateTime();
 }
 
 /****************************************************************************/
@@ -374,11 +374,10 @@ DataManager::ReagentStatusType_t CDashboardStation::GetReagentStatus(const DataM
 			}
 			case Global::RMS_DAYS:
 			{
-                QDate CurDate = Global::AdjustedTime::Instance().GetCurrentDateTime().date();
-                QDate ReagentExchangeQDate = pDashboardStation->GetDashboardReagentExchangeDate();
-                QDate ReagentExpiryQDate = ReagentExchangeQDate.addDays(Reagent.GetMaxDays());
+                QDateTime ReagentExchangeQDate = pDashboardStation->GetDashboardReagentExchangeDate();
+                QDateTime ReagentExpiryQDate = ReagentExchangeQDate.addDays(Reagent.GetMaxDays());
 
-                if(CurDate >= ReagentExpiryQDate) {
+                if(QDateTime::currentDateTime() >= ReagentExpiryQDate) {
                     ReagentStatus = DataManager::REAGENT_STATUS_EXPIRED;
                 }
                 else {

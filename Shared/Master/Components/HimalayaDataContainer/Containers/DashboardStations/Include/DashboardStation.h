@@ -46,7 +46,7 @@ private:
     QString                     m_DashboardStationName;       ///<  Definition/Declaration of variable m_DashboardStationName
     bool                        m_IsParaffinBath;       ///<  Definition/Declaration of variable m_IsParaffinBath
     QString                     m_ReagentID;       ///<  Definition/Declaration of variable m_ReagentID
-    QDate                       m_ReagentExchangeDate;       ///<  Definition/Declaration of variable m_ReagentExchangeDate
+    QDateTime                   m_ReagentExchangeDate;       ///<  Definition/Declaration of variable m_ReagentExchangeDate
     int                         m_ReagentActualCassettes;       ///<  Definition/Declaration of variable m_ReagentActualCassettes
     int                         m_ReagentActualCycles;       ///<  Definition/Declaration of variable m_ReagentActualCycles
     QString                     m_ReagentStatus;       ///<  Definition/Declaration of variable m_ReagentStatus
@@ -229,7 +229,7 @@ public:
      *  \return Station Name String
      */
     /****************************************************************************/
-    QDate  GetDashboardReagentExchangeDate()
+    QDateTime  GetDashboardReagentExchangeDate()
     {
         return m_ReagentExchangeDate;
     }
@@ -243,7 +243,7 @@ public:
      *  \return
      */
     /****************************************************************************/
-    void SetDashboardReagentExchangeDate(const QDate Value)
+    void SetDashboardReagentExchangeDate(const QDateTime& Value)
     {
         m_ReagentExchangeDate = Value;
     }

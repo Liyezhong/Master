@@ -252,18 +252,20 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                         case Global::RMS_CYCLES:
                             return p_Station->GetDashboardReagentActualCycles();
                         case Global::RMS_DAYS:
-                           QDate Tem_QDate = p_Station->GetDashboardReagentExchangeDate();
+                           QDateTime tempDateTime = p_Station->GetDashboardReagentExchangeDate();
+                           tempDateTime = tempDateTime.addSecs(Global::AdjustedTime::Instance().GetOffsetSeconds());
+                           QDate tempDate = tempDateTime.date();
                            if (mp_UserSettings)
                            {
                                switch(mp_UserSettings->GetDateFormat()){
                                default:
                                    return QString("");
                                case Global::DATE_INTERNATIONAL:
-                                   return Tem_QDate.addDays(p_Reagent->GetMaxDays()).toString("dd.MM.yyyy");
+                                   return tempDate.addDays(p_Reagent->GetMaxDays()).toString("dd.MM.yyyy");
                                case Global::DATE_ISO:
-                                   return Tem_QDate.addDays(p_Reagent->GetMaxDays()).toString("yyyy-MM-dd");
+                                   return tempDate.addDays(p_Reagent->GetMaxDays()).toString("yyyy-MM-dd");
                                case Global::DATE_US:
-                                   return Tem_QDate.addDays(p_Reagent->GetMaxDays()).toString("MM/dd/yyyy");
+                                   return tempDate.addDays(p_Reagent->GetMaxDays()).toString("MM/dd/yyyy");
                              }
                            }
                            break;
@@ -285,18 +287,20 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                     case Global::RMS_CYCLES:
                         return p_Station->GetDashboardReagentActualCycles();
                     case Global::RMS_DAYS:
-                       QDate Tem_QDate = p_Station->GetDashboardReagentExchangeDate();
+                       QDateTime tempDateTime = p_Station->GetDashboardReagentExchangeDate();
+                       tempDateTime = tempDateTime.addSecs(Global::AdjustedTime::Instance().GetOffsetSeconds());
+                       QDate tempDate = tempDateTime.date();
                        if (mp_UserSettings)
                        {
                            switch(mp_UserSettings->GetDateFormat()){
                            default:
                                return QString("");
                            case Global::DATE_INTERNATIONAL:
-                               return Tem_QDate.addDays(p_Reagent->GetMaxDays()).toString("dd.MM.yyyy");
+                               return tempDate.addDays(p_Reagent->GetMaxDays()).toString("dd.MM.yyyy");
                            case Global::DATE_ISO:
-                               return Tem_QDate.addDays(p_Reagent->GetMaxDays()).toString("yyyy-MM-dd");
+                               return tempDate.addDays(p_Reagent->GetMaxDays()).toString("yyyy-MM-dd");
                            case Global::DATE_US:
-                               return Tem_QDate.addDays(p_Reagent->GetMaxDays()).toString("MM/dd/yyyy");
+                               return tempDate.addDays(p_Reagent->GetMaxDays()).toString("MM/dd/yyyy");
                          }
                        }
                        break;
@@ -308,15 +312,18 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
 
             case 4:
                 if (mp_UserSettings) {
+                    QDateTime tempDateTime = p_Station->GetDashboardReagentExchangeDate();
+                    tempDateTime = tempDateTime.addSecs(Global::AdjustedTime::Instance().GetOffsetSeconds());
+                    QDate tempDate = tempDateTime.date();
                     switch(mp_UserSettings->GetDateFormat()){
                     default:
                         return QString("");
                     case Global::DATE_INTERNATIONAL:
-                        return p_Station->GetDashboardReagentExchangeDate().toString("dd.MM.yyyy");
+                        return tempDate.toString("dd.MM.yyyy");
                     case Global::DATE_ISO:
-                        return p_Station->GetDashboardReagentExchangeDate().toString("yyyy-MM-dd");
+                        return tempDate.toString("yyyy-MM-dd");
                     case Global::DATE_US:
-                        return p_Station->GetDashboardReagentExchangeDate().toString("MM/dd/yyyy");
+                        return tempDate.toString("MM/dd/yyyy");
                     }
                     return QString("");
                  }

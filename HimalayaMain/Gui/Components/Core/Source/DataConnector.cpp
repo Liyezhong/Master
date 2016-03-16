@@ -764,7 +764,7 @@ void CDataConnector::UpdateStationResetDataHandler(Global::tRefType Ref, const M
     bool Result = true;
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
      if (pDashboardStation) {
-        pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate());
+        pDashboardStation->SetDashboardReagentExchangeDate(QDateTime::currentDateTime());
 
         DataManager::CReagent* pReagent = ReagentList->GetReagent(pDashboardStation->GetDashboardReagentID());
         DataManager::CReagentGroup* pReagentGroup = ReagentGroupList->GetReagentGroup(pReagent->GetGroupID());
@@ -821,7 +821,7 @@ void CDataConnector::UpdateStationSetAsFullHandler(Global::tRefType Ref, const M
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
     if (pDashboardStation){
         pDashboardStation->SetDashboardReagentStatus("Full");
-        pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate());
+        pDashboardStation->SetDashboardReagentExchangeDate(QDateTime::currentDateTime());
 
         DataManager::CReagent* pReagent = ReagentList->GetReagent(pDashboardStation->GetDashboardReagentID());
         DataManager::CReagentGroup* pReagentGroup = ReagentGroupList->GetReagentGroup(pReagent->GetGroupID());

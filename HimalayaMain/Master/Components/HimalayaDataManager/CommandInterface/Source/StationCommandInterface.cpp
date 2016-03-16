@@ -139,7 +139,7 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
      CDashboardStation* pDashboardStation = static_cast<CDataContainer*>(mp_DataContainer)->StationList->GetDashboardStation(cmd.StationID());
      if (pDashboardStation)
      {
-         pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate());
+         pDashboardStation->SetDashboardReagentExchangeDate(QDateTime::currentDateTime());
          CReagent* pReagent = static_cast<CDataContainer*>(mp_DataContainer)->ReagentList->GetReagent(pDashboardStation->GetDashboardReagentID());
          CReagentGroup* pReagentGroup = static_cast<CDataContainer*>(mp_DataContainer)->ReagentGroupList->GetReagentGroup(pReagent->GetGroupID());
 
@@ -197,7 +197,7 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
      if (pDashboardStation)
      {
         pDashboardStation->SetDashboardReagentStatus("Full");
-        pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate());
+        pDashboardStation->SetDashboardReagentExchangeDate(QDateTime::currentDateTime());
         CReagent* pReagent = static_cast<CDataContainer*>(mp_DataContainer)->ReagentList->GetReagent(pDashboardStation->GetDashboardReagentID());
         CReagentGroup* pReagentGroup = static_cast<CDataContainer*>(mp_DataContainer)->ReagentGroupList->GetReagentGroup(pReagent->GetGroupID());
 

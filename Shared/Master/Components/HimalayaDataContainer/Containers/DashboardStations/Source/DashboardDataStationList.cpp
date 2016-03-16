@@ -631,7 +631,7 @@ bool CDashboardDataStationList::UpdateStationsByReagentDelete(const QString& Rea
             pDashboardStation->SetDashboardReagentID("");
             pDashboardStation->SetDashboardReagentActualCassettes(0);
             pDashboardStation->SetDashboardReagentActualCycles(0);
-            pDashboardStation->SetDashboardReagentExchangeDate(QDate::fromString("1986-01-01", "yyyy-MM-dd"));
+            pDashboardStation->SetDashboardReagentExchangeDate(QDateTime::fromString("1986-01-01 00:00:00", "yyyy-MM-dd hh:mm:ss"));
             pDashboardStation->SetDashboardReagentStatus("Empty");
         }
         ++i;

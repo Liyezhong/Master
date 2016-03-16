@@ -1010,7 +1010,7 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
 
     // Update end time and prompt the MSG box to info end user
     m_EndTimeAndStepTime.UserSetEndTime += offset;
-    QDateTime endTime = QDateTime::fromMSecsSinceEpoch(m_EndTimeAndStepTime.UserSetEndTime);
+    QDateTime endTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addMSecs(offset);
 
     if (offset > 1000*60) //If offset is less than one minute, we will NOT notify end user
     {

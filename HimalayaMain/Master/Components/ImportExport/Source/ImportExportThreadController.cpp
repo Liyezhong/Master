@@ -667,7 +667,7 @@ bool ImportExportThreadController::WriteRMSFileData(const QFile &RMSFile,
                         Remaining = QString("%1/%2").arg(p_Station->GetDashboardReagentActualCycles()).arg(p_Reagent->GetMaxCycles());
                         break;
                     case Global::RMS_DAYS:
-                        Remaining = QString("%1/%2").arg(p_Station->GetDashboardReagentExchangeDate().daysTo(QDate::currentDate())).arg(p_Reagent->GetMaxDays());
+                        Remaining = QString("%1/%2").arg(p_Station->GetDashboardReagentExchangeDate().daysTo(QDateTime::currentDateTime())).arg(p_Reagent->GetMaxDays());
                         break;
                     case Global::RMS_OFF:
                     case Global::RMS_UNDEFINED:
