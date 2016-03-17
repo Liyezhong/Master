@@ -12,7 +12,8 @@
 			<Step ID="2" Type="ACT" Action="RC_ReHeating" NextStepOnFail="5" NextStepOnSuccess="4"/>
 			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
 			<Step ID="4" Type="ACT" Action="RC_Restart"/>
-			<Step ID="5" Type="MSG" StringID="67176216" ButtonType="OK" StatusBar="YES"/>
+			<Step ID="5" Type="ACT" Action="RC_TurnOn_RemoteAlarm" NextStepOnFail="6" NextStepOnSuccess="6"/>
+			<Step ID="6" Type="MSG" StringID="67176216" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="520060004" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176214" ButtonType="OK" NextStepOnTimeOut="1" TimeOut="5m" NextStepOnClickOK="1" StatusBar="YES"/>

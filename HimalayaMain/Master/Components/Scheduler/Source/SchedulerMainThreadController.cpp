@@ -2358,6 +2358,15 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_ABORT;
         }
+        if (cmd == "rc_turnon_remotealarm")
+        {
+            // Turn on remote alarm
+            CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, this);
+            cmd->SetRmtLocOpcode(5);
+            m_SchedulerCommandProcessor->pushCmd(cmd);
+            this->RaiseError(pCmdSystemAction->GetEventKey(), DCL_ERR_FCT_CALL_SUCCESS, 0, true);
+            return CTRL_CMD_NONE;
+        }
         if (cmd == "checkovencover")
         {
             //warning action not need eventkey
