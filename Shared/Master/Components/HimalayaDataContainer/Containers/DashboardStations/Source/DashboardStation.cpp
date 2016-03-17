@@ -260,6 +260,10 @@ bool CDashboardStation::DeserializeContent(QXmlStreamReader& XmlStreamReader, bo
         return false;
     }
     QString DateTime = XmlStreamReader.attributes().value("ExchangeDate").toString();
+    if(!DateTime.contains(':'))
+    {
+        DateTime = DateTime + " 00:00:00";
+    }
     SetDashboardReagentExchangeDate(QDateTime::fromString(DateTime, "yyyy-MM-dd hh:mm:ss"));
 
     // Reagent ActualCassettes
