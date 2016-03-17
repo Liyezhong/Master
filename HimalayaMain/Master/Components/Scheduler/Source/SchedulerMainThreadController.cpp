@@ -344,10 +344,11 @@ void SchedulerMainThreadController::OnReportDrainingTimeOut2Min()
 
 void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp)
 {
+#if 0
     LogDebug(QString("In OnReportError, instanceID=%1, usErrorGroup=%2, usErrorID=%3, usErrorData=%4 and timeStamp=%5")
              .arg(instanceID, 0, 16).arg(usErrorGroup).arg(usErrorID).arg(usErrorData).arg(timeStamp.toString()));
+#endif
 
-#if 1
     if(usErrorID == DCL_ERR_TIMEOUT || usErrorID == DCL_ERR_CANCOMMUTOR_COMM_FAILED)
     {
         if (false == m_InternalErrorRecv)
@@ -356,7 +357,7 @@ void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 us
             SendOutErrMsg(DCL_ERR_DEV_INTER_SW_ERROR, false);
         }
     }
-#endif
+
 }
 
 void SchedulerMainThreadController::CleanupAndDestroyObjects()
