@@ -1011,8 +1011,9 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
 
     // Update end time and prompt the MSG box to info end user
     m_EndTimeAndStepTime.UserSetEndTime += offset;
-    QDateTime endTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addMSecs(offset);
-
+    QDateTime endTime = QDateTime::fromMSecsSinceEpoch(m_EndTimeAndStepTime.UserSetEndTime);
+    int diff = endTime.secsTo(QDateTime::currentDateTime());
+    endTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(-diff);
     if (offset > 1000*60) //If offset is less than one minute, we will NOT notify end user
     {
         RaiseEvent(EVENT_SCHEDULER_PAUSE_ENDTIME_UPDATE, QStringList()<<endTime.toString("yyyy-MM-dd hh:mm"));
@@ -3246,7 +3247,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
         if(Cmd.ProgramRunDuration() > 0) // start new program
         {
             QDateTime EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(Cmd.ProgramRunDuration());
-            m_EndTimeAndStepTime.UserSetEndTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(Cmd.ProgramRunDuration()).toMSecsSinceEpoch();
+            m_EndTimeAndStepTime.UserSetEndTime = QDateTime::currentDateTime().addSecs(Cmd.ProgramRunDuration()).toMSecsSinceEpoch();
             if(ProgramNameID == 0)
             {
                 RaiseEvent(EVENT_SCHEDULER_REC_START_PROGRAM, QStringList()<<ProgramName
