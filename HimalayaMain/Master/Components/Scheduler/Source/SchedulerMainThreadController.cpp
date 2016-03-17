@@ -2363,9 +2363,8 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (cmd == "rc_turnon_remotealarm")
         {
             // Turn on remote alarm
-            CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, this);
-            cmd->SetRmtLocOpcode(5);
-            m_SchedulerCommandProcessor->pushCmd(cmd);
+            Global::AlarmHandler::Instance().setAlarm(pCmdSystemAction->GetEventKey(),Global::ALARM_ERROR,true);
+            HandleRmtLocAlarm(CTRL_CMD_ALARM_RMT_ON);
             this->RaiseError(pCmdSystemAction->GetEventKey(), DCL_ERR_FCT_CALL_SUCCESS, 0, true);
             return CTRL_CMD_NONE;
         }
