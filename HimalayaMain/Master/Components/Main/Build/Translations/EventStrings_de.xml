@@ -274,7 +274,7 @@
         <string id="67175230" text1="Weil das Programm vom Anwender angehalten wurde, wird der Programmendzeitpunkt auf %1 aktualisiert." text2=""/>
         <string id="67175188" text1="10 Sekunden leeren. Retortendeckel nicht öffnen." text2=""/>
         <string id="67175187" text1="Retorte verriegeln und OK drücken." text2=""/>
-        <string id="67176214" text1="Programm wurde durch Stromausfall unterbrochen. Bitte das Programm abbrechen." text2=""/>
+        <string id="67176214" text1="Programm wurde durch Stromausfall unterbrochen." text2=""/>
         <string id="50331778" text1="Gerätespeicher ist voll. Bitte Kundendienst verständigen." text2=""/>
         <string id="67175225" text1="Programm %1 starten. Supervisor bestätigt durch Drücken von &quot;Ja&quot;, dass das Programm mit abgelaufener Reagenz %2, %3 gestartet werden soll." text2=""/>
         <string id="67176213" text1="Bitte Paraffinstatus in Paraffinbad prüfen; wenn Paraffinpegel unterhalb des Mindestpegels liegt, bitte innerhalb von 15 Minuten flüssiges Paraffin zum Paraffinbad hinzufügen." text2=""/>

@@ -274,7 +274,7 @@
         <string id="67175230" text1="Parce que l'utilisateur a mis le programme en pause, l'heure de fin du programme sera actualisée à %1." text2=""/>
         <string id="67175188" text1="Purge pendant 10 secondes. Ne pas ouvrir le couvercle de la chambre." text2=""/>
         <string id="67175187" text1="Verrouiller la chambre, puis appuyer sur le bouton OK." text2=""/>
-        <string id="67176214" text1="Le programme a été interrompu par une panne de courant. Veuillez abandonner le programme." text2=""/>
+        <string id="67176214" text1="Le programme a été interrompu par une panne de courant. " text2=""/>
         <string id="50331778" text1="L'espace de stockage de l'instrument est plein. Veuillez appeler le centre de services." text2=""/>
         <string id="67175225" text1="Démarrer le programme %1. L'administrateur a confirmé en appuyant sur le bouton &quot;Oui&quot; pour démarrer le programme avec le réactif expiré :%2, %3." text2=""/>
         <string id="67176213" text1="Veuillez contrôler l'état de la paraffine dans le bain de paraffine : si le niveau de paraffine est inférieur au niveau minimal, veuillez ajouter de la paraffine liquide dans le bain de paraffine dans un délai de 15 minutes." text2=""/>

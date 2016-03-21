@@ -274,7 +274,7 @@
         <string id="67175230" text1="사용자가 프로그램을 일시정지하여, 프로그램 종료시간이 %1로 업데이트 될 예정입니다." text2=""/>
         <string id="67175188" text1="10초간 배출 중입니다. 리토르트 뚜껑을 열지 마십시오." text2=""/>
         <string id="67175187" text1="리토르트를 잠그고, 확인 버튼을 누르십시오." text2=""/>
-        <string id="67176214" text1="전원공급이 차단되어 프로그램이 멈췄습니다. 프로그램을 중지해 주십시오." text2=""/>
+        <string id="67176214" text1="전원공급이 차단되어 프로그램이 멈췄습니다." text2=""/>
         <string id="50331778" text1="장비 보관소가 가득 찼습니다. 서비스 문의 하십시오." text2=""/>
         <string id="67175225" text1="프로그램 %1이 시작됩니다. 유효기간이 지난 시약 :%2, %3을 이용해 프로그램을 시작할 수 있도록 관리자가 &quot;예&quot;  버튼을 눌러 허락하였습니다." text2=""/>
         <string id="67176213" text1="파라핀배스의 파라핀 상태를 확인하고, 파라핀 잔여량이 최소량보다 낮은 경우 15분 내로 파라핀을 추가하십시오." text2=""/>
@@ -286,7 +286,7 @@
         <string id="67176222" text1="오류 ID %1! 작업 종료 시간이 초과되었습니다." text2=""/>
         <string id="67174402" text1="장치 초기화 %1 동안 오류가 발생하였습니다." text2=""/>
         <string id="67175226" text1="마지막 단계의 작업이 완료되어 리토르트로부터 시약 배출에 대한 사용자의 확인을 기다리고 있습니다." text2=""/>
-        <string id="67175173" text1="Because of power failure, the instrument will take %1 MINs to melt paraffin." text2=""/>
+        <string id="67175173" text1="전원 이상으로 인하여 파라핀이 녹는데 %1분 소요됩니다." text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>

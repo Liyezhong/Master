@@ -274,7 +274,7 @@
         <string id="67175230" text1="Because user paused the program, the program end time will be updated to %1." text2=""/>
         <string id="67175188" text1="Draining for 10 seconds. Do not open the retort lid." text2=""/>
         <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
-        <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
+        <string id="67176214" text1="Program was interrupted by power failure." text2=""/>
         <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
         <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
         <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>

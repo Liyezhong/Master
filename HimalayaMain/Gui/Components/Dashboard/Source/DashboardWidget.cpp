@@ -550,7 +550,9 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
             mp_RemoveSpecimenDlg->SetIcon(QMessageBox::Information);
             mp_RemoveSpecimenDlg->SetButtonText(1, CommonString::strOK);
             mp_RemoveSpecimenDlg->HideButtons();
+#if defined(__arm__)
             mp_RemoveSpecimenDlg->EnableButton(1, false);
+#endif
             QString strMsgDisplay(m_strTakeOutSpecimen);
             QString strTemp;
             if (m_ProgramStatus == Completed)
@@ -651,7 +653,9 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
         mp_RemoveSpecimenWhenAbortedDlg->SetText(strTemp + " " + m_strTakeOutSpecimen);
         mp_RemoveSpecimenWhenAbortedDlg->SetButtonText(1, CommonString::strOK);
         mp_RemoveSpecimenWhenAbortedDlg->HideButtons();
+#if defined(__arm__)
         mp_RemoveSpecimenWhenAbortedDlg->EnableButton(1, false);
+#endif
         m_pCheckRetortLidTimer->start();
         m_ShowReadyStartPrompt = true;
         if (mp_RemoveSpecimenWhenAbortedDlg->exec())
@@ -746,7 +750,9 @@ void CDashboardWidget::OnProgramCompleted(DataManager::CompletedProgramType_t co
     {
         mp_RemoveSpecimenWhenCompletedDlg->SetTitle(CommonString::strConfirmMsg);
         mp_RemoveSpecimenWhenCompletedDlg->SetText(strTemp + " " + m_strTakeOutSpecimen);
+#if defined(__arm__)
         mp_RemoveSpecimenWhenCompletedDlg->EnableButton(1, false);
+#endif
         m_pCheckRetortLidTimer->start();
         m_ShowReadyStartPrompt = true;
         (void)mp_RemoveSpecimenWhenCompletedDlg->exec();

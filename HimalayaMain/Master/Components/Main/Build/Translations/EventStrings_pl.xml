@@ -274,7 +274,7 @@
         <string id="67175230" text1="Ponieważ użytkownik spauzował program, czas zakończenia zostanie zaktualizowany do %1." text2=""/>
         <string id="67175188" text1="Opróżnianie przez 10 sekund. Nie otwierać pokrywy retorty." text2=""/>
         <string id="67175187" text1="Zablokować retortę, następnie nacisnąć przycisk ok." text2=""/>
-        <string id="67176214" text1="Program został przerwany przez awarię zasilania. Przerwać program." text2=""/>
+        <string id="67176214" text1="Program został przerwany przez awarię zasilania. " text2=""/>
         <string id="50331778" text1="Powierzchnia magazynowa urządzenia jest zapełniona. Prosimy wezwać serwis." text2=""/>
         <string id="67175225" text1="Uruchomić program %1. Nadzorca potwierdził naciskając przycisk &quot;Tak&quot; uruchomienie programu z odczynnikiem po terminie przydatności:%2, %3." text2=""/>
         <string id="67176213" text1="Prosimy sprawdzić status parafiny w łaźni, jeśli poziom parafiny jest niższy od minimalnego, prosimy dodać ciekłą parafinę do łaźni w ciągu 15 minut." text2=""/>

@@ -274,7 +274,7 @@
         <string id="67175230" text1="Kullanıcı programı duraklattığı için program bitiş zamanı %1 olarak güncellenecek." text2=""/>
         <string id="67175188" text1="10 saniye süreyle boşaltılıyor. Hazne kapağını açmayın." text2=""/>
         <string id="67175187" text1="Hazneyi kilitleyin ve sonra OK tuşuna basın." text2=""/>
-        <string id="67176214" text1="Elektrik arızası nedeniyle program kesintiye uğradı. Lütfen programı iptal edin." text2=""/>
+        <string id="67176214" text1="Elektrik arızası nedeniyle program kesintiye uğradı. " text2=""/>
         <string id="50331778" text1="cihaz deposu dolu. Lütfen servisi arayın." text2=""/>
         <string id="67175225" text1="%1 programını başlat. &quot;Evet&quot; tuşuna basarak süpervizor bilgilendirildi Süresi geçen reaktif %2, %3 ile program başlatılacak." text2=""/>
         <string id="67176213" text1="Lütfen parafin havuzundaki parafin durumunu kontrol edin; eğer parafin seviyesi minimum seviyenin altındaysa lütfen 15 dakika içinde parafin havuzuna sıvı parafin ekleyin." text2=""/>

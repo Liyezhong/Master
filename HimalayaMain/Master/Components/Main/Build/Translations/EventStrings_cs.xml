@@ -274,7 +274,7 @@
         <string id="67175230" text1="Protože uživatel pozastavil program, je doba konce programu aktualizována na %1." text2=""/>
         <string id="67175188" text1="Vypouštění 10 sekund. Neotevírejte víčko retorty." text2=""/>
         <string id="67175187" text1="Zavřete retortu a stiskněte tlačítko OK." text2=""/>
-        <string id="67176214" text1="Program byl přerušen výpadkem proudu. Přerušte program." text2=""/>
+        <string id="67176214" text1="Program byl přerušen výpadkem proudu." text2=""/>
         <string id="50331778" text1="Prostor pro nástroje je plný. Volejte servis." text2=""/>
         <string id="67175225" text1="Spusťte program %1. Správce potvrzen stisknutím tlačítka &quot;Ano&quot; pro spuštění programu s prošlým činidlem:%2, %3." text2=""/>
         <string id="67176213" text1="Zkontrolujte stav parafínu v parafínové lázni, je-li hladina parafínu nižší než minimální úroveň, přidejte během 15 minut do parafínové lázně tekutý parafín." text2=""/>

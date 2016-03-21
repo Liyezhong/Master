@@ -274,7 +274,7 @@
         <string id="67175230" text1="Puesto que el usuario ha pausado el programa, el tiempo de finalización se ha actualizado y pasa a ser %1." text2=""/>
         <string id="67175188" text1="Vaciando durante 10 segundos. No abra el tapa de la retorta." text2=""/>
         <string id="67175187" text1="Cierre la retorta y pulse «Aceptar»." text2=""/>
-        <string id="67176214" text1="El programa se ha interrumpido por un fallo de alimentación eléctrica. Anule el programa." text2=""/>
+        <string id="67176214" text1="El programa se ha interrumpido por un fallo de alimentación eléctrica." text2=""/>
         <string id="50331778" text1="El espacio de almacenamiento del instrumento está lleno. Llame al Servicio Técnico." text2=""/>
         <string id="67175225" text1="Inicie el programa %1. Al presionar el botón &quot;Sí&quot; el administrador confirmó el inicio del programa con el reactivo caducado:%2, %3." text2=""/>
         <string id="67176213" text1="Compruebe el estado de la parafina del baño de parafina. Si el nivel de parafina es inferior al nivel mínimo, añada parafina líquida al baño de parafina en un plazo de 15 minutos." text2=""/>
