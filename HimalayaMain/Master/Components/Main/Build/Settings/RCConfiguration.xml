@@ -6,7 +6,7 @@
     <RemoteCareServer ExecTime="5" ServerType="Primary" TargetDataBase="drm-data_source" ServerURL="https://leica-sandbox.axeda.com:443/eMessage" ServerId="15"/>
     <LocalDevice DeviceType="Master" DeviceId="15"/>
     <LocalNetworkProxy ProxyProtocol="SOCKS"/>
-    <RemoteSession RemoteSessionName="HimalayaRemote" RemoteSessionIPAddress="127.0.0.1"/>
+    <RemoteSession RemoteSessionName="HistocoreRemote" RemoteSessionIPAddress="127.0.0.1"/>
     <FileUpload Compression="Off" MaxChunkSize="60000">
         <DataItems>
             <DataItem Name="EnableSoftwareUpdate" Type="Digital" Quality="DataGood" Value="0"/>
