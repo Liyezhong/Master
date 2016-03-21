@@ -11,7 +11,7 @@
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="55"/>
         <source>Volume</source>
-        <translation>Objem</translation>
+        <translation>Hlasitost</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="58"/>
@@ -77,7 +77,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="31"/>
         <source>Build pressure failed</source>
-        <translation>Nezdar vytvoření tlaku</translation>
+        <translation>Vytvoření tlaku selhalo</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="32"/>
@@ -614,7 +614,7 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="45"/>
         <source>Cassettes until change</source>
-        <translation>Kazety před výměnou</translation>
+        <translation>Kazet do výměny</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="46"/>
@@ -872,7 +872,7 @@
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="32"/>
         <source>Select Color</source>
-        <translation>Zvolit barvu</translation>
+        <translation>Zvolte barvu</translation>
     </message>
 </context>
 <context>
@@ -890,7 +890,7 @@
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="294"/>
         <source>Cassettes until change</source>
-        <translation>Kazety před výměnou</translation>
+        <translation>Kazet do výměny</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="296"/>
@@ -1338,7 +1338,7 @@ výměny</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="731"/>
         <source>Cassettes until change</source>
-        <translation>Kazety před výměnou</translation>
+        <translation>Kazet do výměny</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="734"/>
@@ -1695,8 +1695,7 @@ Neotevírejte víčko retorty a odpojte všechny lahve s činidly.</translation>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1450"/>
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning. Load the specimens into the retort and make sure that the retort is locked.</source>
-        <translation>Zkontrolujte hladinu všech činidel a vyčistěte snímač hladiny retorty, těsnicí kroužek retorty a filtr retorty.
-Po vyčištění znovu instalujte filtr retorty. Vložte vzorky do retorty a přesvědčte se, že je retorta uzavřená.</translation>
+        <translation>Zkontrolujte hladinu všech činidel a vyčistěte snímač hladiny retorty, těsnicí kroužek retorty a filtr retorty. Po čištění nainstalujte filtr retorty. Do retorty vložte vzorky a ujistěte se, že retorta je uzavřená.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1429"/>
@@ -1711,9 +1710,7 @@ Po vyčištění znovu instalujte filtr retorty. Vložte vzorky do retorty a př
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1426"/>
         <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential hazard of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
-        <translation>Bylo otevřeno víčko retorty. Zavřete je a poté klepněte na OK.
-Používejte důsledně respirátor, abyste vyloučili potenciální riziko výparů činidel.
-Nedotýkejte se snímače hladiny. Je horký!</translation>
+        <translation>Bylo otevřeno víčko retorty. Zavřete je a poté klepněte na OK. Pro zamezení potenciálního nebezpečí výparů z činidla použijte respirátor. Nedotýkejte se senzoru hladiny. Je horký!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1430"/>
@@ -2807,7 +2804,7 @@ Neotevírejte víčko retorty a odpojte všechny lahve s činidly.</translation>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="154"/>
         <source>Cassettes until change:</source>
-        <translation>Kazety před výměnou:</translation>
+        <translation>Kazet do výměny:</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="174"/>
@@ -2827,7 +2824,7 @@ Neotevírejte víčko retorty a odpojte všechny lahve s činidly.</translation>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="565"/>
         <source>Cassettes until change</source>
-        <translation>Kazety před výměnou</translation>
+        <translation>Kazet do výměny</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="568"/>
@@ -2954,7 +2951,7 @@ Neotevírejte víčko retorty a odpojte všechny lahve s činidly.</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="206"/>
         <source>Select Color</source>
-        <translation>Zvolit barvu</translation>
+        <translation>Zvolte barvu</translation>
     </message>
 </context>
 <context>
@@ -3198,7 +3195,7 @@ Neotevírejte víčko retorty a odpojte všechny lahve s činidly.</translation>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="276"/>
         <source>Volume</source>
-        <translation>Objem</translation>
+        <translation>Hlasitost</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="277"/>
@@ -3253,7 +3250,7 @@ Neotevírejte víčko retorty a odpojte všechny lahve s činidly.</translation>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="53"/>
         <source>Volume: 3</source>
-        <translation>Objem:</translation>
+        <translation>Hlasitost:</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="73"/>
@@ -3281,7 +3278,7 @@ Neotevírejte víčko retorty a odpojte všechny lahve s činidly.</translation>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="109"/>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="185"/>
         <source>Volume: 7</source>
-        <translation>Objem:</translation>
+        <translation>Hlasitost:</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="159"/>
@@ -3302,7 +3299,7 @@ Neotevírejte víčko retorty a odpojte všechny lahve s činidly.</translation>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="304"/>
         <source>Volume: %1</source>
-        <translation>Objem:%1</translation>
+        <translation>Hlasitost:%1</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="308"/>

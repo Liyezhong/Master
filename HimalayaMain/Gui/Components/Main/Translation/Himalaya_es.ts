@@ -964,7 +964,7 @@
         <source>Cassettes
 since
 change</source>
-        <translation>Casetes
+        <translation>Cassettes
 desde el
 cambio</translation>
     </message>
@@ -1403,7 +1403,7 @@ cambio</translation>
         <source>Cassettes
 since
 change</source>
-        <translation>Casetes
+        <translation>Cassettes
 desde el
 cambio</translation>
     </message>
