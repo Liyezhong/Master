@@ -966,6 +966,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     // pre-heating
     (void)mp_TempLSensor->SetTemperaturePid(132, ControllerGainHigh,ResetTimeHigh, DerivativeTimeHigh);
     (void)mp_TempLSensor->StartTemperatureControl(TargetTemperature, TargetDropRange);
+    mp_Utils->Pause(500);
     p_TestCase->AddResult("UsedTime", "00:00:00");
     p_TestCase->AddResult("TargetTemp", QString(">115"));
     (void)testStat.insert("TargetTemp", QString(">115"));
@@ -1531,6 +1532,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         (void)mp_DigitalOutputMainRelay->SetHigh();
         (void)mp_TempRetortSide->StartTemperatureControl(TargetTempSide+7);
         (void)mp_TempRetortBottom->StartTemperatureControl(TargetTempBottom+2);
+        mp_Utils->Pause(500);
 
         while(!m_UserAbort && WaitSec) {
             QTime EndTime = QTime().currentTime().addSecs(1);
@@ -2425,6 +2427,7 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
 
     (void)p_TempCtrl->StopTemperatureControl();
     (void)p_TempCtrl->StartTemperatureControl(TargetTemp);
+    mp_Utils->Pause(500);
 
     SetFailReason(Id, "");
     while (!m_UserAbort && WaitSec)
@@ -2619,6 +2622,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
 
     (void)mp_TempRV->StopTemperatureControl();
     (void)mp_TempRV->StartTemperatureControl(TargetTempSensor1);
+    mp_Utils->Pause(500);
+
     StartTime = QTime::currentTime();
     StartTimeSec = StartTime.hour()*60*60+StartTime.minute()*60+StartTime.second();
     while (!m_UserAbort && UsedTimeSec <= WaitSec+1)
