@@ -336,6 +336,11 @@ void SchedulerMainThreadController::OnReportDrainingTimeOut2Min()
 
 void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp)
 {
+    Q_UNUSED(instanceID)
+    Q_UNUSED(usErrorGroup)
+    Q_UNUSED(usErrorID)
+    Q_UNUSED(usErrorData)
+    Q_UNUSED(timeStamp)
 #if 0
     LogDebug(QString("In OnReportError, instanceID=%1, usErrorGroup=%2, usErrorID=%3, usErrorData=%4 and timeStamp=%5")
              .arg(instanceID, 0, 16).arg(usErrorGroup).arg(usErrorID).arg(usErrorData).arg(timeStamp.toString()));
@@ -602,6 +607,9 @@ void SchedulerMainThreadController::OnExitIdleState()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+    //In case of Idle-error state transition, we need make DRAIN 10 MSG box disappear
+    RaiseEvent(EVENT_SCHEDULER_DRAIN_10S_NOT_OPEN_RETORT_LID,QStringList(), false);
 }
 
 void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
