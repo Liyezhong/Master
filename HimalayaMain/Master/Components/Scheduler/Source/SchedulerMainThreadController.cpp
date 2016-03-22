@@ -203,21 +203,13 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_RetCodeCounterList.insert(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR1_OUTOFRANGE,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_OUTOFRANGE,0);
-    m_RetCodeCounterList.insert(DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_NOTREACHTARGET,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_40DEGREEC_OVERTIME,0);
-    m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP,0);
-    m_RetCodeCounterList.insert(DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE,0);
-    m_RetCodeCounterList.insert(DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE,0);
-    m_RetCodeCounterList.insert(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB3_OUTOFRANGE,0);
-    m_RetCodeCounterList.insert(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB5_OUTOFRANGE,0);
-    m_RetCodeCounterList.insert(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE,0);
-    m_RetCodeCounterList.insert(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE,0);
 }
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
@@ -5117,52 +5109,35 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
     reportError7 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE2);
     reportError8 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(PRESS_FAN_OUT_OF_RANGE, "LA", AL_FAN);
     reportError9 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV",0);
+    if (reportError1.instanceID != 0)
+    {
+        LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError1.errorData));
+        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
+    }
+    if (reportError2.instanceID != 0)
+    {
+        LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError2.errorData));
+        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
+    }
+    if (reportError3.instanceID != 0 )
+    {
+        LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError3.errorData));
+        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
+    }
+    if (reportError4.instanceID != 0)
+    {
+        LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError4.errorData));
+        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
+    }
 
-    if (reportError1.instanceID==0 && reportError2.instanceID==0 && reportError3.instanceID==0 && reportError4.instanceID==0)
-    {
-        m_RetCodeCounterList[DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE] = 0;
-    }
-    else
-    {
-        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE];
-        val++;
-        if (val>=3)
-        {
-            m_RetCodeCounterList[DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE] = 0;
-            if (reportError1.instanceID != 0)
-            {
-                LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError1.errorData));
-                SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
-                if(m_IsErrorStateForHM)
-                    return ;
-            }
-            if (reportError2.instanceID != 0)
-            {
-                LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError2.errorData));
-                SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
-                if(m_IsErrorStateForHM)
-                    return ;
-            }
-            if (reportError3.instanceID != 0 )
-            {
-                LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError3.errorData));
-                SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
-                if(m_IsErrorStateForHM)
-                    return ;
-            }
-            if (reportError4.instanceID != 0)
-            {
-                LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError4.errorData));
-                SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
-                if(m_IsErrorStateForHM)
-                    return ;
-            }
-        }
-        else
-        {
-            m_RetCodeCounterList[DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE] = val;
-        }
-    }
     if (reportError5.instanceID != 0)
     {
         LogDebug(QString("Current out of range, level sensor current is: %1").arg(reportError5.errorData));
@@ -5181,45 +5156,24 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
     if (reportError8.instanceID != 0 && m_ReportExhaustFanWarning)
     {
         LogDebug(QString("Exhaust Fan Current out of range, Current is: %1").arg(reportError8.errorData));
-        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN];
-        val++;
-        if (val>=3)
+
+        m_ReportExhaustFanWarning = false;
+        SendOutErrMsg(DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN, false);
+        if(m_IsErrorStateForHM)
         {
-            m_RetCodeCounterList[DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN] = 0;
-            m_ReportExhaustFanWarning = false;
-            SendOutErrMsg(DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN, false);
-            if(m_IsErrorStateForHM)
-                return ;
-        }
-        else
-        {
-            m_RetCodeCounterList[DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN] = val;
+            return;
         }
     }
-    else
-    {
-        m_RetCodeCounterList[DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN] = 0;
-    }
+
     if (reportError9.instanceID != 0)
     {
         LogDebug(QString("Current out of range, the current is :%1").arg(reportError9.errorData));
-        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE];
-        val++;
-        if (val>=3)
+
+        SendOutErrMsg(DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
         {
-            m_RetCodeCounterList[DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE] = 0;
-            SendOutErrMsg(DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE);
-            if(m_IsErrorStateForHM)
-                return;
+            return;
         }
-        else
-        {
-            m_RetCodeCounterList[DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE] = val;
-        }
-    }
-    else
-    {
-        m_RetCodeCounterList[DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE] = 0;
     }
 
     // For voltage related
@@ -5230,7 +5184,9 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
         LogDebug(QString("slave 3 voltage is: %1").arg(strctHWMonitor.Slave3Voltage));
         SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB3_OUTOFRANGE);
         if(m_IsErrorStateForHM)
+        {
             return ;
+        }
     }
 
     quint16 slave5UpperLimit =  (m_SlaveAttrList[1].Voltagerated24VDC + m_SlaveAttrList[1].VoltageTolerance24VDC)*1000;
@@ -5240,7 +5196,9 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
         LogDebug(QString("slave 5 voltage is: %1").arg(strctHWMonitor.Slave5Voltage));
         SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB5_OUTOFRANGE);
         if(m_IsErrorStateForHM)
-            return ;
+        {
+            return;
+        }
     }
 
     quint16 slave15UpperLimit = (m_SlaveAttrList[2].Voltagerated24VDC + m_SlaveAttrList[2].VoltageTolerance24VDC)*1000;
@@ -5248,67 +5206,35 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
     if (strctHWMonitor.Slave15Voltage < slave15LowerLimit || strctHWMonitor.Slave15Voltage > slave15UpperLimit)
     {
         LogDebug(QString("slave 15 voltage is: %1").arg(strctHWMonitor.Slave15Voltage));
-        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE];
-        val++;
-        if (val>=3)
+        SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
         {
-            m_RetCodeCounterList[DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE] = 0;
-            SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE);
-            if(m_IsErrorStateForHM)
-                return;
+            return;
         }
-        else
-        {
-            m_RetCodeCounterList[DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE] = val;
-        }
-    }
-    else
-    {
-        m_RetCodeCounterList[DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE] = 0;
+
     }
 
     // For current related
     if (strctHWMonitor.Slave3Current > m_SlaveAttrList[0].CurrentMax5VDC)
     {
         LogDebug(QString("slave 3 5V current is: %1").arg(strctHWMonitor.Slave3Current));
-        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE];
-        val++;
-        if (val>=3)
+        SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
         {
-            m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE] = 0;
-            SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE);
-            if(m_IsErrorStateForHM)
-                return;
+            return;
         }
-        else
-        {
-            m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE] = val;
-        }
+
     }
-    else
-    {
-        m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE] = 0;
-    }
+
     if (strctHWMonitor.Slave5Current > m_SlaveAttrList[1].CurrentMax5VDC)
     {
         LogDebug(QString("slave 5 5V current is: %1").arg(strctHWMonitor.Slave5Current));
-        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE];
-        val++;
-        if (val>=3)
+
+        SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
         {
-            m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE] = 0;
-            SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE);
-            if(m_IsErrorStateForHM)
-                return;
+            return;
         }
-        else
-        {
-            m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE] = val;
-        }
-    }
-    else
-    {
-        m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE] = 0;
     }
 
     //Check No-Signal error for Retort sensors
