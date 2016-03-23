@@ -1966,6 +1966,22 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit ProgramActionStopped(DataManager::PROGRAM_STATUS_PAUSED);
         }
         break;
+        case DataManager::SYSTEM_BUSY:
+        {
+            if (mp_MainWindow)
+            {
+                (void)mp_MainWindow->SetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+            }
+        }
+        break;
+        case DataManager::SYSTEM_IDLE:
+        {
+            if (mp_MainWindow)
+            {
+                (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+            }
+        }
+        break;
         default:
         {
             qDebug() << "Do Nothing";
