@@ -3,7 +3,7 @@
 <RCConfiguration Version="0">
     <General QueueSize="2000000" HTTPConnectionPersistence="On" Debug="On"/>
     <SecureConnection HTTPSecureConnection="On" EncryptionLevel="Medium" Authentication="Off" CertificateFileName="Certificate FileName"/>
-    <RemoteCareServer ExecTime="5" ServerType="Primary" TargetDataBase="drm-data_source" ServerURL="https://leica-sandbox.axeda.com:443/eMessage" ServerId="15"/>
+    <RemoteCareServer ExecTime="5" ServerType="Primary" TargetDataBase="drm-data_source" ServerURL="https://leica.axeda.com:443/eMessage" ServerId="15"/>
     <LocalDevice DeviceType="Master" DeviceId="15"/>
     <LocalNetworkProxy ProxyProtocol="SOCKS"/>
     <RemoteSession RemoteSessionName="HistocoreRemote" RemoteSessionIPAddress="127.0.0.1"/>
