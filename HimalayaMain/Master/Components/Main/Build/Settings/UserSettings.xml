@@ -6,7 +6,7 @@
         <ErrorTone Number="3" Level="7"/>
         <WarningTone Number="1" Level="7"/>
     </Sound>
-    <Network RemoteCare="Off" DirectConnection="On" ProxyUserName="Histocore" ProxyPassword="Histocore" ProxyIPAddress="1.1.1.1" ProxyIPPort="0"/>
+    <Network RemoteCare="Off" DirectConnection="On" ProxyUserName="Histocore" ProxyPassword="Histocore" ProxyIPAddress="023.123.123.123" ProxyIPPort="1234"/>
     <ERRORTONE PERIODIC="on"/>
     <ERRORTONE PERIODICTIME="10m"/>
     <INFORMATIONTONE LEVEL="7"/>
@@ -19,7 +19,7 @@
     <RMS CLEANINGMODE="cycles"/>
     <RMS PROCESSINGMODE="cassettes"/>
     <SERVICE ACTIVECARBONHOURS="0"/>
-    <SERVICE ACTIVECARBONLASTRESETDATE="Thu May 7 10:26:20 2015"/>
+    <SERVICE ACTIVECARBONLASTRESETDATE="Wed Mar 23 03:01:39 2016"/>
     <SERVICE OPERATIONHOURS="0"/>
     <SERVICE OPERATIONLASTRESETDATE="Thu May 7 10:26:20 2015"/>
     <SETTINGS VERSION="1"/>
