@@ -1301,6 +1301,19 @@ bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heating
         return true;
     }
 
+    // Workaround for below sensors. In no-signal situation, we take it to be over range
+    if (heatingSensor.sensorName == "LevelSensor" || heatingSensor.sensorName == "OvenTop"
+            || heatingSensor.sensorName == "OvenBottom" || heatingSensor.sensorName == "RV_1_HeatingRod"
+            || heatingSensor.sensorName == "RV_2_Outlet" || heatingSensor.sensorName == "RVTube"
+            || heatingSensor.sensorName == "WaxTrap")
+    {
+        if (qFuzzyCompare(299,HWTemp))
+        {
+            return false;
+        }
+
+    }
+
     if ( !isEffectiveTemp(HWTemp) )
     {
         return true;
