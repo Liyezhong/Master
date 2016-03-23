@@ -139,7 +139,8 @@ typedef enum  {
         DISMISS_RESUME_MSG_DLG,
         PAUSE_HAS_BEGUN,
         SYSTEM_BUSY,
-        SYSTEM_IDLE
+        SYSTEM_IDLE,
+        PROGRAM_RESUME_AFTER_POWER_FAILURE
     } ProgramAcknownedgeType_t;
 /****************************************************************************/
 /*!
