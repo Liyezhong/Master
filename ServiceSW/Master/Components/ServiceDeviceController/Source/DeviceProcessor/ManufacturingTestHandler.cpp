@@ -1098,11 +1098,11 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
                 }
             }
 #endif
-            else if (i==0 && curTemp >= ExchangeTemperature) {
+            if (i==0 && curTemp >= ExchangeTemperature) {
                 steadyTime = totalSeconds;
                 break;
             }
-            else if (i==2 && (curTemp<MinTemperature||curTemp>MaxTemperature)) {
+            if (i==2 && (curTemp<MinTemperature||curTemp>MaxTemperature)) {
                 goto ERROR_EXIT;
             }
 
