@@ -1601,6 +1601,26 @@ protected:
         /****************************************************************************/
         void CheckResuemFromPause(SchedulerStateMachine_t currentState);
 
+        /****************************************************************************/
+        /*!
+         *  \brief  Send command on system busy or not to GUI
+         *  \param  isBusy - true for busy, false for idle
+         *  \return void
+         *
+         */
+        /****************************************************************************/
+        void SendSystemBusy2GUI(bool isBusy);
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Send command on rusming from power failure or not to GUI
+         *  \param  void
+         *  \return void
+         *
+         */
+        /****************************************************************************/
+        void SendResumeFromPowerFailure2GUI();
+
     public slots:
 
         /****************************************************************************/

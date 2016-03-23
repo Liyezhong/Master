@@ -579,6 +579,9 @@ void SchedulerMainThreadController::OnEnterIdleState()
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
+    // For there is the scenario 003, master need let GUI know that SW is running rather than idle
+    this->SendSystemBusy2GUI(true);
+
     //for bottle check and Error restart in idle state , the cmd take out specimen is OK
     if((4 == m_CurrentScenario && SM_IDLE == m_CurrentStepState) || 7 == m_CurrentScenario)
     {
@@ -727,6 +730,9 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
                m_IsWaitHeatingRV = false;
                m_IsSendMsgForWaitHeatRV = false;
+
+               //In this case, master SW will be in idle state
+               this->SendSystemBusy2GUI(false);
            }
        }
     }
@@ -869,6 +875,9 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
                     m_IsWaitHeatingRV = false;
                     m_IsSendMsgForWaitHeatRV = false;
                     m_IsTakeSpecimen = false;
+
+                    //In this case, master SW will be in idle state
+                    this->SendSystemBusy2GUI(false);
                 }
                 break;
             default:
@@ -1018,6 +1027,30 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     {
         RaiseEvent(EVENT_SCHEDULER_PAUSE_ENDTIME_UPDATE, QStringList()<<endTime.toString("yyyy-MM-dd hh:mm"));
     }
+}
+
+void SchedulerMainThreadController::SendSystemBusy2GUI(bool isBusy)
+{
+    MsgClasses::CmdProgramAcknowledge* commandPtr = NULL;
+    if (isBusy)
+    {
+        commandPtr = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::SYSTEM_BUSY);
+    }
+    else
+    {
+      commandPtr = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::SYSTEM_IDLE);
+    }
+    Q_ASSERT(commandPtr);
+    Global::tRefType fRef = GetNewCommandRef();
+    SendCommand(fRef, Global::CommandShPtr_t(commandPtr));
+}
+
+void SchedulerMainThreadController::SendResumeFromPowerFailure2GUI()
+{
+    MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RESUME_AFTER_POWER_FAILURE));
+    Q_ASSERT(commandPtr);
+    Global::tRefType fRef = GetNewCommandRef();
+    SendCommand(fRef, Global::CommandShPtr_t(commandPtr));
 }
 
 void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)

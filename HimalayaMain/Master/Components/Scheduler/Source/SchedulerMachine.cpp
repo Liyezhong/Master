@@ -101,7 +101,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     // Layer two states (for Error state)
     mp_ErrorWaitState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
-    CONNECTSIGNALSLOT(mp_ErrorWaitState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
+    CONNECTSIGNALSLOT(mp_ErrorWaitState.data(), entered(), this, OnEnterErrorWaitState());
+    CONNECTSIGNALSLOT(mp_ErrorWaitState.data(), exited(), this, OnExitErrorWaitState());
     mp_ErrorRsStandbyState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsStandbyWithTissueState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRcLevelSensorHeatingOvertimeState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
@@ -450,6 +451,17 @@ void CSchedulerStateMachine::InitRVMoveToTubeState()
     mp_SchedulerThreadController->Pressure();
     m_PssmMVTubePressureTime = QDateTime::currentMSecsSinceEpoch();
     mp_SchedulerThreadController->StartTimer();
+}
+
+void CSchedulerStateMachine::OnEnterErrorWaitState()
+{
+    mp_SchedulerThreadController->StartTimer();
+    mp_SchedulerThreadController->SendSystemBusy2GUI(false);
+}
+
+void CSchedulerStateMachine::OnExitErrorWaitState()
+{
+    mp_SchedulerThreadController->SendSystemBusy2GUI(true);
 }
 
 void CSchedulerStateMachine::OnEnterErrorRcRestartState()
@@ -2426,6 +2438,7 @@ void CSchedulerStateMachine::OnPowerFailureState()
 void CSchedulerStateMachine::OnEnterBusyState()
 {
     EventHandler::StateHandler::Instance().setActivityUpdate(true, 0);
+    mp_SchedulerThreadController->SendSystemBusy2GUI(true);
 }
 
 void CSchedulerStateMachine::OnEnterPretest()
