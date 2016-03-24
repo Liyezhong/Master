@@ -33,7 +33,6 @@ CRsHeatingErr30SRetry::CRsHeatingErr30SRetry(SchedulerMainThreadController* Sche
     m_CurrentState = HEATINGERROR_30SRetry_INIT;
     m_ShutdownHeaterTime = 0;
     m_StartTime = 0;
-    m_Counter = 0;
 }
 
 void CRsHeatingErr30SRetry::Start()
@@ -41,7 +40,6 @@ void CRsHeatingErr30SRetry::Start()
     m_CurrentState = HEATINGERROR_30SRetry_INIT;
     m_ShutdownHeaterTime = 0;
     m_StartTime = 0;
-    m_Counter = 0;
 }
 
 /****************************************************************************/
@@ -72,7 +70,6 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
             {
                 m_ShutdownHeaterTime = 0;
                 m_StartTime = 0;
-                m_Counter = 0;
                 mp_StateMachine->OnTasksDone(false);
             }
             else
@@ -92,8 +89,6 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
         {
             mp_SchedulerController->LogDebug("RS_HeatingErr_30SRetry, SHUTDOWN_FAILD_HEATER failed");
             m_ShutdownHeaterTime = 0;
-            m_StartTime = 0;
-            m_Counter = 0;
             mp_StateMachine->OnTasksDone(false);
         }
         break;
@@ -116,7 +111,6 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
         {
             m_ShutdownHeaterTime = 0;
             m_StartTime = 0;
-            m_Counter = 0;
             (void)mp_SchedulerController->ShutdownFailedHeaters();
             mp_StateMachine->OnTasksDone(false);
         }
@@ -128,7 +122,6 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
         {
             m_ShutdownHeaterTime = 0;
             m_StartTime = 0;
-            m_Counter = 0;
             //For FAN, we need NOT trun off it.
             if (heaterType != FAN)
             {
@@ -158,22 +151,10 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
             if (false ==  mp_SchedulerController->CheckSlaveTempModulesCurrentRange(3)
                     || false == ret)
             {
-                m_Counter++;
-                if (3 == m_Counter)
-                {
-                    m_ShutdownHeaterTime = 0;
-                    m_StartTime = 0;
-                    m_Counter = 0;
-                    (void)mp_SchedulerController->ShutdownFailedHeaters();
-                    mp_StateMachine->OnTasksDone(false);
-                }
-                else
-                {
-                    m_ShutdownHeaterTime = 0;
-                    m_StartTime = 0;
-                    //Retry
-                    m_CurrentState = SHUTDOWN_FAILD_HEATER;
-                }
+                m_ShutdownHeaterTime = 0;
+                m_StartTime = 0;
+                (void)mp_SchedulerController->ShutdownFailedHeaters();
+                mp_StateMachine->OnTasksDone(false);
             }
         }
         break;

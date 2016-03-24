@@ -366,7 +366,6 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
         }
         mp_SchedulerThreadController->LogDebug(QString("RcReheating always succeeds in the scenario %1").arg(m_LastScenario));
-        mp_SchedulerThreadController->SendResumeFromPowerFailure2GUI();
         mp_StateMachine->OnTasksDone(true);
         return;
     }
@@ -456,7 +455,6 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
             {
                 mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
             }
-            mp_SchedulerThreadController->SendResumeFromPowerFailure2GUI();
             mp_StateMachine->OnTasksDone(true);
             m_StartReq = 0;
         }

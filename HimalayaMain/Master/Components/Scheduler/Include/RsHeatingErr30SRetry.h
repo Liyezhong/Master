@@ -94,7 +94,6 @@ private:
     StateList_t                    m_CurrentState;          //!< Current state
     qint64 m_ShutdownHeaterTime;                            //!< Time of shutting down heater
     qint64  m_StartTime;                                    //!< Start up time
-    quint32 m_Counter;                                      //!< counter for retry times
 };
 }
 #endif // RS_HEATING_ERR_3S_RETRY

@@ -541,6 +541,12 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
                     Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,Global::tTranslatableStringList()
                                                                <<Global::TranslatableString(ProgramNameID));
                 }
+                //Let GUI know master SW will enter power failure
+                MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RESUME_AFTER_POWER_FAILURE));
+                Q_ASSERT(commandPtr);
+                Global::tRefType fRef = GetNewCommandRef();
+                SendCommand(fRef, Global::CommandShPtr_t(commandPtr));
+
                 m_SchedulerMachine->EnterPowerFailure();
             }
         }
@@ -1040,14 +1046,6 @@ void SchedulerMainThreadController::SendSystemBusy2GUI(bool isBusy)
     {
       commandPtr = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::SYSTEM_IDLE);
     }
-    Q_ASSERT(commandPtr);
-    Global::tRefType fRef = GetNewCommandRef();
-    SendCommand(fRef, Global::CommandShPtr_t(commandPtr));
-}
-
-void SchedulerMainThreadController::SendResumeFromPowerFailure2GUI()
-{
-    MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RESUME_AFTER_POWER_FAILURE));
     Q_ASSERT(commandPtr);
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPtr));
