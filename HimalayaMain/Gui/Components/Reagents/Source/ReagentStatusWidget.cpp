@@ -119,11 +119,8 @@ void CReagentStatusWidget::OnSetAsEmpty()
         if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
         {
             bool bRevertSelectedProgram = false;
-            if (m_StationList.contains(mp_DashStation->GetDashboardStationID()))
-            {
-                if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram))
-                    return;
-            }
+            if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram))
+                return;
 
             if (bRevertSelectedProgram)
                 emit UnselectProgram();
@@ -152,11 +149,8 @@ void CReagentStatusWidget::OnResetData()
     if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
     {
         bool bRevertSelectedProgram = false;
-        if (m_StationList.contains(mp_DashStation->GetDashboardStationID()))
-        {
-            if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram))
-                return;
-        }
+        if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram))
+            return;
 
         if (bRevertSelectedProgram)
             emit UnselectProgram();
