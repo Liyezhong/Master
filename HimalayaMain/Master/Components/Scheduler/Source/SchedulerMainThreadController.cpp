@@ -585,9 +585,6 @@ void SchedulerMainThreadController::OnEnterIdleState()
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
-    // For there is the scenario 003, master need let GUI know that SW is running rather than idle
-    this->SendSystemBusy2GUI(true);
-
     //for bottle check and Error restart in idle state , the cmd take out specimen is OK
     if((4 == m_CurrentScenario && SM_IDLE == m_CurrentStepState) || 7 == m_CurrentScenario)
     {
@@ -724,6 +721,9 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
            Q_ASSERT(commandPtr);
            Global::tRefType Ref = GetNewCommandRef();
            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+           // For there is the scenario 003, master need let GUI know that SW is running rather than idle
+           this->SendSystemBusy2GUI(true);
+
            m_IsSendMsgForWaitHeatRV = true;
        }
        else
@@ -750,6 +750,9 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+            // For there is the scenario 003, master need let GUI know that SW is running rather than idle
+            this->SendSystemBusy2GUI(true);
+
             m_IsSendMsgForWaitHeatRV = true;
         }
         if(!m_IsTakeSpecimen)
