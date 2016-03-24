@@ -441,8 +441,20 @@ private slots:
      */
     /****************************************************************************/
     void TakeOutSpecimenAndWaitRunCleaning(const QString& lastReagentGroupId);
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function OnTimerCheckRetortLid
+     *  \return from OnTimerCheckRetortLid
+     */
+    /****************************************************************************/
     void OnTimerCheckRetortLid();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function OnProgramResumeAfterPowerFailure
+     *  \return from OnProgramResumeAfterPowerFailure
+     */
+    /****************************************************************************/
+    void OnProgramResumeAfterPowerFailure();
  signals:
     /****************************************************************************/
     /*!

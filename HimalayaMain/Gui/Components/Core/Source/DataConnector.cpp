@@ -1982,6 +1982,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             }
         }
         break;
+        case DataManager::PROGRAM_RESUME_AFTER_POWER_FAILURE:
+        {
+            emit ProgramResumeAfterPowerFailure();
+        }
+        break;
         default:
         {
             qDebug() << "Do Nothing";

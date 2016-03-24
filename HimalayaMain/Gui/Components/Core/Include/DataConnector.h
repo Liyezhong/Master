@@ -886,6 +886,13 @@ signals:
      */
     /****************************************************************************/
     void ProgramActionStopped(DataManager::ProgramStatusType_t);
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of signal ProgramResumeAfterPowerFailure
+     */
+    /****************************************************************************/
+    void ProgramResumeAfterPowerFailure();
+
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);
 

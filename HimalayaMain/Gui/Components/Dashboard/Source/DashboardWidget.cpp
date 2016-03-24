@@ -166,6 +166,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, EnablePauseButton(bool),
                               this, OnPauseButtonEnable(bool));
 
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramResumeAfterPowerFailure(),
+                              this, OnProgramResumeAfterPowerFailure());
+
     CONNECTSIGNALSLOT(mp_DataConnector, PauseTimeout15Mintues(),
                               this, OnPauseTimeout15Mintues());
 
@@ -713,6 +716,11 @@ void CDashboardWidget::OnTimerCheckRetortLid()
     }
 }
 
+void CDashboardWidget::OnProgramResumeAfterPowerFailure()
+{
+    ui->programPanelWidget->ChangeStartButtonToStopState();
+}
+
 void CDashboardWidget::OnProgramCompleted(DataManager::CompletedProgramType_t completedProgramType,
                                           bool IsRetortContaminated)
 {
@@ -999,9 +1007,11 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram(QString& reagentExpiredFlag
         messageDlg.SetIcon(QMessageBox::Warning);
         messageDlg.SetTitle(CommonString::strWarning);
         messageDlg.SetText(m_checkMachinePrompt);
+        messageDlg.SetTextFormat(Qt::PlainText);
         messageDlg.SetButtonText(1, CommonString::strOK);
         messageDlg.HideButtons();
         (void)messageDlg.exec();
+        messageDlg.SetTextFormat(Qt::RichText);
     }
 
     if (m_bWaitRotaryValveHeatingPrompt)
@@ -1457,7 +1467,7 @@ Program is impossible to start for up to 15 hours if Paraffin bath temperature i
 Please confirm modifying Paraffin temperature.", 0, QApplication::UnicodeUTF8);
     m_strReadyStartProgram = QApplication::translate("Dashboard::CDashboardWidget", "Ready to start a new program.", 0, QApplication::UnicodeUTF8);
     m_checkMachinePrompt = QApplication::translate("Dashboard::CDashboardWidget", "Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter.\
- Reinstall the retort filter after cleaning. Load the specimens into the retort and make sure that the retort is locked.", 0, QApplication::UnicodeUTF8);
+ Reinstall the retort filter after cleaning.\n Load the specimens into the retort and make sure that the retort is locked.\n Please visually confirm all paraffin are completely melted.", 0, QApplication::UnicodeUTF8);
     m_strItIsResuming = QApplication::translate("Dashboard::CDashboardWidget", "Resuming...\nDon't open the retort lid and unplug any reagent bottles.", 0, QApplication::UnicodeUTF8);
 
 }
