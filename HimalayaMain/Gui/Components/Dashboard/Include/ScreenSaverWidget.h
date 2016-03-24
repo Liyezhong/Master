@@ -39,6 +39,18 @@ protected:
      */
     /****************************************************************************/
     virtual bool event ( QEvent * event );
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function changeEvent
+     *
+     *  \param p_Event = QEvent type parameter
+     *
+     *  \return from changeEvent
+     */
+    /****************************************************************************/
+    void changeEvent(QEvent *p_Event);
+
 private:
     Ui::ScreenSaverWidget *ui;       ///<  Definition/Declaration of variable ui
     QTimer* m_timer;       ///<  Definition/Declaration of variable m_timer

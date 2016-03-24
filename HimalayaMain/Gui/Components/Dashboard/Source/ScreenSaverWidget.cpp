@@ -63,3 +63,22 @@ void ScreenSaverWidget::OnInteractStart()
     if (this->isVisible())
     this->hide();
 }
+
+/****************************************************************************/
+/*!
+ *  \brief Event handler for change events
+ *
+ *  \iparam p_Event = Change event
+ */
+/****************************************************************************/
+void ScreenSaverWidget::changeEvent(QEvent *p_Event)
+{
+    QWidget::changeEvent(p_Event);
+    switch (p_Event->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}
