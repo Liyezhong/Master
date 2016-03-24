@@ -1697,6 +1697,7 @@ void CSchedulerStateMachine::HandleRcRestart(const QString& cmdName)
         case 0:
             mp_SchedulerThreadController->HighPressure();
             m_ErrorRcRestartSeq++;
+            mp_SchedulerThreadController->OnBeginDrain();
             break;
         case 1:
             if("Scheduler::ALPressure" == cmdName)
@@ -1716,6 +1717,7 @@ void CSchedulerStateMachine::HandleRcRestart(const QString& cmdName)
                 m_TimeReEnterFilling = 0;
 
                 mp_SchedulerThreadController->StopTimer();
+                mp_SchedulerThreadController->OnStopDrain();
                 emit SigBackToBusy();
             }
             else
