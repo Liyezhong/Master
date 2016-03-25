@@ -1782,9 +1782,9 @@ Confirme se a amostra foi removida e a retorta está vazia, depois pressione o b
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning.
  Load the specimens into the retort and make sure that the retort is locked.
  Please visually confirm all paraffin are completely melted.</source>
-        <translation>Prosimy sprawdzić poziom wszystkich odczynników i wyczyścić czujnik poziomu retorty, uszczelkę retorty i filtr retorty. Po oczyszczeniu, filtr zainstalować z powrotem. 
-Włożyć preparaty do retorty i upewnić się, że jest zablokowana.
-Należy potwierdzić wizualnie, że cała parafina jest całkiem stopiona.</translation>
+        <translation>Verifique o nível de todos os reagentes e limpe o sensor de nível da retorta, o anel de vedação e o filtro da retorta.Reinstale o filtro da retorta após a limpeza.
+Coloque as amostras na retorta, feche e certifique-se de que a mesma está travada.
+Verifique se a parafina está totalmente derretida.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1471"/>
