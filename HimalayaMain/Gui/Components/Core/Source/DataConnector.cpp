@@ -1788,43 +1788,36 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
         case DataManager::PROGRAM_RUN_FINISHED:
         {
              emit ProgramCompleted();
-             (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
         case DataManager::PROGRAM_RUN_FINISHED_NO_CONTAMINATED:
         {
             emit ProgramCompleted(DataManager::COMPLETED_PROGRAM_GENERAL, false);
-            (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
         case DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT:
         {
             emit CleanPrgmCompleteAsSafeReagent();
-            (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
         case DataManager::PROGRAM_RUN_FINISHED_AS_SAFE_REAGENT:
         {
             emit ProgramCompleted(DataManager::COMPLETED_PROGRAM_SAFE_REAGENT);
-            (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
         case DataManager::PROGRAM_RUN_FINISHED_AS_SAFE_REAGENT_NO_CONTAMINATED:
         {
             emit ProgramCompleted(DataManager::COMPLETED_PROGRAM_SAFE_REAGENT, false);
-            (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
         case DataManager::PROGRAM_RUN_FINISHED_AS_POWER_FAILURE:
         {
             emit ProgramCompleted(DataManager::COMPLETED_PROGRAM_POWER_FAILURE);
-            (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
         case DataManager::PROGRAM_RUN_FINISHED_AS_POWER_FAILURE_NO_CONTAMINATED:
         {
             emit ProgramCompleted(DataManager::COMPLETED_PROGRAM_POWER_FAILURE, false);
-            (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
         case DataManager::PROGRAM_RUN_BEGIN:
@@ -1998,7 +1991,6 @@ void CDataConnector::ProgramAbortedHandler(Global::tRefType Ref, const MsgClasse
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
     emit ProgramAborted(Command.IsRetortContaminated());
-    (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
 }
 
 void CDataConnector::ProgramSelectedReplyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramSelectedReply & Command)
