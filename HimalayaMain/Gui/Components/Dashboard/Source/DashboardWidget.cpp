@@ -1001,19 +1001,20 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram(QString& reagentExpiredFlag
     if ("" == m_SelectedProgramId)
         return false;
 
-    MainMenu::CMessageDlg messageDlg(this);
     if (m_SelectedProgramId.at(0) != 'C')
     {
-        messageDlg.SetIcon(QMessageBox::Warning);
-        messageDlg.SetTitle(CommonString::strWarning);
-        messageDlg.SetText(m_checkMachinePrompt);
-        messageDlg.SetTextFormat(Qt::PlainText);
-        messageDlg.SetButtonText(1, CommonString::strOK);
-        messageDlg.HideButtons();
-        (void)messageDlg.exec();
-        messageDlg.SetTextFormat(Qt::RichText);
+        MainMenu::CMessageDlg msgDlg(this);
+        msgDlg.SetIcon(QMessageBox::Warning);
+        msgDlg.SetTitle(CommonString::strWarning);
+        msgDlg.SetText(m_checkMachinePrompt);
+        msgDlg.SetTextFormat(Qt::PlainText);
+        msgDlg.SetButtonText(1, CommonString::strOK);
+        msgDlg.HideButtons();
+        (void)msgDlg.exec();
+        msgDlg.SetTextFormat(Qt::RichText);
     }
 
+    MainMenu::CMessageDlg messageDlg(this);
     if (m_bWaitRotaryValveHeatingPrompt)
     {
         messageDlg.SetIcon(QMessageBox::Warning);

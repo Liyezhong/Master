@@ -3210,7 +3210,7 @@ Não abra a tampa da retorta e desconecte os frascos de reagente.</translation>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="277"/>
         <source>Periodic Time</source>
-        <translation>Barra de intervalo</translation>
+        <translation>Tempo periód.</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="281"/>

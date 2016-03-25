@@ -191,6 +191,13 @@ void CReagentStatusWidget::OnSetAsFull()
     ConfirmationMessageDlg.HideCenterButton();
     if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
     {
+        bool bRevertSelectedProgram = false;
+        if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram))
+            return;
+
+        if (bRevertSelectedProgram)
+            emit UnselectProgram();
+
         emit UpdateStationSetAsFull(mp_DashStation->GetDashboardStationID());
         ResetButtons();
         mp_Ui->btnEmpty->setEnabled(true);
