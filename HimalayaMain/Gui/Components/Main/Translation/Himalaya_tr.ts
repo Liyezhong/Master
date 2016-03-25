@@ -87,6 +87,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="35"/>
         <source>Bottle Check failed! Please check the details in the Bottle Check status list.</source>
+        <translatorcomment>Lütfen tüm parafinin tamamen eridiğini görsel olarak kontrol ediniz.</translatorcomment>
         <translation>Bidon Kontrolü başarısız oldu! Lütfen Bidon Kontrolü durum listesindeki detayları kontrol edin.</translation>
     </message>
     <message>
@@ -1786,7 +1787,7 @@ Numunenin çıkarıldığından ve haznenin boş olduğundan emin olun ve sonra 
  Please visually confirm all paraffin are completely melted.</source>
         <translation>Lütfen tüm reaktiflerin seviyesini kontrol edin ve hazne seviye sensörünü, haznenin kapak contasını ve hazne filtresini temizleyin. Temizleme sonrasında hazne filtresini yeniden takın. 
 Numuneleri hazneye yükleyin ve haznenin kilitlendiğinden emin olun.
-</translation>
+Lütfen tüm parafinin tamamen eridiğini görsel olarak kontrol ediniz.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1471"/>
