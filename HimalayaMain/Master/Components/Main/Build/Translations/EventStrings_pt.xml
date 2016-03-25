@@ -271,20 +271,20 @@
         <string id="67176215" text1="A posição da válvula giratória é indeterminada devido a uma falha na alimentação. Ligue para a assistência técnica." text2=""/>
         <string id="67176229" text1="Clique em Sim para drenar a retorta e esvaziá-la a fim de adicionar novos cestos; Clique em Não e o reagente permanece na retorta; Clique em Cancelar para cancelar a operação de pausa. Use corretamente o respirador para evitar risco em potencial devido a vapor do reagente. Não toque no sensor de nível. Ele está quente!" text2=""/>
         <string id="67175205" text1="O programa esteve em modo pausa." text2=""/>
-        <string id="67175230" text1="Dado que o utilizador acionou a pausa do programa, o tempo final do programa será atualização em 1%." text2=""/>
+        <string id="67175230" text1="Dado que o utilizador acionou a pausa do programa, o tempo final do programa será atualização em %1." text2=""/>
         <string id="67175188" text1="Drenagem por 10 segundos. Não abra a tampa da cuba." text2=""/>
         <string id="67175187" text1="Feche a cuba e pressione o botão ok." text2=""/>
         <string id="67176214" text1="O programa foi interrompido por uma falha na alimentação." text2=""/>
         <string id="50331778" text1="O armazenamento do aparelho está cheio. Ligue para a assistência técnica." text2=""/>
-        <string id="67175225" text1="Iniciar programa 1%. Reconhecimento do supervisor pressionando o botão &quot;Sim&quot; para iniciar o Programa com reagente vencido:2%, 3%." text2=""/>
+        <string id="67175225" text1="Iniciar programa %1. Reconhecimento do supervisor pressionando o botão &quot;Sim&quot; para iniciar o Programa com reagente vencido:%2, %3." text2=""/>
         <string id="67176213" text1="Verifique o estado da parafina no banho de parafina, se o nível da mesma esteja mais baixo do que o nível mínimo, adicione parafina líquida no banho por 15 minutos." text2=""/>
         <string id="67176212" text1="Verifique o estado do frasco de reagente, se o nível de reagente estiver mais baixo que o mínimo, adicione reagente ao frasco por 15 minutos." text2=""/>
-        <string id="67176192" text1="Erro ID 1%! O tempo de drenagem supera 2 minutos." text2=""/>
-        <string id="67176193" text1="Erro ID 1%! O tempo de drenagem supera 2 minutos." text2=""/>
-        <string id="67176195" text1="Erro ID 1%! Falha na estanquecidade durante o processamento." text2=""/>
-        <string id="67176221" text1="Erro ID 1%! durante a imersão, alguns processos excederam o tempo de espera de 4 minutos." text2=""/>
-        <string id="67176222" text1="Erro ID 1%! Limite de tempo do fim do processo." text2=""/>
-        <string id="67174402" text1="Ocorreu erro durante a inicialização em 1% dos processos secundários" text2=""/>
+        <string id="67176192" text1="Erro ID %1! O tempo de drenagem supera 2 minutos." text2=""/>
+        <string id="67176193" text1="Erro ID %1! O tempo de drenagem supera 2 minutos." text2=""/>
+        <string id="67176195" text1="Erro ID %1! Falha na estanquecidade durante o processamento." text2=""/>
+        <string id="67176221" text1="Erro ID %1! durante a imersão, alguns processos excederam o tempo de espera de 4 minutos." text2=""/>
+        <string id="67176222" text1="Erro ID %1! Limite de tempo do fim do processo." text2=""/>
+        <string id="67174402" text1="Ocorreu erro durante a inicialização em %1 dos processos secundários" text2=""/>
         <string id="67175226" text1="Finalize o processamento da última etapa e aguarde a confirmação do usuário para drenar a retorta." text2=""/>
         <string id="67175173" text1="Devido à falha elétrica, o aparelho ira demorar %1 mins para derreter a parafina." text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
