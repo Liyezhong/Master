@@ -1725,7 +1725,7 @@ Confirme se a amostra foi removida e a retorta está vazia, depois pressione o b
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1452"/>
         <source>Program &quot;%1&quot; has completed!</source>
-        <translation>O programa &quot;1%&quot; foi concluído!</translation>
+        <translation>O programa &quot;%1&quot; foi concluído!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1453"/>
@@ -1735,7 +1735,7 @@ Confirme se a amostra foi removida e a retorta está vazia, depois pressione o b
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1454"/>
         <source>The safe reagent has been drained completely. The program &quot;%1&quot; was aborted!</source>
-        <translation>O reagente seguro foi totalmente drenado. O programa &quot;1%&quot; foi abortado!</translation>
+        <translation>O reagente seguro foi totalmente drenado. O programa &quot;%1&quot; foi abortado!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1456"/>
