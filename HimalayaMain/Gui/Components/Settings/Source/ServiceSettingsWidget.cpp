@@ -301,12 +301,14 @@ void CServiceSettingsWidget::ResetButtons()
         mp_Ui->btnShutdown->setEnabled(false);
         mp_Ui->btnStartServiceApp->setEnabled(false);
         mp_Ui->btnSave->setEnabled(false);
+    }
 
-        bool isError = Core::CGlobalHelper::GetSystemErrorStatus();
-        if (isError && (m_CurrentUserRole == MainMenu::CMainWindow::Service))
-        {
-            mp_Ui->btnStartServiceApp->setEnabled(true);
-        }
+    bool isError = Core::CGlobalHelper::GetSystemErrorStatus();
+    bool isBusy  = Core::CGlobalHelper::GetSystemBusyStatus();
+
+    if (isError && !isBusy && (m_CurrentUserRole == MainMenu::CMainWindow::Service))
+    {
+        mp_Ui->btnStartServiceApp->setEnabled(true);
     }
 }
 

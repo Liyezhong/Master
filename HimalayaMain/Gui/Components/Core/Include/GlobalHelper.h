@@ -143,6 +143,21 @@ public:
     static bool GetSystemErrorStatus();
     /****************************************************************************/
     /*!
+     *  \brief  by global helper to set the busy status
+     *  \param  isBusy = set bool value
+     */
+    /****************************************************************************/
+    static void SetSystemBusyStatus(bool isBusy);
+    /****************************************************************************/
+    /*!
+     *  \brief  by global helper to get the system busy status
+     *
+     *  \return the system busy status.
+     */
+    /****************************************************************************/
+    static bool GetSystemBusyStatus();
+    /****************************************************************************/
+    /*!
      *  \brief  by global helper to trim a string to the expected length
      *  \param  fontMetrics = QFontMetrics
      *  \param  processString = string to be processed
@@ -174,6 +189,8 @@ private:
     Core::CDataConnector *mp_DataConnector;
     static bool m_IsErrorHandlingFailed;
     static bool m_IsSystemError;                //!< system is in Error state
+    static bool m_IsSystemBusy;                //!<  system is in Busy state
+
 };
 
 } // end namespace Core

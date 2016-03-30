@@ -1965,6 +1965,7 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             {
                 (void)mp_MainWindow->SetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
             }
+            Core::CGlobalHelper::SetSystemBusyStatus(true);
         }
         break;
         case DataManager::SYSTEM_IDLE:
@@ -1973,6 +1974,7 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             {
                 (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
             }
+            Core::CGlobalHelper::SetSystemBusyStatus(false);
         }
         break;
         case DataManager::PROGRAM_RESUME_AFTER_POWER_FAILURE:

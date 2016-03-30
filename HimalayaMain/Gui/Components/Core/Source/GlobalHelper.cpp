@@ -38,6 +38,7 @@ QStringList CGlobalHelper::m_StationList;
 Core::CDataConnector* CGlobalHelper::p_StaticDataConnector = NULL;
 bool CGlobalHelper::m_IsErrorHandlingFailed = false;
 bool CGlobalHelper::m_IsSystemError = false;
+bool CGlobalHelper::m_IsSystemBusy = false;
 
 
 CGlobalHelper::CGlobalHelper(Core::CDataConnector *p_DataConnector) : QObject(),
@@ -247,6 +248,16 @@ void CGlobalHelper::SetSystemErrorStatus(bool isError)
 bool CGlobalHelper::GetSystemErrorStatus()
 {
     return m_IsSystemError;
+}
+
+void CGlobalHelper::SetSystemBusyStatus(bool isBusy)
+{
+    m_IsSystemBusy = isBusy;
+}
+
+bool CGlobalHelper::GetSystemBusyStatus()
+{
+    return m_IsSystemBusy;
 }
 
 QString CGlobalHelper::TrimText(const QFontMetrics& fontMetrics, const QString& processString,
