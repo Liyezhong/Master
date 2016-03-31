@@ -241,6 +241,28 @@ void CDashboardDateTimeWidget::RefreshDateTime(Global::TimeFormat TimeFormat)
 /****************************************************************************/
 void CDashboardDateTimeWidget::OnOK()
 {
+    m_selDateTime.setTimeSpec(Qt::UTC);
+
+    m_selDateTime.setDate(QDate(mp_YearWheel->GetCurrentData().toInt(),
+                             mp_MonthWheel->GetCurrentData().toInt(),
+                             mp_DayWheel->GetCurrentData().toInt()));
+
+    m_selDateTime.setTime(QTime(mp_HourWheel->GetCurrentData().toInt(), mp_MinWheel->GetCurrentData().toInt()));
+
+    if (!m_selDateTime.isValid())
+    {
+        mp_MessageDlg->SetTitle(QApplication::translate("MainMenu::CDateTime", "Information",
+                                                     0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("MainMenu::CDateTime", "Ok",
+                                                               0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("MainMenu::CDateTime", "The selected date is invalid. Please select another one.",
+                                                         0, QApplication::UnicodeUTF8));
+        (void) mp_MessageDlg->exec();
+        return;
+    }
+
     m_IsClickedOK = true;
     emit RequestAsapDateTime();
 }
