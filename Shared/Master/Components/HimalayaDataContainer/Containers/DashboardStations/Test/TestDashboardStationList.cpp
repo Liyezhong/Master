@@ -133,7 +133,7 @@ void TestDashboardStationList::utTestDashboardStation() {
     p_DashboardStation1->IsParaffinBath(false);
     p_DashboardStation1->SetDashboardReagentID("U1");
     p_DashboardStation1->SetDashboardReagentStatus("Empty");
-    p_DashboardStation1->SetDashboardReagentExchangeDate(QDate::currentDate());
+    p_DashboardStation1->SetDashboardReagentExchangeDate(QDateTime::currentDateTime());
     p_DashboardStation1->SetDashboardReagentActualCassettes(600);
     p_DashboardStation1->SetDashboardReagentActualCycles(600);
     p_DashboardStation1->SetDashboardStationStatus(DASHBOARD_RETORT_FULL);
@@ -143,7 +143,7 @@ void TestDashboardStationList::utTestDashboardStation() {
     QCOMPARE(p_DashboardStation1->IsParaffinBath(), false);
     QCOMPARE(p_DashboardStation1->GetDashboardReagentID(), QString("U1"));
     QCOMPARE(p_DashboardStation1->GetDashboardReagentStatus(), QString("Empty"));
-    QCOMPARE(p_DashboardStation1->GetDashboardReagentExchangeDate(), QDate::currentDate());
+    QCOMPARE(p_DashboardStation1->GetDashboardReagentExchangeDate(), QDateTime::currentDateTime());
     QCOMPARE(p_DashboardStation1->GetDashboardReagentActualCassettes(), 600);
     QCOMPARE(p_DashboardStation1->GetDashboardReagentActualCycles(), 600);
     QCOMPARE(p_DashboardStation1->GetDashboardStationStatus(), DASHBOARD_RETORT_FULL);
@@ -152,7 +152,7 @@ void TestDashboardStationList::utTestDashboardStation() {
     p_DashboardStation2->IsParaffinBath(true);
     p_DashboardStation2->SetDashboardReagentID("L8");
     p_DashboardStation2->SetDashboardReagentStatus("Empty");
-    p_DashboardStation2->SetDashboardReagentExchangeDate(QDate::currentDate());
+    p_DashboardStation2->SetDashboardReagentExchangeDate(QDateTime::currentDateTime());
     p_DashboardStation2->SetDashboardReagentActualCassettes(200);
     p_DashboardStation2->SetDashboardReagentActualCycles(0);
     p_DashboardStation2->SetDashboardStationStatus(DASHBOARD_RETORT_FULL);
@@ -189,7 +189,7 @@ void TestDashboardStationList::utTestDashboardStationList() {
     p_DashboardStation4->IsParaffinBath(false);
     p_DashboardStation4->SetDashboardReagentID("L3");
     p_DashboardStation4->SetDashboardReagentStatus("Full");
-    p_DashboardStation4->SetDashboardReagentExchangeDate(QDate::currentDate());
+    p_DashboardStation4->SetDashboardReagentExchangeDate(QDateTime::currentDateTime());
     p_DashboardStation4->SetDashboardReagentActualCassettes(600);
     p_DashboardStation4->SetDashboardReagentActualCycles(600);
     p_DashboardStation4->SetDashboardStationStatus(DASHBOARD_RETORT_FULL);
