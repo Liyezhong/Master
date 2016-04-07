@@ -223,6 +223,34 @@ void TestSchedulerMachine::TestAPIs()
     m_pSchedulerMachine->EnterRcCheckRTLock();
     m_pSchedulerMachine->EnterRsReagentCheck();
     m_pSchedulerMachine->EnterRsRVMoveToSealPosition();
+    m_pSchedulerMachine->GetCurrentState();
+    m_pSchedulerMachine->NotifyPause(PSSM_DRAINING);
+    m_pSchedulerMachine->NotifyDrain4Pause(PSSM_DRAINING);
+    m_pSchedulerMachine->EnterRcReHeating(211,"S1", false);
+    m_pSchedulerMachine->EnterRsAbort();
+    m_pSchedulerMachine->HandlePssmPreTestWorkFlow("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->HandleSelfTestWorkFlow("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->HandleRsStandByWorkFlow("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->HandleRsHeatingErr30SRetry("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->HandleRsTSensorErr3MinRetry("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->HandleRsStandByWithTissueWorkFlow("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->EnterRcLevelsensorHeatingOvertime();
+    m_pSchedulerMachine->HandleRsRVGetOriginalPositionAgainWorkFlow("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->HandleRcPressureWorkFlow("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->HandleRcVacuumWorkFlow("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->HandleDrainingWorkFlow("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->HandleForceDrainingWorkFlow("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->HandleRcBottleCheckIWorkFlow("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->HandleRsFillingAfterFlushWorkFlow("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->HandleRsPauseWorkFlow(CTRL_CMD_RS_PAUSE);
+    m_pSchedulerMachine->HandleRcRestart("Scheduler::ALReleasePressure");
+    m_pSchedulerMachine->HandleRcReHeatingWorkFlow("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->HandleRsMoveToPSeal("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->HandlePssmBottleCheckWorkFlow("Scheduler::ALReleasePressure", DCL_ERR_FCT_CALL_SUCCESS);
+    m_pSchedulerMachine->CheckNonRVErr4BottleCheck(DCL_ERR_DEV_INTER_INTER_BOTTLECHECK_RV_FAILED);
+    m_pSchedulerMachine->EnterRcRestart();
+    m_pSchedulerMachine->EnterRsRVGetOriginalPositionAgain();
+    m_pSchedulerMachine->SendRunBottleCheck();
 }
 
 /****************************************************************************/
