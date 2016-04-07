@@ -381,17 +381,6 @@ private:
     void ImportFilesHandler(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Cmd,
                                      Threads::CommandChannel &AckCommandChannel);
 
-    /****************************************************************************/
-    /*!
-     *  \brief  when system state changed, Master should update and keep
-     *          the curent system state.
-     *  \iparam Ref = Command reference
-     *  \iparam Cmd = Command
-     *  \iparam AckCommandChannel = Command channel to send acknowledge
-     */
-    /****************************************************************************/
-    void OnCmdSysState(Global::tRefType Ref, const NetCommands::CmdSystemState &Cmd,
-                          Threads::CommandChannel& AckCommandChannel);
 
     /****************************************************************************/
     /*!
@@ -730,18 +719,6 @@ private slots:
        */
       /****************************************************************************/
       void ShutdownOnPowerFail();
-      /****************************************************************************/
-      /*!
-       *  \brief  Definition/Declaration of slot SetAlarmHandlerTimeout()
-       */
-      /****************************************************************************/
-      void SetAlarmHandlerTimeout(quint16 timeout);
-      /****************************************************************************/
-      /*!
-       *  \brief  Definition/Declaration of slot OnFireAlarmLocalRemote()
-       */
-      /****************************************************************************/
-      void OnFireAlarmLocalRemote(bool isLocalAlarm);
       /****************************************************************************/
       /*!
        *  \brief porcess for language change

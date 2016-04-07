@@ -142,9 +142,6 @@ HimalayaMasterThreadController::~HimalayaMasterThreadController()
 
 void HimalayaMasterThreadController::CreateAlarmHandler()
 {
-//    mp_alarmHandler = new HimalayaErrorHandler::HimalayaAlarmHandler(5000, this);
-//    CONNECTSIGNALSLOT(mp_alarmHandler, sigSetTimeout(quint16), this, SetAlarmHandlerTimeout(quint16));
-//    CONNECTSIGNALSLOT(mp_alarmHandler, FireAlarmLocalRemote(bool), this, OnFireAlarmLocalRemote(bool));
 }
 
 /****************************************************************************/
@@ -417,9 +414,6 @@ void HimalayaMasterThreadController::RegisterCommands() {
 
 
     //Update and keep the current system state
-   RegisterCommandForProcessing<NetCommands::CmdSystemState, HimalayaMasterThreadController>
-            (&HimalayaMasterThreadController::OnCmdSysState, this);
-
    RegisterCommandForProcessing<MsgClasses::CmdResetOperationHours, HimalayaMasterThreadController>
            (&HimalayaMasterThreadController::ResetOperationHoursHandler, this);//for remover maintainance reminder warning
 
@@ -1242,25 +1236,6 @@ void HimalayaMasterThreadController::RequestDayRunLogFileNames(QString FolderPat
 
 }
 
-/****************************************************************************/
-void HimalayaMasterThreadController::OnCmdSysState(Global::tRefType, const NetCommands::CmdSystemState &Cmd,
-                      Threads::CommandChannel&)
-{
-    Q_UNUSED(Cmd)
-    //EventHandler::CrisisEventHandler::Instance().currentSysState(Cmd.m_StateId);
-}
-
-void HimalayaMasterThreadController::SetAlarmHandlerTimeout(quint16 timeout)
-{
-    //mp_alarmHandler->setTimeout(timeout);
-    Q_UNUSED(timeout);
-}
-
-void HimalayaMasterThreadController::OnFireAlarmLocalRemote(bool isLocalAlarm)
-{ 
-    //   (void)SendCommand(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(isLocalAlarm)), m_CommandChannelSchedulerMain);
-    Q_UNUSED(isLocalAlarm);
-}
 
 /************************************************************************************************************************************/
 void HimalayaMasterThreadController::SetUserActionState(const CurrentUserActionState_t UserActionState) {
