@@ -1110,6 +1110,10 @@ void CDataConnector::RetranslateUI()
 {
    m_strCommunicationError = QApplication::translate("Core::CDataConnector", "Communication error. Please try again or contact your local service.", 0, QApplication::UnicodeUTF8);
    m_strCommunicationErrorTitle = QApplication::translate("Core::CDataConnector", "Communication Error", 0, QApplication::UnicodeUTF8);
+   if (mp_MessageDlg)
+   {
+        mp_MessageDlg->SetTitle(m_strCommunicationErrorTitle);
+   }
    m_strChangeNotSave = QApplication::translate("Core::CDataConnector", "The changes can not be saved.", 0, QApplication::UnicodeUTF8);
    if (mp_MessageDlg)
    {
@@ -2125,6 +2129,8 @@ void CDataConnector::SendRCSWUpdate()
     }
 
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    mp_MessageDlg->SetTitle(QApplication::translate("Core::CDataConnector", "Information",
+                                                    0, QApplication::UnicodeUTF8));
     mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
                     "Now download the update package from the remote server. Please wait...",
                                                    0, QApplication::UnicodeUTF8));
