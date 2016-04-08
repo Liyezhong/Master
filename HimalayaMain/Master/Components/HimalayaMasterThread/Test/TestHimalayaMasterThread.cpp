@@ -73,6 +73,7 @@
 #include "Global/Include/SignalHandler.h"
 #include "Global/Include/GlobalDefines.h"
 #include "Global/Include/AlarmPlayer.h"
+#include <NetCommands/Include/CmdRCSoftwareUpdate.h>
 
 #define TRACE_TO_FILE 0     // set to 1 for messages getting printed to file
 
@@ -320,8 +321,63 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
     Global::EventObject::Instance().setParent(NULL);
     Global::AlarmPlayer::Instance().setParent(NULL);
     EventHandler::StateHandler::Instance().setParent(NULL);
+    App.TheMasterThreadController.CreateAndInitializeObjects();
+    App.TheMasterThreadController.CreateControllersAndThreads();
+    App.TheMasterThreadController.OnLanguageChanged(true);
+    App.TheMasterThreadController.OnPowerFail(Global::POWER_FAIL_NONE);
+    App.TheMasterThreadController.SendRCCmdToGuiChannel(Global::CommandShPtr_t(new RemoteCare::CmdRCSoftwareUpdate(15000, RemoteCare::SWUpdate_Available)));
+    App.TheMasterThreadController.ShowWaitDialog(false, Global::DEFAULT_TEXT);
+    App.TheMasterThreadController.SWUpdateProgress(false);
+    App.TheMasterThreadController.SWUpdateRollbackComplete();
+    
+    App.TheMasterThreadController.RequestDayRunLogFileNames("\\");
+    Global::tRefType ref;
+    Threads::CommandChannel cmdChannel(&(App.TheMasterThreadController), "GUI", Global::EVENTSOURCE_NONE);
+    NetCommands::CmdExportDayRunLogReply* cmdExportDayRunLogReply = new NetCommands::CmdExportDayRunLogReply();
+    App.TheMasterThreadController.ExportDayRunLogHandler(ref, *cmdExportDayRunLogReply,
+                                                         cmdChannel);
 
-    App.TheMasterThreadController.InitiateShutdown(false);
+    delete cmdExportDayRunLogReply;
+
+    NetCommands::CmdSystemAction* cmdSystemAction = new NetCommands::CmdSystemAction();
+    App.TheMasterThreadController.EventCmdSystemAction(ref, *cmdSystemAction, cmdChannel);
+    delete cmdSystemAction;
+
+    NetCommands::CmdChangeAdminPassword* cmdChangeAdminPassword = new NetCommands::CmdChangeAdminPassword();
+    App.TheMasterThreadController.ChangeAdminPasswordHandler(ref, *cmdChangeAdminPassword, cmdChannel);
+    delete cmdChangeAdminPassword;
+
+    MsgClasses::CmdResetOperationHours* cmdResetOperationHours = new MsgClasses::CmdResetOperationHours(5000, DataManager::RESETOPERATIONHOURS_WHOLEMACHINEOPERATION);
+    App.TheMasterThreadController.ResetOperationHoursHandler(ref, *cmdResetOperationHours, cmdChannel);
+    delete cmdResetOperationHours;
+
+    NetCommands::CmdChangeUserLevel* cmdChangeUserLevel = new NetCommands::CmdChangeUserLevel();
+    App.TheMasterThreadController.ChangeUserLevelHandler(ref, *cmdChangeUserLevel, cmdChannel);
+
+    App.TheMasterThreadController.SendLanguageFileToGUI("\\");
+
+    App.TheMasterThreadController.UpdateSupportedGUILanguages();
+
+    QStringList importTypeList;
+    App.TheMasterThreadController.ImportExportThreadFinished(true, importTypeList, 1305045);
+    App.TheMasterThreadController.SendXML();
+
+    MsgClasses::CmdDataImportFiles cmdDataImportFiles;
+    App.TheMasterThreadController.ImportFilesHandler(ref, cmdDataImportFiles, cmdChannel);
+
+    NetCommands::CmdGuiInit cmdGuiInit;
+    App.TheMasterThreadController.OnCmdGuiInitHandler(ref, cmdGuiInit, cmdChannel);
+
+    App.TheMasterThreadController.SendStateChange("IdleState");
+
+    MsgClasses::CmdQuitAppShutdown cmdQuitAppShutdown;
+    App.TheMasterThreadController.PrepareShutdownHandler(ref, cmdQuitAppShutdown, cmdChannel);
+
+    Global::CmdShutDown cmdShutDown;
+    App.TheMasterThreadController.ShutdownHandler(ref, cmdShutDown, cmdChannel);
+
+    App.TheMasterThreadController.Reboot();
+
     App.quit();
 #if 0
     char **argv = NULL;

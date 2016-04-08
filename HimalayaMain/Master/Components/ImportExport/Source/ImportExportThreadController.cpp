@@ -200,14 +200,20 @@ void ImportExportThreadController::CreateAndInitializeObjects() {
             mp_StationList = new DataManager::CDashboardDataStationList();
         }
         // copy the station list
-        *mp_StationList = *m_DataManager.GetStationList();
+        if (m_DataManager.GetStationList()) {
+            *mp_StationList = *m_DataManager.GetStationList();
+        }
 
         // do a deep copy of the data.
         if (mp_ReagentList == NULL) {
             mp_ReagentList = new DataManager::CDataReagentList();
         }
-        *mp_ReagentList = *m_DataManager.GetReagentList();
-         mp_UserSetting = m_DataManager.GetUserSettings();
+
+        if (m_DataManager.GetReagentList()) {
+             *mp_ReagentList = *m_DataManager.GetReagentList();
+        }
+
+        mp_UserSetting = m_DataManager.GetUserSettings();
     }
 
     // get the device configuration so that we can use the device name
@@ -1636,6 +1642,12 @@ bool ImportExportThreadController::UpdateFolderWithFiles(QStringList FileList, Q
 
 /****************************************************************************/
 bool ImportExportThreadController::WriteFilesInSettingsFolder() {
+
+    if (NULL == m_DataManager.GetReagentList())
+	{
+	 	Q_ASSERT(false);
+        return false;
+	}
 
     if (!m_DataManager.GetReagentList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
                                                + QDir::separator() + FILENAME_REAGENTS)) {

@@ -225,7 +225,6 @@ void HimalayaMasterThreadController::CreateControllersAndThreads() {
   // let base class create controllers and threads
     MasterThreadController::CreateControllersAndThreads();
     CHECKPTR(mp_DataManager);
-    CHECKPTR(mp_DataManager->GetDeviceConfigurationInterface());
 
     if (!mp_DataManager)
         return;
@@ -274,7 +273,11 @@ void HimalayaMasterThreadController::OnPowerFail(const Global::PowerFailStages P
 void HimalayaMasterThreadController::OnGoReceived() {
     CreateAndInitializeObjects();
     MasterThreadController::OnGoReceived();
-    Scheduler::SchedulerLogging::getInstance().InitLog(m_SerialNumber,mp_DataManager->GetSWVersion()->GetSWReleaseVersion());
+
+    if (mp_DataManager && mp_DataManager->GetSWVersion()){
+        Scheduler::SchedulerLogging::getInstance().InitLog(m_SerialNumber,mp_DataManager->GetSWVersion()->GetSWReleaseVersion());
+    }
+
     DataManager::CDeviceConfigurationInterface *deviceConfigInterface = mp_DataManager->GetDeviceConfigurationInterface();
     QString SerialNumber;
     QString DeviceName;
@@ -1374,6 +1377,9 @@ void HimalayaMasterThreadController::OnLanguageChanged(const bool LanguangeChang
     {
         return;
     }
+
+    if (NULL == (mp_DataManager->GetUserSettingsInterface()))
+    	return;
 
     if (mp_DataManager->GetUserSettingsInterface()->GetUserSettings(false) != NULL) {
         // get the current language
