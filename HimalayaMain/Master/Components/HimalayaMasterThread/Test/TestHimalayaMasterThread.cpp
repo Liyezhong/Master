@@ -291,10 +291,6 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
     App.TheMasterThreadController.SetMaxAdjustedTimeOffset(24*3600);
     // read time offset from file
     App.TheMasterThreadController.ReadTimeOffsetFile();
-    // add code to quit Master thread if its controller requests it
-    QObject::connect(&App.TheMasterThreadController, SIGNAL(RequestFinish()), &App, SLOT(ProcessAnyPendingEvents()));
-    // add code to quit Master thread if its controller requests it
-    QObject::connect(&App, SIGNAL(InitializeThreadStop()), &App.TheMasterThreadController, SLOT(Stop()));
     // add code to close application when Master thread stops
     QObject::connect(&thrMasterThread, SIGNAL(finished()), &ThreadForSingletonObjects, SLOT(quit()));
     // Master thread should give its controller automatically a "Go" signal as soon it has started
@@ -369,14 +365,6 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
     App.TheMasterThreadController.OnCmdGuiInitHandler(ref, cmdGuiInit, cmdChannel);
 
     App.TheMasterThreadController.SendStateChange("IdleState");
-
-    MsgClasses::CmdQuitAppShutdown cmdQuitAppShutdown;
-    App.TheMasterThreadController.PrepareShutdownHandler(ref, cmdQuitAppShutdown, cmdChannel);
-
-    Global::CmdShutDown cmdShutDown;
-    App.TheMasterThreadController.ShutdownHandler(ref, cmdShutDown, cmdChannel);
-
-    App.TheMasterThreadController.Reboot();
 
     App.quit();
 #if 0
