@@ -55,6 +55,9 @@
      <property name="layoutDirection">
       <enum>Qt::LeftToRight</enum>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QListWidget:item{height: 110px;}</string>
+     </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
