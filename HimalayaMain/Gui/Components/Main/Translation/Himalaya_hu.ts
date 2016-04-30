@@ -1679,7 +1679,7 @@ dátuma</translation>
         <source>Pausing...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>Szüneteltetés…
-Ne nyissa ki a vízelvonó hengert és ne vegye ki a vegyszeres palackok dugaszát.</translation>
+Ne nyissa ki a víztelenítő kamra ajtaját és ne húzza ki a vegyszeres tartályokat.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1450"/>
@@ -1709,9 +1709,7 @@ Ne nyissa ki a vízelvonó hengert és ne vegye ki a vegyszeres palackok dugasz�
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1445"/>
         <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential hazard of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
-        <translation>A vízelvonó henger fedelét felnyitották. Zárja be, majd kattintson az OK gombra.
-Viseljen megfelelően a gázmaszkot a vegyszer gőzének belégzésével járó veszélyek elkerülése érdekében.
-Ne érintse meg a szintérzékelőt. Forró!</translation>
+        <translation>A víztelenítő kamra fedelét felnyitották. Zárja be, majd kattintson az OK gombra.Viseljen megfelelően gázmaszkot a vegyszer gőzének belégzésével járó veszélyek elkerülése érdekében. Ne érintse meg a szintérzékelőt. Forró!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1449"/>
@@ -1784,16 +1782,16 @@ Győződjön meg arról, hogy eltávolította a mintát és hogy a vízelvonó h
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning.
  Load the specimens into the retort and make sure that the retort is locked.
  Please visually confirm all paraffin are completely melted.</source>
-        <translation>Ellenőrizze az összes vegyszer szintjét, majd tisztítsa meg a vízelvonó henger érzékelőjét, tömítőgyűrűjét és szűrőjét. A tisztítás után helyezze vissza a vízelvonó henger szűrőjét. 
-Helyezze a mintát a vízelvonó hengerbe, és győződjön meg arról, hogy bezárta a vízelvonó hengert.
-Vizuálisan ellenőrizze, hogy az összes paraffin teljesen megolvadt-e.</translation>
+        <translation>Ellenőrizze az összes vegyszer szintjét, majd tisztítsa meg a víztelenítő kamra érzékelőjét, tömítőgyűrűjét és szűrőjét.
+A tisztítás után helyezze vissza a víztelenítő kamra szűrőjét.
+Helyezze a mintát a víztelenítő kamrába, és győződjön meg arról, hogy lezárta a víztelenítő kamra fedelét.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1471"/>
         <source>Resuming...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>Folytatás...
-Ne nyissa ki a vízelvonó hengert és ne vegye ki a vegyszeres palackok dugaszát.</translation>
+Ne nyissa ki a víztelenítő kamra ajtaját és ne húzza ki a vegyszeres tartályokat.</translation>
     </message>
 </context>
 <context>

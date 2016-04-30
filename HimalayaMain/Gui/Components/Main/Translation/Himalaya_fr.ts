@@ -26,12 +26,12 @@
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="166"/>
         <source>Edit Information</source>
-        <translation>Modifier information</translation>
+        <translation>Modifier l&apos; information</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="189"/>
         <source>Edit Warning</source>
-        <translation>Modifier avertissement</translation>
+        <translation>Modifier l&apos;avertissement</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="212"/>
@@ -77,7 +77,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="31"/>
         <source>Build pressure failed</source>
-        <translation>La création de la pression a échoué</translation>
+        <translation>la mise sous pression à échoué</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="32"/>
@@ -87,7 +87,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="35"/>
         <source>Bottle Check failed! Please check the details in the Bottle Check status list.</source>
-        <translation>A palack ellenőrzése sikertelen. Ellenőrizze az adatokat a Palack ellenőrzése állapotlistában.</translation>
+        <translation>la vérification des bouteilles a échoué, Vérifier le détail dans la liste.</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="36"/>
@@ -110,7 +110,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusModel.cpp" line="242"/>
         <source>Station</source>
-        <translation>Poste</translation>
+        <translation>Station</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusModel.cpp" line="244"/>
@@ -216,7 +216,7 @@
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="92"/>
         <source>Time</source>
-        <translation>Heure</translation>
+        <translation>Temps</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="94"/>
@@ -373,7 +373,7 @@
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="341"/>
         <source>Time</source>
-        <translation>Heure</translation>
+        <translation>Temps</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="405"/>
@@ -498,7 +498,7 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="77"/>
         <source>Do you really want to delete the selected program step?</source>
-        <translation>Voulez-vous vraiment supprimer le pas de programme sélectionné ?</translation>
+        <translation>Voulez-vous vraiment supprimer l&apos;étape du programme sélectionné ?</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="78"/>
@@ -527,12 +527,12 @@
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="405"/>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="440"/>
         <source>Edit Program Step</source>
-        <translation>Modifier le pas de programme</translation>
+        <translation>Modifier l&apos;étape de programme</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="425"/>
         <source>New Program Step</source>
-        <translation>Nouveau pas de programme</translation>
+        <translation>Nouvelle étape de programme</translation>
     </message>
 </context>
 <context>
@@ -573,7 +573,7 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="161"/>
         <source>Time</source>
-        <translation>Heure</translation>
+        <translation>Temps</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="163"/>
@@ -614,17 +614,17 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="45"/>
         <source>Cassettes until change</source>
-        <translation>Cassettes jusq remplac</translation>
+        <translation>Cassettes jusqu&apos;au changement</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="46"/>
         <source>Cycles until change</source>
-        <translation>Cycles jusq remplac</translation>
+        <translation>Cycles jusqu&apos;au changement</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="47"/>
         <source>Days until change</source>
-        <translation>Jours jusq remplac</translation>
+        <translation>Jours jusqu&apos;au changement</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="48"/>
@@ -644,12 +644,12 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="53"/>
         <source>Enter Cycle Value</source>
-        <translation>Entrer la valeur du cycle</translation>
+        <translation>Entrer une valeur de cycle</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="54"/>
         <source>Enter Day Value</source>
-        <translation>Entrer la valeur du jour</translation>
+        <translation>Entrer une valeur de jour</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="462"/>
@@ -713,7 +713,7 @@
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="48"/>
         <source>Enter Proxy User Name</source>
-        <translation>Entrer le nom d&apos;utilisateur du proxy</translation>
+        <translation>Entrer le nom de l&apos;utilisateur du proxy</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="49"/>
@@ -864,7 +864,7 @@
     <message>
         <location filename="../../Core/Source/ReagentGroupModel.cpp" line="215"/>
         <source>Color</source>
-        <translation>Clr</translation>
+        <translation>couleur</translation>
     </message>
 </context>
 <context>
@@ -872,7 +872,7 @@
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="32"/>
         <source>Select Color</source>
-        <translation>Sélectionner couleur</translation>
+        <translation>Sélectionner  la couleur</translation>
     </message>
 </context>
 <context>
@@ -890,19 +890,19 @@
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="294"/>
         <source>Cassettes until change</source>
-        <translation>Cassettes jusq remplac</translation>
+        <translation>Cassettes jusqu&apos;au changement</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="296"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="306"/>
         <source>Cycles until change</source>
-        <translation>Cycles jusq remplac</translation>
+        <translation>Cycles jusqu&apos;au changement</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="298"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="308"/>
         <source>Days until change</source>
-        <translation>Jours jusq remplac</translation>
+        <translation>Jours jusqu&apos;au changement</translation>
     </message>
 </context>
 <context>
@@ -931,7 +931,7 @@
     <message>
         <location filename="../../Core/Source/ReagentStationModel.cpp" line="248"/>
         <source>Station</source>
-        <translation>Poste</translation>
+        <translation>Station</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStationModel.cpp" line="250"/>
@@ -952,7 +952,7 @@
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="370"/>
         <source>Station</source>
-        <translation>Poste</translation>
+        <translation>Station</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="372"/>
@@ -965,8 +965,7 @@
 since
 change</source>
         <translation>Cassettes
-depuis le
-remplac</translation>
+ depuis le</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="380"/>
@@ -983,8 +982,8 @@ remplac</translation>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="391"/>
         <source>Expiry
 Date</source>
-        <translation>Date de
-péremption</translation>
+        <translation>Date
+d&apos;expiration</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="395"/>
@@ -1020,7 +1019,7 @@ d&apos;échange</translation>
     <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="310"/>
         <source>Step</source>
-        <translation>Pas</translation>
+        <translation>étapes</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="312"/>
@@ -1236,7 +1235,7 @@ d&apos;échange</translation>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2081"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
-        <translation>Un nouveau logiciel est disponible. Sélectionner &quot;Màj distante log.&quot; pour démarrer la mise à jour.</translation>
+        <translation>Un nouveau logiciel est disponible. Sélectionner &quot;à distante de mise à jour SW&quot; pour démarrer la mise à jour.</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2087"/>
@@ -1261,7 +1260,7 @@ d&apos;échange</translation>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2134"/>
         <source>Now download the update package from the remote server. Please wait...</source>
-        <translation>Télécharger au plus tôt le paquet de mise à jour du serveur à distance. Veuillez patienter...</translation>
+        <translation>Télécharger au plus tôt les mises à jour du serveur à distance. Veuillez patienter...</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2164"/>
@@ -1322,7 +1321,7 @@ d&apos;échange</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="204"/>
         <source>Color</source>
-        <translation>Clr</translation>
+        <translation>couleur</translation>
     </message>
 </context>
 <context>
@@ -1341,19 +1340,19 @@ d&apos;échange</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="731"/>
         <source>Cassettes until change</source>
-        <translation>Cassettes jusq remplac</translation>
+        <translation>Cassettes jusqu&apos;au changement</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="734"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="753"/>
         <source>Cycles until change</source>
-        <translation>Cycles jusq remplac</translation>
+        <translation>Cycles jusqu&apos;au changement</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="737"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="756"/>
         <source>Days until change</source>
-        <translation>Jours jusq remplac</translation>
+        <translation>Jours jusqu&apos;au changement</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="748"/>
@@ -1379,7 +1378,7 @@ d&apos;échange</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="223"/>
         <source>Station</source>
-        <translation>Poste</translation>
+        <translation>Station</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="226"/>
@@ -1392,7 +1391,7 @@ d&apos;échange</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="469"/>
         <source>Station</source>
-        <translation>Poste</translation>
+        <translation>Station</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="472"/>
@@ -1404,9 +1403,8 @@ d&apos;échange</translation>
         <source>Cassettes
 since
 change</source>
-        <translation>Cassettes
-depuis le
-remplac</translation>
+        <translation>Cassettes 
+depuis le</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="483"/>
@@ -1423,8 +1421,8 @@ remplac</translation>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="499"/>
         <source>Expiry
 Date</source>
-        <translation>Date de
-péremption</translation>
+        <translation>Date
+d&apos;expiration</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="505"/>
@@ -1463,7 +1461,7 @@ d&apos;échange</translation>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="49"/>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="115"/>
         <source>Dashboard</source>
-        <translation>Dashboard</translation>
+        <translation>Tableau de bord</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="116"/>
@@ -1547,7 +1545,7 @@ d&apos;échange</translation>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="262"/>
         <source>Time</source>
-        <translation>Heure</translation>
+        <translation>Temps</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="263"/>
@@ -1567,17 +1565,17 @@ d&apos;échange</translation>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="267"/>
         <source>Program End Date/Time cannot be earlier than the ASAP End Date/Time.</source>
-        <translation>La date et l&apos;heure de fin du programme ne peuvent pas précéder la date et l&apos;heure de fin les plus précoces.</translation>
+        <translation>la fin du programme date/heure ne peut pas être antérieur  à la fin du programme  date/ l&apos;heure au plus tôt.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="268"/>
         <source>Program End Date/Time cannot be later than one week.</source>
-        <translation>La date et l&apos;heure de fin du programme ne peuvent pas être postérieures à une semaine.</translation>
+        <translation>la fin du programme date/heure ne peut pas être supérieur à une semaine.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="269"/>
         <source>Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a fixation reagent.</source>
-        <translation>La date et l&apos;heure de fin du programme ne peuvent pas être postérieures à la date et l&apos;heure de fin les plus précoces, car le premier pas du programme n&apos;est pas un réactif de fixation.</translation>
+        <translation>la fin du programme date/heure ne peut pas être plus tard que   la fin du programme  date/ l&apos;heure au plus tot, comme la première étape du programme n&apos;est pas un réactif de fixation.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="270"/>
@@ -1595,7 +1593,7 @@ d&apos;échange</translation>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="71"/>
         <source>Step remaining time:</source>
-        <translation>Temps de pas restant :</translation>
+        <translation>Temps de l&apos;étape restant :</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="78"/>
@@ -1628,22 +1626,22 @@ d&apos;échange</translation>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1434"/>
         <source>No safe reagent for the Program step &quot;%1&quot; of &quot;%2&quot;. Would you like to continue?</source>
-        <translation>Pas de réactif sûr pour le pas du programme &quot;%1&quot; de &quot;%2&quot;. Voulez-vous continuer ?</translation>
+        <translation>Pas de réactif sûr pour l&apos;étape du programme &quot;%1&quot; de &quot;%2&quot;. Voulez-vous continuer ?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1435"/>
         <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station.  A station can be used only once in the program. Please assign a separate station for the reagent of this step.</source>
-        <translation>Le pas du programme &quot;%1&quot; de &quot;%2&quot; ne peut pas trouver la station de réactif correspondante. Une station est utilisable une seule fois dans un programme. Veuillez attribuer une station séparée pour le réactif de ce pas.</translation>
+        <translation>L&apos;étape du programme &quot;%1&quot; de &quot;%2&quot; ne peut pas trouver la station de réactif correspondante. Une station est utilisable une seule fois dans un programme. Veuillez attribuer une station différente pour le réactif de cette étape.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1436"/>
         <source>You cannot start the program, because Station &quot;%1&quot; is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;.</source>
-        <translation>Vous ne pouvez pas démarrer le programme parce que la station &quot;%1&quot; est réglée sur Vide dans le pas du programme &quot;%2&quot; de &quot;%3&quot;.</translation>
+        <translation>Vous ne pouvez pas démarrer le programme parce que la station &quot;%1&quot; est réglée sur Vide dans l&apos;étape du programme &quot;%2&quot; de &quot;%3&quot;.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1437"/>
         <source>Program cannot start because the paraffin is not melted completely and the first program step is not a fixation reagent.</source>
-        <translation>Impossible de démarrer le programme car la paraffine n&apos;a pas complètement fondu et le premier pas du programme n&apos;est pas un réactif de fixation.</translation>
+        <translation>Impossible de démarrer le programme car la paraffine n&apos;a pas complètement fondu et la première étape du programme n&apos;est pas un réactif de fixation.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1438"/>
@@ -1668,7 +1666,7 @@ d&apos;échange</translation>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1443"/>
         <source>Tissue safety process has completed with warning. Would you like to drain the retort?</source>
-        <translation>Le traitement de sécurité du tissu s&apos;est terminé par un avertissement. Voulez-vous purger la chambre ?</translation>
+        <translation>Le traitement de sécurité du tissu c&apos;est terminé par un avertissement. Voulez-vous purger la chambre ?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1444"/>
@@ -1772,7 +1770,7 @@ Ne pas toucher le capteur de niveau. Il est chaud !</translation>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1462"/>
         <source>Because the wait time is more than five minutes, the instrument will be re-heated and filled with safe reagents.</source>
-        <translation>Parce que le temps d&apos;attente dépasse cinq minutes, l&apos;instrument sera réchauffé et rempli avec des réactifs sûrs.</translation>
+        <translation>Parce que le temps d&apos;attente dépasse cinq minutes, l&apos;instrument sera re chauffé et rempli avec des réactifs sûrs.</translation>
     </message>
     <message utf8="true">
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1464"/>
@@ -1784,7 +1782,7 @@ Ne pas toucher le capteur de niveau. Il est chaud !</translation>
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning.
  Load the specimens into the retort and make sure that the retort is locked.
  Please visually confirm all paraffin are completely melted.</source>
-        <translation>Veuillez vérifier le niveau de tous les réactifs et nettoyer le capteur de niveau de la chambre, le joint d&amp;apos;étanchéité de la chambre et le filtre de la chambre. Réinstaller le filtre de la chambre après le nettoyage. 
+        <translation>Veuillez vérifier le niveau de tous les réactifs et nettoyer le capteur de niveau, le joint d&apos;étanchéité et le filtre de la chambre. Réinstaller le filtre de la chambre après le nettoyage. 
 Charger les échantillons dans la chambre et veiller à ce que la chambre soit verrouillée.
 Veuillez vérifier visuellement que tous les blocs de paraffine ont entièrement fondu.</translation>
     </message>
@@ -1792,7 +1790,7 @@ Veuillez vérifier visuellement que tous les blocs de paraffine ont entièrement
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1471"/>
         <source>Resuming...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
-        <translation>Poursuite en cours..
+        <translation>Programme en cours..
 Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</translation>
     </message>
 </context>
@@ -1896,7 +1894,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="66"/>
         <source>Step Time:</source>
-        <translation>Temps du pas :</translation>
+        <translation>Temps de l&apos;étape :</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="135"/>
@@ -1926,7 +1924,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="182"/>
         <source>Station</source>
-        <translation>Poste</translation>
+        <translation>Station</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="183"/>
@@ -2010,12 +2008,12 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="138"/>
         <source>SW Update</source>
-        <translation>Màj log.</translation>
+        <translation>mise à jour du logiciel</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="171"/>
         <source>Remote SW Update</source>
-        <translation>Màj distante log.</translation>
+        <translation>mise à jour du logiciel à distance</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DataManagement.cpp" line="294"/>
@@ -2043,7 +2041,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DateTime.ui" line="116"/>
         <source>Save</source>
-        <translation>Enregistr</translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="71"/>
@@ -2073,7 +2071,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="82"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="249"/>
         <source>Time</source>
-        <translation>Heure</translation>
+        <translation>Temps</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="84"/>
@@ -2113,7 +2111,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DialogFrame.ui" line="14"/>
         <source>Dialog</source>
-        <translation>Dialog</translation>
+        <translation>Dialogue</translation>
     </message>
 </context>
 <context>
@@ -2365,7 +2363,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="35"/>
         <source>Save</source>
-        <translation>Enregistr</translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="50"/>
@@ -2396,7 +2394,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="258"/>
         <source>New Step</source>
-        <translation>Nouveau pas</translation>
+        <translation>Nouvelle étape</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="287"/>
@@ -2426,12 +2424,12 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1021"/>
         <source>Edit Program Step</source>
-        <translation>Modifier le pas de programme</translation>
+        <translation>Modifier l&apos;étape de programme</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1022"/>
         <source>New Program Step</source>
-        <translation>Nouveau pas de programme</translation>
+        <translation>Nouvelle étape de programme</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1023"/>
@@ -2456,7 +2454,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1036"/>
         <source>Do you really want to delete the selected program step?</source>
-        <translation>Voulez-vous vraiment supprimer le pas de programme sélectionné ?</translation>
+        <translation>Voulez-vous vraiment supprimer l&apos;étape du programme sélectionné ?</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1037"/>
@@ -2548,12 +2546,12 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Programs/Forms/ModifyProgramStepDlg.ui" line="173"/>
         <source>Save</source>
-        <translation>Enregistr</translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="644"/>
         <source>Time</source>
-        <translation>Heure</translation>
+        <translation>Temps</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="646"/>
@@ -2631,7 +2629,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Programs/Forms/ProgramWidget.ui" line="85"/>
         <source>New</source>
-        <translation>Nouve</translation>
+        <translation>Nouveau</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ProgramWidget.ui" line="95"/>
@@ -2694,7 +2692,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1026"/>
         <source>Step</source>
-        <translation>Pas</translation>
+        <translation>étapes</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1027"/>
@@ -2816,7 +2814,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="154"/>
         <source>Cassettes until change:</source>
-        <translation>Cassettes jusq remplac:</translation>
+        <translation>Cassettes jusqu&apos;au changement:</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="174"/>
@@ -2836,17 +2834,17 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="565"/>
         <source>Cassettes until change</source>
-        <translation>Cassettes jusq remplac</translation>
+        <translation>Cassettes jusqu&apos;au changement</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="568"/>
         <source>Cycles until change</source>
-        <translation>Cycles jusq remplac</translation>
+        <translation>Cycles jusqu&apos;au changement</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="571"/>
         <source>Days until change</source>
-        <translation>Jours jusq remplac</translation>
+        <translation>Jours jusqu&apos;au changement</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="574"/>
@@ -2876,12 +2874,12 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="589"/>
         <source>Failed to add the reagent. Please contact service.</source>
-        <translation>L&apos;ajout du réactif a échoué. Veuillez contacter le centre de services.</translation>
+        <translation>L&apos;ajout du réactif a échoué. Veuillez contacter le service après -vente.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="592"/>
         <source>Failed to copy the reagent. Please contact service.</source>
-        <translation>La copie du réactif a échoué. Veuillez contacter le centre de services.</translation>
+        <translation>La copie du réactif a échoué. Veuillez contacter le service après-vente.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="595"/>
@@ -2891,12 +2889,12 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="598"/>
         <source>Enter Cycle Value</source>
-        <translation>Entrer la valeur du cycle</translation>
+        <translation>Entrer une valeur de cycle</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="601"/>
         <source>Enter Day Value</source>
-        <translation>Entrer la valeur du jour</translation>
+        <translation>Entrer une valeur de jour</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="604"/>
@@ -2963,7 +2961,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="206"/>
         <source>Select Color</source>
-        <translation>Sélectionner couleur</translation>
+        <translation>Sélectionner  la couleur</translation>
     </message>
 </context>
 <context>
@@ -3014,7 +3012,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="227"/>
         <source>New</source>
-        <translation>Nouve</translation>
+        <translation>Nouveau</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="256"/>
@@ -3197,7 +3195,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="218"/>
         <source>Save</source>
-        <translation>Enregistr</translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="275"/>
@@ -3222,7 +3220,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="285"/>
         <source>Edit Information</source>
-        <translation>Modifier information</translation>
+        <translation>Modifier l&apos; information</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="286"/>
@@ -3232,7 +3230,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="287"/>
         <source>Edit Warning</source>
-        <translation>Modifier avertissement</translation>
+        <translation>Modifier l&apos;avertissement</translation>
     </message>
 </context>
 <context>
@@ -3369,7 +3367,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="157"/>
         <source>Build pressure failed</source>
-        <translation>La création de la pression a échoué</translation>
+        <translation>la mise sous pression à échoué</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="158"/>
@@ -3389,7 +3387,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="161"/>
         <source>Bottle Check failed! Please check the details in the Bottle Check status list.</source>
-        <translation>A palack ellenőrzése sikertelen. Ellenőrizze az adatokat a Palack ellenőrzése állapotlistában.</translation>
+        <translation>la vérification des bouteilles a échoué, Vérifier le détail dans la liste.</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="162"/>
@@ -3402,7 +3400,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="144"/>
         <source>Station</source>
-        <translation>Poste</translation>
+        <translation>Station</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="147"/>
@@ -3440,12 +3438,12 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="141"/>
         <source>SW Update</source>
-        <translation>Màj log.</translation>
+        <translation>mise à jour du logiciel</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="177"/>
         <source>Remote SW Update</source>
-        <translation>Màj distante log.</translation>
+        <translation>mise à jour du logiciel à distance</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/DataManagementWidget.cpp" line="214"/>
@@ -3466,7 +3464,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Source/FileViewWidget.cpp" line="89"/>
         <source>Event View</source>
-        <translation>Vue des événements</translation>
+        <translation>Aperçue des événements</translation>
     </message>
 </context>
 <context>
@@ -3542,7 +3540,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Forms/LanguageWidget.ui" line="84"/>
         <source>Save</source>
-        <translation>Enregistr</translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/LanguageWidget.cpp" line="234"/>
@@ -3572,7 +3570,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="46"/>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="245"/>
         <source>Proxy User Name</source>
-        <translation>Nom d&apos;utilisateur du proxy</translation>
+        <translation>Nom de l&apos;utilisateur du proxy</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="73"/>
@@ -3617,7 +3615,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="179"/>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="249"/>
         <source>Save</source>
-        <translation>Enregistr</translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="242"/>
@@ -3627,7 +3625,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="250"/>
         <source>Enter Proxy User Name</source>
-        <translation>Entrer le nom d&apos;utilisateur du proxy</translation>
+        <translation>Entrer le nom de l&apos;utilisateur du proxy</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="251"/>
@@ -3690,7 +3688,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="154"/>
         <source>System Setup</source>
-        <translation>Configuration système</translation>
+        <translation>Configuration du système</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="165"/>
@@ -3705,7 +3703,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="187"/>
         <source>Event View</source>
-        <translation>Vue des événements</translation>
+        <translation>Etat des événements</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="198"/>
@@ -3768,7 +3766,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="263"/>
         <source>Save</source>
-        <translation>Enregistr</translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/RegionalSettingsWidget.cpp" line="220"/>
@@ -3823,7 +3821,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="180"/>
         <source>Start Service App</source>
-        <translation>Démarrer l&apos;appli Service</translation>
+        <translation>Démarrer l&apos;application Service</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="204"/>
@@ -3833,7 +3831,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="243"/>
         <source>Save</source>
-        <translation>Enregistr</translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="320"/>
@@ -3879,12 +3877,12 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="203"/>
         <source>Save</source>
-        <translation>Enregistr</translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="294"/>
         <source>System Setup</source>
-        <translation>Configuration système</translation>
+        <translation>Configuration du système</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="295"/>
@@ -3894,7 +3892,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="297"/>
         <source>The paraffin melting temperature has been changed. Please click &quot;Yes&quot; to start remelting paraffin, and it will take %1 hours before using paraffin. If you want to skip the process of remelting paraffin, please visually confirm all paraffin are completely melted, then click &quot;No&quot; to use paraffin immediately.</source>
-        <translation>La température de fusion de la paraffine a été modifiée. Veuillez cliquer sur &quot;Oui&quot; pour démarrer la refusion de la paraffine, il faudra attendre %1 heures avant de pouvoir utiliser la paraffine. Si vous voulez ignorer le processus de refusion de la paraffine, veuillez vérifier visuellement que tous les blocs de paraffine ont entièrement fondu, puis cliquer sur &quot;Non&quot; afin d&apos;utiliser la paraffine immédiatement.</translation>
+        <translation>La température de fusion de la paraffine a été modifiée. Veuillez cliquer sur &quot;Oui&quot; pour démarrer la fusion de la paraffine, il faudra attendre %1 heures avant de pouvoir utiliser la paraffine. Si vous voulez ignorer le processus de fusion de la paraffine, veuillez vérifier visuellement que tous les blocs de paraffine ont entièrement fondu, puis cliquer sur &quot;Non&quot; afin d&apos;utiliser la paraffine immédiatement.</translation>
     </message>
 </context>
 <context>
@@ -3927,7 +3925,7 @@ Veuillez patienter...</translation>
     <message>
         <location filename="../../Users/Forms/UserPrivilegeWidget.ui" line="204"/>
         <source>Change Password</source>
-        <translation>Changer mot passe</translation>
+        <translation>Changer le mot passe</translation>
     </message>
     <message>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="81"/>

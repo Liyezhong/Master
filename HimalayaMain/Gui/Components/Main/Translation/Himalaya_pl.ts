@@ -966,7 +966,7 @@ since
 change</source>
         <translation>Kasety
 od
-zmiany</translation>
+wymiany</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="380"/>
@@ -976,7 +976,7 @@ since
 change</source>
         <translation>Cykle
 od
-zmiany</translation>
+wymiany</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="382"/>
@@ -984,7 +984,7 @@ zmiany</translation>
         <source>Expiry
 Date</source>
         <translation>Data
-przydatności</translation>
+ważności</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="395"/>
@@ -1793,7 +1793,7 @@ Należy potwierdzić wizualnie, że cała parafina jest całkiem stopiona.</tran
         <source>Resuming...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>Powrót do pracy..
-Nie otwierać pokrywy retorty ani nie odłączać żadnych butelek odczynników.</translation>
+Nie otwierać pokrywy retorty ani nie odłączać żadnych butelek z odczynnikami.</translation>
     </message>
 </context>
 <context>

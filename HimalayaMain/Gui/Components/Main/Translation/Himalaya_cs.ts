@@ -964,7 +964,7 @@
         <source>Cassettes
 since
 change</source>
-        <translation>Kazety po
+        <translation>Kazety od
 výměně</translation>
     </message>
     <message>
