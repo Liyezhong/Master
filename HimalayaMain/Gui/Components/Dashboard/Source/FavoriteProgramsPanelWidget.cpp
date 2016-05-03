@@ -192,6 +192,8 @@ void CFavoriteProgramsPanelWidget::UndoProgramSelection()
     m_ButtonGroup.setExclusive(true);
     m_LastSelectedButtonId = -1;
     m_LastCanBeSelectedButtonId = -1;
+    m_NewSelectedProgramId = "";
+    SELECTED_PROGRAM_NAME = "";
     Core::CGlobalHelper::UnselectProgram();
     emit UpdateFavProgram();
 }
