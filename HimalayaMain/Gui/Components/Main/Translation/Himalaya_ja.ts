@@ -87,7 +87,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="35"/>
         <source>Bottle Check failed! Please check the details in the Bottle Check status list.</source>
-        <translation>ボトルチェックに失敗しました! ボトルチェックステータスリストで詳細をチェックしてください。</translation>
+        <translation>ボトルチェックに失敗しました。ボトルチェックステータスリストで詳細を確認してください。</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="36"/>
@@ -508,7 +508,7 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="79"/>
         <source>Please select a Program Icon</source>
-        <translation>プログラムアイコンを選択してください</translation>
+        <translation>アイコンを選択してください</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="241"/>
@@ -2455,7 +2455,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1037"/>
         <source>Please enter a valid Program Name</source>
-        <translation>有効なプログラム名を入力してください</translation>
+        <translation>プログラム名を入力してください</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1038"/>
@@ -2752,7 +2752,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="301"/>
         <source>Please check that the retort is empty and clean prior starting bottle check and then press &quot;yes&quot;. Bottle check function will require approximately 7 minutes.</source>
-        <translation>ボトルチェック開始前にレトルトが空で清潔であることをチェックしてから[はい]を押してください。ボトルチェック機能には、約7分必要です。</translation>
+        <translation>ボトルチェック開始前にレトルトが空で洗浄済であることを確認してから[はい]を押してください。ボトルチェック機能には、約7分必要です。</translation>
     </message>
 </context>
 <context>

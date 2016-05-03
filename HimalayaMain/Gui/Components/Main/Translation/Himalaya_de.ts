@@ -639,7 +639,7 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="52"/>
         <source>Please enter the number of cassettes</source>
-        <translation>Bitte Kassettenanzahl eingeben:</translation>
+        <translation>Bitte Kassettenanzahl eingeben</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="53"/>

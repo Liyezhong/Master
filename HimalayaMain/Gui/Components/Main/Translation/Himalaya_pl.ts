@@ -1405,7 +1405,7 @@ since
 change</source>
         <translation>Kasety
 od
-zmiany</translation>
+wymiany</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="483"/>
@@ -1415,7 +1415,7 @@ since
 change</source>
         <translation>Cykle
 od
-zmiany</translation>
+wymiany</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="486"/>
@@ -1423,7 +1423,7 @@ zmiany</translation>
         <source>Expiry
 Date</source>
         <translation>Data
-przydatności</translation>
+ważności</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="505"/>

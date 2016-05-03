@@ -77,7 +77,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="31"/>
         <source>Build pressure failed</source>
-        <translation>形成压力失败</translation>
+        <translation>建压失败</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="32"/>
@@ -503,7 +503,7 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="78"/>
         <source>Please enter a valid Program Name</source>
-        <translation>请输入一个有效的程序名称。</translation>
+        <translation>请输入一个有效的程序名称</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="79"/>

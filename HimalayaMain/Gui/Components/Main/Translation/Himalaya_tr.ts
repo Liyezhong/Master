@@ -1404,7 +1404,7 @@ Tarihi</translation>
         <source>Cassettes
 since
 change</source>
-        <translation>Değişiklikten
+        <translation>Değişimden
 sonraki
 kaset sayısı</translation>
     </message>
@@ -1414,7 +1414,7 @@ kaset sayısı</translation>
         <source>Cycles
 since
 change</source>
-        <translation>Değişiklikten
+        <translation>Değişimden
 sonraki siklus
 sayısı</translation>
     </message>

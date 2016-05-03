@@ -77,7 +77,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="31"/>
         <source>Build pressure failed</source>
-        <translation>Vytvoření tlaku selhalo</translation>
+        <translation>Nezdar vytvoření tlaku</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="32"/>
@@ -1401,7 +1401,7 @@ výměny</translation>
         <source>Cassettes
 since
 change</source>
-        <translation>Kazety po
+        <translation>Kazety od
 výměně</translation>
     </message>
     <message>

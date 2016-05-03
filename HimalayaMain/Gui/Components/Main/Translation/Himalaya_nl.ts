@@ -1422,7 +1422,8 @@ wijziging</translation>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="499"/>
         <source>Expiry
 Date</source>
-        <translation>Vervaldatum</translation>
+        <translation>Verval
+datum</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="505"/>
@@ -3686,7 +3687,7 @@ Open het retortdeksel niet en koppel eventuele reagensflessen los.</translation>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="154"/>
         <source>System Setup</source>
-        <translation>Systeem Setup</translation>
+        <translation>System Setup</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="165"/>

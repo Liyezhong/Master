@@ -301,7 +301,7 @@
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="78"/>
         <source>Saving Settings ...</source>
-        <translation>설정 저장 중 …</translation>
+        <translation>설정 저장 중…</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="79"/>
@@ -2720,7 +2720,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="221"/>
         <source>Stations</source>
-        <translation>스테이션</translation>
+        <translation>스테이션들</translation>
     </message>
 </context>
 <context>
@@ -3022,7 +3022,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="200"/>
         <source>Groups</source>
-        <translation>그룹</translation>
+        <translation>그룹들</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="704"/>

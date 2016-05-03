@@ -634,7 +634,7 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="49"/>
         <source>Please Select reagent group</source>
-        <translation>Válassza ki a vegyszercsoportot.</translation>
+        <translation>Válassza ki a vegyszercsoportot</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="52"/>

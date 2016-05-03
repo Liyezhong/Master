@@ -965,7 +965,7 @@
 since
 change</source>
         <translation>Cassettes
- depuis le</translation>
+depuis le</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="380"/>
