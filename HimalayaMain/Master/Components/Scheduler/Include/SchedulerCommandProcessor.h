@@ -142,7 +142,10 @@ public:
      *
      */
     /****************************************************************************/
-    SchedulerCommandProcessorBase(){}
+    SchedulerCommandProcessorBase():m_TickTimer(this)
+    {
+
+    }
     virtual ~SchedulerCommandProcessorBase(){}
 	/****************************************************************************/
 	/*!
