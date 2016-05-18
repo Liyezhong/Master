@@ -2,28 +2,28 @@
 <strings version="1">
     <language name="fr">
         <string id="17039372" text1="L'instrument a rencontré l'erreur %1 pendant le scénario %2 ; et a essayé de procéder à l'action de récupération %3. Le résultat de l'action est %4." text2=""/>
-        <string id="16973834" text1="La création du journal des événements a été désactivée pour plusieurs raisons. Veuillez contacter votre centre de services le plus proche." text2=""/>
-        <string id="17235997" text1="Consultez le journal des utilisateurs pour plus d'info." text2=""/>
+        <string id="16973834" text1="La création du journal des événements a été désactivée pour plusieurs raisons. Veuillez contacter votre service après -vente." text2=""/>
+        <string id="17235997" text1="Consultez le journal des utilisateurs pour plus d'information." text2=""/>
         <string id="17235976" text1="Traductions pour la langue %1 introuvables." text2=""/>
         <string id="17235977" text1="Le mot de passe ne répond pas aux exigences. La longueur requise est de 4 à 16 caractères." text2=""/>
         <string id="17236006" text1="La configuration de l'Assistance à distance a échoué." text2=""/>
         <string id="19267585" text1="Le nom du réactif %1 est déjà utilisé. Veuillez utiliser un nom de réactif différent." text2=""/>
         <string id="19267599" text1="Échec de %1." text2=""/>
         <string id="17236009" text1="L'initialisation du module de données pour les réactifs a échoué." text2=""/>
-        <string id="17760274" text1="La sauvegarde des paramètres utilisateur a échoué. Veuillez contacter le centre de services." text2=""/>
+        <string id="17760274" text1="La sauvegarde des paramètres utilisateur a échoué. Veuillez contacter le service après-vente." text2=""/>
         <string id="17235998" text1="L'écriture du XML %1 a échoué pendant l'arrêt." text2=""/>
-        <string id="17236013" text1="La lecture de HistoriqueInstrument.xml a échoué." text2=""/>
+        <string id="17236013" text1="La lecture de Historique Instrument.xml a échoué." text2=""/>
         <string id="17236011" text1="La vérification de Station.xml a échoué." text2=""/>
-        <string id="17629209" text1="L'exportation a échoué. Le standard de chiffrement avancé n'a pas été initialisé." text2=""/>
+        <string id="17629209" text1="L'exportation a échoué. L'encodage standard avancé n'a pas été initialisé." text2=""/>
         <string id="17629201" text1="L'exportation a échoué. Impossible d'ouvrir le fichier en lecture." text2=""/>
         <string id="17629202" text1="L'exportation a échoué. Impossible d'ouvrir le fichier en écriture." text2=""/>
-        <string id="17629200" text1="L'exportation a échoué. Le chiffrage du paquet d'exportation a échoué." text2=""/>
+        <string id="17629200" text1="L'exportation a échoué. Impossible de coder le paquet d'exportation" text2=""/>
         <string id="17629185" text1="La création du répertoire a échoué" text2=""/>
         <string id="17629203" text1="Erreur de lecture du fichier" text2=""/>
         <string id="17629204" text1="Erreur d'écriture du fichier" text2=""/>
         <string id="17629194" text1="L'exportation a échoué." text2=""/>
         <string id="17629186" text1="La copie du fichier a échoué" text2=""/>
-        <string id="17629213" text1="L'exportation a échoué. La création de la clé secrète de chiffrement du paquet d'exportation a échoué." text2=""/>
+        <string id="17629213" text1="L'exportation a échoué. La création de la clé secrète pour coder le paquet d'exportation a échoué." text2=""/>
         <string id="17629208" text1="L'exportation a échoué. Le code d'authentification de message haché n'a pas été initialisé." text2=""/>
         <string id="17629205" text1="L'exportation a échoué. L'indice de chaîne hachée et les indices du périphérique USB correspondent." text2=""/>
         <string id="17629190" text1="L'exportation a échoué. L'initialisation du module de données a échoué." text2=""/>
@@ -40,18 +40,18 @@
         <string id="17629188" text1="L'exportation a échoué. Impossible de créer le fichier TempConfiguration.xml." text2=""/>
         <string id="17629189" text1="L'exportation a échoué. Impossible de lire le fichier TempConfiguration.xml." text2=""/>
         <string id="17629191" text1="L'exportation a échoué. La vérification du module de données a échoué." text2=""/>
-        <string id="17629215" text1="L'exportation a échoué. Commande de compression introuvable dans le système." text2=""/>
+        <string id="17629215" text1="L'exportation a échoué. Commande de compression des fichiers introuvable dans le système." text2=""/>
         <string id="17629214" text1="L'exportation a échoué. Impossible de compresser les fichiers." text2=""/>
-        <string id="17629216" text1="L'exportation a échoué. La compression met trop de temps à exécuter la requête." text2=""/>
+        <string id="17629216" text1="L'exportation a échoué. La compression des fichiers met trop de temps à s'exécuter ." text2=""/>
         <string id="16846862" text1="L'utilisateur a confirmé en appuyant sur le bouton : %1" text2=""/>
-        <string id="16846854" text1="Déboguer" text2=""/>
+        <string id="16846854" text1="éliminer les erreurs" text2=""/>
         <string id="16846851" text1="Erreur" text2=""/>
         <string id="16846850" text1="Erreur fatale" text2=""/>
         <string id="16846853" text1="Info" text2=""/>
         <string id="16846849" text1="Type indéfini" text2=""/>
         <string id="16846852" text1="Avertissement" text2=""/>
         <string id="16846861" text1="Résolu." text2=""/>
-        <string id="16843278" text1="Connexion utilisateur" text2=""/>
+        <string id="16843278" text1="mot de passe utilisateur" text2=""/>
         <string id="16843295" text1="Arrêt" text2=""/>
         <string id="16843294" text1="Marche" text2=""/>
         <string id="16843314" text1="État SGR de nettoyage changé en %1." text2=""/>
@@ -70,7 +70,7 @@
         <string id="16843286" text1="Format de température changé en %1" text2=""/>
         <string id="16843287" text1="Format de l'heure changé en %1" text2=""/>
         <string id="17039365" text1="L'initialisation de l'instrument a échoué" text2=""/>
-        <string id="19529731" text1="Le changement de mot de passe a réussi." text2=""/>
+        <string id="19529731" text1="Le changement de mot de passe a réussi avec succes." text2=""/>
         <string id="19529729" text1="La connexion a échoué. Mot de passe incorrect. Un mot de passe correct comprend 4 à 16 caractères." text2=""/>
         <string id="19529730" text1="Impossible de changer le mot de passe. Les mots de passe ne correspondent pas." text2=""/>
         <string id="17825800" text1="Le système recommence à fonctionner après une panne de courant." text2=""/>
@@ -78,11 +78,11 @@
         <string id="19005442" text1="La mise à jour du logiciel a échoué" text2=""/>
         <string id="19005443" text1="L'annulation de la mise à jour du logiciel a échoué" text2=""/>
         <string id="19005447" text1="La mise à jour du logiciel a réussi" text2=""/>
-        <string id="19005448" text1="Le logiciel actuel est plus récent que le paquet de mise à jour. La mise à jour du logiciel a été annulée sans que la mise à jour ait pu être exécutée." text2=""/>
+        <string id="19005448" text1="Le logiciel actuel est plus récent que la version de mise à jour. La mise à jour du logiciel a été annulée sans que la mise à jour ait pu être exécutée." text2=""/>
         <string id="17891331" text1="L'initialisation du système est terminée" text2=""/>
         <string id="17891335" text1="Arrêter l'instrument en éteignant l'interrupteur situé au dos." text2=""/>
-        <string id="17891336" text1="L'installation est terminée. Veuillez déconnecter la clé USB, puis éteindre et rallumer l'instrument." text2=""/>
-        <string id="17891337" text1="L'instrument procède à la mise à jour des données de retour en arrière. Veuillez ne pas interrompre ce processus." text2=""/>
+        <string id="17891336" text1="L'installation est terminée. Veuillez déconnecter la clé USB, puis rémarrer l'instrument." text2=""/>
+        <string id="17891337" text1="L'instrument procède à la mise à jour des données . Veuillez ne pas interrompre ce processus." text2=""/>
         <string id="17891338" text1="Exécution de la mise à jour du logiciel... Veuillez ne pas interrompre ce processus." text2=""/>
         <string id="17891339" text1="Erreur inattendue. Veuillez appeler le centre de services." text2=""/>
         <string id="16973837" text1="Annuler" text2=""/>
@@ -93,38 +93,38 @@
         <string id="16973838" text1="Oui" text2=""/>
         <string id="33619990" text1="Impossible de changer la date et l'heure de plus de 24 heures par rapport à la date/heure actuelles internes du système." text2=""/>
         <string id="33619991" text1="L'utilisateur a réglé la date et l'heure actuelles du système à %1" text2=""/>
-        <string id="33817094" text1="La vérification du groupe a échoué. Le module de date de base n'est pas initialisé." text2=""/>
+        <string id="33817094" text1="La vérification du groupe a échoué. Le module de donnée des dates n'est pas initialisé." text2=""/>
         <string id="33817095" text1="La vérification du groupe a échoué. Le type du module de données est invalide." text2=""/>
         <string id="33817097" text1="La vérification du groupe a échoué. Le module de données du programme n'est pas initialisé." text2=""/>
-        <string id="33817088" text1="Une ID réactif existe dans la liste des programmes, mais pas la liste de réactifs : %1." text2=""/>
-        <string id="33817092" text1="Une ID réactif existe dans les réglages utilisateur, mais pas la liste de réactifs : %1." text2=""/>
+        <string id="33817088" text1="Une ID réactif existe dans la liste des programmes, mais pas  dans la liste de réactifs : %1." text2=""/>
+        <string id="33817092" text1="Une ID réactif existe dans les réglages utilisateur, mais pas dans  la liste de réactifs : %1." text2=""/>
         <string id="33817096" text1="La vérification du groupe a échoué. Le module de données du réactif n'est pas initialisé." text2=""/>
         <string id="33817093" text1="Une ID station existe dans la liste des stations, mais pas dans la matrice des stations : %1." text2=""/>
         <string id="33817098" text1="La vérification du groupe a échoué. Le module de données de la station n'est pas initialisé." text2=""/>
         <string id="33817101" text1="La vérification du groupe a échoué. Le module de données des réglages utilisateur n'est pas initialisé." text2=""/>
-        <string id="33818114" text1="Programme %1 les réactifs pour le pas %2 et le pas %3 ne sont pas compatibles." text2=""/>
+        <string id="33818114" text1="Programme %1 les réactifs pour l' étape %2 et l'étape %3 ne sont pas compatibles." text2=""/>
         <string id="33817861" text1="Les paramètres du niveau du son sont en dehors de la plage." text2=""/>
         <string id="33817860" text1="Les paramètres du volume du son sont en dehors de la plage." text2=""/>
         <string id="33817859" text1="Les paramètres périodiques du son sont en dehors de la plage." text2=""/>
-        <string id="33816577" text1="%1 n'est pas une ID de programme valide." text2=""/>
+        <string id="33816577" text1="1 n'est pas une ID de programme valide." text2=""/>
         <string id="33816578" text1="Erreur de récupération des informations de service pour le dispositif %1" text2=""/>
-        <string id="33816608" text1="L'ID du pas %2 dans le programme %1 est invalide." text2=""/>
+        <string id="33816608" text1="L'ID de l'étape %2 dans le programme %1 est invalide." text2=""/>
         <string id="33817862" text1="La température de paraffine est en dehors de la plage." text2=""/>
         <string id="33816626" text1="L'ajout du programme a échoué." text2=""/>
-        <string id="33816597" text1="La liste de programmes contient plus de %1 programmes. Seuls %1 programmes sont autorisés." text2=""/>
-        <string id="33816624" text1="La suppression du programme a été supprimée à cause de l'ID de programme %1 invalide." text2=""/>
+        <string id="33816597" text1="La liste de programmes contient plus de %1 programme. Seus %1 programme est autorisé." text2=""/>
+        <string id="33816624" text1="La suppression du programme a échoué à cause de l'ID de programme %1 invalide." text2=""/>
         <string id="33816631" text1="La suppression du programme a échoué." text2=""/>
         <string id="33816623" text1="L'ID du programme %1 associée au programme %2 n'est pas unique." text2=""/>
-        <string id="33816620" text1="Le(s) pas du programme %1 contien(nen)t un format de durée invalide." text2=""/>
-        <string id="33818117" text1="La longueur du nom du programme dépasse la restriction définie pour le programme %1. Plage correcte %2  -  %3 caractères." text2=""/>
+        <string id="33816620" text1="Les étapes du programme %1 contiennent un format de durée invalide." text2=""/>
+        <string id="33818117" text1="La longueur du nom du programme dépasse la restriction définie pour le programme %1. Plage correcte %2  -  %3  de caractères." text2=""/>
         <string id="33818113" text1="Le nom du programme %1 est déjà utilisé. Veuillez sélectionner un nom de programme différent." text2=""/>
         <string id="33816596" text1="Indice incorrect dans le tableau de hachage du programme." text2=""/>
         <string id="33816592" text1="La vérification de Programmes.xml a échoué." text2=""/>
         <string id="33816584" text1="La lecture de Programmes.xml a échoué." text2=""/>
-        <string id="33816605" text1="Le nombre de pas du programme %1 dépasse la limite. Max. 14 pas autorisés." text2=""/>
-        <string id="33818116" text1="Le programme %1 doit avoir au moins %2 pas." text2=""/>
-        <string id="33818118" text1="La durée du pas %1 du programme %2 dépasse la limite. Plage correcte :  %3 - %4 ." text2=""/>
-        <string id="33818119" text1="La température du pas %1 du programme %2 dépasse les limites. Plage correcte : %3 - %4 (Celsius)." text2=""/>
+        <string id="33816605" text1="Le nombre d'étapesdu programme %1 dépasse la limite. Max. 14 étapes autorisées." text2=""/>
+        <string id="33818116" text1="Le programme %1 doit avoir au moins %2 étapes." text2=""/>
+        <string id="33818118" text1="La durée de l'étape %1 du programme %2 dépasse la limite. Plage correcte :  %3 - %4 ." text2=""/>
+        <string id="33818119" text1="La température de l'étape %1 du programme %2 dépasse les limites. Plage correcte : %3 - %4 (Celsius)." text2=""/>
         <string id="33816606" text1="Le vérificateur du programme a détecté une ID de réactif incorrecte %2 dans le programme %1." text2=""/>
         <string id="33816846" text1="La liste des réactifs n'a pas pu lire le réactif %1." text2=""/>
         <string id="33816845" text1="La liste des réactifs n'a pas pu écrire les réactifs %1." text2=""/>
@@ -138,17 +138,17 @@
         <string id="16842762" text1="Une erreur s'est produite lors de la lecture du fichier de configuration %1." text2=""/>
         <string id="16842772" text1="Le décalage temporel de %1 secondes est trop grand. La valeur max. autorisée est de %2 secondes." text2=""/>
         <string id="16846858" text1="Régler la date/l'heure sur %1." text2=""/>
-        <string id="33619971" text1="Instrument démarré (numéro de série%1 et type %2)" text2=""/>
+        <string id="33619971" text1="Instrument démarré (numéro de série1 et type %2)" text2=""/>
         <string id="33947653" text1="L'importation a échoué. Le format du fichier d'importation est incorrect" text2=""/>
         <string id="50331760" text1="L'importation a échoué. Le nom du dispositif ne correspond pas." text2=""/>
         <string id="50331763" text1="Aucun périphérique USB n'a été trouvé dans l'instrument pour exporter les fichiers." text2=""/>
         <string id="50331762" text1="Aucun périphérique USB n'a été trouvé dans l'instrument pour importer les fichiers." text2=""/>
-        <string id="33947665" text1="Exécution du fil ImportationExportation…" text2=""/>
+        <string id="33947665" text1="Exécution de l'action ImportationExportation…" text2=""/>
         <string id="33947664" text1="L'importation a échoué" text2=""/>
         <string id="33947657" text1="L'importation a échoué. L'initialisation du module de données a échoué" text2=""/>
         <string id="33947652" text1="L'importation a échoué. Il n'y a pas de fichier à importer." text2=""/>
         <string id="33947655" text1="L'importation a échoué. Les fichiers nécessaires ne sont pas disponibles dans le paquet d'importation." text2=""/>
-        <string id="33947659" text1="L'importation a échoué. Le retour en arrière a échoué." text2=""/>
+        <string id="33947659" text1="L'importation a échoué. L'annulation a échoué." text2=""/>
         <string id="33947662" text1="L'importation a réussi." text2=""/>
         <string id="33947656" text1="L'importation a échoué. Les versions logicielles ne correspondent pas aux fichiers d'importation" text2=""/>
         <string id="50331759" text1="L'importation a échoué. Le fichier du paquet est corrompu" text2=""/>
@@ -165,7 +165,7 @@
         <string id="50331772" text1="Programme ajouté par l'utilisateur %1." text2=""/>
         <string id="50331773" text1="Programme mis à jour par l'utilisateur %1." text2=""/>
         <string id="50331774" text1="Programme supprimé par l'utilisateur %1." text2=""/>
-        <string id="50331775" text1="Régler le mode utilisateur sur l'utilisateur standard." text2=""/>
+        <string id="50331775" text1="Régler le mode utilisateur sur Utilisateur standard." text2=""/>
         <string id="50331776" text1="Régler le mode utilisateur sur Administrateur." text2=""/>
         <string id="50331777" text1="Régler le mode utilisateur sur Service." text2=""/>
         <string id="50331718" text1="Veuillez appeler le centre de services afin qu'il effectue une opération de maintenance préventive de sorte que votre instrument puisse continuer à fonctionner correctement" text2=""/>
@@ -175,7 +175,7 @@
         <string id="50331767" text1="La pause dure plus de 10 minutes. Veuillez reprendre le programme dès que possible !" text2=""/>
         <string id="50331768" text1="Impossible de reprendre le programme. La pause dure plus de 15 minutes." text2=""/>
         <string id="50331651" text1="Biopsie" text2=""/>
-        <string id="50331652" text1="Prog. nettoy" text2=""/>
+        <string id="50331652" text1="Prog. Lavage" text2=""/>
         <string id="50331650" text1="Pendant la nuit" text2=""/>
         <string id="50331671" text1="Alcool de nettoyage" text2=""/>
         <string id="50331670" text1="Xylène de nettoyage" text2=""/>
@@ -196,7 +196,7 @@
         <string id="50331668" text1="Paraffine" text2=""/>
         <string id="50331669" text1="Eau de traitement" text2=""/>
         <string id="50331667" text1="Xylène" text2=""/>
-        <string id="67174416" text1="Instrument arrêté par l'instrument." text2=""/>
+        <string id="67174416" text1="Instrument arrêté par l'utilisateur." text2=""/>
         <string id="67174417" text1="Procéder à une action de récupération %1." text2=""/>
         <string id="67174418" text1="L'utilisateur a démarré le programme %1 avec l'heure de fin %2." text2=""/>
         <string id="67174419" text1="L'utilisateur a continué le programme %1." text2=""/>
@@ -206,23 +206,23 @@
         <string id="67174423" text1="L'utilisateur a modifié le point de fusion de %1 à %2." text2=""/>
         <string id="67174656" text1="Démarrer l'auto-test." text2=""/>
         <string id="67174733" text1="Auto-test réussi." text2=""/>
-        <string id="67174912" text1="Démarrer l'auto-test." text2=""/>
+        <string id="67174912" text1="Démarrer le pré-test." text2=""/>
         <string id="67174927" text1="Démarrer le contrôle du flacon." text2=""/>
         <string id="67174928" text1="Contrôle du flacon réussi." text2=""/>
-        <string id="67174929" text1="Auto-test réussi." text2=""/>
-        <string id="67175168" text1="Détecter un programme non fini %1 au pas %2." text2=""/>
-        <string id="67175186" text1="Le fichier système avec la liste de programmes non finis est manquant. Veuillez vérifier si le périphérique de stockage est endommagé." text2=""/>
+        <string id="67174929" text1="Pré-test réussi." text2=""/>
+        <string id="67175168" text1="Détecter un programme non fini %1 à l'étape %2." text2=""/>
+        <string id="67175186" text1="Le fichier système avec la liste des programmes non finis est manquant. Veuillez vérifier si le périphérique de stockage est endommagé." text2=""/>
         <string id="67175200" text1="Démarrer le programme %1" text2=""/>
         <string id="67175202" text1="A toujours besoin de %1 pour chauffer le four pour la fusion de la paraffine." text2=""/>
-        <string id="67175203" text1="Abandonner programme…" text2=""/>
-        <string id="67175204" text1="Programme abandonné." text2=""/>
+        <string id="67175203" text1="Abandonner programme" text2=""/>
+        <string id="67175204" text1="Programme en pause." text2=""/>
         <string id="67175207" text1="Purge en cours…" text2=""/>
         <string id="67175208" text1="En attente du remplissage de paraffine." text2=""/>
         <string id="67175209" text1="Chauffage du capteur de niveau pour le remplissage" text2=""/>
         <string id="67175210" text1="Remplissage démarré" text2=""/>
         <string id="67175213" text1="Traitement démarré" text2=""/>
-        <string id="67175215" text1="Pas terminé %1" text2=""/>
-        <string id="67175216" text1="Pas démarré %1(Station %2, %3, %4, %5, %6)." text2=""/>
+        <string id="67175215" text1="étape %1 terminée " text2=""/>
+        <string id="67175216" text1="Etape %1 démarrée (Station %2, %3, %4, %5, %6)." text2=""/>
         <string id="67175217" text1="Programme démarré %1" text2=""/>
         <string id="67175218" text1="Démarrer le processus de séchage." text2=""/>
         <string id="67175219" text1="Finir le processus de séchage." text2=""/>
@@ -236,27 +236,27 @@
         <string id="67176025" text1="La vanne rotative ne fonctionne pas normalement. Veuillez vérifier la vanne rotative." text2=""/>
         <string id="67176026" text1="L'instrument a rencontré quelques problèmes techniques et ne peut pas finir le protocole." text2=""/>
         <string id="67176194" text1="ID erreur %1 ! Échec joint dans le scénario de séchage." text2=""/>
-        <string id="67176196" text1="ID erreur %1! Couvercle du four à bain de paraffine ouvert, voulez-vous fusionner la paraffine fraîche maintenant ?" text2=""/>
+        <string id="67176196" text1="ID erreur %1! Couvercle du four du bain de paraffine ouvert, voulez-vous fusionner la paraffine fraîche maintenant ?" text2=""/>
         <string id="67176198" text1="Veuillez nettoyer le joint et la partie supérieure de la chambre conformément aux instructions du mode d'emploi." text2=""/>
         <string id="67176199" text1="Veuillez contrôler le(s) flacon(s) conformément aux instructions du mode d'emploi." text2=""/>
         <string id="67176200" text1="La purge de la chambre a échoué ! Veuillez nettoyer le joint et la partie supérieure de la chambre conformément aux instructions du mode d'emploi." text2=""/>
-        <string id="67176201" text1="ID erreur %1 ! Veuillez appeler le centre de services." text2=""/>
-        <string id="67176202" text1="ID erreur %1 ! Échec du système d'évacuation ! Contactez le centre de services !" text2=""/>
-        <string id="67176203" text1="ID erreur %1 ! Veuillez appeler le centre de services." text2=""/>
-        <string id="67176204" text1="ID erreur %1 ! Veuillez retirer les échantillons et les protéger. Veuillez appeler le centre de services !" text2=""/>
+        <string id="67176201" text1="ID erreur %1 ! Veuillez appeler le service après ventes." text2=""/>
+        <string id="67176202" text1="ID erreur %1 ! Échec du système d'évacuation ! Contactez le service après vente !" text2=""/>
+        <string id="67176203" text1="ID erreur %1 ! Veuillez appeler le service après vente." text2=""/>
+        <string id="67176204" text1="ID erreur %1 ! Veuillez retirer les échantillons et les protéger. Veuillez appeler le service après vente ." text2=""/>
         <string id="67176207" text1="Système d'alarme local non connecté ! Veuillez connecter le dispositif avec le système d'alarme local" text2=""/>
         <string id="67176208" text1="Veuillez fermer le couvercle du four à paraffine !" text2=""/>
         <string id="67176209" text1="Veuillez fermer le couvercle de la chambre et confirmer en appuyant sur le bouton Réessayer." text2=""/>
         <string id="67176210" text1="L'essai de pression a échoué ! Veuillez nettoyer le joint et la partie supérieure de la chambre conformément aux instructions du mode d'emploi." text2=""/>
         <string id="67176211" text1="Système d'alarme à distance non connecté ! Veuillez connecter le dispositif avec le système d'alarme à distance." text2=""/>
-        <string id="67176216" text1="Le processus de remise en marche après une panne de courant n'a pas réussi à procéder au réchauffage. Veuillez appeler le centre de services." text2=""/>
-        <string id="67176217" text1="Le processus de remise en marche après une panne de courant a échoué. Veuillez appeler le centre de services." text2=""/>
-        <string id="67176218" text1="Erreurs système. Veuillez appeler le centre de services." text2=""/>
-        <string id="67176219" text1="La protection du tissu avec un réactif sûr a échoué. Veuillez appeler le centre de services." text2=""/>
+        <string id="67176216" text1="Le processus de remise en marche après une panne de courant n'a pas réussi à procéder au réchauffage. Veuillez appeler le service après vente." text2=""/>
+        <string id="67176217" text1="Le processus de remise en marche après une panne de courant a échoué. Veuillez appeler le service après vente." text2=""/>
+        <string id="67176218" text1="Erreurs système. Veuillez appeler le service après vente." text2=""/>
+        <string id="67176219" text1="La protection des échantillons avec un réactif sûr a échoué. Veuillez appeler le service après vente." text2=""/>
         <string id="67176220" text1="Veuillez nettoyer le capteur de niveau." text2=""/>
         <string id="67176223" text1="ID erreur %1 ! L'abandon a échoué." text2=""/>
         <string id="67176224" text1="Panne de courant sur le programme de nettoyage. Le programme a redémarré automatiquement." text2=""/>
-        <string id="67176225" text1="ID erreur %1 ! La vanne rotative ne fonctionne pas normalement. Veuillez appeler le centre de services !" text2=""/>
+        <string id="67176225" text1="ID erreur %1 ! La vanne rotative ne fonctionne pas normalement. Veuillez appeler le service après vente," text2=""/>
         <string id="67176226" text1="ID erreur %1 ! L'instrument a rencontré quelques problèmes techniques et ne peut pas terminer le protocole." text2=""/>
         <string id="19202061" text1="L'utilisateur a réinitialisé la station %1." text2=""/>
         <string id="19202062" text1="L'utilisateur a modifié le réactif dans la station %1 à %2." text2=""/>
@@ -274,7 +274,7 @@
         <string id="67175230" text1="Parce que l'utilisateur a mis le programme en pause, l'heure de fin du programme sera actualisée à %1." text2=""/>
         <string id="67175188" text1="Purge pendant 10 secondes. Ne pas ouvrir le couvercle de la chambre." text2=""/>
         <string id="67175187" text1="Verrouiller la chambre, puis appuyer sur le bouton OK." text2=""/>
-        <string id="67176214" text1="Le programme a été interrompu par une panne de courant. " text2=""/>
+        <string id="67176214" text1="Le programme a été interrompu par une panne de courant. Veuillez abandonner le programme." text2=""/>
         <string id="50331778" text1="L'espace de stockage de l'instrument est plein. Veuillez appeler le centre de services." text2=""/>
         <string id="67175225" text1="Démarrer le programme %1. L'administrateur a confirmé en appuyant sur le bouton &quot;Oui&quot; pour démarrer le programme avec le réactif expiré :%2, %3." text2=""/>
         <string id="67176213" text1="Veuillez contrôler l'état de la paraffine dans le bain de paraffine : si le niveau de paraffine est inférieur au niveau minimal, veuillez ajouter de la paraffine liquide dans le bain de paraffine dans un délai de 15 minutes." text2=""/>
@@ -725,7 +725,7 @@
         <string id="67176004" text1="Heated reagent tube: The tube cannot heat to target temperature in 15min. Please perform self-test and confirm the tube status." text2=""/>
         <string id="67176005" text1="Voltage monitoring: DC 5V error." text2=""/>
         <string id="67176006" text1="Voltage monitoring: DC 24V error." text2=""/>
-        <string id="67176007" text1="Air System: Release of pressure has failed during processing. Residual pressure is existent inside retort and/or air module." text2=""/>
+        <string id="67176007" text1="Air System: Releasing of pressure has failed during processing. Residual pressure is existent inside retort and/or air module." text2=""/>
         <string id="67176008" text1="Retort heating: Retort heating can not get to target temperature in 15 minutes." text2=""/>
         <string id="67176009" text1="Paraffin Oven: The user opened the paraffin oven cover during processing. This could potentially have caused the paraffin to solidify." text2=""/>
         <string id="67176010" text1="Paraffin Oven: The user opened the paraffin oven cover before or after processing and potentially refilled paraffin." text2=""/>

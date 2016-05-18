@@ -725,7 +725,7 @@
         <string id="67176004" text1="Heated reagent tube: The tube cannot heat to target temperature in 15min. Please perform self-test and confirm the tube status." text2=""/>
         <string id="67176005" text1="Voltage monitoring: DC 5V error." text2=""/>
         <string id="67176006" text1="Voltage monitoring: DC 24V error." text2=""/>
-        <string id="67176007" text1="Air System: Release of pressure has failed during processing. Residual pressure is existent inside retort and/or air module." text2=""/>
+        <string id="67176007" text1="Air System: Releasing of pressure has failed during processing. Residual pressure is existent inside retort and/or air module." text2=""/>
         <string id="67176008" text1="Retort heating: Retort heating can not get to target temperature in 15 minutes." text2=""/>
         <string id="67176009" text1="Paraffin Oven: The user opened the paraffin oven cover during processing. This could potentially have caused the paraffin to solidify." text2=""/>
         <string id="67176010" text1="Paraffin Oven: The user opened the paraffin oven cover before or after processing and potentially refilled paraffin." text2=""/>
