@@ -276,7 +276,7 @@
         <string id="67175187" text1="Zárja be a vízelvonó hengert, majd kattintson az OK gombra." text2=""/>
         <string id="67176214" text1="A program áramellátási probléma miatt megszakadt. " text2=""/>
         <string id="50331778" text1="A berendezés tárolója megtelt. Hívja a szervizt." text2=""/>
-        <string id="67175225" text1="Indítsa el a(z) %1 programot. A felettes által elfogadva az &quot;Igen&quot gomb megnyomásával; a program indítása lejárt vegyszerrel: %2, %3." text2=""/>
+        <string id="67175225" text1="Indítsa el a(z) %1 programot. A felettes által elfogadva az Igen gomb megnyomásával; a program indítása lejárt vegyszerrel: %2, %3." text2=""/>
         <string id="67176213" text1="Ellenőrizze a paraffin szintjét a paraffinfürdőben. Ha a paraffin szintje alacsonyabb a minimális értéknél, 15 percen belül adagoljon folyékony paraffint a paraffinfürdőbe." text2=""/>
         <string id="67176212" text1="Ellenőrizze a vegyszeres palackok állapotát. Ha a vegyszer szintje alacsonyabb a minimális értéknél, 15 percen belül adagoljon vegyszert a palackba." text2=""/>
         <string id="67176192" text1="Hiba azonosítója: %1! Az ürítési idő hosszabb, mint 2 perc." text2=""/>
