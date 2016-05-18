@@ -1034,7 +1034,21 @@ void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t
     endTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(-diff);
     if (offset > 1000*60) //If offset is less than one minute, we will NOT notify end user
     {
-        RaiseEvent(EVENT_SCHEDULER_PAUSE_ENDTIME_UPDATE, QStringList()<<endTime.toString("yyyy-MM-dd hh:mm"));
+        switch(mp_DataManager->GetUserSettings()->GetDateFormat())
+        {
+        case Global::DATE_INTERNATIONAL:
+            RaiseEvent(EVENT_SCHEDULER_PAUSE_ENDTIME_UPDATE, QStringList()<<endTime.toString("dd.MM.yyyy hh:mm"));
+            break;
+        case Global::DATE_ISO:
+            RaiseEvent(EVENT_SCHEDULER_PAUSE_ENDTIME_UPDATE, QStringList()<<endTime.toString("yyyy-MM-dd hh:mm"));
+            break;
+        case Global::DATE_US:
+            RaiseEvent(EVENT_SCHEDULER_PAUSE_ENDTIME_UPDATE, QStringList()<<endTime.toString("MM/dd/yyyy hh:mm"));
+            break;
+        default:
+            RaiseEvent(EVENT_SCHEDULER_PAUSE_ENDTIME_UPDATE, QStringList()<<endTime.toString("yyyy-MM-dd hh:mm"));
+            break;
+        }
     }
 }
 
