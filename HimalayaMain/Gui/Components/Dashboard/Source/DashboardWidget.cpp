@@ -1128,9 +1128,17 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram(QString& reagentExpiredFlag
 
                  if (diffSetting > 2.0)
                  {
+                     QString strTemp;
+                     if (userSetting->GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT) {
+                        strTemp = m_strDiffTemp.arg("36.5\260F");
+                     }
+                     else {
+                        strTemp = m_strDiffTemp.arg("2\260C");
+                     }
+
                     messageDlg.SetIcon(QMessageBox::Warning);
                     messageDlg.SetTitle(CommonString::strInforMsg);
-                    messageDlg.SetText(m_strDiffTemp);
+                    messageDlg.SetText(strTemp);
                     messageDlg.SetButtonText(1, CommonString::strOK);
                     messageDlg.HideButtons();
                     if (messageDlg.exec())
@@ -1462,10 +1470,12 @@ Wear respirator properly to prevent the potential hazard of reagent vapor. Don't
     m_strAddCassete = QApplication::translate("Dashboard::CDashboardWidget", "Did you add new cassettes?", 0, QApplication::UnicodeUTF8);
     m_PowerFailureBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Because the wait time is more than five minutes, the instrument will be re-heated and filled with safe reagents.", 0, QApplication::UnicodeUTF8);
     m_strCoolingDown = QApplication::translate("Dashboard::CDashboardWidget", "Retort temperature is too high. Please allow the retort to cool down before inserting specimens and starting the next program.", 0, QApplication::UnicodeUTF8);
-    m_strDiffTemp = QApplication::translate("Dashboard::CDashboardWidget", "Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).\
+
+    m_strDiffTemp = QApplication::translate("Dashboard::CDashboardWidget", "Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation %1).\
 Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.\
 Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!\
 Please confirm modifying Paraffin temperature.", 0, QApplication::UnicodeUTF8);
+
     m_strReadyStartProgram = QApplication::translate("Dashboard::CDashboardWidget", "Ready to start a new program.", 0, QApplication::UnicodeUTF8);
     m_checkMachinePrompt = QApplication::translate("Dashboard::CDashboardWidget", "Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter.\
  Reinstall the retort filter after cleaning.\n Load the specimens into the retort and make sure that the retort is locked.\n Please visually confirm all paraffin are completely melted.", 0, QApplication::UnicodeUTF8);

@@ -383,9 +383,16 @@ void CModifyProgramStepDlg::OnOk()
 
          if (diffSetting > diffTemp)
          {
+             QString strTemp;
+             if (p_Settings->GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT) {
+                strTemp = m_strDiffTemp.arg("36.5\260F");
+             }
+             else {
+                strTemp = m_strDiffTemp.arg("2\260C");
+             }
             mp_MessageBox->SetIcon(QMessageBox::Warning);
             mp_MessageBox->SetTitle(m_strInforMsg);
-            mp_MessageBox->SetText(m_strDiffTemp);
+            mp_MessageBox->SetText(strTemp);
             mp_MessageBox->SetButtonText(1, m_strYes);
             mp_MessageBox->SetButtonText(3, m_strNo);
             mp_MessageBox->HideCenterButton();
@@ -654,7 +661,7 @@ void CModifyProgramStepDlg::RetranslateUI()
                                       "OK", 0, QApplication::UnicodeUTF8);
 
     m_strDiffTemp = QApplication::translate("Programs::CModifyProgramStepDlg",
-                                      "The set temperature of paraffin baths differs from the temperature of the program by more than 2℃. Higher paraffin temperature may damage the tissue. Would you like to continue?",
+                                      "The set temperature of paraffin baths differs from the temperature of the program by more than %1. Higher paraffin temperature may damage the tissue. Would you like to continue?",
                                             0, QApplication::UnicodeUTF8);
     m_strInforMsg = QApplication::translate("Programs::CModifyProgramStepDlg", "Information Message", 0, QApplication::UnicodeUTF8);
     m_strYes = QApplication::translate("Programs::CModifyProgramStepDlg", "Yes", 0, QApplication::UnicodeUTF8);

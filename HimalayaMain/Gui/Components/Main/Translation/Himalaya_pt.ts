@@ -230,13 +230,13 @@
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="171"/>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="366"/>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="397"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="388"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="419"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="364"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="386"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
@@ -1125,136 +1125,137 @@ troca</translation>
         <translation>Erro de comunicação</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1113"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1117"/>
         <source>The changes can not be saved.</source>
         <translation>As mudanças não foram salvas.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1118"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1122"/>
         <source>Startup</source>
         <translation>Executar</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1119"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1123"/>
         <source>Initializing device communication ...</source>
         <translation>Inicializando a comunicação do dispositivo...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1124"/>
         <source>Disconnect</source>
         <translation>Desconectar</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1121"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1125"/>
         <source>Reinitializing device communication ...</source>
         <translation>Reinicializando comunicação do dispositivo...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1122"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1126"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1123"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2074"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1127"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2072"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2132"/>
         <source>Information</source>
         <translation>Informações</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1125"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1129"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1126"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2076"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1130"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2074"/>
         <location filename="../../Core/Source/DataConnector.cpp" line="2166"/>
         <location filename="../../Core/Source/DataConnector.cpp" line="2189"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1127"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1131"/>
         <source>Operation ongoing</source>
         <translation>Operação em andamento</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1128"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1132"/>
         <source>Saving Settings ...</source>
         <translation>Salvar configurações...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1129"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1133"/>
         <source>User Export</source>
         <translation>Exportar usuário</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1130"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1134"/>
         <source>Exporting user data ...</source>
         <translation>Exportando dados do usuário...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1132"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1136"/>
         <source>Service Export</source>
         <translation>Exportar manutenção</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1133"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1137"/>
         <source>Exporting service data ...</source>
         <translation>Exportando dados de manutenção...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1135"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1139"/>
         <source>Import</source>
         <translation>Importar</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1136"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1140"/>
         <source>Importing data ...</source>
         <translation>Importando dados...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1138"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1142"/>
         <source>Log Files</source>
         <translation>Arquivos de registro</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1139"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1143"/>
         <source>Getting the daily run log file ...</source>
         <translation>Obtendo o arquivo de registro de operação diário...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1332"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1336"/>
         <source>Software Update</source>
         <translation>Atualização do software</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1334"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1338"/>
         <source>Updating the software ...</source>
         <translation>Atualizando o software...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2081"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2079"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>Novo software disponível. Clique em &apos;Atualização SW remota&apos; para iniciar a atualização.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2087"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2085"/>
         <source>New software is not available.</source>
         <translation>Não há um novo software disponível.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2093"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2091"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
         <translation>Falha no download do novo software a partir do RCServer. Entre em contato com a assistência técnica.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2098"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2096"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>O download do novo software a partir do servidor remoto está concluído.  Pressione &quot;OK&quot; para iniciar a atualização do software.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2105"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2103"/>
         <source>Software update failed.</source>
         <translation>Falha na atualização do software.</translation>
     </message>
@@ -1292,22 +1293,22 @@ troca</translation>
 <context>
     <name>Core::CGlobalHelper</name>
     <message>
-        <location filename="../../Core/Source/GlobalHelper.cpp" line="226"/>
+        <location filename="../../Core/Source/GlobalHelper.cpp" line="227"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/GlobalHelper.cpp" line="227"/>
+        <location filename="../../Core/Source/GlobalHelper.cpp" line="228"/>
         <source>Do you want to make your change?</source>
         <translation>Deseja aplicar as mudanças? </translation>
     </message>
     <message>
-        <location filename="../../Core/Source/GlobalHelper.cpp" line="228"/>
+        <location filename="../../Core/Source/GlobalHelper.cpp" line="229"/>
         <source>Yes</source>
         <translation>Sim</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/GlobalHelper.cpp" line="229"/>
+        <location filename="../../Core/Source/GlobalHelper.cpp" line="230"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -1390,17 +1391,17 @@ troca</translation>
 <context>
     <name>Core::CReagentStatusModel</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="469"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="470"/>
         <source>Station</source>
         <translation>Estação</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="472"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="473"/>
         <source>Reagent</source>
         <translation>Reagente</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="480"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="481"/>
         <source>Cassettes
 since
 change</source>
@@ -1409,8 +1410,8 @@ desde a
 troca</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="483"/>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="496"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="484"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="497"/>
         <source>Cycles
 since
 change</source>
@@ -1419,21 +1420,21 @@ desde a
 mudança</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="486"/>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="499"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="487"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="500"/>
         <source>Expiry
 Date</source>
         <translation>Data de
 validade</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="505"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="506"/>
         <source>Exchange
 Date</source>
         <translation>Data de troca</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="507"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="508"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
@@ -1519,72 +1520,72 @@ Date</source>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="159"/>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="271"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="293"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="256"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="278"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="257"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="279"/>
         <source>Day</source>
         <translation>Dia</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="258"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="280"/>
         <source>Month</source>
         <translation>Mês</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="259"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="281"/>
         <source>Year</source>
         <translation>Ano</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="262"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="284"/>
         <source>Time</source>
         <translation>Hora</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="263"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="285"/>
         <source>Hour</source>
         <translation>Hora</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="264"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="286"/>
         <source>Minute</source>
         <translation>Minuto</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="266"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="288"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="267"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="289"/>
         <source>Program End Date/Time cannot be earlier than the ASAP End Date/Time.</source>
         <translation>Data/hora de término do programa não pode ser menor que data/hora de término do ASAP.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="268"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="290"/>
         <source>Program End Date/Time cannot be later than one week.</source>
         <translation>Data/hora de término do programa não pode ser maior que uma semana.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="269"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="291"/>
         <source>Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a fixation reagent.</source>
         <translation>Data/hora de término do programa não pode ser maior que a data/hora de término do ASAP porque a primeira etapa do programa não é um reagente de fixação.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="270"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="292"/>
         <source>Run</source>
         <translation>Iniciar</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="272"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="294"/>
         <source>End Time of program</source>
         <translation>Hora do fim do programa</translation>
     </message>
@@ -1625,160 +1626,160 @@ Date</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1434"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1443"/>
         <source>No safe reagent for the Program step &quot;%1&quot; of &quot;%2&quot;. Would you like to continue?</source>
         <translation>Não há reagente seguro para a etapa do programa &quot;%1&quot; de &quot;%2&quot;. Deseja continuar?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1435"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1444"/>
         <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station.  A station can be used only once in the program. Please assign a separate station for the reagent of this step.</source>
         <translation>Não é possível encontrar a estação de reagente correspondente à etapa do programa &quot;%1&quot; de &quot;%2&quot;. Uma estação só pode ser utilizada uma vez no programa. Escolha uma estação separada para o reagente nesta etapa.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1436"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1445"/>
         <source>You cannot start the program, because Station &quot;%1&quot; is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;.</source>
         <translation>Não é possível iniciar o programa, porque a estação&quot;%1&quot; está marcada como vazia na etapa &quot;%2&quot; de &quot;%3&quot;do programa.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1437"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1446"/>
         <source>Program cannot start because the paraffin is not melted completely and the first program step is not a fixation reagent.</source>
         <translation>O programa não pode ser iniciado porque a parafina não está completamente derretida e a primeira etapa do programa não é um reagente de fixação.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1438"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1447"/>
         <source>You can start program in %1 hours %2 minutes %3 seconds.</source>
         <translation>Você pode iniciar o programa em %1 horas %2 minutos %3 segundos.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1439"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1448"/>
         <source>Program will be delayed briefly in the first step as the paraffin is not melted completely. Would you like to continue?</source>
         <translation>O programa será atrasado brevemente porque a parafina não está completamente derretida. Deseja continuar?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1440"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1449"/>
         <source>Enter number of Cassettes:</source>
         <translation>Entre com o número de cassetes:</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1441"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1450"/>
         <source>Program &quot;%1&quot; has completed! Would you like to drain the retort?</source>
         <translation>Programa &quot;%1&quot; completo! Gostaria de drenar a retorta?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1443"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1452"/>
         <source>Tissue safety process has completed with warning. Would you like to drain the retort?</source>
         <translation>Processo de segurança do tecido concluído com avisos. Gostaria de drenar a retorta?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1444"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1453"/>
         <source>The oven cover is open. Please close it then click the OK button.</source>
         <translation>Tampa do forno aberta. Feche a tampa e clique em OK.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1447"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1456"/>
         <source>Pausing...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>Em Pausa…
 Não abra a tampa da retorta nem desligue os reservatórios de reagents.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1450"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1459"/>
         <source>The retort is contaminated. Please start the cleaning program.</source>
         <translation>A retorta está contaminada. Inicie o prog. limpeza.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1463"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1472"/>
         <source>Retort temperature is too high. Please allow the retort to cool down before inserting specimens and starting the next program.</source>
         <translation>A temperatura da retorta está alta demais. Aguarde o resfriamento da retorta antes de inserir novas amostras e iniciar o novo programa.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1468"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1474"/>
+        <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation %1).Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!Please confirm modifying Paraffin temperature.</source>
+        <translation>Não é possível iniciar o programa escolhido porque a temperatura da parafina é diferente da temperatura definida no banho de parafina (diferença de %1). O programa pode ser iniciado imediatamente se a temperatura da parafina nesse programa corresponder à temperatura do banho de parafina. Não é possível iniciar por até 15 horas se a temperatura do banho de parafina for a mesma do programa de parafina! Confirme a modificação da temperatura da parafina.</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1479"/>
         <source>Ready to start a new program.</source>
         <translation>Pronto para iniciar um novo programa.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1448"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1457"/>
         <source>Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.</source>
         <translation>O aparelho está em aquecimento. Pode ser necessário aguardar até 30 minutos para que o aparelho fique pronto para uso.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1442"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1451"/>
         <source>The specimens have been safeguarded by filling the retort with a safe reagent. Would you like to drain the safe reagent?</source>
         <translation>A amostra foi protegida ao abastecer a retorta com um reagente seguro. Gostaria de drenar o reagente seguro?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1445"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1454"/>
         <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential hazard of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
         <translation>A tampa da retorta foi aberta. Feche a tampa e clique em OK.Use equipamento de proteção adequado. Não toque no sensor de nível. Ele está quente!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1449"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1458"/>
         <source>Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press &quot;Ok&quot; button.</source>
         <translation>Remova a amostra e trave a retorta.
 Confirme se a amostra foi removida e a retorta está vazia, depois pressione o botão &quot;Ok&quot;.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1451"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1460"/>
         <source>Program &quot;%1&quot; is aborted!</source>
         <translation>Programa &quot;%1&quot; cancelado!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1452"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1461"/>
         <source>Program &quot;%1&quot; has completed!</source>
         <translation>O programa &quot;%1&quot; foi concluído!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1453"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1462"/>
         <source>Program &quot;%1&quot; has completed successfully!</source>
         <translation>Programa &quot;%1&quot; finalizado com sucesso!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1454"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1463"/>
         <source>The safe reagent has been drained completely. The program &quot;%1&quot; was aborted!</source>
         <translation>O reagente seguro foi totalmente drenado. O programa &quot;%1&quot; foi abortado!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1456"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1465"/>
         <source>Please close and lock the retort, then try again!</source>
         <translation>Feche e trave a retorta e tente novamente!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1457"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1466"/>
         <source>Leica Program can&apos;t be operated with RMS OFF.</source>
         <translation>Não é possível operar o programa Leica com RMS desligado.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1458"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1467"/>
         <source>Reagents needed for this program are expired. Please replace the expired ones with fresh reagents! Program will not start.</source>
         <translation>Os reagentes necessários para este programa estão vencidos. Substitua os vencidos por novos reagentes! O programa não iniciará.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1459"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1468"/>
         <source>Do you really want to start the Program with Expired Reagents?</source>
         <translation>Deseja realmente iniciar o programa com reagentes vencidos?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1460"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1469"/>
         <source>Please enter the number of new-added cassettes:</source>
         <translation>Entre com o número dos cassetes recém-adicionados:</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1461"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1470"/>
         <source>Did you add new cassettes?</source>
         <translation>Você adicionou novos cassetes?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1462"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1471"/>
         <source>Because the wait time is more than five minutes, the instrument will be re-heated and filled with safe reagents.</source>
         <translation>Como o tempo de espera é superior a cinco minutos, o aparelho será reaquecido e preenchido com reagentes seguros.</translation>
     </message>
-    <message utf8="true">
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1464"/>
-        <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!Please confirm modifying Paraffin temperature.</source>
-        <translation>Não é possível iniciar o programa escolhido porque a temperatura da parafina é diferente da temperatura definida no banho de parafina (diferença de 2 °C). O programa pode ser iniciado imediatamente se a temperatura da parafina nesse programa corresponder à temperatura do banho de parafina. Não é possível iniciar por até 15 horas se a temperatura do banho de parafina for a mesma do programa de parafina! Confirme a modificação da temperatura da parafina.</translation>
-    </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1469"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1480"/>
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning.
  Load the specimens into the retort and make sure that the retort is locked.
  Please visually confirm all paraffin are completely melted.</source>
@@ -1787,7 +1788,7 @@ Coloque as amostras na retorta, feche e certifique-se de que a mesma está trava
 Verifique se a parafina está totalmente derretida.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1471"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1482"/>
         <source>Resuming...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <translation>Reiniciando...
@@ -2087,16 +2088,19 @@ Não abra a tampa da retorta e desconecte os frascos de reagente.</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="212"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="254"/>
         <source>Information</source>
         <translation>Informações</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="215"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="257"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="218"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="260"/>
         <source>The selected date is invalid. Please select another one.</source>
         <translation>A data escolhida é inválida. Selecione outra data.</translation>
     </message>
@@ -2549,43 +2553,43 @@ Não abra a tampa da retorta e desconecte os frascos de reagente.</translation>
         <translation>Salvar</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="644"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="651"/>
         <source>Time</source>
         <translation>Hora</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="646"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="653"/>
         <source>Hour</source>
         <translation>Hora</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="648"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="655"/>
         <source>Minute</source>
         <translation>Minuto</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="651"/>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="659"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="658"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="666"/>
         <source>Information Message</source>
         <translation>Mensagem de informações</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="653"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="660"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
-    <message utf8="true">
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="656"/>
-        <source>The set temperature of paraffin baths differs from the temperature of the program by more than 2℃. Higher paraffin temperature may damage the tissue. Would you like to continue?</source>
-        <translation>A temperatura escolhida para o banho de parafina diverge da temperatura do programa em mais de 2 ℃. Temperatura mais alta da parafina pode danificar o tecido. Deseja continuar?</translation>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="663"/>
+        <source>The set temperature of paraffin baths differs from the temperature of the program by more than %1. Higher paraffin temperature may damage the tissue. Would you like to continue?</source>
+        <translation>A temperatura escolhida para o banho de parafina diverge da temperatura do programa em mais de %1. Temperatura mais alta da parafina pode danificar o tecido. Deseja continuar?</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="660"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="667"/>
         <source>Yes</source>
         <translation>Sim</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="661"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="668"/>
         <source>No</source>
         <translation>Não</translation>
     </message>
@@ -2726,27 +2730,27 @@ Não abra a tampa da retorta e desconecte os frascos de reagente.</translation>
 <context>
     <name>Reagent::CReagentStatusWidget</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="449"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="450"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="452"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="453"/>
         <source>Would you like to set Station %1 as empty?</source>
         <translation>Gostaria de marcar a estação %1 como vazia?</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="455"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="456"/>
         <source>Would you like to reset data for Station %1?</source>
         <translation>Gostaria de zerar os dados da estação %1?</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="458"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="459"/>
         <source>Would you like to set Station %1 as full?</source>
         <translation>Gostaria de marcar a estação %1 como cheia?</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="461"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="462"/>
         <source>Please check that the retort is empty and clean prior starting bottle check and then press &quot;yes&quot;. Bottle check function will require approximately 7 minutes.</source>
         <translation>Confira se a retorta está vazia e limpa antes de iniciar a verificação do frasco e pressione &quot;sim&quot;. A função de verificação de frasco demora aproximadamente 7 minutos.</translation>
     </message>
@@ -3101,17 +3105,17 @@ Não abra a tampa da retorta e desconecte os frascos de reagente.</translation>
         <translation>Reinicializar dados</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="464"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="465"/>
         <source>Confirmation Message</source>
         <translation>Mensagem de confirmação</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="465"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="466"/>
         <source>Yes</source>
         <translation>Sim</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="466"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="467"/>
         <source>No</source>
         <translation>Não</translation>
     </message>
@@ -3124,22 +3128,22 @@ Não abra a tampa da retorta e desconecte os frascos de reagente.</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="102"/>
+        <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="105"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="116"/>
+        <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="119"/>
         <source> Groups</source>
         <translation>Grupos</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="130"/>
+        <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="133"/>
         <source> Stations</source>
         <translation>Estações</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="143"/>
+        <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="146"/>
         <source> RMS</source>
         <translation>RMS</translation>
     </message>
@@ -3834,12 +3838,12 @@ Não abra a tampa da retorta e desconecte os frascos de reagente.</translation>
         <translation>Salvar</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="320"/>
+        <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="322"/>
         <source>Maintenance</source>
         <translation>Manutenção</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="321"/>
+        <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="323"/>
         <source>If the instrument is shut down now, you may have to wait %1 hours to ensure the paraffin is melted before running the next program. Do you really want to shut down your instrument?</source>
         <translation>Se o aparelho for desligado agora, poderá ser necessário aguardar %1 hora para assegurar que a parafina derreteu antes de ativar o próximo programa. Deseja realmente desligar o aparelho?</translation>
     </message>

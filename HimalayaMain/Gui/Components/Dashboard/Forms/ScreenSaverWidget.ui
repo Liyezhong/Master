@@ -49,9 +49,9 @@
   <widget class="QLabel" name="lblWarning">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>-10</x>
      <y>10</y>
-     <width>491</width>
+     <width>811</width>
      <height>121</height>
     </rect>
    </property>
@@ -68,6 +68,9 @@
    </property>
    <property name="text">
     <string>In processing…</string>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
