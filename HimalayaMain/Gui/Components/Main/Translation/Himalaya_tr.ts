@@ -2992,13 +2992,13 @@ Hazne kapağını açmayın ve reaktif şişelerinden hiçbirini yerinden çıka
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="64"/>
         <source>Cassettes</source>
-        <translation>kaset</translation>
+        <translation>kasetler</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="71"/>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="137"/>
         <source>Cycles</source>
-        <translation>siklus</translation>
+        <translation>Döngüler</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="78"/>

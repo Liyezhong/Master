@@ -1679,7 +1679,7 @@ cambio</translation>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1456"/>
         <source>Pausing...
 Don&apos;t open the retort lid and unplug any reagent bottles.</source>
-        <translation>Pausando…
+        <translation>Pausa…
 No abra la tapa de la retorta ni desconecte ninguna botella de reactivo.</translation>
     </message>
     <message>
@@ -1716,7 +1716,7 @@ No abra la tapa de la retorta ni desconecte ninguna botella de reactivo.</transl
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1454"/>
         <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential hazard of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
         <translation>La tapa de la retorta estaba abierta. Ciérrela y haga clic en «Aceptar».
-Colóquese el respirador correctamente para evitar el peligro potencial de inhalar vapores de los reactivos.
+Colóquese la mascarilla correctamente para evitar el peligro potencial de inhalar vapores de los reactivos.
 No toque el sensor de nivel. Está caliente.</translation>
     </message>
     <message>
@@ -1785,8 +1785,8 @@ Confirme que se ha retirado la muestra y que la retorta está vacía y pulse «A
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning.
  Load the specimens into the retort and make sure that the retort is locked.
  Please visually confirm all paraffin are completely melted.</source>
-        <translation>Compruebe el nivel de todos los reactivos y limpie el sensor de nivel de la retorta, el anillo de junta de la retorta y el filtro de la retorta. Vuelva a instalar el filtro de la retorta después de la limpieza. 
-Cargue las muestras en la retorta y asegúrese de que la retorta está bloqueada.
+        <translation>Compruebe el nivel de todos los reactivos y limpie el sensor de nivel de la retorta, así como el filtro y la junta.
+Vuelva a instalar el filtro de la retorta después de la limpieza. Cargue las muestras en la retorta y asegúrese de que la retorta está cerrada.
 Compruebe visualmente que toda la parafina esté fundida por completo.</translation>
     </message>
     <message>

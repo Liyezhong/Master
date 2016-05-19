@@ -77,7 +77,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="31"/>
         <source>Build pressure failed</source>
-        <translation>Nezdar vytvoření tlaku</translation>
+        <translation>Vytvoření tlaku selhalo</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="32"/>
@@ -965,7 +965,7 @@
 since
 change</source>
         <translation>Kazety od
-výměně</translation>
+výměny</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="380"/>
@@ -1403,7 +1403,7 @@ výměny</translation>
 since
 change</source>
         <translation>Kazety od
-výměně</translation>
+výměny</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="484"/>
@@ -1711,7 +1711,7 @@ Neotevírejte víčko retorty a odpojte všechny lahve s činidly.</translation>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1454"/>
         <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential hazard of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
-        <translation>Bylo otevřeno víčko retorty. Zavřete je a poté klepněte na OK. Pro zamezení potenciálního nebezpečí výparů z činidla použijte respirátor. Nedotýkejte se senzoru hladiny. Je horký!</translation>
+        <translation>Bylo otevřeno víčko retorty. Zavřete je a poté klepněte na OK.Používejte důsledně respirátor, abyste vyloučili potenciální riziko výparů činidel. Nedotýkejte se snímače hladiny. Je horký!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1458"/>
@@ -1778,8 +1778,8 @@ Neotevírejte víčko retorty a odpojte všechny lahve s činidly.</translation>
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning.
  Load the specimens into the retort and make sure that the retort is locked.
  Please visually confirm all paraffin are completely melted.</source>
-        <translation>Zkontrolujte hladinu všech činidel a vyčistěte snímač hladiny retorty, těsnicí kroužek retorty a filtr retorty. Po čištění nainstalujte filtr retorty.
-Do retorty vložte vzorky a ujistěte se, že retorta je uzavřená.
+        <translation>Zkontrolujte hladinu všech činidel a vyčistěte snímač hladiny retorty, těsnicí kroužek retorty a filtr retorty.Po vyčištění znovu instalujte filtr retorty.
+Vložte vzorky do retorty a přesvědčte se, že je retorta uzavřená.
 Vizuálně zkontrolujte, jestli je parafín zcela roztavený.</translation>
     </message>
     <message>
@@ -3366,7 +3366,7 @@ Neotevírejte víčko retorty a odpojte všechny lahve s činidly.</translation>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="157"/>
         <source>Build pressure failed</source>
-        <translation>Nezdar vytvoření tlaku</translation>
+        <translation>Vytvoření tlaku selhalo</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="158"/>

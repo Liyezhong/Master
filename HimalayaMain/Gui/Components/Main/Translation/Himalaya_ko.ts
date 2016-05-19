@@ -1461,7 +1461,7 @@ Date</source>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="49"/>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="115"/>
         <source>Dashboard</source>
-        <translation>대시보드</translation>
+        <translation>프로그램 처리 상황 및 시약</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="116"/>

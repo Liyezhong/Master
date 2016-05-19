@@ -1762,7 +1762,7 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1469"/>
         <source>Please enter the number of new-added cassettes:</source>
-        <translation>新しく追加されたカセット数を入力してください：</translation>
+        <translation>追加したカセット数を入力してください：</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1470"/>
@@ -1779,8 +1779,8 @@ Don&apos;t open the retort lid and unplug any reagent bottles.</source>
         <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning.
  Load the specimens into the retort and make sure that the retort is locked.
  Please visually confirm all paraffin are completely melted.</source>
-        <translation>すべての試薬のレベルを確認し、レトルト液位センサー、レトルトのシールリングおよびレトルトフィルターをクリーニングしてください。クリーニング後にレトルトフィルターを再度取り付けてください。
-試料をレトルトにセットし、レトルトがロックされていることを確認してください。
+        <translation>すべての試薬のレベルを確認し、レトルト液位センサー、レトルトのシールリングおよびレトルトフィルターをクリーニングします。クリーニング後にレトルトフィルターを再度取り付けます。
+試料をレトルトにセットし、レトルトがロックされていることを確認します。
 すべてのパラフィンが完全に溶融したことを確認し.</translation>
     </message>
     <message>

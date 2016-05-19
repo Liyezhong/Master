@@ -990,9 +990,8 @@ validade</translation>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="395"/>
         <source>Exchange
 Date</source>
-        <translation>Data
-de
-troca</translation>
+        <translation>Data de
+mudança</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="397"/>
@@ -1431,7 +1430,8 @@ validade</translation>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="506"/>
         <source>Exchange
 Date</source>
-        <translation>Data de troca</translation>
+        <translation>Data de
+mudança</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="508"/>

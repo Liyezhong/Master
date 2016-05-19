@@ -614,17 +614,17 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="45"/>
         <source>Cassettes until change</source>
-        <translation>Cassettes jusqu&apos;au changement</translation>
+        <translation>Cassettes jusq remplac</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="46"/>
         <source>Cycles until change</source>
-        <translation>Cycles jusqu&apos;au changement</translation>
+        <translation>Cycles jusq remplac</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="47"/>
         <source>Days until change</source>
-        <translation>Jours jusqu&apos;au changement</translation>
+        <translation>Jours jusq remplac</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="48"/>
@@ -890,19 +890,19 @@
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="294"/>
         <source>Cassettes until change</source>
-        <translation>Cassettes jusqu&apos;au changement</translation>
+        <translation>Cassettes jusq remplac</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="296"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="306"/>
         <source>Cycles until change</source>
-        <translation>Cycles jusqu&apos;au changement</translation>
+        <translation>Cycles jusq remplac</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="298"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="308"/>
         <source>Days until change</source>
-        <translation>Jours jusqu&apos;au changement</translation>
+        <translation>Jours jusq remplac</translation>
     </message>
 </context>
 <context>
@@ -1341,19 +1341,19 @@ d&apos;échange</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="731"/>
         <source>Cassettes until change</source>
-        <translation>Cassettes jusqu&apos;au changement</translation>
+        <translation>Cassettes jusq remplac</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="734"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="753"/>
         <source>Cycles until change</source>
-        <translation>Cycles jusqu&apos;au changement</translation>
+        <translation>Cycles jusq remplac</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="737"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="756"/>
         <source>Days until change</source>
-        <translation>Jours jusqu&apos;au changement</translation>
+        <translation>Jours jusq remplac</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="748"/>
@@ -2818,7 +2818,7 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="154"/>
         <source>Cassettes until change:</source>
-        <translation>Cassettes jusqu&apos;au changement:</translation>
+        <translation>Cassettes jusq remplac:</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="174"/>
@@ -2838,17 +2838,17 @@ Ne pas ouvrir le couvercle de la chambre ni retirer de flacons de réactifs.</tr
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="565"/>
         <source>Cassettes until change</source>
-        <translation>Cassettes jusqu&apos;au changement</translation>
+        <translation>Cassettes jusq remplac</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="568"/>
         <source>Cycles until change</source>
-        <translation>Cycles jusqu&apos;au changement</translation>
+        <translation>Cycles jusq remplac</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="571"/>
         <source>Days until change</source>
-        <translation>Jours jusqu&apos;au changement</translation>
+        <translation>Jours jusq remplac</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="574"/>
