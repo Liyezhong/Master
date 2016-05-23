@@ -1130,7 +1130,7 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram(QString& reagentExpiredFlag
                  {
                      QString strTemp;
                      if (userSetting->GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT) {
-                        strTemp = m_strDiffTemp.arg("36.5\260F");
+                        strTemp = m_strDiffTemp.arg("35.6\260F");
                      }
                      else {
                         strTemp = m_strDiffTemp.arg("2\260C");
