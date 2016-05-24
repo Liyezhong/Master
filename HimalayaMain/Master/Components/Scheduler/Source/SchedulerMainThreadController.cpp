@@ -1964,7 +1964,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         }
         if (CTRL_CMD_RC_REPORT == ctrlCmd)
         {
-            //LogDebug("Go to RC_Report");
+
         }
         else if(CTRL_CMD_RS_RV_GET_ORIGINAL_POSITION_AGAIN == ctrlCmd)
         {
@@ -3946,7 +3946,6 @@ bool SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::Schedule
     if(!m_DeviceControlCmdQueue.isEmpty())
     {
         PtrCmd = m_DeviceControlCmdQueue.dequeue();
-        LogDebug(QString("CMD has been poped up,name is: %1 and current status is: %2").arg(PtrCmd->GetName()).arg(m_SchedulerMachine->GetCurrentState()));
         ret = true;
     }
     m_MutexDeviceControlCmdQueue.unlock();
@@ -3978,7 +3977,6 @@ void SchedulerMainThreadController::PushDeviceControlCmdQueue(Scheduler::Schedul
 {
     m_MutexDeviceControlCmdQueue.lock();
     m_DeviceControlCmdQueue.push_back(CmdPtr);
-    LogDebug(QString("CMD %1 has been pushed").arg(CmdPtr->GetName()));
     m_MutexDeviceControlCmdQueue.unlock();
 }
 
