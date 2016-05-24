@@ -3704,7 +3704,7 @@ Nie otwierać pokrywy retorty ani nie odłączać żadnych butelek z odczynnikam
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="176"/>
         <source>Maintenance</source>
-        <translation>Drzwiczki</translation>
+        <translation>Konserwacja</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="187"/>
@@ -3842,7 +3842,7 @@ Nie otwierać pokrywy retorty ani nie odłączać żadnych butelek z odczynnikam
     <message>
         <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="322"/>
         <source>Maintenance</source>
-        <translation>Drzwiczki</translation>
+        <translation>Konserwacja</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="323"/>
