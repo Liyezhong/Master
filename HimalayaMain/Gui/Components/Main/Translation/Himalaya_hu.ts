@@ -527,7 +527,7 @@
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="405"/>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="440"/>
         <source>Edit Program Step</source>
-        <translation>Szerkesztőprogram lépése</translation>
+        <translation>Programlépés szerkesztése</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="425"/>
@@ -2428,7 +2428,7 @@ Ne nyissa ki a víztelenítő kamra ajtaját és ne húzza ki a vegyszeres tart�
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1021"/>
         <source>Edit Program Step</source>
-        <translation>Szerkesztőprogram lépése</translation>
+        <translation>Programlépés szerkesztése</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1022"/>
