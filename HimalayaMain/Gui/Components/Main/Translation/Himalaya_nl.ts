@@ -2422,7 +2422,7 @@ Open het retortdeksel niet en koppel eventuele reagensflessen los.</translation>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="770"/>
         <source>The Program name cannot contain &quot;leica&quot;</source>
-        <translation>De reagensnaam mag niet &apos;Leica&apos; bevatten</translation>
+        <translation>De programmanaam mag niet &apos;Leica&apos; bevatten</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1021"/>
