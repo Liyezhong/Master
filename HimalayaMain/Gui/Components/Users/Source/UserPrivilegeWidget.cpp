@@ -472,6 +472,13 @@ void CUserPrivilegeWidget::ChangeInAdminPassword(const QString &PasswordType)
                 if (mp_MainWindow) {
 		    mp_MainWindow->SetUserRole(m_UserLevel);
                     mp_MainWindow->SetUserIcon(MainMenu::CMainWindow::Operator);
+                    //logan add: inform master to change to operator
+                    QByteArray ByteArray;
+                    QDataStream UserLevelInfo(&ByteArray, QIODevice::ReadWrite);
+                    int UserLevel = (int) MainMenu::CMainWindow::Operator; // to avoid PC-Lint
+                    UserLevelInfo << (int) UserLevel << "";
+                    emit UserLevelClicked(UserLevelInfo);
+                    //logan add: end
                 }
             }
             // reset the falgs
