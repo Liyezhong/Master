@@ -54,6 +54,7 @@ CReagentSubMenuWidget::~CReagentSubMenuWidget()
 /****************************************************************************/
 void CReagentSubMenuWidget::changeEvent(QEvent *p_Event)
 {
+    QWidget::changeEvent(p_Event);
     switch (p_Event->type()) {
         case QEvent::LanguageChange:
             mp_Ui->retranslateUi(this);
@@ -62,7 +63,6 @@ void CReagentSubMenuWidget::changeEvent(QEvent *p_Event)
         default:
             break;
     }
-    QWidget::changeEvent(p_Event);
 }
 
 /****************************************************************************/
