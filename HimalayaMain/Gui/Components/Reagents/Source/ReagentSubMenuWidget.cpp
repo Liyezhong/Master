@@ -3,6 +3,7 @@
 #include "Global/Include/Exception.h"
 #include "Reagents/Include/ReagentSubMenuWidget.h"
 #include "ui_ReagentSubMenuWidget.h"
+#include "Global/Include/UITranslator.h"
 
 namespace Reagents {
 
@@ -73,6 +74,22 @@ void CReagentSubMenuWidget::changeEvent(QEvent *p_Event)
 void CReagentSubMenuWidget::RetranslateUI()
 {
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagents::CReagentSubMenuWidget", "", 0, QApplication::UnicodeUTF8));
+
+   //the following for debug purpose.
+   QLocale::Language curLang = Global::UITranslator::TranslatorInstance().GetDefaultLanguage();
+   if (QLocale::Korean == curLang)
+   {
+        QString str = QApplication::translate("Reagents::CReagentSubMenuWidget", " Groups", 0, QApplication::UnicodeUTF8);
+        str = str.trimmed();
+        if (str.isEmpty()){
+            MainMenu::CMessageDlg ConfirmationMessageDlg;
+            ConfirmationMessageDlg.SetText(str);
+            ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
+            ConfirmationMessageDlg.SetButtonText(1, "Ok");
+            ConfirmationMessageDlg.HideButtons();
+            ConfirmationMessageDlg.exec();
+        }
+   }
 }
 }
 
