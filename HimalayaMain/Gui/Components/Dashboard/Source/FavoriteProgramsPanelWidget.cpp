@@ -229,11 +229,13 @@ void CFavoriteProgramsPanelWidget::OnResetFocus(bool rst)
             m_ButtonGroup.setExclusive(false);
             m_ButtonGroup.button(m_LastCanBeSelectedButtonId)->setChecked(true);
             m_ButtonGroup.setExclusive(true);
-            OnFavProgramButtonClicked(0);
+            OnFavProgramButtonClicked(0);//select last one again
         }
         else {
             m_LastSelectedButtonId = -1;
             m_LastCanBeSelectedButtonId = -1;
+            m_NewSelectedProgramId = "";
+            SELECTED_PROGRAM_NAME = "";
         }
     }
     else {
@@ -278,6 +280,9 @@ void CFavoriteProgramsPanelWidget::RetranslateUI()
 
     if (!m_NewSelectedProgramId.isEmpty())
     {
-        SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();
+        const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(m_NewSelectedProgramId);
+        if (NULL != pProgram){
+            SELECTED_PROGRAM_NAME = pProgram->GetName();
+        }
     }
 }
