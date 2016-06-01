@@ -268,6 +268,8 @@ void CLanguageWidget::InitDialog()
     for (int i = 0; i < m_LanguageList.count();i++) {
         if ( CurrentLanguage == m_LanguageList.at(i)) {
             mp_TableWidget->selectRow(i);
+            m_SelectedLanguage = CurrentLanguage;
+            break;
         }
     }
 }
