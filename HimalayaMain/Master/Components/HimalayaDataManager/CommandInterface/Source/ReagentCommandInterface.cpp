@@ -83,8 +83,14 @@ void CReagentCommandInterface::AddReagent(Global::tRefType Ref, const MsgClasses
     ReagentDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
     CReagent Reagent;
     ReagentDataStream >> Reagent;
+    Reagent.SetReagentID(static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->GetNextFreeReagentID(true));
     bool Result = true;
+    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->ResetLastErrors();
     Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->AddReagent(&Reagent);
+    if (Result)
+    {
+        Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();
+    }
     if (!Result) {
         // If error occurs , get errors and send errors to GUI
         ListOfErrors_t &ErrorList = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->GetErrorList();
@@ -94,9 +100,6 @@ void CReagentCommandInterface::AddReagent(Global::tRefType Ref, const MsgClasses
         mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel, ErrorString, Global::GUIMSGTYPE_INFO);
     }
     else {
-        //BroadCast Command
-        (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->GetNextFreeReagentID(true);
-        ReagentData.clear();
         (void)ReagentDataStream.device()->reset();
         ReagentDataStream << Reagent;
         SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
@@ -110,8 +113,6 @@ void CReagentCommandInterface::AddReagent(Global::tRefType Ref, const MsgClasses
         qDebug()<<"\n\n\n Adding New Reagent Success";
         /*lint -e429 */
     }
-    (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();
-
 }
 
 /****************************************************************************/

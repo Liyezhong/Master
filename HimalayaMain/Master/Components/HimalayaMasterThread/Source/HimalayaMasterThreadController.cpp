@@ -197,6 +197,8 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
     }
     MasterThreadController::CreateAndInitializeObjects();
 
+    mp_DataManager->GetReagentList()->UpdateOnLanguageChanged();
+
     RegisterCommandForProcessing<NetCommands::CmdExternalProcessState, HimalayaMasterThreadController>
             (&HimalayaMasterThreadController::ExternalProcessConnectionHandler, this);
 
@@ -1408,11 +1410,11 @@ void HimalayaMasterThreadController::OnLanguageChanged(const bool LanguangeChang
 //            this->SendConfigurationFile(mp_DataManager->GetReagentGroupList(),NetCommands::REAGENTGROUP);
 //        }
 
-//        if(mp_DataManager->GetReagentList())
-//        {
-//            mp_DataManager->GetReagentList()->UpdateOnLanguageChanged();
-//            this->SendConfigurationFile(mp_DataManager->GetReagentList(),NetCommands::REAGENT);
-//        }
+        if(mp_DataManager->GetReagentList())
+        {
+            mp_DataManager->GetReagentList()->UpdateOnLanguageChanged();
+            //this->SendConfigurationFile(mp_DataManager->GetReagentList(),NetCommands::REAGENT);
+        }
     }
 }
 

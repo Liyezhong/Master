@@ -3507,7 +3507,7 @@ Ne nyissa ki a víztelenítő kamra ajtaját és ne húzza ki a vegyszeres tart�
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="88"/>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="156"/>
         <source>SoftwareVersion: </source>
-        <translation>Szoftververzió</translation>
+        <translation>Szoftververzió: </translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="108"/>
