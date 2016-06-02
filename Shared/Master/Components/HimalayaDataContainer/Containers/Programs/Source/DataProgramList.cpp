@@ -838,7 +838,7 @@ bool CDataProgramList::CheckForUniquePropeties(const CProgram* p_Program, bool e
 {
     bool Result = true;
     QString ID = const_cast<CProgram*>(p_Program)->GetID();
-    CProgram* oldProgram = m_ProgramList.value(ID);
+    //CProgram* oldProgram = m_ProgramList.value(ID);
     bool isHave = false;
     if (excludeSeft)
     {
@@ -865,15 +865,53 @@ bool CDataProgramList::CheckForUniquePropeties(const CProgram* p_Program, bool e
     }
 
     // check for the Short name existence in the Program list
-    if (excludeSeft)
+//    if (excludeSeft)
+//    {
+//        QStringList nameList = m_ProgramListNames;
+//        (void)nameList.removeOne(oldProgram->GetName());
+//        isHave = nameList.contains(p_Program->GetName().simplified(), Qt::CaseInsensitive);
+//    }
+//    else
     {
-        QStringList nameList = m_ProgramListNames;
-        (void)nameList.removeOne(oldProgram->GetName());
-        isHave = nameList.contains(p_Program->GetName().simplified(), Qt::CaseInsensitive);
-    }
-    else
-    {
-        isHave = m_ProgramListNames.contains(p_Program->GetName().simplified(), Qt::CaseInsensitive);
+        //isHave = m_ProgramListNames.contains(p_Program->GetName().simplified(), Qt::CaseInsensitive);
+        isHave = false;
+        QList<QLocale::Language> lans = Global::UITranslator::TranslatorInstance().GetLanguages();
+        foreach(QLocale::Language lan, lans)
+        {
+            if(isHave)
+            {
+                break;
+            }
+            QString NewProName = p_Program->GetName().simplified();
+            if(!p_Program->GetNameID().isEmpty())
+            {
+                bool ok = false;
+                quint32 strid = p_Program->GetNameID().toUInt(&ok);
+                if(ok)
+                {
+                    NewProName = Global::UITranslator::TranslatorInstance().TranslateToLanguage(lan, strid);
+                }
+            }
+            foreach(CProgram* pPro, m_ProgramList)
+            {
+                QString ProName = pPro->GetName().simplified();
+                if(!pPro->GetNameID().isEmpty())
+                {
+                    bool ok = false;
+                    quint32 strid = pPro->GetNameID().toUInt(&ok);
+                    if(ok)
+                    {
+                        ProName = Global::UITranslator::TranslatorInstance().TranslateToLanguage(lan, strid);
+                    }
+                }
+                if((NewProName.compare(ProName,Qt::CaseInsensitive) == 0) &&
+                        (p_Program->GetID().compare(pPro->GetID(),Qt::CaseInsensitive) != 0))
+                {
+                    isHave = true;
+                    break;
+                }
+            }
+        }
     }
     if (isHave) {
         (void)m_ErrorHash.insert(EVENT_DM_PROG_NAME_NOT_UNIQUE, Global::tTranslatableStringList() << p_Program->GetName().simplified());

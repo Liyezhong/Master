@@ -1037,15 +1037,53 @@ bool CDataReagentList::CheckForUniquePropeties(const CReagent* p_Reagent, bool e
     }
 
     // check for the Short name existence in the reagent list
-    if (excludeSeft)
+//    if (excludeSeft)//update reagent
+//    {
+//        QStringList nameList = m_ReagentListNames;
+//        (void)nameList.removeOne(oldReagent->GetReagentName());
+//        isHave = nameList.contains(p_Reagent->GetReagentName().simplified(), Qt::CaseInsensitive);
+//    }
+//    else// add reagent
     {
-        QStringList nameList = m_ReagentListNames;
-        (void)nameList.removeOne(oldReagent->GetReagentName());
-        isHave = nameList.contains(p_Reagent->GetReagentName().simplified(), Qt::CaseInsensitive);
-    }
-    else
-    {
-        isHave = m_ReagentListNames.contains(p_Reagent->GetReagentName().simplified(), Qt::CaseInsensitive);
+        //isHave = m_ReagentListNames.contains(p_Reagent->GetReagentName().simplified(), Qt::CaseInsensitive);
+        isHave = false;
+        QList<QLocale::Language> lans = Global::UITranslator::TranslatorInstance().GetLanguages();
+        foreach(QLocale::Language lan, lans)
+        {
+            if(isHave)
+            {
+                break;
+            }
+            QString NewRegName = p_Reagent->GetReagentName().simplified();
+            if(p_Reagent->IsLeicaReagent())
+            {
+                bool ok = false;
+                quint32 strid = p_Reagent->GetReagentNameID().toUInt(&ok);
+                if(ok)
+                {
+                    NewRegName = Global::UITranslator::TranslatorInstance().TranslateToLanguage(lan, strid);
+                }
+            }
+            foreach(CReagent* pReg, m_ReagentList)
+            {
+                QString RegName = pReg->GetReagentName().simplified();
+                if(pReg->IsLeicaReagent())
+                {
+                    bool ok = false;
+                    quint32 strid = pReg->GetReagentNameID().toUInt(&ok);
+                    if(ok)
+                    {
+                        RegName = Global::UITranslator::TranslatorInstance().TranslateToLanguage(lan, strid);
+                    }
+                }
+                if((NewRegName.compare(RegName,Qt::CaseInsensitive) == 0) &&
+                        (p_Reagent->GetReagentID().compare(pReg->GetReagentID(),Qt::CaseInsensitive) != 0))
+                {
+                    isHave = true;
+                    break;
+                }
+            }
+        }
     }
     if (isHave) {
         (void)m_ErrorHash.insert(EVENT_DM_REAGENT_NAME_NOT_UNIQUE, Global::tTranslatableStringList() << p_Reagent->GetReagentName().simplified());
