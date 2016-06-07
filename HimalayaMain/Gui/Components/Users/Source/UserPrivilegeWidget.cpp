@@ -149,8 +149,8 @@ void CUserPrivilegeWidget::mousePressEvent (QMouseEvent * p_Event)
 
     //LeftBottom
     //QPoint p = p_Event->pos();
-    QRect  rectRightTop(643, 34, 100, 100);
-    QRect  rectRightBottom(643, 490, 100, 100);
+    QRect  rectRightTop(597, 32, 200, 200);
+    QRect  rectRightBottom(597, 400, 200, 200);
 
     if (rectRightTop.contains(p_Event->pos()))
     {
@@ -181,7 +181,7 @@ void CUserPrivilegeWidget::mouseReleaseEvent (QMouseEvent* p_Event)
 
 }
 
-void CUserPrivilegeWidget::OnTimeOutPress()
+void CUserPrivilegeWidget::OnTimeOutPress()//after 3 seconds
 {
     if (m_bIsRightTopPressed)
     {

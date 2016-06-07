@@ -276,55 +276,6 @@ bool CDataReagentList::DeserializeContent(QIODevice& IODevice, bool CompleteData
                                                    Global::tTranslatableStringList() << "LEICA", true);
         return false;
     }
-
-    if (CompleteData) {
-        // look for node <Reagents>
-        if (!Helper::ReadNode(XmlStreamReader, "ClassTemporaryData")) {
-            qDebug() << "DeserializeContent: abort reading. Node not found: ClassTemporaryData";
-            return false;
-        }
-        // File name
-        if (!XmlStreamReader.attributes().hasAttribute("FileName")) {
-            qDebug() << "### attribute <FileName> is missing => abort reading";
-            Global::EventObject::Instance().RaiseEvent(EVENT_DM_ERROR_XML_ATTRIBUTE_NOT_FOUND,
-                                                       Global::tTranslatableStringList() << "FileName", true);
-            return false;
-        }
-        m_Filename = XmlStreamReader.attributes().value("FileName").toString();
-
-        // VerificationMode
-        if (!XmlStreamReader.attributes().hasAttribute("VerificationMode")) {
-            qDebug() << "### attribute <VerificationMode> is missing => abort reading";
-            Global::EventObject::Instance().RaiseEvent(EVENT_DM_ERROR_XML_ATTRIBUTE_NOT_FOUND,
-                                                       Global::tTranslatableStringList() << "VerificationMode", true);
-            return false;
-        }
-        else {
-            bool Value = false;
-            if (XmlStreamReader.attributes().value("VerificationMode").toString().toUpper() == "TRUE") {
-                Value = true;
-            }
-            SetDataVerificationMode(Value);
-        }
-        //        // Verifier Pointers
-        //        if (!XmlStreamReader.attributes().hasAttribute("VerifierCount")) {
-        //            qDebug() << "### attribute <VerifierCount> is missing";
-        //            return false;
-        //        }
-        //        int VerifierCount = XmlStreamReader.attributes().value("VerifierCount").toString().toInt();
-        //        m_VerifierList.clear();
-        //        for (qint32 I = 0; I < VerifierCount; I++) {
-        //            if (!XmlStreamReader.attributes().hasAttribute(QString("Verifier%1Pointer").arg(I + 1))) {
-        //                qDebug() << "### attribute <VerifierPointer> is missing";
-        //                return false;
-        //            }
-        //            IVerifierInterface* p_VerifierInterface = reinterpret_cast<IVerifierInterface*>(XmlStreamReader.attributes().
-        //                                                                                       value(QString("Verifier%1Pointer").
-        //                                                                                             arg(I + 1)).toString().toInt(0, 16));
-        //            qDebug()<<"\n\n Verifier Pointer"<<p_VerifierInterface;
-        //            m_VerifierList.append(p_VerifierInterface);
-        //        } // end of for loop of Verifier
-    } // Reading of temporary Class Data completed
     return true;
 }
 
