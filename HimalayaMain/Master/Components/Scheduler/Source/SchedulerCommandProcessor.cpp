@@ -216,7 +216,7 @@ void SchedulerCommandProcessor<DP>:: pushCmd4Slot(CmdSchedulerCommandBase* cmd, 
         cmd->SetResponse(false);
     }
     m_CmdMutex.lock();
-    m_Cmds.push_front(Scheduler::SchedulerCommandShPtr_t(cmd));
+    m_Cmds.push_back(Scheduler::SchedulerCommandShPtr_t(cmd));
     m_CmdMutex.unlock();
 }
 
