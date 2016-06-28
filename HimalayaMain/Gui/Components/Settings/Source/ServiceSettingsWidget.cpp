@@ -310,6 +310,14 @@ void CServiceSettingsWidget::ResetButtons()
     {
         mp_Ui->btnStartServiceApp->setEnabled(true);
     }
+
+    if (!m_ProcessRunning && !isError && !isBusy && ((m_CurrentUserRole == MainMenu::CMainWindow::Service) ||
+                                (m_CurrentUserRole == MainMenu::CMainWindow::Admin)))
+    {
+        mp_Ui->btnShutdown->setEnabled(true);
+    }
+    else
+        mp_Ui->btnShutdown->setEnabled(false);
 }
 
 /****************************************************************************/
