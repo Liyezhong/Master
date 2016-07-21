@@ -23,6 +23,8 @@
 
 #include "../Include/DataContainer.h"
 #include "DataManager/Include/DataManagerBase.h"
+#include "DeviceControl/Include/DeviceProcessing/DeviceLifeCycleRecord.h"
+
 //lint -sem(DataManager::CDataManager::DeinitializeDataContainer,cleanup)
 //lint -sem(DataManager::CDataManager::InitializeDataContainer,initializer)
 
@@ -49,6 +51,10 @@ private:
     CReagentCommandInterface *mp_ReagentCommandInterface; //!< handles commands related to reagent container
     CReagentGroupCommandInterface *mp_ReagentGroupCommandInterface;       ///<  Definition/Declaration of variable mp_ReagentGroupCommandInterface
     CModuleCommandInterface *mp_ModuleCommandInterface;
+    CProgramCommandInterface *mp_ProgramCommandInterface; //!< Handles commands related to program container
+    bool m_maintenance_FirstRecord_Flag;
+    DeviceControl::DeviceLifeCycleRecord m_deviceLifeCycleRecord;
+    DeviceControl::PartLifeCycleRecord*  m_pPartLifeCycleRecord;
 protected:
     /****************************************************************************/
     /*!
@@ -235,11 +241,24 @@ public:
      */
     /****************************************************************************/
     CDeviceConfigurationInterface* GetDeviceConfigurationInterface();
-    CProgramCommandInterface *mp_ProgramCommandInterface; //!< Handles commands related to program container
-
     //function to save data during shutdown
     void SaveDataOnShutdown();
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Start the time count of maintenance when the Master SW runs at the first time
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void CheckMaintenanceTimeCountStart();
+    /****************************************************************************/
+    /*!
+     *  \brief  Is the the First system running?
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    bool IsFirstSystemRun() {return m_maintenance_FirstRecord_Flag;}
 signals:
     /****************************************************************************/
     /*!

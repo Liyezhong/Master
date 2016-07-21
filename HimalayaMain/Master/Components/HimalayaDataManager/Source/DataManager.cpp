@@ -29,7 +29,7 @@
 #include "HimalayaDataManager/Include/DataManagerDefinitions.h"
 #include "DataManager/Helper/Include/DataManagerEventCodes.h"
 #include "DataManager/Containers/InstrumentHistory/Include/InstrumentHistory.h"
-#include "DeviceControl/Include/DeviceProcessing/DeviceLifeCycleRecord.h"
+
 
 namespace DataManager {
 
@@ -41,7 +41,9 @@ CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThre
     mp_ReagentCommandInterface(NULL),
     mp_ReagentGroupCommandInterface(NULL),
     mp_ModuleCommandInterface(NULL),
-    mp_ProgramCommandInterface(NULL)
+    mp_ProgramCommandInterface(NULL),
+    m_maintenance_FirstRecord_Flag(false),
+    m_pPartLifeCycleRecord(NULL)
 {
     quint32 ReturnCode  = InitializeDataContainer();
     if (ReturnCode != INIT_OK) {
@@ -56,7 +58,9 @@ CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThre
     mp_ReagentCommandInterface(NULL),
     mp_ReagentGroupCommandInterface(NULL),
     mp_ModuleCommandInterface(NULL),
-    mp_ProgramCommandInterface(NULL)
+    mp_ProgramCommandInterface(NULL),
+    m_maintenance_FirstRecord_Flag(false),
+    m_pPartLifeCycleRecord(NULL)
 {
     Q_UNUSED(Path)
     quint32 ReturnCode = InitializeDataContainer();
@@ -82,38 +86,30 @@ quint32 CDataManager::InitializeDataContainer()
     mp_DataContainerCollectionBase = mp_DataContainer;
 
     //Update activeCarbonFilter LifeTime according to DeviceLifeCycleRecord.xml
-    DeviceControl::DeviceLifeCycleRecord deviceLifeCycleRecord;
-    deviceLifeCycleRecord.ReadRecord();
+    m_deviceLifeCycleRecord.ReadRecord();
 
     int activeCarbonFilterLifeTime = -1;
-    uint maintenance_FirstRecord_Flag = 0;
+    uint CarbonFilter_FirstRecord_Flag = 0;
     
-    DeviceControl::ModuleLifeCycleRecord* pModuleLifeCycleRecord = deviceLifeCycleRecord.m_ModuleLifeCycleMap.value("LA");
+    DeviceControl::ModuleLifeCycleRecord* pModuleLifeCycleRecord = m_deviceLifeCycleRecord.m_ModuleLifeCycleMap.value("LA");
     if (pModuleLifeCycleRecord)
     {
-        DeviceControl::PartLifeCycleRecord* pPartLifeCycleRecord = pModuleLifeCycleRecord->m_PartLifeCycleMap.value("AL_pressure_ctrl");
-        if (pPartLifeCycleRecord)
+        m_pPartLifeCycleRecord = pModuleLifeCycleRecord->m_PartLifeCycleMap.value("AL_pressure_ctrl");
+        if (m_pPartLifeCycleRecord)
         {
-            activeCarbonFilterLifeTime = pPartLifeCycleRecord->m_ParamMap.value("ActiveCarbonFilter_LifeTime").toInt();
-            maintenance_FirstRecord_Flag = pPartLifeCycleRecord->m_ParamMap.value("Maintenance_FirstRecord_Flag").toUInt();
+            activeCarbonFilterLifeTime = m_pPartLifeCycleRecord->m_ParamMap.value("ActiveCarbonFilter_LifeTime").toInt();
+            CarbonFilter_FirstRecord_Flag = m_pPartLifeCycleRecord->m_ParamMap.value("CarbonFilter_FirstRecord_Flag").toUInt();
         }
+    }
+
+    if ((0 == activeCarbonFilterLifeTime) && (1 == CarbonFilter_FirstRecord_Flag))
+    {
+        m_maintenance_FirstRecord_Flag = true;
     }
 
     ReturnCode = CDataManagerBase::InitDataContainer();
     if ( ReturnCode != INIT_OK) {
         return ReturnCode;
-    }
-
-    if ((0 == activeCarbonFilterLifeTime) && (1 == maintenance_FirstRecord_Flag))
-    {
-        CHimalayaUserSettings tempSettings(*mp_DataContainer->SettingsInterface->GetUserSettings());
-        QString strDate = Global::AdjustedTime::Instance().GetCurrentDateTime().toString();
-        tempSettings.SetActiveCarbonLastResetDate(strDate);
-        tempSettings.SetOperationLastResetDate(strDate);
-        (void)mp_DataContainer->SettingsInterface->UpdateUserSettings(&tempSettings);
-        if (!mp_DataContainer->SettingsInterface->Write()){
-           return EVENT_DM_SETTINGS_VERIFICATION_FAILED;
-        }
     }
 
     mp_DataContainer->ReagentGroupList->SetDataVerificationMode(false);
@@ -221,6 +217,27 @@ bool CDataManager::DeinitializeDataContainer()
     delete mp_DataContainer;
     delete mp_ModuleCommandInterface;
     return true;
+}
+
+void CDataManager::CheckMaintenanceTimeCountStart()
+{
+    if (m_maintenance_FirstRecord_Flag)
+    {
+        CHimalayaUserSettings tempSettings(*mp_DataContainer->SettingsInterface->GetUserSettings());
+        QString strDate = Global::AdjustedTime::Instance().GetCurrentDateTime().toString();
+        tempSettings.SetActiveCarbonLastResetDate(strDate);
+        tempSettings.SetOperationLastResetDate(strDate);
+        (void)mp_DataContainer->SettingsInterface->UpdateUserSettings(&tempSettings);
+        if (!mp_DataContainer->SettingsInterface->Write()){
+            Global::EventObject::Instance().RaiseEvent(EVENT_DM_SETTINGS_VERIFICATION_FAILED);
+        }
+
+        if (m_pPartLifeCycleRecord){
+            m_pPartLifeCycleRecord->m_ParamMap["CarbonFilter_FirstRecord_Flag"] = "0";//set it as non-first time
+        }
+        m_deviceLifeCycleRecord.WriteRecord();
+        m_maintenance_FirstRecord_Flag = false;
+    }
 }
 
 //get copy of complete station list

@@ -305,7 +305,7 @@ void SchedulerMainThreadController::DevProcDestroyed()
 
 void SchedulerMainThreadController::ReportGetServiceInfo(ReturnCode_t ReturnCode, const DataManager::CModule &ModuleInfo, const QString& DeviceType)
 {
-    //Q_UNUSED(ReturnCode)
+    Q_UNUSED(ReturnCode)
     //LogDebug(QString("LifeCycle:ReportGetServiceInfo:%1,%2").arg(ReturnCode).arg(DeviceType));
     //send command
     SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(new MsgClasses::CmdModuleListUpdate(30000, ModuleInfo, DeviceType, false)));
@@ -3270,6 +3270,9 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
 
 void SchedulerMainThreadController::CheckCarbonFilterExpired()
 {
+    if (mp_DataManager->IsFirstSystemRun())
+        return;
+
     //Check for Service
     DataManager::CHimalayaUserSettings* pUserSetting = mp_DataManager->GetUserSettings();
     QString strLastOperateResetDate = pUserSetting->GetOperationLastResetDate();
@@ -5729,6 +5732,8 @@ void SchedulerMainThreadController::OnPreTestDone()
     Q_ASSERT(commandPreTest);
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPreTest));
+
+    mp_DataManager->CheckMaintenanceTimeCountStart();
 }
 
 qreal SchedulerMainThreadController::GetLastPressureOffset()
