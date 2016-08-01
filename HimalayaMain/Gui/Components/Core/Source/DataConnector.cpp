@@ -2100,11 +2100,11 @@ void CDataConnector::OnRCSoftwareUpdateHandler(Global::tRefType Ref, const Remot
         (void)mp_MessageDlg->exec();
        return;
     } else if (RemoteCare::SWUpdate_UpdateFailed == Command.GetUpdateType()) {
-        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
-                        "Software update failed.",
-                                                       0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->HideButtons();
-        (void)mp_MessageDlg->exec();
+//        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
+//                        "Software update failed.",
+//                                                       0, QApplication::UnicodeUTF8));
+//        mp_MessageDlg->HideButtons();
+//        (void)mp_MessageDlg->exec();
        return;
     } else {
         return;
