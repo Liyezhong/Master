@@ -167,6 +167,13 @@ private:
 
     ServiceMasterThreadController(const ServiceMasterThreadController &);                         ///< Not implemented.
     const ServiceMasterThreadController & operator = (const ServiceMasterThreadController &);     ///< Not implemented.
+    /****************************************************************************/
+    /**
+     * \brief Specific function of SetMaintenanceFlag.
+     *
+     */
+    /****************************************************************************/
+    bool SetMaintenanceFlagFunc(void);
 
     /****************************************************************************/
     /**

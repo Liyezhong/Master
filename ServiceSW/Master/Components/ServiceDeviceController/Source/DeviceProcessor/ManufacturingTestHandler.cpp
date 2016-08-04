@@ -3796,6 +3796,7 @@ bool ManufacturingTestHandler::ResetOperationTime2Ebox(const QString &ModuleName
 
 
     if(!p_DeviceRecord->ReadRecord()){
+        delete p_DeviceRecord;
         return false;
     }
 
@@ -3814,6 +3815,7 @@ bool ManufacturingTestHandler::ResetOperationTime2Ebox(const QString &ModuleName
 
     p_PartRecord->m_ParamMap[ParamName] = "0";
     if(!p_DeviceRecord->WriteRecord()){
+        delete p_DeviceRecord;
         return false;
     }
     delete p_DeviceRecord;

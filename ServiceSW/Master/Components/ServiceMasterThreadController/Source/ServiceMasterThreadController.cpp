@@ -1372,41 +1372,44 @@ void ServiceMasterThreadController::sendServiceTestRequest(QString ReqName, QStr
     (void) SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdServiceTest(ReqName, Params)), m_CommandChannelDeviceThread);
 }
 
-
 bool ServiceMasterThreadController::SetMaintenanceFlag(void)
 {
-    bool Ret = true;
+    bool Ret;
+    Ret = this->SetMaintenanceFlagFunc();
+    emit ResetMaintenanceComplete(Ret);
+}
 
+bool ServiceMasterThreadController::SetMaintenanceFlagFunc(void)
+{
     DeviceLifeCycleRecord *p_DeviceRecord = new DeviceLifeCycleRecord();
     if (p_DeviceRecord == NULL) {
-        Ret = false;
+        return false;
     }
 
     if(!p_DeviceRecord->ReadRecord()){
-        Ret = false;
+        delete p_DeviceRecord;
+        return false;
     }
 
     ModuleLifeCycleRecord* p_ModuleRecord = p_DeviceRecord->m_ModuleLifeCycleMap.value("LA");
 
     if (p_ModuleRecord == NULL) {
         delete p_DeviceRecord;
-        Ret = false;
+        return false;
     }
 
     PartLifeCycleRecord* p_PartRecord = p_ModuleRecord->m_PartLifeCycleMap.value("AL_pressure_ctrl");
     if (p_PartRecord == NULL) {
         delete p_DeviceRecord;
-        Ret = false;
+        return false;
     }
 
     p_PartRecord->m_ParamMap["CarbonFilter_FirstRecord_Flag"] = "1";
     if(!p_DeviceRecord->WriteRecord()){
-        Ret = false;
+        delete p_DeviceRecord;
+        return false;
     }
     delete p_DeviceRecord;
-    qDebug()<<"Ret="<< Ret;
-
-    emit ResetMaintenanceComplete(Ret);
     return true;
 }
 
