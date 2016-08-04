@@ -49,6 +49,8 @@
 #include "Core/Include/CMessageString.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
+#include "DeviceControl/Include/DeviceProcessing/DeviceLifeCycleRecord.h"
+
 //lint -e539
 
 namespace Threads {
@@ -93,6 +95,8 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     m_ShutdownSharedMemTimer.setSingleShot(false);
 
     qDebug()<<"ServiceMasterThreadController::ServiceMasterThreadController() "<<Global::SystemPaths::Instance().GetSettingsPath();
+
+    CONNECTSIGNALSIGNAL(this, ResetMaintenanceComplete(bool), mp_GUIStartup, ResetMaintenanceComplete(bool));
 
     if (!connect(mp_GUIStartup, SIGNAL(DeviceInitRequest()), this, SLOT(sendDeviceInitCommand()))) {
         qDebug() << "CStartup: cannot connect 'deviceinitRequest' signal";
@@ -166,6 +170,11 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     if (!connect(this, SIGNAL(ReturnManufacturingMsgtoMain(bool )),
                  mp_GUIStartup, SLOT(OnReturnManufacturingMsg(bool )))) {
         qDebug() << "CStartup: cannot connect 'ReturnManufacturingMsgtoMain' signal";
+    }
+
+    // Reset Maintenance
+    if (!connect(mp_GUIStartup, SIGNAL(ResetMaintenanceSignal()), this, SLOT(SetMaintenanceFlag()))){
+        qDebug() <<"CStartup: cannot connect 'ResetMaintenanceSignal' signal";
     }
 
     // Shut down
@@ -1361,6 +1370,44 @@ void ServiceMasterThreadController::sendServiceTestRequest(QString ReqName, QStr
 {
 //    qDebug()<<"ServiceMasterThreadController::sendServiceTestRequest -- ReqName="<<ReqName;
     (void) SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdServiceTest(ReqName, Params)), m_CommandChannelDeviceThread);
+}
+
+
+bool ServiceMasterThreadController::SetMaintenanceFlag(void)
+{
+    bool Ret = true;
+
+    DeviceLifeCycleRecord *p_DeviceRecord = new DeviceLifeCycleRecord();
+    if (p_DeviceRecord == NULL) {
+        Ret = false;
+    }
+
+    if(!p_DeviceRecord->ReadRecord()){
+        Ret = false;
+    }
+
+    ModuleLifeCycleRecord* p_ModuleRecord = p_DeviceRecord->m_ModuleLifeCycleMap.value("LA");
+
+    if (p_ModuleRecord == NULL) {
+        delete p_DeviceRecord;
+        Ret = false;
+    }
+
+    PartLifeCycleRecord* p_PartRecord = p_ModuleRecord->m_PartLifeCycleMap.value("AL_pressure_ctrl");
+    if (p_PartRecord == NULL) {
+        delete p_DeviceRecord;
+        Ret = false;
+    }
+
+    p_PartRecord->m_ParamMap["CarbonFilter_FirstRecord_Flag"] = "1";
+    if(!p_DeviceRecord->WriteRecord()){
+        Ret = false;
+    }
+    delete p_DeviceRecord;
+    qDebug()<<"Ret="<< Ret;
+
+    emit ResetMaintenanceComplete(Ret);
+    return true;
 }
 
 void ServiceMasterThreadController::ShutdownSystem(bool NeedUpdate)

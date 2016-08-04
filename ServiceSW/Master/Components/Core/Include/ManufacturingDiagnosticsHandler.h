@@ -150,7 +150,22 @@ signals:
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortId=Service::TEST_CASE_ID_UNUSED);
 
+    /*******************************************************************************/
+    /*!
+     *  \brief Signal emitted to ResetCarbonFilterLifeTimeComplete
+     *  \iparam
+     */
+    /*******************************************************************************/
+    void ResetCarbonFilterLifeTimeComplete(bool result);
 public slots:
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for reset carbon filter life cycle
+     */
+    /****************************************************************************/
+    void ResetCarbonFilterLifeTime(void);
+
     /****************************************************************************/
     /*!
      *  \brief Slot for begin manufacturing test

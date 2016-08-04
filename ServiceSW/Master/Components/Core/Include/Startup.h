@@ -202,7 +202,10 @@ public:
     }
 
 private:
-
+    bool        m_SystemInitialized;                    //!< System is initialzed.
+    bool        m_ResetCarbonFilterLifeTimeResult;      //!< Check result of carbon filter life time.
+    bool        m_ResetMaintenResult;                   //!< Check result of reset maintenance.
+    quint8      m_ResetMaintenAndCarbonFilterCount;     //!< Count for reset maintenance And carbon filter life time.
     bool        m_SelfTestFinished;                     //!< Check if system self test is finished.
 
     QTimer      *mp_Clock;                                  //!< The main clock
@@ -211,6 +214,7 @@ private:
     // GUI components   
     MainMenu::CMainWindow                   *mp_MainWindow;                 //!< The main window of the application
     ServiceKeyValidator::CUSBKeyValidator                  *mp_USBKeyValidator;
+    MainMenu::CMessageDlg *mp_MessageDlg;   //!< Information dialog
 
     // System Tracking
     MainMenu::CMenuGroup                  *mp_SystemTrackingGroup;        //!< Menu group containing System Tracking data
@@ -315,6 +319,20 @@ private:
 
 
 public slots:
+    /****************************************************************************/
+    /**
+     * \brief Slot for Reset Maintence complete result.
+     */
+    /****************************************************************************/
+    void OnResetMaintenanceComplete(bool Result);
+
+    /****************************************************************************/
+    /**
+     * \brief Slot for Carbon Filter Life Time complete result.
+     */
+    /****************************************************************************/
+    void OnResetCarbonFilterLifeTimeComplete(bool Result);
+
     /****************************************************************************/
     /*!
      *  \brief To Diaplay log information
@@ -575,13 +593,36 @@ signals:
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestID=Service::TEST_CASE_ID_UNUSED);
 
-    /*******************************************************************************/
-    /*!
-     *  \brief Signal emitted to shut down system
-     *  \iparam NeedUpdate = flag of need update
-     */
-    /*******************************************************************************/
-    void ShutdownSystem(bool NeedUpdate=true);
+  /*******************************************************************************/
+  /*!
+   *  \brief Signal emitted to ResetCarbonFilterLifeTimeComplete
+   *  \iparam
+   */
+  /*******************************************************************************/
+  void ResetCarbonFilterLifeTimeComplete(bool result);
+
+  /*******************************************************************************/
+  /*!
+   *  \brief Signal emitted to ResetMaintenanceComplete
+   *  \iparam
+   */
+  /*******************************************************************************/
+  void ResetMaintenanceComplete(bool result);
+
+  /*******************************************************************************/
+  /*!
+   *  \brief Signal emitted to ResetMaintenanceSignal
+   */
+  /*******************************************************************************/
+  void ResetMaintenanceSignal();
+
+  /*******************************************************************************/
+  /*!
+   *  \brief Signal emitted to shut down system
+   *  \iparam NeedUpdate = flag of need update
+   */
+  /*******************************************************************************/
+  void ShutdownSystem(bool NeedUpdate=true);
 
     /****************************************************************************/
     /**

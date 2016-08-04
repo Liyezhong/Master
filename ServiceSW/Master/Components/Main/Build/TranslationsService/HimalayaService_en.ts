@@ -841,10 +841,10 @@
     <name>CMsgBoxManager</name>
     <message>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="110"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="281"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="289"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="558"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="566"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="292"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="300"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="580"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="593"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
@@ -855,27 +855,30 @@
     </message>
     <message>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="124"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="548"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="570"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="585"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="549"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="571"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="586"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="553"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="575"/>
         <source>Continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="554"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="576"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="559"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="581"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="587"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -920,12 +923,12 @@
 <context>
     <name>CRotaryValveDevice</name>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1558"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1611"/>
         <source>Seal %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1562"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1615"/>
         <source>Tube %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1312,142 +1315,164 @@
 <context>
     <name>Core::CStartup</name>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="377"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="388"/>
         <source>Current Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="387"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="398"/>
         <source>Add/Modify Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="390"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="401"/>
         <source>View History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="418"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1759"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="429"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1839"/>
         <source>Service Help Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="428"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="439"/>
         <source>System Tracking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="416"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="427"/>
         <source>System Log Viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="365"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="376"/>
         <source>PEARL Service Software</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="420"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="431"/>
         <source>Service Log Viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="422"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="433"/>
         <source>Software Update Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="430"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="441"/>
         <source>Log Viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="445"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="456"/>
         <source>Firmware Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="449"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="460"/>
         <source>Data Management</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="451"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="462"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="453"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="464"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="455"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="466"/>
         <source>Service Updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="719"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="598"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="619"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1715"/>
+        <source>Reseting Maintenance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/Startup.cpp" line="600"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="621"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1717"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/Startup.cpp" line="603"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="624"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1720"/>
+        <source>Reseting maintenance is failed.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/Startup.cpp" line="783"/>
         <source>System is initializing ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="793"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="857"/>
         <source>Missing Xml files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="796"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="860"/>
         <source>The following XML files are not present.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1313"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1377"/>
         <source>Alarm Status:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1749"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1766"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1829"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1846"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1750"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1767"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1830"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1847"/>
         <source>TimeStamp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1751"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1758"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1769"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1831"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1838"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1849"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1757"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1837"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1768"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1848"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/ManufacturingTestHandler.cpp" line="970"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/ManufacturingTestHandler.cpp" line="974"/>
         <source>Pre-heating...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/ManufacturingTestHandler.cpp" line="1012"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/ManufacturingTestHandler.cpp" line="1016"/>
         <source>Cooling...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/ManufacturingTestHandler.cpp" line="1047"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/ManufacturingTestHandler.cpp" line="1051"/>
         <source>Heating...</source>
         <translation type="unfinished"></translation>
     </message>

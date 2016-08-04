@@ -3793,7 +3793,11 @@ bool ManufacturingTestHandler::ResetOperationTime2Ebox(const QString &ModuleName
     if (p_DeviceRecord == NULL) {
         return false;
     }
-    p_DeviceRecord->ReadRecord();
+
+
+    if(!p_DeviceRecord->ReadRecord()){
+        return false;
+    }
 
     ModuleLifeCycleRecord* p_ModuleRecord = p_DeviceRecord->m_ModuleLifeCycleMap.value(ModuleName);
 
@@ -3809,7 +3813,9 @@ bool ManufacturingTestHandler::ResetOperationTime2Ebox(const QString &ModuleName
     }
 
     p_PartRecord->m_ParamMap[ParamName] = "0";
-    p_DeviceRecord->WriteRecord();
+    if(!p_DeviceRecord->WriteRecord()){
+        return false;
+    }
     delete p_DeviceRecord;
     return true;
 }

@@ -921,6 +921,34 @@ Sealing_Test_Twice:
     mp_RotaryValveManuf->EnableButton(true);
 }
 
+void CManufacturingDiagnosticsHandler::ResetCarbonFilterLifeTime()
+{
+    qDebug() << "CLaSystem::ResetCarbonFilterLifeTime";
+
+    Service::ModuleTestCaseID Id = Service::RESET_OPERATION_TIME;
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    p_TestCase->SetParameter("Module", "L&A System");
+
+    p_TestCase->AddResult("Result", "0");
+    p_TestCase->SetParameter("SubModule", "Carbon Filter");
+
+    emit PerformManufacturingTest(Id);
+
+    qDebug()<<"GetTestResponse";
+
+    bool Result = GetTestResponse();
+    if(Result){
+        emit ResetCarbonFilterLifeTimeComplete(true);
+    }
+    else{
+        emit ResetCarbonFilterLifeTimeComplete(false);
+    }
+    qDebug()<<"GetTestResponse = "<<Result;
+
+}
+
 void CManufacturingDiagnosticsHandler::PerformManufLATests(const QList<Service::ModuleTestCaseID> &TestCaseList)
 {
     quint32 FailureId(0);

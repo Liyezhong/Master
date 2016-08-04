@@ -317,6 +317,13 @@ private:
     }
 
 signals:
+    /*******************************************************************************/
+    /*!
+     *  \brief Signal emitted to ResetMaintenanceComplete
+     *  \iparam
+     */
+    /*******************************************************************************/
+    void ResetMaintenanceComplete(bool result);
     /****************************************************************************/
     /**
      * \brief Go signal for all connected threads.
@@ -570,6 +577,13 @@ private slots:
     /****************************************************************************/
     void sendManufacturingTestCommand(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestCaseId=Service::TEST_CASE_ID_UNUSED);
 
+
+    /****************************************************************************/
+    /**
+     * \brief SetMaintenanceFlag.
+     */
+    /****************************************************************************/
+    bool SetMaintenanceFlag(void);
 
     /****************************************************************************/
     /**
