@@ -295,6 +295,7 @@ private slots:
 
     void OnCurrentTabChanged(int TabIndex);
 private:
+    void ModifyProgramStatusFile();
     bool CurrentlyActive(MainMenu::CMenuGroup *p_Group, QWidget *p_Panel);
     void RefreshTestStatus4RetortCoverSensor(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);
     void RefreshTestStatus4RetortHeatingEmpty(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);

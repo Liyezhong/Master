@@ -483,7 +483,8 @@ void CStartup::GuiInit()
 {
     qDebug()<<"CStartup::GuiInit ---- m_DeviceName="<<m_DeviceName;
 
-    RemoveFiles();
+    //RemoveFiles();
+    ModifyProgramStatusFile();
     mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("HISTOCORE PEARL");
 
     CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
@@ -500,7 +501,8 @@ void CStartup::GuiInit()
 /****************************************************************************/
 void CStartup::GuiInit(QString debugMode)
 {
-    RemoveFiles();
+    //RemoveFiles();
+    ModifyProgramStatusFile();
     if (debugMode.startsWith("Service") || debugMode.startsWith("ts_Service"))
     {
         CServiceUtils::delay(2500);
@@ -874,6 +876,54 @@ int CStartup::FileExistanceCheck()
     }
     return 0;
 #endif
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Modify files when start S&M SW
+ */
+/****************************************************************************/
+void CStartup::ModifyProgramStatusFile()
+{
+    QString FilePath = Global::SystemPaths::Instance().GetSettingsPath();
+   QFile File;
+    QMap<QString, QString> m_Status;
+    int LineNumber = 0;
+    QString Cmd = "";
+
+    File.setFileName(FilePath + QDir::separator() + "ProgramStatus.txt");
+
+    if (!File.exists()){
+        qDebug()<<"CStartup: ProgramStatus.txt does not exists";
+        return ;
+    }
+
+    if (!File.open(QIODevice::ReadWrite | QIODevice::Text)){
+        qDebug()<<"CStartup: Open ProgramStatus.txt fails";
+        return ;
+    }
+
+    QTextStream FileStream(&File);
+    QString Line = FileStream.readLine().simplified();
+    QString CompareString = "HeatingOvenSlice";
+    m_Status.clear();
+
+    while(!Line.isNull())
+    {
+        LineNumber++;
+        if (CompareString == Line.split(":").at(0)) {
+
+        }
+        else {
+            Cmd = QString("sed -i '%1d' %2").arg(LineNumber).arg(FilePath+ QDir::separator() +"ProgramStatus.txt");
+            system(Cmd.toStdString().c_str());
+            LineNumber--;
+        }
+
+        Line = FileStream.readLine().simplified();
+    }
+    File.close();
+
 }
 
 /****************************************************************************/
