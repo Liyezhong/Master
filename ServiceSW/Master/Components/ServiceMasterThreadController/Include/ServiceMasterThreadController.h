@@ -327,7 +327,7 @@ signals:
     /*******************************************************************************/
     /*!
      *  \brief Signal emitted to ResetMaintenanceComplete
-     *  \iparam
+     *  \iparam result = Reset result
      */
     /*******************************************************************************/
     void ResetMaintenanceComplete(bool result);

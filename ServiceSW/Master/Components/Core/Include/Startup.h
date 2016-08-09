@@ -323,6 +323,7 @@ public slots:
     /****************************************************************************/
     /**
      * \brief Slot for Reset Maintence complete result.
+     * \iparam Result = Reset result
      */
     /****************************************************************************/
     void OnResetMaintenanceComplete(bool Result);
@@ -330,6 +331,7 @@ public slots:
     /****************************************************************************/
     /**
      * \brief Slot for Carbon Filter Life Time complete result.
+     * \iparam Result = Reset result
      */
     /****************************************************************************/
     void OnResetCarbonFilterLifeTimeComplete(bool Result);
@@ -597,7 +599,7 @@ signals:
   /*******************************************************************************/
   /*!
    *  \brief Signal emitted to ResetCarbonFilterLifeTimeComplete
-   *  \iparam
+     *  \iparam result = Reset result
    */
   /*******************************************************************************/
   void ResetCarbonFilterLifeTimeComplete(bool result);
@@ -605,7 +607,7 @@ signals:
   /*******************************************************************************/
   /*!
    *  \brief Signal emitted to ResetMaintenanceComplete
-   *  \iparam
+     *  \iparam result = Reset result
    */
   /*******************************************************************************/
   void ResetMaintenanceComplete(bool result);

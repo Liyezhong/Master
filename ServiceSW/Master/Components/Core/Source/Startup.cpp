@@ -52,6 +52,10 @@ namespace Core {
 /****************************************************************************/
 CStartup::CStartup() : QObject(),
     mp_ManaufacturingDiagnosticsHandler(NULL),
+    m_SystemInitialized(false),
+    m_ResetMaintenAndCarbonFilterCount(0),
+    m_ResetMaintenResult(false),
+    m_ResetCarbonFilterLifeTimeResult(false),
     m_SelfTestFinished(false),
     mp_USBKeyValidator(NULL),
     mp_SystemLogViewer(NULL),
@@ -67,11 +71,7 @@ CStartup::CStartup() : QObject(),
     mp_HeatingStatusDlg(NULL),
     mp_SealingStatusDlg(NULL),
     m_CurrentTabIndex(0),
-    m_ShutDownFlag(false),
-    m_SystemInitialized(false),
-    m_ResetMaintenAndCarbonFilterCount(0),
-    m_ResetMaintenResult(false),
-    m_ResetCarbonFilterLifeTimeResult(false)
+    m_ShutDownFlag(false)
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
     qRegisterMetaType<Service::ModuleTestCaseID>("Service::ModuleTestCaseID");

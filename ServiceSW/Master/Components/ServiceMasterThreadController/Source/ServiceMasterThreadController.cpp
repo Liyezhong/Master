@@ -1374,9 +1374,10 @@ void ServiceMasterThreadController::sendServiceTestRequest(QString ReqName, QStr
 
 bool ServiceMasterThreadController::SetMaintenanceFlag(void)
 {
-    bool Ret;
+    bool Ret = false;
     Ret = this->SetMaintenanceFlagFunc();
     emit ResetMaintenanceComplete(Ret);
+    return Ret;
 }
 
 bool ServiceMasterThreadController::SetMaintenanceFlagFunc(void)

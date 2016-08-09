@@ -153,10 +153,11 @@ signals:
     /*******************************************************************************/
     /*!
      *  \brief Signal emitted to ResetCarbonFilterLifeTimeComplete
-     *  \iparam
+     *  \iparam result = Reset result
      */
     /*******************************************************************************/
     void ResetCarbonFilterLifeTimeComplete(bool result);
+
 public slots:
 
     /****************************************************************************/
