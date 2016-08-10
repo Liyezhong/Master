@@ -484,7 +484,6 @@ void CStartup::GuiInit()
     qDebug()<<"CStartup::GuiInit ---- m_DeviceName="<<m_DeviceName;
 
     //RemoveFiles();
-    ModifyProgramStatusFile();
     mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("HISTOCORE PEARL");
 
     CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
@@ -502,7 +501,6 @@ void CStartup::GuiInit()
 void CStartup::GuiInit(QString debugMode)
 {
     //RemoveFiles();
-    ModifyProgramStatusFile();
     if (debugMode.startsWith("Service") || debugMode.startsWith("ts_Service"))
     {
         CServiceUtils::delay(2500);
@@ -678,12 +676,7 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
 
         InitManufacturingDiagnostic();
 
-        CONNECTSIGNALSLOT(this, ResetCarbonFilterLifeTimeComplete(bool), this, OnResetCarbonFilterLifeTimeComplete(bool));
-        CONNECTSIGNALSLOT(this, ResetMaintenanceComplete(bool), this, OnResetMaintenanceComplete(bool));
-
         QTimer::singleShot(50, this, SLOT(FileExistanceCheck()));
-
-        emit ResetMaintenanceSignal();
     }
 }
 
@@ -694,6 +687,9 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
 /****************************************************************************/
 void CStartup::ServiceGuiInit()
 {
+    //keep oven heating time
+    ModifyProgramStatusFile();
+
     Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_SERVICEUSER, Global::tTranslatableStringList() << GetCurrentUserMode());
     LoadCommonComponenetsOne();
 
@@ -737,6 +733,8 @@ void CStartup::ServiceGuiInit()
 
 void CStartup::InitManufacturingDiagnostic()
 {
+    //remove ProgramStatus.txt
+    RemoveFiles();
     if (mp_ManaufacturingDiagnosticsHandler) {
         delete mp_ManaufacturingDiagnosticsHandler;
         mp_ManaufacturingDiagnosticsHandler = NULL;
@@ -754,6 +752,11 @@ void CStartup::InitManufacturingDiagnostic()
     CONNECTSIGNALSLOTGUI(mp_FirmwareUpdate, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), mp_ManaufacturingDiagnosticsHandler, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
 
     ManufacturingGuiInit();
+
+    //Reset Maintenace & Carbon Filter Life Time
+    CONNECTSIGNALSLOT(this, ResetCarbonFilterLifeTimeComplete(bool), this, OnResetCarbonFilterLifeTimeComplete(bool));
+    CONNECTSIGNALSLOT(this, ResetMaintenanceComplete(bool), this, OnResetMaintenanceComplete(bool));
+    emit ResetMaintenanceSignal();
 }
 
 /****************************************************************************/
