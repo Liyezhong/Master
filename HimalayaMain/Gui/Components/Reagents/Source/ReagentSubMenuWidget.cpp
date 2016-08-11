@@ -87,7 +87,7 @@ void CReagentSubMenuWidget::RetranslateUI()
             ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
             ConfirmationMessageDlg.SetButtonText(1, "Ok");
             ConfirmationMessageDlg.HideButtons();
-            ConfirmationMessageDlg.exec();
+            (void)ConfirmationMessageDlg.exec();
         }
    }
 }

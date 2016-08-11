@@ -225,6 +225,10 @@ void CServiceSettingsWidget::MaintainanceTimecountStart()
     mp_UserSettings->SetActiveCarbonLastResetDate(strCurDate);
     mp_UserSettings->SetOperationLastResetDate(strCurDate);
 
+
+    m_UserSettingsTemp.SetActiveCarbonLastResetDate(strCurDate);
+    m_UserSettingsTemp.SetOperationLastResetDate(strCurDate);
+
     QString dateStr = GetFormattedCurrentDateString();
     mp_Ui->labelResetCarbonFilterDate->setText(dateStr);
     mp_Ui->labelResetOperationDate->setText(dateStr);
