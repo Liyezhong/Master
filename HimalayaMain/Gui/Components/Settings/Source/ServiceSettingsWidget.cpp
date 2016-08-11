@@ -219,6 +219,17 @@ void CServiceSettingsWidget::OnResetCarbonFilter()
     emit ResetOperationDays(DataManager::RESETOPERATIONHOURS_ACTIVECARBONFILTER);
 }
 
+void CServiceSettingsWidget::MaintainanceTimecountStart()
+{
+    QString strCurDate = Global::AdjustedTime::Instance().GetCurrentDateTime().toString();
+    mp_UserSettings->SetActiveCarbonLastResetDate(strCurDate);
+    mp_UserSettings->SetOperationLastResetDate(strCurDate);
+
+    QString dateStr = GetFormattedCurrentDateString();
+    mp_Ui->labelResetCarbonFilterDate->setText(dateStr);
+    mp_Ui->labelResetOperationDate->setText(dateStr);
+}
+
 void CServiceSettingsWidget::OnSaveSetting()
 {
     emit ServiceSettingsChanged(m_UserSettingsTemp);

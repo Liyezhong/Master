@@ -1986,6 +1986,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit ProgramResumeAfterPowerFailure();
         }
         break;
+        case DataManager::MAINTAINANCE_TIMECOUNT_START:
+        {
+            emit MaintainanceTimecountStart();
+        }
+        break;
         default:
         {
             qDebug() << "Do Nothing";

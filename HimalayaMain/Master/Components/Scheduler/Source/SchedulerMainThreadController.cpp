@@ -3270,7 +3270,7 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
 
 void SchedulerMainThreadController::CheckCarbonFilterExpired()
 {
-    if (mp_DataManager->IsFirstSystemRun())
+    if (Global::GetMantainenceFirstRecordFlag())
         return;
 
     //Check for Service
@@ -5733,7 +5733,11 @@ void SchedulerMainThreadController::OnPreTestDone()
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPreTest));
 
-    mp_DataManager->CheckMaintenanceTimeCountStart();
+    if (mp_DataManager->CheckMaintenanceTimeCountStart()){
+
+        Global::tRefType fRef = GetNewCommandRef();
+        SendCommand(fRef, Global::CommandShPtr_t(new MsgClasses::CmdProgramAcknowledge(30000, DataManager::MAINTAINANCE_TIMECOUNT_START)));
+    }
 }
 
 qreal SchedulerMainThreadController::GetLastPressureOffset()

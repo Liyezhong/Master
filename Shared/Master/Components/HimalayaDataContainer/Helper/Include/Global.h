@@ -140,7 +140,8 @@ typedef enum  {
         PAUSE_HAS_BEGUN,
         SYSTEM_BUSY,
         SYSTEM_IDLE,
-        PROGRAM_RESUME_AFTER_POWER_FAILURE
+        PROGRAM_RESUME_AFTER_POWER_FAILURE,
+        MAINTAINANCE_TIMECOUNT_START
     } ProgramAcknownedgeType_t;
 /****************************************************************************/
 /*!

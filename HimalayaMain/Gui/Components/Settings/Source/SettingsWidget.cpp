@@ -122,6 +122,7 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
     CONNECTSIGNALSLOT(mp_Ui->pageLanguage, UserSettingsChanged(DataManager::CUserSettings &), mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
     CONNECTSIGNALSLOT(mp_Ui->pageNetwork, SettingsChanged(DataManager::CUserSettings &), mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
     CONNECTSIGNALSLOT(mp_Data, RevertChangedUserSettings(), this, UserSettingsUpdated());
+    CONNECTSIGNALSLOT(mp_Data, MaintainanceTimecountStart(), mp_Ui->pageService, MaintainanceTimecountStart());
     CONNECTSIGNALSLOTGUI(mp_Data, EnableRemoteSWButton(bool), mp_Ui->pageDataManagement, SetRemoteSWButtonState(bool));
     CONNECTSIGNALSLOTGUI(mp_MainWindow, CurrentTabChanged(int), this, OnCurrentTabChanged(int));
 }

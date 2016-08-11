@@ -52,9 +52,7 @@ private:
     CReagentGroupCommandInterface *mp_ReagentGroupCommandInterface;       ///<  Definition/Declaration of variable mp_ReagentGroupCommandInterface
     CModuleCommandInterface *mp_ModuleCommandInterface;
     CProgramCommandInterface *mp_ProgramCommandInterface; //!< Handles commands related to program container
-    bool m_maintenance_FirstRecord_Flag;
-    DeviceControl::DeviceLifeCycleRecord m_deviceLifeCycleRecord;
-    DeviceControl::PartLifeCycleRecord*  m_pPartLifeCycleRecord;
+
 protected:
     /****************************************************************************/
     /*!
@@ -247,18 +245,11 @@ public:
     /*!
      *  \brief  Start the time count of maintenance when the Master SW runs at the first time
      *
-     *  \return void
+     *  \return indicates whether start the maintenance timecount or not 
      */
     /****************************************************************************/
-    void CheckMaintenanceTimeCountStart();
-    /****************************************************************************/
-    /*!
-     *  \brief  Is the the First system running?
-     *
-     *  \return void
-     */
-    /****************************************************************************/
-    bool IsFirstSystemRun() {return m_maintenance_FirstRecord_Flag;}
+    bool CheckMaintenanceTimeCountStart();
+
 signals:
     /****************************************************************************/
     /*!

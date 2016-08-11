@@ -892,6 +892,12 @@ signals:
      */
     /****************************************************************************/
     void ProgramResumeAfterPowerFailure();
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of signal MaintainanceTimecountStart
+     */
+    /****************************************************************************/
+    void MaintainanceTimecountStart();
 
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);
