@@ -275,8 +275,8 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportFillingTimeOut2Min(),this, OnReportFillingTimeOut2Min());
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportDrainingTimeOut2Min(),this, OnReportDrainingTimeOut2Min());
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportError(quint32, quint16, quint16, quint16, QDateTime),this, OnReportError(quint32, quint16, quint16, quint16, QDateTime));
-    CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, ResetActiveCarbonFilterLifeTime(),
-                     this, ResetActiveCarbonFilterLifetime());
+    CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, ResetActiveCarbonFilterLifeTime(quint32),
+                     this, ResetActiveCarbonFilterLifetime(quint32));
     m_TickTimer.setInterval(500);
 
     //command queue reset
@@ -311,9 +311,9 @@ void SchedulerMainThreadController::ReportGetServiceInfo(ReturnCode_t ReturnCode
     SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(new MsgClasses::CmdModuleListUpdate(30000, ModuleInfo, DeviceType, false)));
 }
 
-void SchedulerMainThreadController::ResetActiveCarbonFilterLifetime()
+void SchedulerMainThreadController::ResetActiveCarbonFilterLifetime(quint32 setVal)
 {
-    m_SchedulerCommandProcessor->ResetActiveCarbonFilterLifetime();
+    m_SchedulerCommandProcessor->ResetActiveCarbonFilterLifetime(setVal);
 }
 void SchedulerMainThreadController::OnReportFillingTimeOut2Min()
 {

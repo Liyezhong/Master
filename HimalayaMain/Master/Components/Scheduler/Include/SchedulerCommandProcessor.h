@@ -203,10 +203,11 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ResetActiveCarbonFilterLifetime
+     *  \param  setVal -- lifetime for carbon filter
      *
      */
     /****************************************************************************/
-    virtual void ResetActiveCarbonFilterLifetime() = 0;
+    virtual void ResetActiveCarbonFilterLifetime(quint32 setVal) = 0;
     /****************************************************************************/
     /*!
      *  \brief  Get report error from salve module
@@ -265,9 +266,10 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal SigResetActiveCarbonFilterLifetime
+     *  \param  setVal -- lifetime for carbon filter
      */
     /****************************************************************************/
-    void SigResetActiveCarbonFilterLifetime();
+    void SigResetActiveCarbonFilterLifetime(quint32 setVal);
 
     /************************************************************************************/
     /*!
@@ -410,12 +412,13 @@ public slots:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot OnResetActiveCarbonFilterLifetime
+     *  \brief  Definition/Declaration of slot OnResetActiveCarbonFilterLifetime\
+     *  \param  setVal -- lifetime for carbon filter
      */
     /****************************************************************************/
-    virtual void OnResetActiveCarbonFilterLifetime()
+    virtual void OnResetActiveCarbonFilterLifetime(quint32 setVal)
     {
-        this->OnResetActiveCarbonFilterLifetime4Slot();
+        this->OnResetActiveCarbonFilterLifetime4Slot(setVal);
     }
 
     /****************************************************************************/
@@ -522,7 +525,7 @@ private:
     /****************************************************************************/
     virtual void OnShutDownDevice4Slot()= 0 ;
     virtual void OnNotifySavedServiceInfor4Slot(const QString& deviceType) = 0;
-    virtual void OnResetActiveCarbonFilterLifetime4Slot() = 0;
+    virtual void OnResetActiveCarbonFilterLifetime4Slot(quint32 setVal) = 0;
 
     SchedulerCommandProcessorBase(const SchedulerCommandProcessorBase&);              			///< Not implemented.
     const SchedulerCommandProcessorBase& operator=(const SchedulerCommandProcessorBase&);		///< Not implemented.
@@ -607,10 +610,11 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ResetActiveCarbonFilterLifetime
+     *  \param  setVal -- lifetime for carbon filter
      *
      */
     /****************************************************************************/
-    virtual void ResetActiveCarbonFilterLifetime();
+    virtual void ResetActiveCarbonFilterLifetime(quint32 setVal);
 
     /****************************************************************************/
     /*!
@@ -718,7 +722,7 @@ private:
     /****************************************************************************/
     virtual void OnShutDownDevice4Slot();
     virtual void OnNotifySavedServiceInfor4Slot(const QString& deviceType);
-    virtual void OnResetActiveCarbonFilterLifetime4Slot();
+    virtual void OnResetActiveCarbonFilterLifetime4Slot(quint32 setVal);
     virtual void OnTickTimer4Slot();
     /****************************************************************************/
     /*!

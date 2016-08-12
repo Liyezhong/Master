@@ -175,6 +175,7 @@ void CServiceSettingsWidget::showEvent(QShowEvent *p_Event)
         QString str = mp_UserSettings->GetOperationLastResetDate();
         QDateTime lastResetDate = QDateTime::fromString(str);
         mp_Ui->labelResetOperationDate->setText(GetFormattedDateString(lastResetDate));
+        m_UserSettingsTemp.SetOperationLastResetDate(str);
     }
 
     if ("" == mp_UserSettings->GetActiveCarbonLastResetDate())
@@ -186,6 +187,7 @@ void CServiceSettingsWidget::showEvent(QShowEvent *p_Event)
         QString str = mp_UserSettings->GetActiveCarbonLastResetDate();
         QDateTime lastResetDate = QDateTime::fromString(str);
         mp_Ui->labelResetCarbonFilterDate->setText(GetFormattedDateString(lastResetDate));
+        m_UserSettingsTemp.SetActiveCarbonLastResetDate(str);
     }
 }
 

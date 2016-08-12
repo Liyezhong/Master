@@ -184,7 +184,7 @@ void SchedulerCommandProcessor<DP>::run4Slot()
     CONNECTSIGNALSLOT(&m_TickTimer, timeout(), this, OnTickTimer());
     CONNECTSIGNALSLOT(this, SigShutDownDevice(), this, OnShutDownDevice());
     CONNECTSIGNALSLOT(this, SigNotifySavedServiceInfor(const QString&), this, OnNotifySavedServiceInfor(const QString&));
-    CONNECTSIGNALSLOT(this, SigResetActiveCarbonFilterLifetime(), this, OnResetActiveCarbonFilterLifetime());
+    CONNECTSIGNALSLOT(this, SigResetActiveCarbonFilterLifetime(quint32), this, OnResetActiveCarbonFilterLifetime(quint32));
     m_TickTimer.setInterval(500);
     m_TickTimer.start();
 
@@ -751,9 +751,9 @@ void SchedulerCommandProcessor<DP>::NotifySavedServiceInfor(const QString& devic
 }
 
 template <class DP>
-void SchedulerCommandProcessor<DP>::ResetActiveCarbonFilterLifetime()
+void SchedulerCommandProcessor<DP>::ResetActiveCarbonFilterLifetime(quint32 setVal)
 {
-    emit SigResetActiveCarbonFilterLifetime();
+    emit SigResetActiveCarbonFilterLifetime(setVal);
 }
 
 template <class DP>
@@ -798,9 +798,9 @@ void SchedulerCommandProcessor<DP>::OnNotifySavedServiceInfor4Slot(const QString
 }
 
 template <class DP>
-void SchedulerCommandProcessor<DP>::OnResetActiveCarbonFilterLifetime4Slot()
+void SchedulerCommandProcessor<DP>::OnResetActiveCarbonFilterLifetime4Slot(quint32 setVal)
 {
-    mp_IDeviceProcessing->ResetActiveCarbonFilterLifeTime();
+    mp_IDeviceProcessing->ResetActiveCarbonFilterLifeTime(setVal);
 }
 
 }// end of namespace Scheduler

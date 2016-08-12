@@ -797,9 +797,10 @@ private slots:
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of slot ShutdownRetortHeater
+          *  \param  setVal -- lifetime for carbon filter
           */
          /****************************************************************************/
-         void ResetActiveCarbonFilterLifetime();
+         void ResetActiveCarbonFilterLifetime(quint32 setVal);
 
          /****************************************************************************/
          /*!
