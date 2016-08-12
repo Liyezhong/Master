@@ -1315,29 +1315,40 @@
 <context>
     <name>Core::CStartup</name>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1377"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="595"/>
+        <source>Resetting Maintenance</source>
+        <translation type="unfinished">重置维护时间</translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/Startup.cpp" line="600"/>
+        <source>Resetting maintenance is failed.
+</source>
+        <translation type="unfinished">重置维护时间失败</translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/Startup.cpp" line="1429"/>
         <source>Alarm Status:</source>
         <translation type="unfinished">警报灯状态:</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1829"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1846"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1873"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1890"/>
         <source>Date</source>
         <translation type="unfinished">日期</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1837"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1881"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1848"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1892"/>
         <source>Type</source>
         <translation type="unfinished">类型</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1830"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1847"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1874"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1891"/>
         <source>TimeStamp</source>
         <translation type="unfinished">时间戳</translation>
     </message>
@@ -1348,51 +1359,34 @@
     </message>
     <message>
         <location filename="../../../Core/Source/Startup.cpp" line="429"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1839"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1883"/>
         <source>Service Help Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="598"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="619"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1715"/>
-        <source>Reseting Maintenance</source>
-        <translation type="unfinished">重置维护时间</translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="600"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="621"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1717"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="597"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="603"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="624"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1720"/>
-        <source>Reseting maintenance is failed.
-</source>
-        <translation type="unfinished">重置维护时间失败</translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="857"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="861"/>
         <source>Missing Xml files</source>
         <translation type="unfinished">xml文件丢失</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="860"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="864"/>
         <source>The following XML files are not present.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1831"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1838"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1849"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1875"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1882"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1893"/>
         <source>Description</source>
         <translation type="unfinished">描述</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="783"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="787"/>
         <source>System is initializing ...</source>
         <translation type="unfinished">系统正在初始化…</translation>
     </message>

@@ -586,6 +586,21 @@ void CStartup::OnSelectTestOptions(int Index)
 
     Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << LogString);
 }
+void CStartup::ShowMaintenanceFailResults(MainMenu::CMessageDlg *MessageDlg)
+{
+    if(MessageDlg == NULL){
+        return;
+    }
+    //if failed, show error dialog.
+    MessageDlg->SetTitle(QApplication::translate("Core::CStartup",
+                                                        "Resetting Maintenance", 0, QApplication::UnicodeUTF8));
+    MessageDlg->SetButtonText(1, QApplication::translate("Core::CStartup",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+    MessageDlg->HideButtons();
+    MessageDlg->SetText(QApplication::translate("Core::CStartup", "Resetting maintenance is failed.\n", 0, QApplication::UnicodeUTF8));
+    MessageDlg->SetIcon(QMessageBox::Critical);
+    MessageDlg->exec();
+}
 
 void CStartup::OnResetMaintenanceComplete(bool Result)
 {
@@ -594,15 +609,7 @@ void CStartup::OnResetMaintenanceComplete(bool Result)
 
     if(m_SystemInitialized && m_ResetMaintenAndCarbonFilterCount==2){
         if(!m_ResetMaintenResult || !m_ResetCarbonFilterLifeTimeResult){
-            //if failed, show error dialog.
-            mp_MessageDlg->SetTitle(QApplication::translate("Core::CStartup",
-                                                                "Resetting Maintenance", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CStartup",
-                                                                        "Ok", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->HideButtons();
-            mp_MessageDlg->SetText(QApplication::translate("Core::CStartup", "Resetting maintenance is failed.\n", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->SetIcon(QMessageBox::Critical);
-            mp_MessageDlg->exec();
+            ShowMaintenanceFailResults(mp_MessageDlg);
         }
     }
     qDebug() << "OnResetMaintenanceComplete";
@@ -615,15 +622,7 @@ void CStartup::OnResetCarbonFilterLifeTimeComplete(bool Result)
 
     if(m_SystemInitialized && m_ResetMaintenAndCarbonFilterCount==2){
         if(!m_ResetMaintenResult || !m_ResetCarbonFilterLifeTimeResult){
-            //if failed, show error dialog.
-            mp_MessageDlg->SetTitle(QApplication::translate("Core::CStartup",
-                                                                "Reseting Maintenance", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CStartup",
-                                                                        "Ok", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->HideButtons();
-            mp_MessageDlg->SetText(QApplication::translate("Core::CStartup", "Reseting maintenance is failed.\n", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->SetIcon(QMessageBox::Critical);
-            mp_MessageDlg->exec();
+            ShowMaintenanceFailResults(mp_MessageDlg);
         }
     }
     qDebug() << "OnResetCarbonFilterLifeTimeComplete";
@@ -1764,15 +1763,7 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
 
             if(m_SystemInitialized && m_ResetMaintenAndCarbonFilterCount==2){
                 if(!m_ResetMaintenResult || !m_ResetCarbonFilterLifeTimeResult){
-                    //if failed, show error dialog.
-                    mp_MessageDlg->SetTitle(QApplication::translate("Core::CStartup",
-                                                                        "Reseting Maintenance", 0, QApplication::UnicodeUTF8));
-                    mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CStartup",
-                                                                                "Ok", 0, QApplication::UnicodeUTF8));
-                    mp_MessageDlg->HideButtons();
-                    mp_MessageDlg->SetText(QApplication::translate("Core::CStartup", "Reseting maintenance is failed.\n", 0, QApplication::UnicodeUTF8));
-                    mp_MessageDlg->SetIcon(QMessageBox::Critical);
-                    mp_MessageDlg->exec();
+                    ShowMaintenanceFailResults(mp_MessageDlg);
                 }
             }
         }
