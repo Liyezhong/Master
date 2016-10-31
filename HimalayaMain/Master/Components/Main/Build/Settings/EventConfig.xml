@@ -1439,5 +1439,17 @@
 	    <Event Code="" ErrorID="67175224" ErrorType="INFO" AlarmType="No" Name="Event_SCHEDULER_COOLING_DOWN" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175224" ButtonType="" StatusBar=""/>
 	    </Event>
+	    <Event Code="" ErrorID="16850944" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_START_PUMP" LogLevel="Low" UserLog="FALSE">
+             <Step ID="0" Type="MSG" StringID="16850944" ButtonType="" StatusBar=""/>
+            </Event>
+            <Event Code="" ErrorID="16850945" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_STOP_PUMP" LogLevel="Low" UserLog="FALSE">
+             <Step ID="0" Type="MSG" StringID="16850945" ButtonType="" StatusBar=""/>
+            </Event>
+            <Event Code="" ErrorID="16850946" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_OPEN_VALVE" LogLevel="Low" UserLog="FALSE">
+             <Step ID="0" Type="MSG" StringID="16850946" ButtonType="" StatusBar=""/>
+            </Event>
+            <Event Code="" ErrorID="16850947" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_CLOSE_VALVE" LogLevel="Low" UserLog="FALSE">
+             <Step ID="0" Type="MSG" StringID="16850947" ButtonType="" StatusBar=""/>
+            </Event>
 	</Source>
 </EventConfigure>

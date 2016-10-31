@@ -744,6 +744,10 @@
         <string id="67174930" text1="Bottle check: failed for Station:%1." text2=""/>
         <string id="67174931" text1="Bottle check:Blockage for Station:%1." text2=""/>
         <string id="67174932" text1="Bottle check:Build pressure failed for Station:%1." text2=""/>
+	<string id="16850944" text1="Start pump." text2=""/>
+	<string id="16850945" text1="Stop pump." text2=""/>
+	<string id="16850946" text1="Start valve%1." text2=""/>
+	<string id="16850947" text1="Stop valve%1." text2=""/>
         <string id="16846865" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG1" text2=""/>
         <string id="16846866" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG2" text2=""/>
         <string id="16846867" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG3" text2=""/>

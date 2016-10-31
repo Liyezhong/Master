@@ -445,7 +445,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
                 cmdPressure->SetTargetPressure(0.0);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmdPressure);
                 m_StartReq++;
-                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_PUMP);
+                //mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_PUMP);
             }
             else
             {
@@ -472,7 +472,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
                 {
                     mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
                     m_StartReq++;
-                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_PUMP);
+                    //mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_PUMP);
                 }
                 else
                 {
@@ -494,7 +494,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
                 cmd->SetValveState(VALVE_STATE_OPEN);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                 m_StartReq++;
-                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_VALVE1);
+                //mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_VALVE1);
             }
             else
             {
@@ -531,7 +531,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
                     cmd->SetValveState(VALVE_STATE_CLOSE);
                     mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                     m_StartReq++;
-                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_VALVE1);
+                    //mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_VALVE1);
                 }
                 else
                 {
@@ -561,7 +561,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
                 cmd->SetValveState(VALVE_STATE_OPEN);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                 m_StartReq++;
-                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_VALVE2);
+                //mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_VALVE2);
             }
             else
             {
@@ -598,7 +598,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
                     cmd->SetValveState(VALVE_STATE_CLOSE);
                     mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                     m_StartReq++;
-                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_VALVE2);
+                    //mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_VALVE2);
                 }
                 else
                 {
