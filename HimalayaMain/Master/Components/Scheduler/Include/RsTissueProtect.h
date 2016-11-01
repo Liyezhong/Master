@@ -57,21 +57,6 @@ class  CRsTissueProtect : public QObject
         SAFE_REAGENT_FINISHED
     } StateList_t;
 
-    /*lint -e578 */
-    typedef enum
-    {
-        UNKNOWN,
-        FIRST_STEP,
-        Fixation,
-        Fixation_Overflow,
-        Concentration_Dehydration,
-        Concentration_Dehydration_Overflow,
-        Clearing,
-        Clearing_Overflow,
-        Paraffin,
-        Paraffin_Overflow
-    } ReagentType_t;
-
 public:
     /****************************************************************************/
     /*!
@@ -149,6 +134,15 @@ private:
     /****************************************************************************/
     void SendTasksDoneSig(bool flag);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  try to suck from next station of safe reagent
+     *  \return indicates whether execute the filling or not
+     *
+     */
+    /****************************************************************************/
+    bool TryNextSafeReagent();
+
 private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
     CSchedulerStateMachine*        mp_StateMachine;         //!< Pointer to CSchedulerStateMachine
@@ -165,12 +159,15 @@ private:
     quint8 m_ProcessingSafeReagent;                         //!< Sequnece of processing safe reagent
     qint64 m_StartWaitTime;                                 //!< start up time for wait
     bool   m_IsSafeReagentSuccessful;                       //!< flag to indicate if safe reagent is successful or not
+    bool   m_retryNextStation;                              //!< flag to indicate whether system will suck the next station safe reagent or not
     StateList_t m_CurrentStep;                              //!< current step
+    QList<QString> m_safeReagentStations;                   //!< hold all safe reagent
+    int    m_CurSafeReagentIndex;                           //!< which one is being used in the safe reagent
 
 private:
     CRsTissueProtect(const CRsTissueProtect& rhs);
     CRsTissueProtect& operator=(const CRsTissueProtect& rhs);
-    CRsTissueProtect::ReagentType_t GetReagentType();
+    QString GetCurReagentType();
     QString GetStationID();
 };
 }

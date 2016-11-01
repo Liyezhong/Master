@@ -877,6 +877,27 @@ private slots:
           */
          /****************************************************************************/
          void UpdateStationReagentStatus(bool bOnlyNew);
+         /****************************************************************************/
+         /*!
+          *  \brief  Get the type of safe reagent
+          *  \param  curReagentGroupID = the current used reagent group
+          *  \param  firstTimeUseReagent = When the error is happening, is it first time to use the current reagent?
+          *
+          *  \return the type of safe reagent
+          */
+         /****************************************************************************/
+         QString GetSafeReagentType(const QString& curReagentGroupID, bool firstTimeUseReagent);
+
+         /****************************************************************************/
+         /*!
+          *  \brief  according to the specified reagent group to get the stations in the current prorgam
+          *  \param  specifiedReagentGroup = the specified reagent group
+          *  \param  stationList = station containers
+          *
+          *  \return NULL
+          */
+         /****************************************************************************/
+         void GetSpecifiedStations(const QString& specifiedReagentGroup, bool excludeCurStation, QList<QString>& stationList);
 protected:
 
         /****************************************************************************/
@@ -1470,14 +1491,19 @@ protected:
         /****************************************************************************/
         SchedulerStateMachine_t GetCurrentStepState() { return m_CurrentStepState; }
 
+
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function GetSafeReagentStationList
+         *  \param  curReagentGroupID = the current used reagent group
+         *  \param  excludeCurStation =  whether exclude the current used station or not?
+         *  \param  firstTimeUseReagent = When the error is happening, is it first time to use the current reagent?
+         *  \param  the gotten safe reagent list
          *
          *  \return from IsLastStep
          */
         /****************************************************************************/
-        bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
+        bool GetSafeReagentStationList(const QString& curReagentGroupID, bool excludeCurStation, bool firstTimeUseReagent, QList<QString>& stationList);
 
         /****************************************************************************/
         /*!
@@ -1611,6 +1637,44 @@ protected:
          */
         /****************************************************************************/
         void SendSystemBusy2GUI(bool isBusy);
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Check is there clearing reagent used in the current program?
+         *  \return true indicates clearing reagent is existing in the current program, otherwise return false
+         *
+         */
+        /****************************************************************************/
+        bool CurProgramHasClearingReagent();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Check whether the specified reagent group has been used before the current step or not
+         *  \param  reagentGroupID = the specified reagent group
+         *  \return true indicates the program has used the specified reagent group before the current step,
+         *     otherwise return false
+         *
+         */
+        /****************************************************************************/
+        bool HasUsedReagent(const QString& reagentGroupID);
+        /****************************************************************************/
+        /*!
+         *  \brief Get ReagentID for the Current program step
+         *
+         *  \return ReagentID for the Current program step
+         *
+         */
+        /****************************************************************************/
+        QString ReagentIdOfCurProgramStep();
+        /****************************************************************************/
+        /*!
+         *  \brief Get the status of retort lock
+         *
+         *  \return 1 indicates the retort lid is open. 0 as closed
+         *
+         */
+        /****************************************************************************/
+        inline quint16 RetortLockStatus() { return m_RetortLockStatus; }
     public slots:
 
         /****************************************************************************/

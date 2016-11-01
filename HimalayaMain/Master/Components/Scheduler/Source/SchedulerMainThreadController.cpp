@@ -85,6 +85,7 @@
 #include "Global/Include/Utils.h"
 #include "Global/Include/Commands/CmdShutDown.h"
 #include <DataManager/CommandInterface/Include/UserSettingsCommandInterface.h>
+#include <DataManager/Helper/Include/DataManagerEventCodes.h>
 
 using namespace DataManager;
 
@@ -2739,6 +2740,79 @@ QString SchedulerMainThreadController::SelectStationByReagent(const CReagent* pR
     return "";
 }
 
+bool SchedulerMainThreadController::CurProgramHasClearingReagent()
+{
+    if (m_CurProgramID.isEmpty() || m_CurProgramID.isNull())
+    {
+        return false;
+    }
+
+    if (!mp_DataManager)
+    {
+        Q_ASSERT(false);
+        return false;
+    }
+
+    CDataProgramList* pDataProgramList = mp_DataManager->GetProgramList();
+    if (!pDataProgramList)
+    {
+        Q_ASSERT(false);
+        return false;
+    }
+
+    CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(m_CurProgramID));
+    for (int i = 0; i < pProgram->GetNumberOfSteps(); i++)
+    {
+        const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);//use order index
+        QString reagentID = pProgramStep->GetReagentID();
+        if (Global::ClearingReagent == GetReagentGroupID(reagentID))
+        {
+            LogDebug(QString("In CurProgramUsedClearingReagent, return true"));
+            return true;
+        }
+    }
+    return false;
+}
+
+bool SchedulerMainThreadController::HasUsedReagent(const QString& reagentGroupID)
+{
+    if (m_CurProgramID.isEmpty() || m_CurProgramID.isNull())
+    {
+        return false;
+    }
+
+    if (-1 == m_CurProgramStepIndex)
+    {
+        return false;
+    }
+
+    if (!mp_DataManager)
+    {
+        Q_ASSERT(false);
+        return false;
+    }
+
+    CDataProgramList* pDataProgramList = mp_DataManager->GetProgramList();
+    if (!pDataProgramList)
+    {
+        Q_ASSERT(false);
+        return false;
+    }
+
+    CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(m_CurProgramID));
+    for (int i = 0; i < m_CurProgramStepIndex; i++)
+    {
+        const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);//use order index
+        QString reagentID = pProgramStep->GetReagentID();
+        if (reagentGroupID == GetReagentGroupID(reagentID))
+        {
+            LogDebug(QString("In HasUsedReagent(), return true"));
+            return true;
+        }
+    }
+    return false;
+}
+
 bool SchedulerMainThreadController::PrepareProgramStationList(const QString& ProgramID, int beginStep)
 {
     if (ProgramID.isEmpty() || ProgramID.isNull())
@@ -2802,15 +2876,9 @@ bool SchedulerMainThreadController::GetSafeReagentForSpecial(int index, QString&
     return true;
 }
 
-/**
- * @brief For the given reagent group, based some rules, get the station list of Safe Reagent
- * @param reagentGroupID the given reagent group.
- * @param stationList The station list contains the stations fitting the requirements.
- * @return indicate Whether or not this function executes successfully
- */
-bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList)
+
+bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& curReagentGroupID, bool excludeCurStation, bool firstTimeUseReagent, QList<QString>& stationList)
 {
-//    QList<QString> fixationStationList, dehydratingAbsstationList;
     CDataReagentList* pReagentList =  mp_DataManager->GetReagentList();
     if (!pReagentList)
         return false;
@@ -2819,10 +2887,93 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& rea
     if (!pDashboardDataStationList)
         return false;
 
-    ListOfIDs_t stationIDs = pDashboardDataStationList->GetOrderedListOfDashboardStationIDs();
-    for (int i = 0; i < stationIDs.count(); i++)
+    QString specifiedReagentGroup = GetSafeReagentType(curReagentGroupID, firstTimeUseReagent);
+    if (specifiedReagentGroup == Global::DehydratingDilutedFixation){
+        //Only use the first DehydratingDiluted,
+        //if no DehydratingDiluted, try Fixation
+        GetSpecifiedStations(Global::DehydratingDiluted, excludeCurStation, stationList);
+        QString firstStation = stationList.at(0);
+        if (!firstStation.isEmpty()){
+            stationList.clear();
+            stationList.push_back(firstStation);
+        }
+        if (stationList.empty()){
+            GetSpecifiedStations(Global::FixationReagent, excludeCurStation, stationList);
+        }
+    }
+    else if (specifiedReagentGroup == Global::FixationDehydratingDiluted){
+        //if no Fixation, try itself
+         GetSpecifiedStations(Global::FixationReagent, excludeCurStation, stationList);
+         if (stationList.empty()){
+             GetSpecifiedStations(Global::DehydratingDiluted, excludeCurStation, stationList);
+             QString firstStation = stationList.at(0);
+             if (!firstStation.isEmpty()){
+                 stationList.clear();
+                 stationList.push_back(firstStation);
+             }
+         }
+    }
+    else
     {
-        CDashboardStation* pDashboardStation = pDashboardDataStationList->GetDashboardStation(stationIDs.at(i));
+        GetSpecifiedStations(specifiedReagentGroup, excludeCurStation, stationList);
+        if (specifiedReagentGroup == Global::DehydratingDiluted){
+            stationList = stationList.mid(0, m_CurProgramStepIndex - m_StationList.indexOf(stationList.at(0)));
+        }
+    }
+    return true;
+}
+
+QString SchedulerMainThreadController::GetSafeReagentType(const QString& curReagentGroupID, bool firstTimeUseReagent)
+{
+    if (firstTimeUseReagent){
+        if (Global::FixationReagent == curReagentGroupID || Global::ClearingReagent == curReagentGroupID ||
+            Global::ParaffinReagent == curReagentGroupID){
+            return curReagentGroupID;
+        }
+
+        if (Global::WaterReagent == curReagentGroupID){
+            return Global::FixationReagent;
+        }
+
+        if (Global::DehydratingDiluted == curReagentGroupID){
+            return Global::FixationDehydratingDiluted;
+        }
+
+        if (Global::DehydratingAbsolute == curReagentGroupID){
+            return Global::DehydratingDilutedFixation;
+        }
+        return "";
+    }
+
+    //not first time to use reagent
+    if (Global::WaterReagent == curReagentGroupID){
+        return Global::FixationReagent;
+    }
+    return curReagentGroupID;
+}
+
+void SchedulerMainThreadController::GetSpecifiedStations(const QString& specifiedReagentGroup, bool excludeCurStation, QList<QString>& stationList)
+{
+    CDataReagentList* pReagentList =  mp_DataManager->GetReagentList();
+      if (!pReagentList)
+          return;
+
+    CDashboardDataStationList* pDashboardDataStationList = mp_DataManager->GetStationList();
+      if (!pDashboardDataStationList)
+          return;
+
+    QList<QString> stations(m_StationList);
+
+    if (excludeCurStation)
+    {
+        if (m_CurProgramStepIndex >= 0)
+        stations.removeAt(m_CurProgramStepIndex);
+    }
+
+    //loop stations of the current program
+    for (int i = 0; i < stations.count(); i++)
+    {
+        CDashboardStation* pDashboardStation = pDashboardDataStationList->GetDashboardStation(stations.at(i));
         if (!pDashboardStation)
             continue;
 
@@ -2835,30 +2986,12 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& rea
 
         if (CReagentGroup* reagentGroup = mp_DataManager->GetReagentGroupList()->GetReagentGroup(pReagent->GetGroupID()))
         {
-            //Fixation:RG1, Clearing: RG5, Paraffin:RG6
-            if ( (reagentGroupID == "RG1") || (reagentGroupID == "RG5") || (reagentGroupID == "RG6"))
+            if (reagentGroup->GetGroupID() == specifiedReagentGroup)
             {
-                if (reagentGroup->GetGroupID() == reagentGroupID)
-                {
-                    stationList.append(pDashboardStation->GetDashboardStationID());
-                }
-                continue;
+                stationList.append(pDashboardStation->GetDashboardStationID());//use same reagent group
             }
-
-            if ( (reagentGroupID == "RG2") || (reagentGroupID == "RG3") || (reagentGroupID == "RG4") )//RG2:Water,RG3:Dehydrating diluted,RG4:Dehydrating absolute
-            {
-
-                if (reagentGroup->GetGroupID() == "RG3")//Dehydrating,diluted
-                {
-                    stationList.append(pDashboardStation->GetDashboardStationID());
-                }
-                continue;
-            }
-
         }
     }// end of for
-
-    return true;
 }
 
 void SchedulerMainThreadController::SendTissueProtectMsg(bool flag)
@@ -2950,7 +3083,7 @@ int SchedulerMainThreadController::WhichStepHasNoSafeReagent(const QString& Prog
         const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);
         if (!pProgramStep)
             continue;
-        bool ret = GetSafeReagentStationList(GetReagentGroupID(pProgramStep->GetReagentID()), stationList);
+        bool ret = GetSafeReagentStationList(GetReagentGroupID(pProgramStep->GetReagentID()), false, true, stationList);
         if (ret && stationList.isEmpty())
         {
             return i;
@@ -5990,5 +6123,34 @@ void SchedulerMainThreadController::SendBottleCheckReply(const QString& stationI
     SendCommand(Ref2, Global::CommandShPtr_t(commandPtr));
 }
 
+QString SchedulerMainThreadController::ReagentIdOfCurProgramStep()
+{
+    if (m_CurProgramID.isEmpty() || m_CurProgramID.isNull())
+    {
+        return "";
+    }
+
+    if (-1 == m_CurProgramStepIndex)
+    {
+        return "";
+    }
+
+    if (!mp_DataManager)
+    {
+        Q_ASSERT(false);
+        return "";
+    }
+
+    CDataProgramList* pDataProgramList = mp_DataManager->GetProgramList();
+    if (!pDataProgramList)
+    {
+        Q_ASSERT(false);
+        return "";
+    }
+
+    CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(m_CurProgramID));
+    const CProgramStep* pProgramStep = pProgram->GetProgramStep(m_CurProgramStepIndex);
+    return pProgramStep->GetReagentID();
+}
 
 }

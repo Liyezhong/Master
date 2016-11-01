@@ -51,6 +51,7 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     m_DrainSafeReagent = 0;
     m_ProcessingSafeReagent = 0;
     m_IsSafeReagentSuccessful = true;
+    m_retryNextStation = false;
     m_CurrentStep = UNDEF;
 }
 
@@ -70,6 +71,7 @@ void CRsTissueProtect::Start()
     m_DrainSafeReagent = 0;
     m_ProcessingSafeReagent = 0;
     m_IsSafeReagentSuccessful = true;
+    m_retryNextStation = false;
     m_CurrentStep = INIT;
 }
 
@@ -94,6 +96,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         m_MoveToSealSeq = 0;;
         m_StartWaitTime = 0;
         m_IsSafeReagentSuccessful = true;
+        m_retryNextStation = false;
 
         m_StationID = this->GetStationID();
         if ("" == m_StationID)
@@ -117,18 +120,18 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
 
             quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
             bool ok = false;
-            // For filling
-            if (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="2")
+
+            if (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="2")      // For filling
             {
                 CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, mp_SchedulerController);
-                ALStopCmd->SetCmdType(0);
+                ALStopCmd->SetCmdType(0); //for SYNC_CMD_AL_PROCEDURE_SUCKING_LEVELSENSOR
                 mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
                 m_CurrentStep = STOP_CMDEXEC;
             }
             else if (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="6") // For Draining
             {
                 CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, mp_SchedulerController);
-                ALStopCmd->SetCmdType(1);
+                ALStopCmd->SetCmdType(1); //for SYNC_CMD_AL_PROCEDURE_DRAINING
                 mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
                 m_CurrentStep = STOP_CMDEXEC;
             }
@@ -310,9 +313,14 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                    && retCode != DCL_ERR_DEV_LA_FILLING_SOAK_EMPTY)
                 {
                     mp_SchedulerController->LogDebug("RS_Safe_Reagent, Filling failed");
+                    bool bExecuted = TryNextSafeReagent();
+                    if (bExecuted)
+                        return;
+
                     SendTasksDoneSig(false);
                     return;
                 }
+
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     mp_SchedulerController->LogDebug(QString("Return code is successful, program Step Filling OK"));
@@ -323,6 +331,11 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 if (DCL_ERR_DEV_LA_FILLING_INSUFFICIENT == retCode || DCL_ERR_DEV_LA_FILLING_TIMEOUT_4MIN == retCode)
                 {
                     mp_SchedulerController->LogDebug(QString("program Step Filling failed, and retrun code is insufficient or 4 min timeout"));
+                    bool bExecuted = TryNextSafeReagent();
+                    if (bExecuted)
+                        break;
+
+
                     m_IsSafeReagentSuccessful = false;
                     m_CurrentStep = MOVE_TO_SEALING;
                     break;
@@ -522,7 +535,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
 	}
 }
 
-CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
+QString CRsTissueProtect::GetCurReagentType()
 {
     quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
 
@@ -538,81 +551,56 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
     {
         m_IsLevelSensorRelated = false;
     }
-#if 0
-    //Secondly, check if the event id is relatd with Retort, heating tube, RV and Oven failed error
-    if (DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE == EventId
-            || DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE == EventId
-            || DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL == EventId
-            || DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE == EventId
-            || DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL == EventId
-            || DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE == EventId
-            || DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL == EventId
-            || DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED == EventId
-            || DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE == EventId
-            || DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE == EventId
-            || DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE == EventId
-            || DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_ABNORMAL == EventId
-            || DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_ABNORMAL == EventId
-            || DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_ABNORMAL == EventId
-            || DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE == EventId
-            || DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE == EventId
-            || DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE == EventId
-            || DCL_ERR_DEV_RV_HEATING_TEMPSENSOR1_OUTOFRANGE == EventId
-            || DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_OUTOFRANGE == EventId
-            || DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE == EventId
-            || DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_NOTREACHTARGET == EventId
-            || DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME == EventId
-            || DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL == EventId
-            || DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL == EventId
-            || DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE == EventId
-            || DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE == EventId
-            || DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP == EventId
-            || DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_NOTREACHTARGETTEMP == EventId
-            || DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE == EventId
-            || DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE == EventId
-            || DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE == EventId)
-    {
-        IsRTRVOVenError = true;
-    }
-#endif
 
-    ReagentType_t ret = UNKNOWN;
+    QString ret = "";
     if(200 == Scenario)
     {
-        return FIRST_STEP;
-    }
-    if (false == m_IsLevelSensorRelated && Scenario >= 211 && Scenario <= 221)
-    {
-        ret = Fixation;
-    }
-    if (false == m_IsLevelSensorRelated && Scenario >= 222 && Scenario <= 247)
-    {
-        ret = Concentration_Dehydration;
-    }
-    if (false == m_IsLevelSensorRelated && Scenario >= 251 && Scenario <= 271)
-    {
-        ret = Clearing;
-    }
-    if (false == m_IsLevelSensorRelated && Scenario >= 272 && Scenario <= 277)
-    {
-        ret = Paraffin;
+        return "FIRST_STEP";
     }
 
-    if (true == m_IsLevelSensorRelated && Scenario >= 211 && Scenario <= 221)
+    if (Scenario >= 211 && Scenario <= 221)
     {
-        ret = Fixation_Overflow;
+        ret = Global::FixationReagent;
     }
-    if (true == m_IsLevelSensorRelated && Scenario >= 222 && Scenario <= 247)
+
+    if (Scenario >= 222 && Scenario <= 231)
     {
-        ret = Concentration_Dehydration_Overflow;
+        ret = Global::WaterReagent;
     }
-    if (true == m_IsLevelSensorRelated && Scenario >= 251 && Scenario <= 271)
+
+    if (Scenario >= 232 && Scenario <= 241)
     {
-        ret = Clearing_Overflow;
+        ret = Global::DehydratingDiluted;
     }
-    if (true == m_IsLevelSensorRelated && Scenario >= 272 && Scenario <= 277)
+
+    if (Scenario >= 242 && Scenario <= 247)
     {
-        ret = Paraffin_Overflow;
+        ret = Global::DehydratingAbsolute;
+    }
+
+    if (Scenario >= 251 && Scenario <= 257)
+    {
+        ret = Global::ClearingReagent;
+    }
+
+    if (Scenario >= 272 && Scenario <= 277)
+    {
+        ret = Global::ParaffinReagent;
+    }
+
+    //260:Protocol-GetReadyFor-Paraffin;
+    //271:Protocol-Paraffin-Filling-LevelSensor-Heating
+    //before fill paraffin
+    if ((260 == Scenario || 271 == Scenario))
+    {
+        if (mp_SchedulerController->CurProgramHasClearingReagent())
+        {
+            ret = Global::ClearingReagent;
+        }
+        else
+        {
+            ret = Global::ParaffinReagent;
+        }
     }
 
     return ret;
@@ -620,48 +608,28 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
 
 QString CRsTissueProtect::GetStationID()
 {
-    // Get reagent type
-    ReagentType_t reagentType = this->GetReagentType();
+    // Here the fact is that the current reagent has been filled, then the current step failed
 
-    QList<QString> stationList;
-    QString ReagentGroupID="";
+    // Get reagent type
+     m_ReagentGroup = this->GetCurReagentType();
+
+    m_safeReagentStations.clear();
     bool ret = false;
-    switch (reagentType)
-    {
-    case FIRST_STEP:
-        ret = mp_SchedulerController->GetSafeReagentForSpecial(0, ReagentGroupID, stationList);
-        m_ReagentGroup = ReagentGroupID;
-        break;
-    case Fixation:
-    case Fixation_Overflow:
-        ret = mp_SchedulerController->GetSafeReagentStationList("RG1", stationList);
-        m_ReagentGroup = "RG1";
-        break;
-    case Concentration_Dehydration:
-    case Concentration_Dehydration_Overflow:
-        ret = mp_SchedulerController->GetSafeReagentStationList("RG3", stationList);
-        m_ReagentGroup = "RG3";
-        break;
-    case Clearing:
-    case Clearing_Overflow:
-        ret = mp_SchedulerController->GetSafeReagentStationList("RG5", stationList);
-        m_ReagentGroup = "RG5";
-        break;
-    case Paraffin:
-    case Paraffin_Overflow:
-        ret = mp_SchedulerController->GetSafeReagentStationList("RG6", stationList);
-        m_ReagentGroup = "RG6";
-        break;
-    default:
-        break;
+    if ("FIRST_STEP" == m_ReagentGroup){
+        ret = mp_SchedulerController->GetSafeReagentForSpecial(0, m_ReagentGroup, m_safeReagentStations);
+    }
+    else if(!m_ReagentGroup.isEmpty()){
+        bool firstTimeUse = (!(mp_SchedulerController->HasUsedReagent(m_ReagentGroup)));
+        ret = mp_SchedulerController->GetSafeReagentStationList(m_ReagentGroup, false, firstTimeUse, m_safeReagentStations);
     }
 
-    if (false == ret || stationList.empty())
+    if (false == ret || m_safeReagentStations.empty())
     {
         mp_SchedulerController->LogDebug("In RS_Tissue_Protect, we can't find the safe reagent");
         return ""; // We can't find the safe reagent
     }
-    return stationList.at(0);
+    m_CurSafeReagentIndex = 0;
+    return m_safeReagentStations.at(0);
 }
 
 void CRsTissueProtect::OnMoveToTube()
@@ -691,6 +659,18 @@ void CRsTissueProtect::OnReleasePressure()
 {
     mp_SchedulerController->LogDebug("In RS_Tissue_Protect, begin to run CmdALReleasePressure");
     mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerController));
+}
+
+bool CRsTissueProtect::TryNextSafeReagent()
+{
+    if (m_safeReagentStations.size() > ++m_CurSafeReagentIndex){//other safe reagent is available, try to fill from it
+        m_StationID = m_safeReagentStations.at(m_CurSafeReagentIndex);
+        m_CurrentStep = DRAIN_CUR_REAGENT;
+        mp_SchedulerController->LogDebug(QString("In TryNextSafeReagent, Filling failed, retry station:%1.").arg(m_StationID));
+        return true;
+    }
+
+    return false;
 }
 
 }
