@@ -2017,13 +2017,13 @@ void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClas
     {
         if (Command.IsLocked())
         {
-            mp_MesgBoxManager->EnableOKButton();
+            mp_MesgBoxManager->EnableAllButton(true,"RT_LID_OPEN_CLOSE");
             mp_MesgBoxManager->SetRTLidLocked(true);
 
         }
         else
         {
-            mp_MesgBoxManager->DisableOKButton();
+            mp_MesgBoxManager->EnableAllButton(false,"RT_LID_OPEN_CLOSE");
             mp_MesgBoxManager->SetRTLidLocked(false);
         }
         emit RetortLockStatusChanged(Command);
@@ -2032,7 +2032,13 @@ void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClas
     {
         if (Command.IsLocked())
         {
-            mp_MesgBoxManager->EnableOKButton();
+            mp_MesgBoxManager->SetOverDoorStatus(true);
+            mp_MesgBoxManager->EnableAllButton(true,"OVEN_DOOR_CLOSED");
+        }
+        else
+        {
+            mp_MesgBoxManager->EnableAllButton(false,"OVEN_DOOR_CLOSED");
+            mp_MesgBoxManager->SetOverDoorStatus(false);
         }
     }
 }

@@ -127,7 +127,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_CurReagnetName("")
         , m_CurProgramID("")
         , m_NewProgramID("")
-        , m_OvenLidStatus(0)
+        , m_OvenLidStatus(UNDEFINED_VALUE)
         , m_RetortLockStatus(UNDEFINED_VALUE)
         , m_ProcessCassetteCount(0)
         , m_ProcessCassetteNewCount(0)
@@ -540,7 +540,9 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
                 else
                 {
                     Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,Global::tTranslatableStringList()
-                                                               <<Global::TranslatableString(ProgramNameID));
+                                                               <<Global::TranslatableString(ProgramNameID)
+                                                               <<Global::TranslatableString(QString("[%1]").arg(m_ProgramStatusInfor.GetStepID()))
+                                                               );
                 }
                 //Let GUI know master SW will enter power failure
                 MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RESUME_AFTER_POWER_FAILURE));
@@ -1567,6 +1569,24 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_SchedulerMachine->NotifyDrain4Pause(PSSM_PROCESSING);
             return;
         }
+        //DCR7157( TG-51 TG-54 )
+        if (m_bWaitToPause)
+        {
+            //dismiss the prompt of waiting for pause
+            SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+            m_bWaitToPause = false;
+            LogDebug(QString("Program Step Beginning Pause"));
+            m_SchedulerMachine->NotifyPause(SM_UNDEF);
+            return;
+        }
+
+        if (m_bWaitToPauseCmdYes)
+        {
+            LogDebug(QString("Program Step Beginning Pause"));
+            m_SchedulerMachine->NotifyDrain4Pause(SM_UNDEF);
+            return;
+        }
+        //end of DCR7157( TG-51 TG-54 )
 
         if( "RG6" == m_CurProgramStepInfo.reagentGroup && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) )
         {
@@ -3987,6 +4007,24 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         m_RetortLockStatus = strctHWMonitor.RetortLockStatus;
     }
 
+    if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
+    {
+        if(((m_OvenLidStatus == 0) ||(m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 1))
+        {
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, false));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+        }
+        if(((m_OvenLidStatus == 1) || (m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 0))
+        {
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, true));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+        }
+        m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
+    }
     if("ERROR" == StepID)
     {
         m_IsErrorStateForHM = true;
@@ -3999,10 +4037,6 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         this->CheckSlaveAllSensor(Scenario, strctHWMonitor);
     }
 
-    if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
-    {
-        m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
-    }
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.PressureAL))
     {
         m_PressureAL = strctHWMonitor.PressureAL;

@@ -349,13 +349,20 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 else
                 {
                     m_PressureSealingChkSeq = 0;
-                    if (0 == m_SealingCheckTimes)
+                    if (0 == m_SealingCheckTimes && // DCR7175 TG-50 only retry on the failure if pressure
+                            (retCode != DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY) &&
+                            (retCode != DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT) &&
+                            (retCode != DCL_ERR_DEV_RV_MOTOR_LOSTCURRENTPOSITION))
                     {
                         m_CurrentState = PRESSURE_SEALING_CHECKING;
                         m_SealingCheckTimes++;
                     }
                     else
                     {
+                        if(retCode == DCL_ERR_DEV_RV_MOTOR_LOSTCURRENTPOSITION)
+                        {
+                            retCode = DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY;
+                        }
                         mp_SchedulerThreadController->SendOutErrMsg(retCode);
                     }
                 }
