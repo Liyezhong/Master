@@ -1518,6 +1518,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
                 m_bWaitToPause = false;
                 LogDebug(QString("Program Step Beginning Pause"));
+                m_ProgramStatusInfor.SetScenario(m_CurrentScenario+1);
                 m_SchedulerMachine->NotifyPause(SM_UNDEF);
                 return;
             }
@@ -2189,7 +2190,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     }
     else if (SM_ERR_RS_ABORT == currentState)
     {
-        m_SchedulerMachine->HandleRsAbortWorkFlow(cmdName, retCode);
+        m_SchedulerMachine->HandleRsAbortWorkFlow(cmdName, retCode, ctrlCmd);
     }
 }
 
@@ -5044,6 +5045,8 @@ void SchedulerMainThreadController::Pause()
 
     // Disable pause button
     this->DisablePauseButton();
+
+    GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
     //First of all, release pressure
     m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,this), false);
 
@@ -6055,6 +6058,7 @@ void SchedulerMainThreadController::CompleteRsAbort()
 {
     //program finished
     AllStop();
+    GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
 
     m_SchedulerMachine->SendRunComplete();
 

@@ -213,7 +213,10 @@ private:
     qreal   m_PressureDriftOffset;                                              ///< pressure drift offset in Bottle check
     bool    m_NonRVErrorOccured;                                                ///< Non RV related error occured
     QVector< QPair<QString, QString> >::iterator m_BottleCheckStationIter;      ///< Iterator of Bottle check station list
-
+    bool    m_HadRetortLidOpened;                                               ///< Had the retort lid opened?
+    bool    m_IsRetortLidClosed;                                                ///< Is the retort lid closed currently?
+    bool    m_HasFinishForceDrain;                                              ///< Has it finish ForceDrain?
+    bool    m_SentInfoForLockLid;                                               ///< whether sent the prompt of lock lid or not
 private:
     /****************************************************************************/
     /*!
@@ -991,7 +994,15 @@ public:
      *  \return void
      */
     /****************************************************************************/
-    void HandleRsAbortWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+    void HandleRsAbortWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode, ControlCommandType_t ctrlCmd);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  If retort lid is opened, record this status
+     *  \return void
+     */
+    /****************************************************************************/
+    void RecordRetortLidOpened();
 
     /****************************************************************************/
     /*!

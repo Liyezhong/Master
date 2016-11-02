@@ -395,11 +395,16 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_PressureCalibrationCounter = 0;
     m_PressureDriftOffset = 0.0;
     m_NonRVErrorOccured = false;
+    m_HadRetortLidOpened = false;
 }
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
 {
     mp_SchedulerThreadController->StopTimer();
+    if (!flag){
+        mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController), false);
+    }
     mp_SchedulerThreadController->RaiseError(mp_SchedulerThreadController->GetEventKey(), DCL_ERR_FCT_CALL_SUCCESS, 0, flag);
     emit sigStateChange();
 }
@@ -2005,7 +2010,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
     }
 }
 
-void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode)
+void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode, ControlCommandType_t ctrlCmd)
 {
         SchedulerStateMachine_t stateAtAbort = mp_SchedulerThreadController->GetCurrentStepState();
         switch (stateAtAbort)
@@ -2034,11 +2039,15 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
         case PSSM_PAUSE:
             if (0 == m_PssmAbortingSeq)
             {
+                m_HadRetortLidOpened =  false;
+                m_HasFinishForceDrain = false;
+                RecordRetortLidOpened();
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
                 m_PssmAbortingSeq++;
             }
             else if (1 == m_PssmAbortingSeq)
             {
+                RecordRetortLidOpened();
                 if ("Scheduler::ALReleasePressure" == cmdName)
                 {
                     if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
@@ -2070,19 +2079,73 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
             }
             else if (2 == m_PssmAbortingSeq)
             {
+                RecordRetortLidOpened();
+
+                if(!m_IsRetortLidClosed)//lid is open
+                {
+                    if(CTRL_CMD_USER_PRESS_OK_BUTTON_LOCK_RTLID_IDLE == ctrlCmd || !m_SentInfoForLockLid)
+                    {
+                        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_LOCK_RETORT_LID);
+                        m_SentInfoForLockLid = true;
+                    }
+                }
+                else if (m_HasFinishForceDrain)//retry when lid is closed and ForceDrain is finished
+                {
+                    if(m_SentInfoForLockLid)
+                    {
+                        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_LOCK_RETORT_LID, QStringList(), false); // remove the message box
+                        m_SentInfoForLockLid = false;
+                    }
+                    m_HasFinishForceDrain = false;
+                    m_PssmAbortingSeq = 0;
+                    return;
+                }
+
                 if ("Scheduler::IDForceDraining" == cmdName)
                 {
                     //Notify GUI
                     emit sigOnStopForceDrain();
+                    m_HasFinishForceDrain = true;
 
                     if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                     {
+                        if(m_HadRetortLidOpened)
+                        {
+                            if (m_IsRetortLidClosed)
+                            {
+                                m_PssmAbortingSeq = 0;
+                            }
+                            return;
+                        }
+
+                        if(m_SentInfoForLockLid && m_IsRetortLidClosed)
+                        {
+                            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_LOCK_RETORT_LID, QStringList(), false); // remove the message box
+                            m_SentInfoForLockLid = false;
+                        }
+
                         m_PssmAbortingSeq = 0;
                         mp_SchedulerThreadController->CompleteRsAbort();
                     }
-                    else
+                    else //force drain error
                     {
+                        if (ERROR_DCL_FORCE_DRAINING_TIMEOUT_BULIDPRESSURE == retCode &&  m_HadRetortLidOpened)
+                        {
+                            if (m_IsRetortLidClosed)
+                            {
+                                m_PssmAbortingSeq = 0;
+                            }
+                            return;
+                        }
+
+                        if(m_SentInfoForLockLid && m_IsRetortLidClosed)
+                        {
+                            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_LOCK_RETORT_LID, QStringList(), false); // remove the message box
+                            m_SentInfoForLockLid = false;
+                        }
+
                         OnTasksDone(false);
+                        mp_SchedulerThreadController->SendSystemBusy2GUI(false);
                     }
                 }
             }
@@ -2135,6 +2198,17 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
             m_PssmAbortingSeq = 0;
             break;
         }
+}
+
+void CSchedulerStateMachine::RecordRetortLidOpened()
+{
+    if (1 == mp_SchedulerThreadController->RetortLockStatus())
+    {
+        m_HadRetortLidOpened =  true;
+        m_IsRetortLidClosed = false;
+    }
+    else
+        m_IsRetortLidClosed = true;
 }
 
 void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, DeviceControl::ReturnCode_t retCode, bool isAbortState)
