@@ -194,7 +194,7 @@ void TestSchedulerMainThreadController::TestSlots()
     m_pSchedulerMainController->PrepareProgramStationList("",0);
 
     QList<QString> stationList;
-    m_pSchedulerMainController->GetSafeReagentStationList("RG3", stationList);
+    m_pSchedulerMainController->GetSafeReagentStationList("RG3", false, true, stationList);
 
     m_pSchedulerMainController->SendTissueProtectMsg(false);
 
