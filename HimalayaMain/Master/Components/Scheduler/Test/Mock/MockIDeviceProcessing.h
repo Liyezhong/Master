@@ -209,7 +209,7 @@ public:
     MOCK_METHOD1(ALSetTempCtrlOFF, ReturnCode_t(ALTempCtrlType_t type));
     MOCK_METHOD0(Destroy, void());
     MOCK_METHOD1(NotifySavedServiceInfor, void(const QString& deviceType));
-    MOCK_METHOD0(ResetActiveCarbonFilterLifeTime, void(quint32 setVal));
+    MOCK_METHOD1(ResetActiveCarbonFilterLifeTime, void(quint32 setVal));
     MOCK_METHOD1(IDSetAlarm, ReturnCode_t(qint8 opcode));
     MOCK_METHOD2(ALControlValve, ReturnCode_t(quint8 ValveIndex, quint8 ValveState));
     MOCK_METHOD2(RVSetTemperatureSwitchState, ReturnCode_t(qint8 HeaterVoltage, qint8 AutoType));
