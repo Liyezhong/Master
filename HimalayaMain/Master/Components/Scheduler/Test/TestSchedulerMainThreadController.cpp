@@ -89,7 +89,7 @@ public:
         EXPECT_CALL(*mp_IDeviceProcessing, ALDraining(_,_,_))
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
-        EXPECT_CALL(*mp_IDeviceProcessing, ResetActiveCarbonFilterLifeTime())
+        EXPECT_CALL(*mp_IDeviceProcessing, ResetActiveCarbonFilterLifeTime(_))
                 .WillRepeatedly(Return());
         EXPECT_CALL(*mp_IDeviceProcessing, PerTurnOnMainRelay())
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
@@ -160,7 +160,7 @@ void TestSchedulerMainThreadController::TestSlots()
     DataManager::CModule module;
     m_pSchedulerMainController->ReportGetServiceInfo(DCL_ERR_FCT_CALL_SUCCESS, module, "TemperatureControl");
 
-    m_pSchedulerMainController->ResetActiveCarbonFilterLifetime();
+    m_pSchedulerMainController->ResetActiveCarbonFilterLifetime(1800);
 
     //m_pSchedulerMainController->OnReportFillingTimeOut2Min();
 
