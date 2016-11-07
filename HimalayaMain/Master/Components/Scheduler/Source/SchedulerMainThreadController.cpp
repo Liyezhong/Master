@@ -454,7 +454,7 @@ void SchedulerMainThreadController::OnTickTimer()
         Global::tRefType fRef = GetNewCommandRef();
         SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortBegin));
         m_TransitionPeriod = true;
-        SendOutErrMsg(DCL_ERR_DEV_INTER_ABORT);
+        SendOutErrMsg(DCL_ERR_DEV_INTER_ABORT);//the abort procedure is treated as an error
         return;
     }
 
@@ -2913,10 +2913,12 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& cur
         //Only use the first DehydratingDiluted,
         //if no DehydratingDiluted, try Fixation
         GetSpecifiedStations(Global::DehydratingDiluted, excludeCurStation, stationList);
-        QString firstStation = stationList.at(0);
-        if (!firstStation.isEmpty()){
-            stationList.clear();
-            stationList.push_back(firstStation);
+        if (stationList.size() > 0){
+            QString firstStation = stationList.at(0);
+            if (!firstStation.isEmpty()){
+                stationList.clear();
+                stationList.push_back(firstStation);
+            }
         }
         if (stationList.empty()){
             GetSpecifiedStations(Global::FixationReagent, excludeCurStation, stationList);
@@ -2927,17 +2929,19 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& cur
          GetSpecifiedStations(Global::FixationReagent, excludeCurStation, stationList);
          if (stationList.empty()){
              GetSpecifiedStations(Global::DehydratingDiluted, excludeCurStation, stationList);
-             QString firstStation = stationList.at(0);
-             if (!firstStation.isEmpty()){
-                 stationList.clear();
-                 stationList.push_back(firstStation);
+             if (stationList.size() > 0){
+                 QString firstStation = stationList.at(0);
+                 if (!firstStation.isEmpty()){
+                     stationList.clear();
+                     stationList.push_back(firstStation);
+                 }
              }
          }
     }
     else
     {
         GetSpecifiedStations(specifiedReagentGroup, excludeCurStation, stationList);
-        if (specifiedReagentGroup == Global::DehydratingDiluted){
+        if ((specifiedReagentGroup == Global::DehydratingDiluted) && (stationList.size() > 0)){
             stationList = stationList.mid(0, m_CurProgramStepIndex - m_StationList.indexOf(stationList.at(0)));
         }
     }
