@@ -897,7 +897,7 @@ private slots:
           *  \return NULL
           */
          /****************************************************************************/
-         void GetSpecifiedStations(const QString& specifiedReagentGroup, bool excludeCurStation, QList<QString>& stationList);
+         void GetSpecifiedStations(const QString& specifiedReagentGroup, QList<QString>& stationList);
 protected:
 
         /****************************************************************************/
@@ -1496,14 +1496,14 @@ protected:
         /*!
          *  \brief  Definition/Declaration of function GetSafeReagentStationList
          *  \param  curReagentGroupID = the current used reagent group
-         *  \param  excludeCurStation =  whether exclude the current used station or not?
+         *  \param  curStationAsBackup =  whether the current station is treated as a backup or not?
          *  \param  firstTimeUseReagent = When the error is happening, is it first time to use the current reagent?
          *  \param  the gotten safe reagent list
          *
          *  \return from IsLastStep
          */
         /****************************************************************************/
-        bool GetSafeReagentStationList(const QString& curReagentGroupID, bool excludeCurStation, bool firstTimeUseReagent, QList<QString>& stationList);
+        bool GetSafeReagentStationList(const QString& curReagentGroupID, bool curStationAsBackup, bool firstTimeUseReagent, QList<QString>& stationList);
 
         /****************************************************************************/
         /*!

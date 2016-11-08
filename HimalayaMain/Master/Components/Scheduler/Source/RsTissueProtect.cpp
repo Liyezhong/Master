@@ -620,7 +620,7 @@ QString CRsTissueProtect::GetStationID()
     }
     else if(!m_ReagentGroup.isEmpty()){
         bool firstTimeUse = (!(mp_SchedulerController->HasUsedReagent(m_ReagentGroup)));
-        ret = mp_SchedulerController->GetSafeReagentStationList(m_ReagentGroup, false, firstTimeUse, m_safeReagentStations);
+        ret = mp_SchedulerController->GetSafeReagentStationList(m_ReagentGroup, true, firstTimeUse, m_safeReagentStations);
     }
 
     if (false == ret || m_safeReagentStations.empty())

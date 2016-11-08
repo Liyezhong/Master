@@ -2898,7 +2898,7 @@ bool SchedulerMainThreadController::GetSafeReagentForSpecial(int index, QString&
 }
 
 
-bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& curReagentGroupID, bool excludeCurStation, bool firstTimeUseReagent, QList<QString>& stationList)
+bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& curReagentGroupID, bool curStationAsBackup, bool firstTimeUseReagent, QList<QString>& stationList)
 {
     CDataReagentList* pReagentList =  mp_DataManager->GetReagentList();
     if (!pReagentList)
@@ -2912,7 +2912,7 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& cur
     if (specifiedReagentGroup == Global::DehydratingDilutedFixation){
         //Only use the first DehydratingDiluted,
         //if no DehydratingDiluted, try Fixation
-        GetSpecifiedStations(Global::DehydratingDiluted, excludeCurStation, stationList);
+        GetSpecifiedStations(Global::DehydratingDiluted, stationList);
         if (stationList.size() > 0){
             QString firstStation = stationList.at(0);
             if (!firstStation.isEmpty()){
@@ -2921,14 +2921,14 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& cur
             }
         }
         if (stationList.empty()){
-            GetSpecifiedStations(Global::FixationReagent, excludeCurStation, stationList);
+            GetSpecifiedStations(Global::FixationReagent, stationList);
         }
     }
     else if (specifiedReagentGroup == Global::FixationDehydratingDiluted){
         //if no Fixation, try itself
-         GetSpecifiedStations(Global::FixationReagent, excludeCurStation, stationList);
+         GetSpecifiedStations(Global::FixationReagent, stationList);
          if (stationList.empty()){
-             GetSpecifiedStations(Global::DehydratingDiluted, excludeCurStation, stationList);
+             GetSpecifiedStations(Global::DehydratingDiluted, stationList);
              if (stationList.size() > 0){
                  QString firstStation = stationList.at(0);
                  if (!firstStation.isEmpty()){
@@ -2940,11 +2940,27 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& cur
     }
     else
     {
-        GetSpecifiedStations(specifiedReagentGroup, excludeCurStation, stationList);
+        GetSpecifiedStations(specifiedReagentGroup, stationList);
         if ((specifiedReagentGroup == Global::DehydratingDiluted) && (stationList.size() > 0)){
             stationList = stationList.mid(0, m_CurProgramStepIndex - m_StationList.indexOf(stationList.at(0)));
         }
     }
+
+    if (curStationAsBackup)
+    {
+        QString curStationID;
+        if (m_CurProgramStepIndex >= 0){
+            curStationID = m_StationList[m_CurProgramStepIndex];
+        }
+
+        if (stationList.size() > 1)
+        {
+            if (stationList.removeOne(curStationID)){
+                stationList.push_back(curStationID);
+            }
+        }
+    }
+
     return true;
 }
 
@@ -2977,7 +2993,7 @@ QString SchedulerMainThreadController::GetSafeReagentType(const QString& curReag
     return curReagentGroupID;
 }
 
-void SchedulerMainThreadController::GetSpecifiedStations(const QString& specifiedReagentGroup, bool excludeCurStation, QList<QString>& stationList)
+void SchedulerMainThreadController::GetSpecifiedStations(const QString& specifiedReagentGroup, QList<QString>& stationList)
 {
     CDataReagentList* pReagentList =  mp_DataManager->GetReagentList();
       if (!pReagentList)
@@ -2988,13 +3004,6 @@ void SchedulerMainThreadController::GetSpecifiedStations(const QString& specifie
           return;
 
     QList<QString> stations(m_StationList);
-
-    if (excludeCurStation)
-    {
-        if (m_CurProgramStepIndex >= 0)
-        stations.removeAt(m_CurProgramStepIndex);
-    }
-
     //loop stations of the current program
     for (int i = 0; i < stations.count(); i++)
     {
