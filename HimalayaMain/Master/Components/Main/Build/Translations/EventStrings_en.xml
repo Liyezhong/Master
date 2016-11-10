@@ -744,6 +744,7 @@
         <string id="67174930" text1="Bottle check: failed for Station:%1." text2=""/>
         <string id="67174931" text1="Bottle check:Blockage for Station:%1." text2=""/>
         <string id="67174932" text1="Bottle check:Build pressure failed for Station:%1." text2=""/>
+	<string id="67174933" text1="Bottle check:Empty.Station:%1." text2=""/>
 	<string id="16850944" text1="Start pump." text2=""/>
 	<string id="16850945" text1="Stop pump." text2=""/>
 	<string id="16850946" text1="Start valve%1." text2=""/>
