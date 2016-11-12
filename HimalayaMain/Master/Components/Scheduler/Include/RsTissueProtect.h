@@ -167,7 +167,7 @@ private:
 private:
     CRsTissueProtect(const CRsTissueProtect& rhs);
     CRsTissueProtect& operator=(const CRsTissueProtect& rhs);
-    QString GetCurReagentType();
+    QString GetCurReagentType(bool HasSameReagentBeforeCurStep);
     QString GetStationID();
 };
 }

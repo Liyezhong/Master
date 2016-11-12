@@ -412,6 +412,10 @@ void CSchedulerStateMachine::OnTasksDone(bool flag)
 void CSchedulerStateMachine::OnTasksDoneRsStandyWithTissue(bool flag)
 {
     mp_SchedulerThreadController->StopTimer();
+    if (!flag){
+        mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController), false);
+    }
     mp_SchedulerThreadController->RaiseError(mp_SchedulerThreadController->GetEventKey(), DCL_ERR_FCT_CALL_SUCCESS, 0, flag);
     emit sigStateChange();
     if(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR == mp_SchedulerThreadController->GetCurErrEventID())
@@ -429,6 +433,9 @@ void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
 
     if (false == flag)
     {
+        mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController), false);
+
         mp_SchedulerThreadController->RaiseError(0, DCL_ERR_DEV_INTER_TISSUE_PROTECT_REPORT, 0, false);
         emit sigStateChange();
     }

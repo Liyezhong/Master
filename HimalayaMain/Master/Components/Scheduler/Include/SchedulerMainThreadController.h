@@ -690,6 +690,15 @@ typedef enum
          /****************************************************************************/
          void PrepareForIdle(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
 
+         /****************************************************************************/
+         /*!
+          *  \brief Get current step index for SafeReagent
+          *
+          *
+          */
+         /****************************************************************************/
+         int CurStepIndexForSafeReagent();
+
 signals:
          /****************************************************************************/
          /*!
@@ -1496,14 +1505,14 @@ protected:
         /*!
          *  \brief  Definition/Declaration of function GetSafeReagentStationList
          *  \param  curReagentGroupID = the current used reagent group
-         *  \param  curStationAsBackup =  whether the current station is treated as a backup or not?
+         *  \param  excludeCurStation =  whether the current station shall be excluded or not?
          *  \param  firstTimeUseReagent = When the error is happening, is it first time to use the current reagent?
          *  \param  the gotten safe reagent list
          *
          *  \return from IsLastStep
          */
         /****************************************************************************/
-        bool GetSafeReagentStationList(const QString& curReagentGroupID, bool curStationAsBackup, bool firstTimeUseReagent, QList<QString>& stationList);
+        bool GetSafeReagentStationList(const QString& curReagentGroupID, bool excludeCurStation, bool firstTimeUseReagent, QList<QString>& stationList);
 
         /****************************************************************************/
         /*!
@@ -1649,14 +1658,25 @@ protected:
 
         /****************************************************************************/
         /*!
-         *  \brief  Check whether the specified reagent group has been used before the current step or not
-         *  \param  reagentGroupID = the specified reagent group
-         *  \return true indicates the program has used the specified reagent group before the current step,
+         *  \brief  Check whether it is the first time to use the specified current reagent group or not
+         *  \param  reagentGroupID = the specified current reagent group
+         *  \return true indicates the first time to use the current reagent group,
          *     otherwise return false
          *
          */
         /****************************************************************************/
-        bool HasUsedReagent(const QString& reagentGroupID);
+        bool IsFirstTimeUseCurReagent(const QString& reagentGroupID);
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Check whether exist the same type of reagent before the current step's reagent or not
+         *  \param  reagentGroupID = the specified reagent group
+         *  \return true indicates it is existing the same type of reagent before the current step's reagent
+         *     otherwise return false
+         *
+         */
+        /****************************************************************************/
+        bool HasSameReagentBeforeCurStep();
         /****************************************************************************/
         /*!
          *  \brief Get ReagentID for the Current program step
