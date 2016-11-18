@@ -535,13 +535,13 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
                 }
                 if(ProgramNameID == 0)
                 {
-                    RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,QStringList()<<ProgramName<<QString("[%1]").arg(m_ProgramStatusInfor.GetStepID()));
+                    RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,QStringList()<<ProgramName<<QString(" [ %1 ]").arg(m_ProgramStatusInfor.GetStepID() + 1));
                 }
                 else
                 {
                     Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,Global::tTranslatableStringList()
                                                                <<Global::TranslatableString(ProgramNameID)
-                                                               <<Global::TranslatableString(QString("[%1]").arg(m_ProgramStatusInfor.GetStepID()))
+                                                               <<Global::TranslatableString(QString(" [ %1 ]").arg(m_ProgramStatusInfor.GetStepID() + 1))
                                                                );
                 }
                 //Let GUI know master SW will enter power failure
