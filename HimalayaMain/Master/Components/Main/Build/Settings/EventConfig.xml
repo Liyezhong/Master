@@ -1036,7 +1036,7 @@
 	    <Event Code="" ErrorID="67174416" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_REC_ACTION_SHUTDOWN" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67174416" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67174417" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_REC_ERROR_ACTION" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67174417" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_REC_ERROR_ACTION" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174417" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67174418" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_REC_START_PROGRAM" LogLevel="High" UserLog="TRUE">
