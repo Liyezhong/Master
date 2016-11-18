@@ -535,7 +535,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
 	}
 }
 
-QString CRsTissueProtect::GetCurReagentType(bool HasSameReagentBeforeCurStep)
+QString CRsTissueProtect::GetCurReagentType(const QString& lastReagentGroup)
 {
     quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
 
@@ -553,39 +553,46 @@ QString CRsTissueProtect::GetCurReagentType(bool HasSameReagentBeforeCurStep)
     }
 
     QString ret = "";
-    if(200 == Scenario)
+    bool isTreatedAs200 = false;
+    if (lastReagentGroup.isEmpty() && ((211 == Scenario) || (221 == Scenario) ||
+             (231 == Scenario) || (241 == Scenario) || (251 == Scenario)))
+    {
+        isTreatedAs200 = true;
+    }
+
+    if(200 == Scenario || isTreatedAs200)
     {
         return "FIRST_STEP";
     }
 
     if (Scenario >= 211 && Scenario <= 221)
     {
-        if (HasSameReagentBeforeCurStep && Scenario == 221)
-            ret = Global::WaterReagent;
+        if (!lastReagentGroup.isEmpty() && Scenario == 221)
+            ret = lastReagentGroup;
         else
             ret = Global::FixationReagent;
     }
 
     if (Scenario >= 222 && Scenario <= 231)
     {
-        if (HasSameReagentBeforeCurStep && Scenario == 231)
-            ret = Global::DehydratingDiluted;
+        if (!lastReagentGroup.isEmpty() && Scenario == 231)
+            ret = lastReagentGroup;
         else
             ret = Global::WaterReagent;
     }
 
     if (Scenario >= 232 && Scenario <= 241)
     {
-        if (HasSameReagentBeforeCurStep && Scenario == 241)
-            ret = Global::DehydratingAbsolute;
+        if (!lastReagentGroup.isEmpty() && Scenario == 241)
+            ret = lastReagentGroup;
         else
             ret = Global::DehydratingDiluted;
     }
 
     if (Scenario >= 242 && Scenario <= 251)
     {
-         if (HasSameReagentBeforeCurStep && Scenario == 251)
-             ret = Global::ClearingReagent;
+         if (!lastReagentGroup.isEmpty() && Scenario == 251)
+             ret = lastReagentGroup;
          else
              ret = Global::DehydratingAbsolute;
     }
@@ -605,7 +612,7 @@ QString CRsTissueProtect::GetCurReagentType(bool HasSameReagentBeforeCurStep)
     //before fill paraffin
     if ((260 == Scenario || 271 == Scenario))
     {
-        if (HasSameReagentBeforeCurStep){
+        if (Global::ParaffinReagent == lastReagentGroup){
              ret = Global::ParaffinReagent;
         }
         else
@@ -629,9 +636,9 @@ QString CRsTissueProtect::GetStationID()
     // Here the fact is that the current reagent has been filled, then the current step failed
 
     // Get reagent type
-    bool HasSameReagentBeforeCurStep = mp_SchedulerController->HasSameReagentBeforeCurStep();
-     m_ReagentGroup = this->GetCurReagentType(HasSameReagentBeforeCurStep);
-     bool firstTimeUse = mp_SchedulerController->IsFirstTimeUseCurReagent(m_ReagentGroup);
+    QString reagentGroupOfLastStep = mp_SchedulerController->ReagentGroupOfLastStep();
+    m_ReagentGroup = this->GetCurReagentType(reagentGroupOfLastStep);
+    bool firstTimeUse = mp_SchedulerController->IsFirstTimeUseCurReagent(m_ReagentGroup);
 
     m_safeReagentStations.clear();
     bool ret = false;

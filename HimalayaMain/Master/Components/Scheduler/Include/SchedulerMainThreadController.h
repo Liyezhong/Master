@@ -1669,14 +1669,12 @@ protected:
 
         /****************************************************************************/
         /*!
-         *  \brief  Check whether exist the same type of reagent before the current step's reagent or not
-         *  \param  reagentGroupID = the specified reagent group
-         *  \return true indicates it is existing the same type of reagent before the current step's reagent
-         *     otherwise return false
+         *  \brief  get the type of reagent before the current program step
+         *  \return reagent group
          *
          */
         /****************************************************************************/
-        bool HasSameReagentBeforeCurStep();
+        QString ReagentGroupOfLastStep();
         /****************************************************************************/
         /*!
          *  \brief Get ReagentID for the Current program step

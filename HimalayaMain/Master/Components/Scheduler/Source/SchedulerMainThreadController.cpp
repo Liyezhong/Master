@@ -2847,48 +2847,39 @@ bool SchedulerMainThreadController::IsFirstTimeUseCurReagent(const QString& reag
     return true;
 }
 
-bool SchedulerMainThreadController::HasSameReagentBeforeCurStep()
+QString SchedulerMainThreadController::ReagentGroupOfLastStep()
 {
     if (m_CurProgramID.isEmpty() || m_CurProgramID.isNull())
     {
-        return false;
+        return "";
     }
 
     if (-1 == m_CurProgramStepIndex)
     {
-        return false;
+        return "";
     }
 
     if (!mp_DataManager)
     {
         Q_ASSERT(false);
-        return false;
+        return "";
     }
 
     CDataProgramList* pDataProgramList = mp_DataManager->GetProgramList();
     if (!pDataProgramList)
     {
         Q_ASSERT(false);
-        return false;
+        return "";
     }
 
     if (m_CurProgramStepIndex >= 1){
         CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(m_CurProgramID));
-        const CProgramStep* pCurProgramStep = pProgram->GetProgramStep(m_CurProgramStepIndex);//use order index
-        QString curReagentID = pCurProgramStep->GetReagentID();
-        QString curReagentGroupID = GetReagentGroupID(curReagentID);
-
         int lastProgramStepIndex = m_CurProgramStepIndex -1;
         const CProgramStep* pLastProgramStep = pProgram->GetProgramStep(lastProgramStepIndex);
-        QString lastReagentID = pLastProgramStep->GetReagentID();
-        if (curReagentGroupID == GetReagentGroupID(lastReagentID))
-        {
-            LogDebug(QString("In HasSameReagentBeforeCurStep(), return true"));
-            return true;
-        }
+        return pLastProgramStep->GetReagentID();
     }
 
-    return false;
+    return "";
 }
 
 bool SchedulerMainThreadController::PrepareProgramStationList(const QString& ProgramID, int beginStep)
