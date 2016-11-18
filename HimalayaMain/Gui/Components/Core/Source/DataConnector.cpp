@@ -366,6 +366,14 @@ void CDataConnector::SendDateTime(QDateTime DateTime)
     mp_WaitDialog->show();
 }
 
+bool CDataConnector::IsOvenDoorLocked()
+{
+    if(mp_MesgBoxManager)
+    {
+        return mp_MesgBoxManager->IsOvenDoorLocked();
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Sends updated Dashboard Station Change Reagent data to the master
@@ -2034,11 +2042,13 @@ void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClas
         {
             mp_MesgBoxManager->SetOverDoorStatus(true);
             mp_MesgBoxManager->EnableAllButton(true,"OVEN_DOOR_CLOSED");
+            emit OvenCoverClosed(true);
         }
         else
         {
             mp_MesgBoxManager->EnableAllButton(false,"OVEN_DOOR_CLOSED");
             mp_MesgBoxManager->SetOverDoorStatus(false);
+            emit OvenCoverClosed(false);
         }
     }
 }

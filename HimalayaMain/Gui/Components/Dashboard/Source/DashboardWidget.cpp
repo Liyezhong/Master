@@ -42,6 +42,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     mp_MainWindow(p_Parent),
     m_ParaffinStepIndex(-1),
     mp_ProgramWillCompleteMsgDlg(NULL),
+    mp_OvenLidOpenMsgDlg(NULL),
     mp_RemoveSpecimenDlg(NULL),
     mp_RemoveSpecimenWhenCompletedDlg(NULL),
     mp_RemoveSpecimenWhenAbortedDlg(NULL),
@@ -140,6 +141,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSLOT(mp_DataConnector, OvenCoverOpen(),
                       this, OnOvenCoverOpen());
+    CONNECTSIGNALSLOT(mp_DataConnector, OvenCoverClosed(bool),
+                      this, OnOvenCoverClosed(bool));
 
     CONNECTSIGNALSLOT(mp_DataConnector, RetortCoverOpen(),
                       this, OnRetortCoverOpen());
@@ -393,16 +396,35 @@ void CDashboardWidget::OnTissueProtectPassed(bool flag)
 
 void CDashboardWidget::OnOvenCoverOpen()
 {
-    MainMenu::CMessageDlg messageDlg(this);
-    messageDlg.SetIcon(QMessageBox::Information);
-    messageDlg.SetTitle(CommonString::strConfirmMsg);
-    messageDlg.SetText(m_strOvenCoverOpen);
-    messageDlg.SetButtonText(1, CommonString::strOK);
-    messageDlg.HideButtons();
-    if (messageDlg.exec())
+    if(mp_OvenLidOpenMsgDlg)
+    {
+        delete mp_OvenLidOpenMsgDlg;
+        mp_OvenLidOpenMsgDlg = NULL;
+    }
+    mp_OvenLidOpenMsgDlg = new MainMenu::CMessageDlg(this);
+    mp_OvenLidOpenMsgDlg->SetIcon(QMessageBox::Information);
+    mp_OvenLidOpenMsgDlg->SetTitle(CommonString::strConfirmMsg);
+    mp_OvenLidOpenMsgDlg->SetText(m_strOvenCoverOpen);
+    mp_OvenLidOpenMsgDlg->SetButtonText(1, CommonString::strOK);
+    if(mp_DataConnector && !mp_DataConnector->IsOvenDoorLocked())
+    {
+        mp_OvenLidOpenMsgDlg->EnableButton(1, false);
+    }
+    mp_OvenLidOpenMsgDlg->HideButtons();
+    if (mp_OvenLidOpenMsgDlg->exec())
     {
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_OVEN_COVER_OPEN);
+        delete mp_OvenLidOpenMsgDlg;
+        mp_OvenLidOpenMsgDlg = NULL;
         return;
+    }
+}
+
+void CDashboardWidget::OnOvenCoverClosed(bool closed)
+{
+    if(mp_OvenLidOpenMsgDlg)
+    {
+        mp_OvenLidOpenMsgDlg->EnableButton(1,closed);
     }
 }
 

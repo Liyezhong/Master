@@ -162,6 +162,7 @@ private:
     MainMenu::CMessageDlg* mp_ProgramWillCompleteMsgDlg;                      //!< Message Dialogue
     MainMenu::CMessageDlg* mp_TissueProtectPassedMsgDlg;
     MainMenu::CMessageDlg* mp_RetortLidOpenMsgDlg;              //!< retort lid open message dialog
+    MainMenu::CMessageDlg* mp_OvenLidOpenMsgDlg;              //!< Owen lid open message dialog
     MainMenu::CMessageDlg* mp_PausingMsgDlg;                    //!< message dialog "It is pausing..."
     MainMenu::CMessageDlg* mp_RemoveSpecimenDlg;
     MainMenu::CMessageDlg* mp_RemoveSpecimenWhenCompletedDlg;
@@ -234,7 +235,12 @@ public slots:
      */
     /****************************************************************************/
     void OnUnselectProgram();
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnOvenCoverClosed
+     */
+    /****************************************************************************/
+    void OnOvenCoverClosed(bool closed);
 
 private slots:
     void PrepareSelectedProgramChecking(const QString& selectedProgramId);
