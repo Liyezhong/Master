@@ -2048,6 +2048,7 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
             {
                 m_HadRetortLidOpened =  false;
                 m_HasFinishForceDrain = false;
+                m_SentInfoForLockLid =  false;
                 RecordRetortLidOpened();
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
                 m_PssmAbortingSeq++;
@@ -2096,16 +2097,21 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
                         m_SentInfoForLockLid = true;
                     }
                 }
-                else if (m_HasFinishForceDrain)//retry when lid is closed and ForceDrain is finished
+                else //lid is close
                 {
-                    if(m_SentInfoForLockLid)
+                    if(m_SentInfoForLockLid && m_IsRetortLidClosed)
                     {
                         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_LOCK_RETORT_LID, QStringList(), false); // remove the message box
                         m_SentInfoForLockLid = false;
                     }
-                    m_HasFinishForceDrain = false;
-                    m_PssmAbortingSeq = 0;
-                    return;
+
+                    if (m_HasFinishForceDrain)//retry to force drain when lid is closed and ForceDrain is finished
+                    {
+                        m_HasFinishForceDrain = false;
+                        m_PssmAbortingSeq = 0;
+                        return;
+                    }
+
                 }
 
                 if ("Scheduler::IDForceDraining" == cmdName)
@@ -2125,12 +2131,6 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
                             return;
                         }
 
-                        if(m_SentInfoForLockLid && m_IsRetortLidClosed)
-                        {
-                            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_LOCK_RETORT_LID, QStringList(), false); // remove the message box
-                            m_SentInfoForLockLid = false;
-                        }
-
                         m_PssmAbortingSeq = 0;
                         mp_SchedulerThreadController->CompleteRsAbort();
                     }
@@ -2143,12 +2143,6 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
                                 m_PssmAbortingSeq = 0;
                             }
                             return;
-                        }
-
-                        if(m_SentInfoForLockLid && m_IsRetortLidClosed)
-                        {
-                            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_LOCK_RETORT_LID, QStringList(), false); // remove the message box
-                            m_SentInfoForLockLid = false;
                         }
 
                         OnTasksDone(false);

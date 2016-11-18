@@ -2876,7 +2876,7 @@ QString SchedulerMainThreadController::ReagentGroupOfLastStep()
         CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(m_CurProgramID));
         int lastProgramStepIndex = m_CurProgramStepIndex -1;
         const CProgramStep* pLastProgramStep = pProgram->GetProgramStep(lastProgramStepIndex);
-        return pLastProgramStep->GetReagentID();
+        return GetReagentGroupID(pLastProgramStep->GetReagentID());
     }
 
     return "";
@@ -3000,10 +3000,6 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& cur
                 {
                     stationList.removeOne(curStationID);
                 }
-            }
-            else if ((1 == stationList.size()) && (specifiedReagentGroup == Global::DehydratingAbsolute))//not 1st to use DehydratingAbsolute
-            {
-                stationList.removeOne(curStationID);
             }
         }
     }
