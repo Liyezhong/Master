@@ -553,58 +553,48 @@ QString CRsTissueProtect::GetCurReagentType(const QString& lastReagentGroup)
     }
 
     QString ret = "";
-    bool isTreatedAs200 = false;
-    if (lastReagentGroup.isEmpty() && ((211 == Scenario) || (221 == Scenario) ||
-             (231 == Scenario) || (241 == Scenario) || (251 == Scenario)))
-    {
-        isTreatedAs200 = true;
-    }
-
-    if(200 == Scenario || isTreatedAs200)
+    if(200 == Scenario)
     {
         return "FIRST_STEP";
     }
 
-    if (Scenario >= 211 && Scenario <= 221)
+    if ((211 == Scenario) || (221 == Scenario) ||
+                (231 == Scenario) || (241 == Scenario) || (251 == Scenario))
     {
-        if (!lastReagentGroup.isEmpty() && Scenario == 221)
-            ret = lastReagentGroup;
+        if (lastReagentGroup.isEmpty())
+            return "FIRST_STEP";
         else
-            ret = Global::FixationReagent;
+            return lastReagentGroup;
     }
 
-    if (Scenario >= 222 && Scenario <= 231)
+    if (Scenario >= 212 && Scenario <= 217)
     {
-        if (!lastReagentGroup.isEmpty() && Scenario == 231)
-            ret = lastReagentGroup;
-        else
-            ret = Global::WaterReagent;
+        return Global::FixationReagent;
     }
 
-    if (Scenario >= 232 && Scenario <= 241)
+    if (Scenario >= 222 && Scenario <= 227)
     {
-        if (!lastReagentGroup.isEmpty() && Scenario == 241)
-            ret = lastReagentGroup;
-        else
-            ret = Global::DehydratingDiluted;
+        return Global::WaterReagent;
     }
 
-    if (Scenario >= 242 && Scenario <= 251)
+    if (Scenario >= 232 && Scenario <= 237)
     {
-         if (!lastReagentGroup.isEmpty() && Scenario == 251)
-             ret = lastReagentGroup;
-         else
-             ret = Global::DehydratingAbsolute;
+        return Global::DehydratingDiluted;
+    }
+
+    if (Scenario >= 242 && Scenario <= 247)
+    {
+        return Global::DehydratingAbsolute;
     }
 
     if (Scenario >= 252 && Scenario <= 257)
     {
-        ret = Global::ClearingReagent;
+        return Global::ClearingReagent;
     }
 
     if (Scenario >= 272 && Scenario <= 277)
     {
-        ret = Global::ParaffinReagent;
+        return Global::ParaffinReagent;
     }
 
     //260:Protocol-GetReadyFor-Paraffin;
