@@ -2797,8 +2797,11 @@ bool SchedulerMainThreadController::CurProgramHasClearingReagent()
 
 int SchedulerMainThreadController::CurStepIndexForSafeReagent()
 {
+    if (0 == m_CurProgramStepIndex)
+        return 0;
+
     int curProgramStepIndex = m_CurProgramStepIndex;
-    if (221 == m_CurrentScenario || 221 == m_CurrentScenario || 231 == m_CurrentScenario ||
+    if (211 == m_CurrentScenario || 221 == m_CurrentScenario || 231 == m_CurrentScenario ||
            241 == m_CurrentScenario || 251 == m_CurrentScenario || 260 == m_CurrentScenario ||
             271 == m_CurrentScenario)
     {
