@@ -353,8 +353,6 @@ void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 us
         {
             m_InternalErrorRecv = true;
             SendOutErrMsg(DCL_ERR_DEV_INTER_SW_ERROR, false);
-            this->GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
-            this->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, this), false);
         }
     }
 
