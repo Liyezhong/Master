@@ -353,6 +353,8 @@ void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 us
         {
             m_InternalErrorRecv = true;
             SendOutErrMsg(DCL_ERR_DEV_INTER_SW_ERROR, false);
+            this->GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
+            this->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, this), false);
         }
     }
 
@@ -6199,6 +6201,11 @@ bool SchedulerMainThreadController::RaiseError(const quint32 EventKey, ReturnCod
         Global::tTranslatableStringList EventRDStringParList;
         GetStringIDList(ErrorID, EventStringParList, EventRDStringParList);
         Global::EventObject::Instance().RaiseEvent(EventKey, ErrorID, ActionResult,Active, EventStringParList, EventRDStringParList);
+
+        if ((520070300 == ErrorID) || (513030081 == ErrorID) || (512040401 == ErrorID)){
+            this->GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
+            this->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, this), false);
+        }
     }
     else
     {
