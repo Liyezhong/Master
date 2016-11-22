@@ -2082,6 +2082,7 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
                     else
                     {
                         OnTasksDone(false);
+                        mp_SchedulerThreadController->SendSystemBusy2GUI(false);
                     }
                 }
             }

@@ -148,6 +148,7 @@ private:
     CSchedulerStateMachine*        mp_StateMachine;         //!< Pointer to CSchedulerStateMachine
     bool m_IsLevelSensorRelated;                            //!< flag to indicate if the error is related to level sensor
     QString m_StationID;                                    //!< Station ID
+    QString m_lastStationID;                                //!< last used station ID
     QString m_ReagentGroup;                                 //!< Reagent group
     quint8 m_DrainCurReagentSeq;                            //!< Sequnece of draining current reagent
     quint8 m_MoveToTubeSeq;                                 //!< Sequnece of Moving to tube
@@ -159,7 +160,6 @@ private:
     quint8 m_ProcessingSafeReagent;                         //!< Sequnece of processing safe reagent
     qint64 m_StartWaitTime;                                 //!< start up time for wait
     bool   m_IsSafeReagentSuccessful;                       //!< flag to indicate if safe reagent is successful or not
-    bool   m_retryNextStation;                              //!< flag to indicate whether system will suck the next station safe reagent or not
     StateList_t m_CurrentStep;                              //!< current step
     QList<QString> m_safeReagentStations;                   //!< hold all safe reagent
     int    m_CurSafeReagentIndex;                           //!< which one is being used in the safe reagent

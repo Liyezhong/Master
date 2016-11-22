@@ -41,6 +41,7 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     ,mp_StateMachine(StateMachhine)
     ,m_IsLevelSensorRelated(false)
     ,m_StationID("")
+    ,m_lastStationID("")
 {
     m_DrainCurReagentSeq = 0;
     m_MoveToTubeSeq = 0;
@@ -51,7 +52,6 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     m_DrainSafeReagent = 0;
     m_ProcessingSafeReagent = 0;
     m_IsSafeReagentSuccessful = true;
-    m_retryNextStation = false;
     m_CurrentStep = UNDEF;
 }
 
@@ -71,7 +71,6 @@ void CRsTissueProtect::Start()
     m_DrainSafeReagent = 0;
     m_ProcessingSafeReagent = 0;
     m_IsSafeReagentSuccessful = true;
-    m_retryNextStation = false;
     m_CurrentStep = INIT;
 }
 
@@ -93,10 +92,10 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         m_MoveToTubeSeq = 0;
         m_FillSeq = 0;
         m_LevelSensorSeq = 0;
-        m_MoveToSealSeq = 0;;
+        m_MoveToSealSeq = 0;
         m_StartWaitTime = 0;
         m_IsSafeReagentSuccessful = true;
-        m_retryNextStation = false;
+        m_lastStationID = mp_SchedulerController->GetCurrentStationID();
 
         m_StationID = this->GetStationID();
         if ("" == m_StationID)
@@ -158,9 +157,8 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         {
             mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Drain_cur_Reagent state");
             CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerController);
-            QString stationID = mp_SchedulerController->GetCurrentStationID();
-            mp_SchedulerController->LogDebug(QString("current station ID is: %1").arg(stationID));
-            RVPosition_t tubePos = mp_SchedulerController->GetRVTubePositionByStationID(stationID);
+            mp_SchedulerController->LogDebug(QString("current station ID is: %1").arg(m_lastStationID));
+            RVPosition_t tubePos = mp_SchedulerController->GetRVTubePositionByStationID(m_lastStationID);
             cmd->SetRVPosition((quint32)(tubePos));
             cmd->SetDrainPressure(40.0);
             mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
@@ -313,9 +311,12 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                    && retCode != DCL_ERR_DEV_LA_FILLING_SOAK_EMPTY)
                 {
                     mp_SchedulerController->LogDebug("RS_Safe_Reagent, Filling failed");
-                    bool bExecuted = TryNextSafeReagent();
-                    if (bExecuted)
-                        return;
+                    if (retCode == DCL_ERR_DEV_LA_RELEASING_TIMEOUT)
+                    {
+                        bool bExecuted = TryNextSafeReagent();
+                        if (bExecuted)
+                            return;
+                    }
 
                     SendTasksDoneSig(false);
                     return;
@@ -683,8 +684,10 @@ void CRsTissueProtect::OnReleasePressure()
 bool CRsTissueProtect::TryNextSafeReagent()
 {
     if (m_safeReagentStations.size() > ++m_CurSafeReagentIndex){//other safe reagent is available, try to fill from it
+        m_lastStationID = m_StationID;
         m_StationID = m_safeReagentStations.at(m_CurSafeReagentIndex);
         m_CurrentStep = DRAIN_CUR_REAGENT;
+        m_IsSafeReagentSuccessful = true;
         mp_SchedulerController->LogDebug(QString("In TryNextSafeReagent, Filling failed, retry station:%1.").arg(m_StationID));
         return true;
     }
