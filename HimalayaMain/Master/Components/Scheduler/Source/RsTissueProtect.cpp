@@ -364,6 +364,10 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 if (DCL_ERR_DEV_LA_FILLING_SOAK_EMPTY == retCode) // Only for paraffin
                 {
                     mp_SchedulerController->LogDebug(QString("Paraffin soak empty, program Step Filling OK"));
+                    bool bExecuted = TryNextSafeReagent();
+                    if (bExecuted)
+                        break;
+
                     m_CurrentStep = MOVE_TO_SEALING;
                     break;
                 }
