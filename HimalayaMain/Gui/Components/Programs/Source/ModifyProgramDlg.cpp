@@ -755,7 +755,7 @@ void CModifyProgramDlg::OnOkClicked(QString EnteredText)
         }
         mp_MessageDlg = new MainMenu::CMessageDlg();
         mp_MessageDlg->SetTitle(QApplication::translate("Programs::CModifyProgramDlg",
-                                                        "Program Name", 0, QApplication::UnicodeUTF8));
+                                                        "Program Name", Q_NULLPTR, -1));
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         mp_MessageDlg->SetButtonText(1, m_strOK);
         mp_MessageDlg->HideButtons();
@@ -763,12 +763,12 @@ void CModifyProgramDlg::OnOkClicked(QString EnteredText)
         if (EnteredText.trimmed().isEmpty()){
             mp_MessageDlg->SetText(QApplication::translate("Programs::CModifyProgramDlg",
                                                            "The Program name cannot be empty!",
-                                                           0, QApplication::UnicodeUTF8));
+                                                           Q_NULLPTR, -1));
             (void) mp_MessageDlg->exec();
             return;
         } else if (EnteredText.contains("Leica", Qt::CaseInsensitive)) {
             mp_MessageDlg->SetText(QApplication::translate("Programs::CModifyProgramDlg",
-                                "The Program name cannot contain \"leica\"", 0, QApplication::UnicodeUTF8));
+                                "The Program name cannot contain \"leica\"", Q_NULLPTR, -1));
             (void) mp_MessageDlg->exec();
             return;
         }
@@ -1018,26 +1018,26 @@ void CModifyProgramDlg::OnIconClicked()
 /****************************************************************************/
 void CModifyProgramDlg::RetranslateUI()
 {
-    mp_ModifyProgStepDlg->SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Edit Program Step", 0, QApplication::UnicodeUTF8));
-    mp_ModifyProgStepDlg->SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "New Program Step", 0, QApplication::UnicodeUTF8));
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Enter Program Name", 0, QApplication::UnicodeUTF8));
+    mp_ModifyProgStepDlg->SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Edit Program Step", Q_NULLPTR, -1));
+    mp_ModifyProgStepDlg->SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "New Program Step", Q_NULLPTR, -1));
+    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Enter Program Name", Q_NULLPTR, -1));
 
     // Added void to please lint
-    (void) m_StepModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Step", 0, QApplication::UnicodeUTF8),0);
-    (void) m_StepModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Reagent", 0, QApplication::UnicodeUTF8),0);
-    (void) m_StepModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Duration", 0, QApplication::UnicodeUTF8),0);
-    (void) m_StepModel.setHeaderData(3,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Temperature", 0, QApplication::UnicodeUTF8),0);
-    (void) m_StepModel.setHeaderData(4,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "P/V", 0, QApplication::UnicodeUTF8),0);
+    (void) m_StepModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Step", Q_NULLPTR, -1),0);
+    (void) m_StepModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Reagent", Q_NULLPTR, -1),0);
+    (void) m_StepModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Duration", Q_NULLPTR, -1),0);
+    (void) m_StepModel.setHeaderData(3,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Temperature", Q_NULLPTR, -1),0);
+    (void) m_StepModel.setHeaderData(4,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "P/V", Q_NULLPTR, -1),0);
 
-    m_strSelectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Select Icon", 0, QApplication::UnicodeUTF8);
-    m_strConfirmMsg = QApplication::translate("Programs::CModifyProgramDlg", "Confirmation Message", 0, QApplication::UnicodeUTF8);
-    m_strYes = QApplication::translate("Programs::CModifyProgramDlg", "Yes", 0, QApplication::UnicodeUTF8);
-    m_strCancel = QApplication::translate("Programs::CModifyProgramDlg", "Cancel", 0, QApplication::UnicodeUTF8);
-    m_strDelProgramStep = QApplication::translate("Programs::CModifyProgramDlg", "Do you really want to delete the selected program step?", 0, QApplication::UnicodeUTF8);
-    m_strEnterValidName = QApplication::translate("Programs::CModifyProgramDlg", "Please enter a valid Program Name", 0, QApplication::UnicodeUTF8);
-    m_strSeclectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Please select a Program Icon", 0, QApplication::UnicodeUTF8);
-    m_strClose = QApplication::translate("Programs::CModifyProgramDlg", "Close", 0, QApplication::UnicodeUTF8);
-    m_strOK = QApplication::translate("Programs::CModifyProgramDlg", "OK", 0, QApplication::UnicodeUTF8);
+    m_strSelectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Select Icon", Q_NULLPTR, -1);
+    m_strConfirmMsg = QApplication::translate("Programs::CModifyProgramDlg", "Confirmation Message", Q_NULLPTR, -1);
+    m_strYes = QApplication::translate("Programs::CModifyProgramDlg", "Yes", Q_NULLPTR, -1);
+    m_strCancel = QApplication::translate("Programs::CModifyProgramDlg", "Cancel", Q_NULLPTR, -1);
+    m_strDelProgramStep = QApplication::translate("Programs::CModifyProgramDlg", "Do you really want to delete the selected program step?", Q_NULLPTR, -1);
+    m_strEnterValidName = QApplication::translate("Programs::CModifyProgramDlg", "Please enter a valid Program Name", Q_NULLPTR, -1);
+    m_strSeclectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Please select a Program Icon", Q_NULLPTR, -1);
+    m_strClose = QApplication::translate("Programs::CModifyProgramDlg", "Close", Q_NULLPTR, -1);
+    m_strOK = QApplication::translate("Programs::CModifyProgramDlg", "OK", Q_NULLPTR, -1);
 
 }
 

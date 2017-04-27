@@ -26,6 +26,7 @@
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
 #include "HimalayaDataContainer/Helper/Include/HimalayaDataManagerEventCodes.h"
 #include "Global/Include/UITranslator.h"
+#include <QDataStream>
 
 //lint -sem(QHash::insert, custodial(1))
 

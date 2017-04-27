@@ -207,7 +207,7 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
                 break;
             }
             //Validate Reagent ID
-            switch(ReagentID.at(0).toAscii()) {
+            switch(ReagentID.at(0).toLatin1()) {
                 case 'U':
                 case 'L':
                 case 'C':

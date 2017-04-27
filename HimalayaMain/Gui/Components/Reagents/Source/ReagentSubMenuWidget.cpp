@@ -73,13 +73,13 @@ void CReagentSubMenuWidget::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CReagentSubMenuWidget::RetranslateUI()
 {
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagents::CReagentSubMenuWidget", "", 0, QApplication::UnicodeUTF8));
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagents::CReagentSubMenuWidget", "", Q_NULLPTR, -1));
 
    //the following for debug purpose.
    QLocale::Language curLang = Global::UITranslator::TranslatorInstance().GetDefaultLanguage();
    if (QLocale::Korean == curLang)
    {
-        QString str = QApplication::translate("Reagents::CReagentSubMenuWidget", " Groups", 0, QApplication::UnicodeUTF8);
+        QString str = QApplication::translate("Reagents::CReagentSubMenuWidget", " Groups", Q_NULLPTR, -1);
         str = str.trimmed();
         if (str.isEmpty()){
             MainMenu::CMessageDlg ConfirmationMessageDlg;

@@ -26,7 +26,7 @@
 #include "DataManager/Helper/Include/Helper.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 #include "Global/Include/UITranslator.h"
-
+#include <QDataStream>
 
 
 namespace DataManager {

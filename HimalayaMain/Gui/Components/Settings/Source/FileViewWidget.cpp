@@ -86,7 +86,7 @@ void CFileViewWidget::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CFileViewWidget::RetranslateUI()
 {
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CFileViewWidget", "Event View", 0, QApplication::UnicodeUTF8));
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CFileViewWidget", "Event View", Q_NULLPTR, -1));
 }
 
 /****************************************************************************/

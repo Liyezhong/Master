@@ -219,14 +219,14 @@ void CReagentStationWidget::OnProcessStateChanged()
 void CReagentStationWidget::RetranslateUI()
 {
     MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagent Station::CReagentStatusWidget",
-                                                                 "Stations", 0, QApplication::UnicodeUTF8));
+                                                                 "Stations", Q_NULLPTR, -1));
     (void) m_ReagentStationModel.setHeaderData(0, Qt::Horizontal,QApplication::translate("Core::CReagentStationModel",
-                                                                                 "Station", 0, QApplication::UnicodeUTF8),0);
+                                                                                 "Station", Q_NULLPTR, -1),0);
 
     (void) m_ReagentStationModel.setHeaderData(1, Qt::Horizontal,QApplication::translate("Core::CReagentStationModel",
-                                                                                 "Reagent", 0, QApplication::UnicodeUTF8),0);
+                                                                                 "Reagent", Q_NULLPTR, -1),0);
 
-    m_strSelectReagent = QApplication::translate("Reagents::CReagentStationWidget", "Select Reagent", 0, QApplication::UnicodeUTF8);
+    m_strSelectReagent = QApplication::translate("Reagents::CReagentStationWidget", "Select Reagent", Q_NULLPTR, -1);
 
 }
 

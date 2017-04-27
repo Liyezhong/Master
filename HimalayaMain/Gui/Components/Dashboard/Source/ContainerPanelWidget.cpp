@@ -46,7 +46,7 @@ CContainerPanelWidget::CContainerPanelWidget(QWidget *p_Parent): MainMenu::CPane
                                    m_pUserSetting(NULL)
 {
      mp_Ui->setupUi(GetContentFrame());
-     SetPanelTitle(QApplication::translate("Dashboard::CContainerPanelWidget", "Dashboard", 0, QApplication::UnicodeUTF8));
+     SetPanelTitle(QApplication::translate("Dashboard::CContainerPanelWidget", "Dashboard", Q_NULLPTR, -1));
      QPalette Palette = mp_Ui->dashboardView->palette();
      QColor BaseColor = Palette.color(QPalette::Base);
      BaseColor.setAlpha(0);
@@ -112,14 +112,14 @@ void CContainerPanelWidget::changeEvent(QEvent *p_Event)
 
 void CContainerPanelWidget::RetranslateUI()
 {
-    SetPanelTitle(QApplication::translate("Dashboard::CContainerPanelWidget", "Dashboard", 0, QApplication::UnicodeUTF8));
-    m_strYes = QApplication::translate("Dashboard::CContainerPanelWidget", "Yes", 0, QApplication::UnicodeUTF8);
-    m_strNo = QApplication::translate("Dashboard::CContainerPanelWidget", "No", 0, QApplication::UnicodeUTF8);
-    m_strOK = QApplication::translate("Dashboard::CContainerPanelWidget", "OK", 0, QApplication::UnicodeUTF8);
-    m_strCancel = QApplication::translate("Dashboard::CContainerPanelWidget", "Cancel", 0, QApplication::UnicodeUTF8);
-    m_strWarning = QApplication::translate("Dashboard::CContainerPanelWidget", "Warning", 0, QApplication::UnicodeUTF8);
-    m_strProgram = QApplication::translate("Dashboard::CContainerPanelWidget", "Program", 0, QApplication::UnicodeUTF8);
-    m_strInformation = QApplication::translate("Dashboard::CContainerPanelWidget", "Information", 0, QApplication::UnicodeUTF8);
+    SetPanelTitle(QApplication::translate("Dashboard::CContainerPanelWidget", "Dashboard", Q_NULLPTR, -1));
+    m_strYes = QApplication::translate("Dashboard::CContainerPanelWidget", "Yes", Q_NULLPTR, -1);
+    m_strNo = QApplication::translate("Dashboard::CContainerPanelWidget", "No", Q_NULLPTR, -1);
+    m_strOK = QApplication::translate("Dashboard::CContainerPanelWidget", "OK", Q_NULLPTR, -1);
+    m_strCancel = QApplication::translate("Dashboard::CContainerPanelWidget", "Cancel", Q_NULLPTR, -1);
+    m_strWarning = QApplication::translate("Dashboard::CContainerPanelWidget", "Warning", Q_NULLPTR, -1);
+    m_strProgram = QApplication::translate("Dashboard::CContainerPanelWidget", "Program", Q_NULLPTR, -1);
+    m_strInformation = QApplication::translate("Dashboard::CContainerPanelWidget", "Information", Q_NULLPTR, -1);
 }
 
 void CContainerPanelWidget::UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType,

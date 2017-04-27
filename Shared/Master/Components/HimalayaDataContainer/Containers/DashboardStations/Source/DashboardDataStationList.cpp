@@ -34,6 +34,7 @@
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
 #include "HimalayaDataContainer/Helper/Include/HimalayaDataManagerEventCodes.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"
+#include <QDataStream>
 
 //lint -e429
 

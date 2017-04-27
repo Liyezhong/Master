@@ -41,4 +41,7 @@ TRANSLATIONS = ../Components/Main/Translation/Himalaya_de.ts \
                ../Components/Main/Translation/Himalaya_hu.ts \
                ../Components/Main/Translation/Himalaya_nl.ts \
                ../Components/Main/Translation/Himalaya_pl.ts \
-               ../Components/Main/Translation/Himalaya_tr.ts
+               ../Components/Main/Translation/Himalaya_tr.ts \
+               ../Components/Main/Translation/Himalaya_ru.ts \
+               ../Components/Main/Translation/Himalaya_it.ts
+

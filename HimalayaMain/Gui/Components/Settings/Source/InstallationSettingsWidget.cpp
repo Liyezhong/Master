@@ -148,16 +148,16 @@ void CInstallationSettingsWidget::RefreshSetting()
 /****************************************************************************/
 void CInstallationSettingsWidget::RetranslateUI()
 {
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CInstallationSettingsWidget", "Installation", 0, QApplication::UnicodeUTF8));
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CInstallationSettingsWidget", "Installation", Q_NULLPTR, -1));
    mp_Ui->btnEdit->setText(QApplication::translate(
                                "Settings::CInstallationSettingsWidget",
-                               "Edit", 0, QApplication::UnicodeUTF8));
+                               "Edit", Q_NULLPTR, -1));
 
-   m_strSoftVer = QApplication::translate( "Settings::CInstallationSettingsWidget", "SoftwareVersion: ", 0, QApplication::UnicodeUTF8);
+   m_strSoftVer = QApplication::translate( "Settings::CInstallationSettingsWidget", "SoftwareVersion: ", Q_NULLPTR, -1);
    mp_Ui->driverversion->setText(QApplication::translate(
                                      "Settings::CInstallationSettingsWidget",
                                      "Driver Version : ",
-                                     0, QApplication::UnicodeUTF8));
+                                     Q_NULLPTR, -1));
 }
 
 /****************************************************************************/

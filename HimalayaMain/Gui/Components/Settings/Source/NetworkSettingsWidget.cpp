@@ -239,20 +239,20 @@ bool CNetworkSettingsWidget::validator(QString &input, SettingType_t type)
 /****************************************************************************/
 void CNetworkSettingsWidget::RetranslateUI()
 {
-    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CNetworkSettingsWidget", "Network", 0, QApplication::UnicodeUTF8));
-    mp_Ui->checkBox_RemoteCare->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Enable RemoteCare Events", 0, QApplication::UnicodeUTF8));
-    mp_Ui->checkBox_DirectConnection->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Direct Connection", 0, QApplication::UnicodeUTF8));
-    mp_Ui->proxyUserNameLabel->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Proxy User Name", 0, QApplication::UnicodeUTF8));
-    mp_Ui->proxyPasswordLabel->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Proxy Password", 0, QApplication::UnicodeUTF8));
-    mp_Ui->proxyIpAddressLabel->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Proxy IP Address", 0, QApplication::UnicodeUTF8));
-    mp_Ui->proxyPortLabel->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Proxy Port", 0, QApplication::UnicodeUTF8));
-    mp_Ui->saveButton->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Save", 0, QApplication::UnicodeUTF8));
-    m_strEnterProxyName = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy User Name", 0, QApplication::UnicodeUTF8);
-    m_strEnterProxyPassword = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy Password", 0, QApplication::UnicodeUTF8);
-    m_strEnterProxyIP = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy IP Address", 0, QApplication::UnicodeUTF8);
-    m_strEnterProxyPort = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy Port", 0, QApplication::UnicodeUTF8);
-    m_strErrIP = QApplication::translate("Settings::CNetworkSettingsWidget", "IP address is not correct", 0, QApplication::UnicodeUTF8);
-    m_strErrPort = QApplication::translate("Settings::CNetworkSettingsWidget", "Network port is not correct.", 0, QApplication::UnicodeUTF8);
+    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CNetworkSettingsWidget", "Network", Q_NULLPTR, -1));
+    mp_Ui->checkBox_RemoteCare->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Enable RemoteCare Events", Q_NULLPTR, -1));
+    mp_Ui->checkBox_DirectConnection->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Direct Connection", Q_NULLPTR, -1));
+    mp_Ui->proxyUserNameLabel->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Proxy User Name", Q_NULLPTR, -1));
+    mp_Ui->proxyPasswordLabel->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Proxy Password", Q_NULLPTR, -1));
+    mp_Ui->proxyIpAddressLabel->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Proxy IP Address", Q_NULLPTR, -1));
+    mp_Ui->proxyPortLabel->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Proxy Port", Q_NULLPTR, -1));
+    mp_Ui->saveButton->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Save", Q_NULLPTR, -1));
+    m_strEnterProxyName = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy User Name", Q_NULLPTR, -1);
+    m_strEnterProxyPassword = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy Password", Q_NULLPTR, -1);
+    m_strEnterProxyIP = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy IP Address", Q_NULLPTR, -1);
+    m_strEnterProxyPort = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy Port", Q_NULLPTR, -1);
+    m_strErrIP = QApplication::translate("Settings::CNetworkSettingsWidget", "IP address is not correct", Q_NULLPTR, -1);
+    m_strErrPort = QApplication::translate("Settings::CNetworkSettingsWidget", "Network port is not correct.", Q_NULLPTR, -1);
 }
 
 /****************************************************************************/

@@ -21,7 +21,7 @@
 #ifndef CORE_DASHBOARDSTATIONITEM_H
 #define CORE_DASHBOARDSTATIONITEM_H
 
-#include <QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 #include "Core/Include/DataConnector.h"
 #include "MainMenu/Include/MessageDlg.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"

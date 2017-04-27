@@ -702,65 +702,65 @@ void CReagentRMSWidget::ResetButtons()
 void CReagentRMSWidget::RetranslateUI()
 {
     MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagents::CReagentRMSWidget",
-                                                                 "RMS", 0, QApplication::UnicodeUTF8));
+                                                                 "RMS", Q_NULLPTR, -1));
 
     m_strEditReagent = QApplication::translate("Reagents::CReagentRMSWidget",
-                                           "Edit Reagent", 0, QApplication::UnicodeUTF8);
+                                           "Edit Reagent", Q_NULLPTR, -1);
 
     m_strNewReagent = QApplication::translate("Reagents::CReagentRMSWidget",
-                                           "New Reagent", 0, QApplication::UnicodeUTF8);
+                                           "New Reagent", Q_NULLPTR, -1);
 
     m_strConfirmDelReagent = QApplication::translate("Reagents::CReagentRMSWidget",
-                                           "Do you really want to delete the selected reagent?", 0, QApplication::UnicodeUTF8);
+                                           "Do you really want to delete the selected reagent?", Q_NULLPTR, -1);
 
-    m_strConfirmMsg = QApplication::translate("Reagents::CReagentRMSWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
-    m_strYes = QApplication::translate("Reagents::CReagentRMSWidget", "Yes", 0, QApplication::UnicodeUTF8);
-    m_strCancel = QApplication::translate("Reagents::CReagentRMSWidget", "Cancel", 0, QApplication::UnicodeUTF8);
+    m_strConfirmMsg = QApplication::translate("Reagents::CReagentRMSWidget", "Confirmation Message", Q_NULLPTR, -1);
+    m_strYes = QApplication::translate("Reagents::CReagentRMSWidget", "Yes", Q_NULLPTR, -1);
+    m_strCancel = QApplication::translate("Reagents::CReagentRMSWidget", "Cancel", Q_NULLPTR, -1);
     m_strConfirmChangeRMSMode =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                                       "Do you really want to change the RMS controlling mode?  If reagents are being replaced, please reset data for those reagents on the Status page.", 0, QApplication::UnicodeUTF8);
+                                                                       "Do you really want to change the RMS controlling mode?  If reagents are being replaced, please reset data for those reagents on the Status page.", Q_NULLPTR, -1);
     m_strConfirmRMSOffMode =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-        "Do you really want to turn off RMS mode? Longer than the recommended use of cleaning reagents can cause paraffin blockages in reagent lines. The cleaning program can be run as usual. However, the reagent quality must be controlled carefully.", 0, QApplication::UnicodeUTF8);
+        "Do you really want to turn off RMS mode? Longer than the recommended use of cleaning reagents can cause paraffin blockages in reagent lines. The cleaning program can be run as usual. However, the reagent quality must be controlled carefully.", Q_NULLPTR, -1);
 
     (void) m_ReagentRMSModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
-                                                                                 "Reagent", 0, QApplication::UnicodeUTF8),0);
+                                                                                 "Reagent", Q_NULLPTR, -1),0);
     (void) m_ReagentRMSModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
-                                                                                 "ReagentGroup", 0, QApplication::UnicodeUTF8),0);
+                                                                                 "ReagentGroup", Q_NULLPTR, -1),0);
     QString SecondColumnName("");
     switch(Reagents:: CReagentRMSWidget::RMSPROCESSINGOPTION) {
         case Global::RMS_CASSETTES:
-            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Cassettes until change", 0, QApplication::UnicodeUTF8);
+            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Cassettes until change", Q_NULLPTR, -1);
             break;
         case Global::RMS_CYCLES:
-            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Cycles until change", 0, QApplication::UnicodeUTF8);
+            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Cycles until change", Q_NULLPTR, -1);
             break;
         case Global::RMS_DAYS:
-            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Days until change", 0, QApplication::UnicodeUTF8);
+            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Days until change", Q_NULLPTR, -1);
             break;
         default:
             break;
     }
 
     (void) m_ReagentRMSModel.setHeaderData(2,Qt::Horizontal, QApplication::translate("Core::CReagentRMSModel",
-                                                                                 SecondColumnName.toUtf8(), 0, QApplication::UnicodeUTF8),0);
+                                                                                 SecondColumnName.toUtf8(), Q_NULLPTR, -1),0);
 
     (void) m_ReagentCleaningModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
-                                                                                 "Reagent", 0, QApplication::UnicodeUTF8),0);
+                                                                                 "Reagent", Q_NULLPTR, -1),0);
     (void) m_ReagentCleaningModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
-                                                                                 "Reagent Group", 0, QApplication::UnicodeUTF8),0);
+                                                                                 "Reagent Group", Q_NULLPTR, -1),0);
 
     switch(Reagents:: CReagentRMSWidget::RMSCLEANINGOPTIONS) {
         case Global::RMS_CYCLES:
-            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Cycles until change", 0, QApplication::UnicodeUTF8);
+            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Cycles until change", Q_NULLPTR, -1);
             break;
         case Global::RMS_DAYS:
-            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Days until change", 0, QApplication::UnicodeUTF8);
+            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Days until change", Q_NULLPTR, -1);
             break;
         default:
          break;
 
     }
     (void) m_ReagentCleaningModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
-                                                                                 SecondColumnName.toUtf8(), 0, QApplication::UnicodeUTF8),0);
+                                                                                 SecondColumnName.toUtf8(), Q_NULLPTR, -1),0);
 }
 
 /****************************************************************************/

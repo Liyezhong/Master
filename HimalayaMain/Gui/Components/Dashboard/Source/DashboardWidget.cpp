@@ -1462,46 +1462,46 @@ void CDashboardWidget::changeEvent(QEvent *p_Event)
 
 void CDashboardWidget::RetranslateUI()
 {
-    m_strCheckSafeReagent = QApplication::translate("Dashboard::CDashboardWidget", "No safe reagent for the Program step \"%1\" of \"%2\". Would you like to continue?", 0, QApplication::UnicodeUTF8);
-    m_strNotFoundStation = QApplication::translate("Dashboard::CDashboardWidget", "Program step \"%1\" of \"%2\" can not find the corresponding reagent station.  A station can be used only once in the program. Please assign a separate station for the reagent of this step.", 0, QApplication::UnicodeUTF8);
-    m_strCheckEmptyStation = QApplication::translate("Dashboard::CDashboardWidget", "You cannot start the program, because Station \"%1\" is set as Empty in Program step \"%2\" of \"%3\".", 0, QApplication::UnicodeUTF8);
-    m_strCannotStartParaffinMelt = QApplication::translate("Dashboard::CDashboardWidget", "Program cannot start because the paraffin is not melted completely and the first program step is not a fixation reagent.", 0, QApplication::UnicodeUTF8);
-    m_strWaitTimeforParaffinMelt = QApplication::translate("Dashboard::CDashboardWidget", "You can start program in %1 hours %2 minutes %3 seconds.", 0, QApplication::UnicodeUTF8);
-    m_strPromptProgramDelay =  QApplication::translate("Dashboard::CDashboardWidget", "Program will be delayed briefly in the first step as the paraffin is not melted completely. Would you like to continue?", 0, QApplication::UnicodeUTF8);
-    m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Enter number of Cassettes:", 0, QApplication::UnicodeUTF8);
-    m_strProgramWillComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
-    m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "The specimens have been safeguarded by filling the retort with a safe reagent. Would you like to drain the safe reagent?", 0, QApplication::UnicodeUTF8);
-    m_strTissueProtectPassed_Warning = QApplication::translate("Dashboard::CDashboardWidget", "Tissue safety process has completed with warning. Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
-    m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "The oven cover is open. Please close it then click the OK button.", 0, QApplication::UnicodeUTF8);
+    m_strCheckSafeReagent = QApplication::translate("Dashboard::CDashboardWidget", "No safe reagent for the Program step \"%1\" of \"%2\". Would you like to continue?", Q_NULLPTR, -1);
+    m_strNotFoundStation = QApplication::translate("Dashboard::CDashboardWidget", "Program step \"%1\" of \"%2\" can not find the corresponding reagent station.  A station can be used only once in the program. Please assign a separate station for the reagent of this step.", Q_NULLPTR, -1);
+    m_strCheckEmptyStation = QApplication::translate("Dashboard::CDashboardWidget", "You cannot start the program, because Station \"%1\" is set as Empty in Program step \"%2\" of \"%3\".", Q_NULLPTR, -1);
+    m_strCannotStartParaffinMelt = QApplication::translate("Dashboard::CDashboardWidget", "Program cannot start because the paraffin is not melted completely and the first program step is not a fixation reagent.", Q_NULLPTR, -1);
+    m_strWaitTimeforParaffinMelt = QApplication::translate("Dashboard::CDashboardWidget", "You can start program in %1 hours %2 minutes %3 seconds.", Q_NULLPTR, -1);
+    m_strPromptProgramDelay =  QApplication::translate("Dashboard::CDashboardWidget", "Program will be delayed briefly in the first step as the paraffin is not melted completely. Would you like to continue?", Q_NULLPTR, -1);
+    m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Enter number of Cassettes:", Q_NULLPTR, -1);
+    m_strProgramWillComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed! Would you like to drain the retort?", Q_NULLPTR, -1);
+    m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "The specimens have been safeguarded by filling the retort with a safe reagent. Would you like to drain the safe reagent?", Q_NULLPTR, -1);
+    m_strTissueProtectPassed_Warning = QApplication::translate("Dashboard::CDashboardWidget", "Tissue safety process has completed with warning. Would you like to drain the retort?", Q_NULLPTR, -1);
+    m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "The oven cover is open. Please close it then click the OK button.", Q_NULLPTR, -1);
     m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened. Please close it and then click OK. \
-Wear respirator properly to prevent the potential hazard of reagent vapor. Don't touch the level sensor. It's hot!", 0, QApplication::UnicodeUTF8);
-    m_strItIsPausing = QApplication::translate("Dashboard::CDashboardWidget", "Pausing...\nDon't open the retort lid and unplug any reagent bottles.", 0, QApplication::UnicodeUTF8);
-    m_strWaitRotaryValveHeatingPrompt = QApplication::translate("Dashboard::CDashboardWidget", "Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.", 0, QApplication::UnicodeUTF8);
-    m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press \"Ok\" button.", 0, QApplication::UnicodeUTF8);
-    m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated. Please start the cleaning program.", 0, QApplication::UnicodeUTF8);
-    m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
-    m_strProgramComplete  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed!", 0, QApplication::UnicodeUTF8);
-    m_strProgramCompleteSuccessfully  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed successfully!", 0, QApplication::UnicodeUTF8);
-    m_strProgramCompleteSafeReagent  = QApplication::translate("Dashboard::CDashboardWidget", "The safe reagent has been drained completely. The program \"%1\" was aborted!", 0, QApplication::UnicodeUTF8);
+Wear respirator properly to prevent the potential hazard of reagent vapor. Don't touch the level sensor. It's hot!", Q_NULLPTR, -1);
+    m_strItIsPausing = QApplication::translate("Dashboard::CDashboardWidget", "Pausing...\nDon't open the retort lid and unplug any reagent bottles.", Q_NULLPTR, -1);
+    m_strWaitRotaryValveHeatingPrompt = QApplication::translate("Dashboard::CDashboardWidget", "Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.", Q_NULLPTR, -1);
+    m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press \"Ok\" button.", Q_NULLPTR, -1);
+    m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated. Please start the cleaning program.", Q_NULLPTR, -1);
+    m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", Q_NULLPTR, -1);
+    m_strProgramComplete  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed!", Q_NULLPTR, -1);
+    m_strProgramCompleteSuccessfully  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed successfully!", Q_NULLPTR, -1);
+    m_strProgramCompleteSafeReagent  = QApplication::translate("Dashboard::CDashboardWidget", "The safe reagent has been drained completely. The program \"%1\" was aborted!", Q_NULLPTR, -1);
 
-    m_strRetortNotLock = QApplication::translate("Dashboard::CDashboardWidget", "Please close and lock the retort, then try again!", 0, QApplication::UnicodeUTF8);
-    m_strNotStartRMSOFF = QApplication::translate("Dashboard::CDashboardWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);
-    m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CDashboardWidget", "Reagents needed for this program are expired. Please replace the expired ones with fresh reagents! Program will not start.", 0, QApplication::UnicodeUTF8);
-    m_strStartExpiredReagent =  QApplication::translate("Dashboard::CDashboardWidget", "Do you really want to start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
-    m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the number of new-added cassettes:", 0, QApplication::UnicodeUTF8);
-    m_strAddCassete = QApplication::translate("Dashboard::CDashboardWidget", "Did you add new cassettes?", 0, QApplication::UnicodeUTF8);
-    m_PowerFailureBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Because the wait time is more than five minutes, the instrument will be re-heated and filled with safe reagents.", 0, QApplication::UnicodeUTF8);
-    m_strCoolingDown = QApplication::translate("Dashboard::CDashboardWidget", "Retort temperature is too high. Please allow the retort to cool down before inserting specimens and starting the next program.", 0, QApplication::UnicodeUTF8);
+    m_strRetortNotLock = QApplication::translate("Dashboard::CDashboardWidget", "Please close and lock the retort, then try again!", Q_NULLPTR, -1);
+    m_strNotStartRMSOFF = QApplication::translate("Dashboard::CDashboardWidget", "Leica Program can't be operated with RMS OFF.", Q_NULLPTR, -1);
+    m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CDashboardWidget", "Reagents needed for this program are expired. Please replace the expired ones with fresh reagents! Program will not start.", Q_NULLPTR, -1);
+    m_strStartExpiredReagent =  QApplication::translate("Dashboard::CDashboardWidget", "Do you really want to start the Program with Expired Reagents?", Q_NULLPTR, -1);
+    m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the number of new-added cassettes:", Q_NULLPTR, -1);
+    m_strAddCassete = QApplication::translate("Dashboard::CDashboardWidget", "Did you add new cassettes?", Q_NULLPTR, -1);
+    m_PowerFailureBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Because the wait time is more than five minutes, the instrument will be re-heated and filled with safe reagents.", Q_NULLPTR, -1);
+    m_strCoolingDown = QApplication::translate("Dashboard::CDashboardWidget", "Retort temperature is too high. Please allow the retort to cool down before inserting specimens and starting the next program.", Q_NULLPTR, -1);
 
     m_strDiffTemp = QApplication::translate("Dashboard::CDashboardWidget", "Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation %1).\
 Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.\
 Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!\
-Please confirm modifying Paraffin temperature.", 0, QApplication::UnicodeUTF8);
+Please confirm modifying Paraffin temperature.", Q_NULLPTR, -1);
 
-    m_strReadyStartProgram = QApplication::translate("Dashboard::CDashboardWidget", "Ready to start a new program.", 0, QApplication::UnicodeUTF8);
+    m_strReadyStartProgram = QApplication::translate("Dashboard::CDashboardWidget", "Ready to start a new program.", Q_NULLPTR, -1);
     m_checkMachinePrompt = QApplication::translate("Dashboard::CDashboardWidget", "Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter.\
- Reinstall the retort filter after cleaning.\n Load the specimens into the retort and make sure that the retort is locked.\n Please visually confirm all paraffin are completely melted.", 0, QApplication::UnicodeUTF8);
-    m_strItIsResuming = QApplication::translate("Dashboard::CDashboardWidget", "Resuming...\nDon't open the retort lid and unplug any reagent bottles.", 0, QApplication::UnicodeUTF8);
+ Reinstall the retort filter after cleaning.\n Load the specimens into the retort and make sure that the retort is locked.\n Please visually confirm all paraffin are completely melted.", Q_NULLPTR, -1);
+    m_strItIsResuming = QApplication::translate("Dashboard::CDashboardWidget", "Resuming...\nDon't open the retort lid and unplug any reagent bottles.", Q_NULLPTR, -1);
 
 }
 

@@ -211,7 +211,7 @@ void CDataManagementWidget::showEvent(QShowEvent *p_Event)
 /****************************************************************************/
 void CDataManagementWidget::RetranslateUI()
 {
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CDataManagementWidget", "Data Management", 0, QApplication::UnicodeUTF8));
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CDataManagementWidget", "Data Management", Q_NULLPTR, -1));
 }
 
 /****************************************************************************/

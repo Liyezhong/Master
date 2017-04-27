@@ -11,6 +11,7 @@ CONFIG += static \
           rtti
 
 QT += gui \
+      widgets \
       core \
       xml \
       xmlpatterns \

@@ -226,14 +226,14 @@ void CModifyReagentStationDlg::OnProcessStateChanged()
 /****************************************************************************/
 void CModifyReagentStationDlg::RetranslateUI()
 {
-    m_strCancel = QApplication::translate("Reagents::CModifyReagentStationDlg", "Cancel", 0, QApplication::UnicodeUTF8);
-    m_strClose = QApplication::translate("Reagents::CModifyReagentStationDlg", "Close", 0, QApplication::UnicodeUTF8);
-    m_strInforMsg = QApplication::translate("Reagents::CModifyReagentStationDlg", "Information Message", 0, QApplication::UnicodeUTF8);
-    m_strOK = QApplication::translate("Reagents::CModifyReagentStationDlg", "OK", 0, QApplication::UnicodeUTF8);
+    m_strCancel = QApplication::translate("Reagents::CModifyReagentStationDlg", "Cancel", Q_NULLPTR, -1);
+    m_strClose = QApplication::translate("Reagents::CModifyReagentStationDlg", "Close", Q_NULLPTR, -1);
+    m_strInforMsg = QApplication::translate("Reagents::CModifyReagentStationDlg", "Information Message", Q_NULLPTR, -1);
+    m_strOK = QApplication::translate("Reagents::CModifyReagentStationDlg", "OK", Q_NULLPTR, -1);
     (void)m_ReagentsDataModel.setHeaderData(0,Qt::Horizontal, QApplication::translate("Core::CReagentStationEditModel",
-                                                                                 "Reagent", 0, QApplication::UnicodeUTF8), 0);
+                                                                                 "Reagent", Q_NULLPTR, -1), 0);
     (void)m_ReagentsDataModel.setHeaderData(1,Qt::Horizontal, QApplication::translate("Core::CReagentStationEditModel",
-                                                                                 "Group", 0, QApplication::UnicodeUTF8),0);
+                                                                                 "Group", Q_NULLPTR, -1),0);
 }
 
 

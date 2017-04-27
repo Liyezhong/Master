@@ -110,19 +110,19 @@ void CProgramPanelWidget::changeEvent(QEvent *p_Event)
 void CProgramPanelWidget::RetranslateUI()
 {
     SetPanelTitle(QApplication::translate("Dashboard::CProgramPanelWidget", "Programs",
-                                                                 0, QApplication::UnicodeUTF8));
-    m_strConfirmation = QApplication::translate("Dashboard::CProgramPanelWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
-    m_strAbortProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Would you like to abort the program?", 0, QApplication::UnicodeUTF8);
+                                                                 Q_NULLPTR, -1));
+    m_strConfirmation = QApplication::translate("Dashboard::CProgramPanelWidget", "Confirmation Message", Q_NULLPTR, -1);
+    m_strAbortProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Would you like to abort the program?", Q_NULLPTR, -1);
 
-    m_strYes = QApplication::translate("Dashboard::CProgramPanelWidget", "Yes", 0, QApplication::UnicodeUTF8);
-    m_strNo = QApplication::translate("Dashboard::CProgramPanelWidget", "No", 0, QApplication::UnicodeUTF8);
-    m_strOK = QApplication::translate("Dashboard::CProgramPanelWidget", "OK", 0, QApplication::UnicodeUTF8);
-    m_strCancel = QApplication::translate("Dashboard::CProgramPanelWidget", "Cancel", 0, QApplication::UnicodeUTF8);
-    m_strWarning = QApplication::translate("Dashboard::CProgramPanelWidget", "Warning", 0, QApplication::UnicodeUTF8);
-    m_strProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Program", 0, QApplication::UnicodeUTF8);
-    m_strInformation = QApplication::translate("Dashboard::CProgramPanelWidget", "Information", 0, QApplication::UnicodeUTF8);
-    m_strStart = QApplication::translate("Dashboard::CProgramPanelWidget", "Start", 0, QApplication::UnicodeUTF8);
-    m_strAbort = QApplication::translate("Dashboard::CProgramPanelWidget", "Abort", 0, QApplication::UnicodeUTF8);
+    m_strYes = QApplication::translate("Dashboard::CProgramPanelWidget", "Yes", Q_NULLPTR, -1);
+    m_strNo = QApplication::translate("Dashboard::CProgramPanelWidget", "No", Q_NULLPTR, -1);
+    m_strOK = QApplication::translate("Dashboard::CProgramPanelWidget", "OK", Q_NULLPTR, -1);
+    m_strCancel = QApplication::translate("Dashboard::CProgramPanelWidget", "Cancel", Q_NULLPTR, -1);
+    m_strWarning = QApplication::translate("Dashboard::CProgramPanelWidget", "Warning", Q_NULLPTR, -1);
+    m_strProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Program", Q_NULLPTR, -1);
+    m_strInformation = QApplication::translate("Dashboard::CProgramPanelWidget", "Information", Q_NULLPTR, -1);
+    m_strStart = QApplication::translate("Dashboard::CProgramPanelWidget", "Start", Q_NULLPTR, -1);
+    m_strAbort = QApplication::translate("Dashboard::CProgramPanelWidget", "Abort", Q_NULLPTR, -1);
 }
 
 void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector)

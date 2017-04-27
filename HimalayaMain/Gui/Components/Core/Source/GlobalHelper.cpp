@@ -19,7 +19,7 @@
 
 /****************************************************************************/
 #include <qglobal.h>
-#include <QApplication>
+#include <QtWidgets/QApplication>
 #include "Core/Include/GlobalHelper.h"
 #include "MainMenu/Include/MessageDlg.h"
 #include "Core/Include/DataConnector.h"
@@ -224,10 +224,10 @@ void CGlobalHelper::SetProgramPaused(bool pauseFlag)
 /****************************************************************************/
 void CGlobalHelper::RetranslateUI()
 {
-    m_strWarning = QApplication::translate("Core::CGlobalHelper", "Warning", 0, QApplication::UnicodeUTF8);
-    m_strMsgUnselect = QApplication::translate("Core::CGlobalHelper", "Do you want to make your change?", 0, QApplication::UnicodeUTF8);
-    m_strYes = QApplication::translate("Core::CGlobalHelper", "Yes", 0, QApplication::UnicodeUTF8);
-    m_strCancel = QApplication::translate("Core::CGlobalHelper", "Cancel", 0, QApplication::UnicodeUTF8);
+    m_strWarning = QApplication::translate("Core::CGlobalHelper", "Warning", Q_NULLPTR, -1);
+    m_strMsgUnselect = QApplication::translate("Core::CGlobalHelper", "Do you want to make your change?", Q_NULLPTR, -1);
+    m_strYes = QApplication::translate("Core::CGlobalHelper", "Yes", Q_NULLPTR, -1);
+    m_strCancel = QApplication::translate("Core::CGlobalHelper", "Cancel", Q_NULLPTR, -1);
 }
 
 

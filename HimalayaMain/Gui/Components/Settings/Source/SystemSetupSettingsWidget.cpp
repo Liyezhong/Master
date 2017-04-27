@@ -178,7 +178,7 @@ void CSystemSetupSettingsWidget::InitTemperatureWidget()
         for (int i = MIN_CENTIGRADE_TEMP; i <= MAX_CENTIGRADE_TEMP; i += 1) {
             mp_ScrollWheel->AddItem(QString::number(i).rightJustified(2, '0'), i);
         }
-        mp_Ui->scrollPanelWidget->SetSubtitle(QApplication::translate("CSystemSetupSettingsWidget", "\302\260C", 0, QApplication::UnicodeUTF8), 0);
+        mp_Ui->scrollPanelWidget->SetSubtitle(QApplication::translate("CSystemSetupSettingsWidget", "\302\260C", Q_NULLPTR, -1), 0);
     }
     else {
         for (QMap<int, int>::iterator itr = s_MapTemperature.begin();
@@ -190,7 +190,7 @@ void CSystemSetupSettingsWidget::InitTemperatureWidget()
                         itr.value());
         }
 
-        mp_Ui->scrollPanelWidget->SetSubtitle(QApplication::translate("CSystemSetupSettingsWidget", "\302\260F", 0, QApplication::UnicodeUTF8), 0);
+        mp_Ui->scrollPanelWidget->SetSubtitle(QApplication::translate("CSystemSetupSettingsWidget", "\302\260F", Q_NULLPTR, -1), 0);
     }
     mp_ScrollWheel->SetNonContinuous();
 }
@@ -291,15 +291,15 @@ void CSystemSetupSettingsWidget::ResetButtons()
 /****************************************************************************/
 void CSystemSetupSettingsWidget::RetranslateUI()
 {
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CSystemSetupSettingsWidget", "System Setup", 0, QApplication::UnicodeUTF8));
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CSystemSetupSettingsWidget", "System Setup", Q_NULLPTR, -1));
    m_strConfirmChangeMeltingPoint =  QApplication::translate("Settings::CSystemSetupSettingsWidget",
-                                                             "Do you really want to change the paraffin bath temperature?", 0, QApplication::UnicodeUTF8);
+                                                             "Do you really want to change the paraffin bath temperature?", Q_NULLPTR, -1);
    m_strChangeMeltPointConfirm12Hrs = QApplication::translate("Settings::CSystemSetupSettingsWidget",
                                                               "The paraffin melting temperature has been changed. Please click \"Yes\" to start remelting paraffin, and it will take %1 hours before using paraffin. If you want to skip the process of remelting paraffin, please visually confirm all paraffin are completely melted, then click \"No\" to use paraffin immediately.",
-                                                              0, QApplication::UnicodeUTF8);
+                                                              Q_NULLPTR, -1);
 
    m_strBottleCheckConfirm = QApplication::translate("Reagent::CSystemSetupSettingsWidget",
-                                            "Please check that the retort is empty and clean prior starting bottle check and then press \"yes\". Bottle check function will require approximately 7 minutes.", 0, QApplication::UnicodeUTF8);
+                                            "Please check that the retort is empty and clean prior starting bottle check and then press \"yes\". Bottle check function will require approximately 7 minutes.", Q_NULLPTR, -1);
 
 }
 

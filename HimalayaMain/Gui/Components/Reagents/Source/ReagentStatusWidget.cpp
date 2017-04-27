@@ -448,43 +448,43 @@ void CReagentStatusWidget::OnProcessStateChanged()
 void CReagentStatusWidget::RetranslateUI()
 {
     MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagent::CReagentStatusWidget",
-                                                                 "Status", 0, QApplication::UnicodeUTF8));
+                                                                 "Status", Q_NULLPTR, -1));
 
     m_strSetAsEmpty = QApplication::translate("Reagent::CReagentStatusWidget",
-                                              "Would you like to set Station %1 as empty?", 0, QApplication::UnicodeUTF8);
+                                              "Would you like to set Station %1 as empty?", Q_NULLPTR, -1);
 
     m_strResetData = QApplication::translate("Reagent::CReagentStatusWidget",
-                                             "Would you like to reset data for Station %1?", 0, QApplication::UnicodeUTF8);
+                                             "Would you like to reset data for Station %1?", Q_NULLPTR, -1);
 
     m_strSetAsFull = QApplication::translate("Reagent::CReagentStatusWidget",
-                                             "Would you like to set Station %1 as full?", 0, QApplication::UnicodeUTF8);
+                                             "Would you like to set Station %1 as full?", Q_NULLPTR, -1);
 
     m_strBottleCheckConfirm = QApplication::translate("Reagent::CReagentStatusWidget",
-                                             "Please check that the retort is empty and clean prior starting bottle check and then press \"yes\". Bottle check function will require approximately 7 minutes.", 0, QApplication::UnicodeUTF8);
+                                             "Please check that the retort is empty and clean prior starting bottle check and then press \"yes\". Bottle check function will require approximately 7 minutes.", Q_NULLPTR, -1);
 
-    m_strConfirmMsg = QApplication::translate("Reagents::CReagentStatusWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
-    m_strYes = QApplication::translate("Reagents::CReagentStatusWidget", "Yes", 0, QApplication::UnicodeUTF8);
-    m_strNo = QApplication::translate("Reagents::CReagentStatusWidget", "No", 0, QApplication::UnicodeUTF8);
+    m_strConfirmMsg = QApplication::translate("Reagents::CReagentStatusWidget", "Confirmation Message", Q_NULLPTR, -1);
+    m_strYes = QApplication::translate("Reagents::CReagentStatusWidget", "Yes", Q_NULLPTR, -1);
+    m_strNo = QApplication::translate("Reagents::CReagentStatusWidget", "No", Q_NULLPTR, -1);
 
 
     (void) m_ReagentStatusModel.setHeaderData(0, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
-                                                                                 "Station", 0, QApplication::UnicodeUTF8),0);
+                                                                                 "Station", Q_NULLPTR, -1),0);
 
     (void) m_ReagentStatusModel.setHeaderData(1, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
-                                                                                 "Reagent", 0, QApplication::UnicodeUTF8),0);
+                                                                                 "Reagent", Q_NULLPTR, -1),0);
     QString SecondColumnName("");
     switch(Core::CReagentStatusModel::RMSPROCESSINGOPTION) {
         default:
             SecondColumnName = "";
             break;
         case Global::RMS_CASSETTES:
-            SecondColumnName = QApplication::translate("Core::CReagentStatusModel", "Cassettes\nsince\nchange", 0, QApplication::UnicodeUTF8);
+            SecondColumnName = QApplication::translate("Core::CReagentStatusModel", "Cassettes\nsince\nchange", Q_NULLPTR, -1);
             break;
         case Global::RMS_CYCLES:
-            SecondColumnName = QApplication::translate("Core::CReagentStatusModel", "Cycles\nsince\nchange", 0, QApplication::UnicodeUTF8);
+            SecondColumnName = QApplication::translate("Core::CReagentStatusModel", "Cycles\nsince\nchange", Q_NULLPTR, -1);
             break;
         case Global::RMS_DAYS:
-            SecondColumnName = QApplication::translate("Core::CReagentStatusModel", "Expiry\nDate", 0, QApplication::UnicodeUTF8);
+            SecondColumnName = QApplication::translate("Core::CReagentStatusModel", "Expiry\nDate", Q_NULLPTR, -1);
             break;
     }
 
@@ -494,19 +494,19 @@ void CReagentStatusWidget::RetranslateUI()
             ThirdColumnName = "";
             break;
         case Global::RMS_CYCLES:
-             ThirdColumnName = QApplication::translate("Core::CReagentStatusModel", "Cycles\nsince\nchange", 0, QApplication::UnicodeUTF8);
+             ThirdColumnName = QApplication::translate("Core::CReagentStatusModel", "Cycles\nsince\nchange", Q_NULLPTR, -1);
              break;
         case Global::RMS_DAYS:
-             ThirdColumnName = QApplication::translate("Core::CReagentStatusModel", "Expiry\nDate", 0, QApplication::UnicodeUTF8);
+             ThirdColumnName = QApplication::translate("Core::CReagentStatusModel", "Expiry\nDate", Q_NULLPTR, -1);
              break;
     }
 
     (void) m_ReagentStatusModel.setHeaderData(2, Qt::Horizontal, SecondColumnName, 0);
     (void) m_ReagentStatusModel.setHeaderData(3, Qt::Horizontal, ThirdColumnName, 0);
     (void) m_ReagentStatusModel.setHeaderData(4, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
-                                                                                 "Exchange\nDate", 0, QApplication::UnicodeUTF8),0);
+                                                                                 "Exchange\nDate", Q_NULLPTR, -1),0);
     (void) m_ReagentStatusModel.setHeaderData(5, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
-                                                                                 "Status", 0, QApplication::UnicodeUTF8),0);
+                                                                                 "Status", Q_NULLPTR, -1),0);
 
 }
 

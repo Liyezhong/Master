@@ -142,24 +142,24 @@ namespace Settings {
     void CBottleCheckStatusDlg::RetranslateUI()
     {
         (void) m_BottleCheckStatusModel.setHeaderData(0, Qt::Horizontal,QApplication::translate("Settings::CBottleCheckStatusModel",
-                                                                                     "Station", 0, QApplication::UnicodeUTF8),0);
+                                                                                     "Station", Q_NULLPTR, -1),0);
 
         (void) m_BottleCheckStatusModel.setHeaderData(1, Qt::Horizontal,QApplication::translate("Settings::CBottleCheckStatusModel",
-                                                                                     "Reagent", 0, QApplication::UnicodeUTF8),0);
+                                                                                     "Reagent", Q_NULLPTR, -1),0);
 
         (void) m_BottleCheckStatusModel.setHeaderData(2, Qt::Horizontal,QApplication::translate("Settings::CBottleCheckStatusModel",
-                                                                                     "Status", 0, QApplication::UnicodeUTF8),0);
-        m_Waiting = QApplication::translate("Settings::CBottleCheckStatusDlg", "Waiting", 0, QApplication::UnicodeUTF8);
-        m_Empty = QApplication::translate("Settings::CBottleCheckStatusDlg", "Empty", 0, QApplication::UnicodeUTF8);
-        m_Passed = QApplication::translate("Settings::CBottleCheckStatusDlg", "Passed", 0, QApplication::UnicodeUTF8);
-        m_Blockage = QApplication::translate("Settings::CBottleCheckStatusDlg", "Blockage", 0, QApplication::UnicodeUTF8);
-        m_Checking = QApplication::translate("Settings::CBottleCheckStatusDlg", "Checking", 0, QApplication::UnicodeUTF8);
-        m_BuildPressureFailed = QApplication::translate("Settings::CBottleCheckStatusDlg", "Build pressure failed", 0, QApplication::UnicodeUTF8);
-        m_Failed = QApplication::translate("Settings::CBottleCheckStatusDlg", "Failed", 0, QApplication::UnicodeUTF8);
-        m_strWarning = QApplication::translate("Settings::CBottleCheckStatusDlg", "Warning", 0, QApplication::UnicodeUTF8);
-        m_strOK = QApplication::translate("Settings::CBottleCheckStatusDlg", "OK", 0, QApplication::UnicodeUTF8);
-        m_strReportMsg = QApplication::translate("Settings::CBottleCheckStatusDlg", "Bottle Check failed! Please check the details in the Bottle Check status list.", 0, QApplication::UnicodeUTF8);
-        QString dlgTitle = QApplication::translate("Settings::CBottleCheckStatusDlg", "Bottle check", 0, QApplication::UnicodeUTF8);
+                                                                                     "Status", Q_NULLPTR, -1),0);
+        m_Waiting = QApplication::translate("Settings::CBottleCheckStatusDlg", "Waiting", Q_NULLPTR, -1);
+        m_Empty = QApplication::translate("Settings::CBottleCheckStatusDlg", "Empty", Q_NULLPTR, -1);
+        m_Passed = QApplication::translate("Settings::CBottleCheckStatusDlg", "Passed", Q_NULLPTR, -1);
+        m_Blockage = QApplication::translate("Settings::CBottleCheckStatusDlg", "Blockage", Q_NULLPTR, -1);
+        m_Checking = QApplication::translate("Settings::CBottleCheckStatusDlg", "Checking", Q_NULLPTR, -1);
+        m_BuildPressureFailed = QApplication::translate("Settings::CBottleCheckStatusDlg", "Build pressure failed", Q_NULLPTR, -1);
+        m_Failed = QApplication::translate("Settings::CBottleCheckStatusDlg", "Failed", Q_NULLPTR, -1);
+        m_strWarning = QApplication::translate("Settings::CBottleCheckStatusDlg", "Warning", Q_NULLPTR, -1);
+        m_strOK = QApplication::translate("Settings::CBottleCheckStatusDlg", "OK", Q_NULLPTR, -1);
+        m_strReportMsg = QApplication::translate("Settings::CBottleCheckStatusDlg", "Bottle Check failed! Please check the details in the Bottle Check status list.", Q_NULLPTR, -1);
+        QString dlgTitle = QApplication::translate("Settings::CBottleCheckStatusDlg", "Bottle check", Q_NULLPTR, -1);
 
         SetDialogTitle(dlgTitle);
         Inilialize();

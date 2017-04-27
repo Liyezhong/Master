@@ -179,10 +179,10 @@ void CModifyProgramStepDlg::InitTemperatureWidget(const DataManager::CReagent * 
     mp_ScrollWheelTemp->ClearItems();
     // set temperature symbol
     if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
-        mp_Ui->scrollPanelWidgetTemperature->SetSubtitle(QApplication::translate("CModifyProgramStepDlg", "\302\260C", 0, QApplication::UnicodeUTF8), 0);
+        mp_Ui->scrollPanelWidgetTemperature->SetSubtitle(QApplication::translate("CModifyProgramStepDlg", "\302\260C", Q_NULLPTR, -1), 0);
     }
     else {
-        mp_Ui->scrollPanelWidgetTemperature->SetSubtitle(QApplication::translate("CModifyProgramStepDlg", "\302\260F", 0, QApplication::UnicodeUTF8), 0);
+        mp_Ui->scrollPanelWidgetTemperature->SetSubtitle(QApplication::translate("CModifyProgramStepDlg", "\302\260F", Q_NULLPTR, -1), 0);
     }
 
     if (!pReagent)
@@ -649,23 +649,23 @@ void CModifyProgramStepDlg::SetRadioButtonStatus(const QString &Pressure, const 
 void CModifyProgramStepDlg::RetranslateUI()
 {
     mp_Ui->scrollPanelWidgetTime->SetTitle(QApplication::translate("Programs::CModifyProgramStepDlg",
-                                            "Time", 0, QApplication::UnicodeUTF8));
+                                            "Time", Q_NULLPTR, -1));
     mp_Ui->scrollPanelWidgetTime->SetSubtitle(QApplication::translate("Programs::CModifyProgramStepDlg",
-                                             "Hour", 0, QApplication::UnicodeUTF8), 0);
+                                             "Hour", Q_NULLPTR, -1), 0);
     mp_Ui->scrollPanelWidgetTime->SetSubtitle(QApplication::translate("Programs::CModifyProgramStepDlg",
-                                             "Minute", 0, QApplication::UnicodeUTF8), 1);
+                                             "Minute", Q_NULLPTR, -1), 1);
 
     m_strConfirmMsg = QApplication::translate("Programs::CModifyProgramStepDlg",
-                                                        "Information Message", 0, QApplication::UnicodeUTF8);
+                                                        "Information Message", Q_NULLPTR, -1);
     m_strOK = QApplication::translate("Programs::CModifyProgramStepDlg",
-                                      "OK", 0, QApplication::UnicodeUTF8);
+                                      "OK", Q_NULLPTR, -1);
 
     m_strDiffTemp = QApplication::translate("Programs::CModifyProgramStepDlg",
                                       "The set temperature of paraffin baths differs from the temperature of the program by more than %1. Higher paraffin temperature may damage the tissue. Would you like to continue?",
-                                            0, QApplication::UnicodeUTF8);
-    m_strInforMsg = QApplication::translate("Programs::CModifyProgramStepDlg", "Information Message", 0, QApplication::UnicodeUTF8);
-    m_strYes = QApplication::translate("Programs::CModifyProgramStepDlg", "Yes", 0, QApplication::UnicodeUTF8);
-    m_strNo = QApplication::translate("Programs::CModifyProgramStepDlg", "No", 0, QApplication::UnicodeUTF8);
+                                            Q_NULLPTR, -1);
+    m_strInforMsg = QApplication::translate("Programs::CModifyProgramStepDlg", "Information Message", Q_NULLPTR, -1);
+    m_strYes = QApplication::translate("Programs::CModifyProgramStepDlg", "Yes", Q_NULLPTR, -1);
+    m_strNo = QApplication::translate("Programs::CModifyProgramStepDlg", "No", Q_NULLPTR, -1);
 }
 
 } // end namespace Programs

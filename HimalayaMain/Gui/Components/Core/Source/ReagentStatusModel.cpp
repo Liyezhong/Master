@@ -204,7 +204,8 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
             {
                 switch (Index.column()) {
                 case 2:
-                    return QVariant(Qt::red);//if the reagent expired, text is red
+                    QVariant v = QColor(Qt::red);
+                    return v;//if the reagent expired, text is red
                 }
             }
 
@@ -218,7 +219,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
             {
                 switch (Index.column()) {
                 case 3:
-                    return QVariant(Qt::red);//if the reagent expired, text is red
+                    return QColor(Qt::red);//if the reagent expired, text is red
                 }
             }
 

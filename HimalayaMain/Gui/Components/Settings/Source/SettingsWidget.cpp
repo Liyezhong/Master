@@ -175,7 +175,7 @@ void CSettingsWidget::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CSettingsWidget::RetranslateUI()
 {
-    QWidget::setWindowTitle(QApplication::translate("Settings::CSettingsWidget", "Parameter", 0, QApplication::UnicodeUTF8));
+    QWidget::setWindowTitle(QApplication::translate("Settings::CSettingsWidget", "Parameter", Q_NULLPTR, -1));
 }
 
 /****************************************************************************/

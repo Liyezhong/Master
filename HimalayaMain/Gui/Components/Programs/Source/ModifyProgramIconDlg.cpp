@@ -200,9 +200,9 @@ void CModifyProgramIconDlg::EnableAvailableIcon(DataManager::CDataProgramList* p
 
 void CModifyProgramIconDlg::RetranslateUI()
 {
-    m_strConfirmMsg = QApplication::translate("Programs::CModifyProgramIconDlg", "Information Message", 0, QApplication::UnicodeUTF8);
-    m_strOK = QApplication::translate("Programs::CModifyProgramIconDlg", "OK", 0, QApplication::UnicodeUTF8);
-    m_strCancel = QApplication::translate("Programs::CModifyProgramIconDlg", "Cancel", 0, QApplication::UnicodeUTF8);
-    m_strClose = QApplication::translate("Programs::CModifyProgramIconDlg", "Close", 0, QApplication::UnicodeUTF8);
+    m_strConfirmMsg = QApplication::translate("Programs::CModifyProgramIconDlg", "Information Message", Q_NULLPTR, -1);
+    m_strOK = QApplication::translate("Programs::CModifyProgramIconDlg", "OK", Q_NULLPTR, -1);
+    m_strCancel = QApplication::translate("Programs::CModifyProgramIconDlg", "Cancel", Q_NULLPTR, -1);
+    m_strClose = QApplication::translate("Programs::CModifyProgramIconDlg", "Close", Q_NULLPTR, -1);
 }
 }

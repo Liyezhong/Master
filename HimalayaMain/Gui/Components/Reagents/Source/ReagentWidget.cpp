@@ -190,7 +190,7 @@ void CReagentWidget::OnUserRoleChanged()
 /****************************************************************************/
 void CReagentWidget::RetranslateUI()
 {
-    QWidget::setWindowTitle(QApplication::translate("Reagents::CReagentWidget", "", 0, QApplication::UnicodeUTF8));
+    QWidget::setWindowTitle(QApplication::translate("Reagents::CReagentWidget", "", Q_NULLPTR, -1));
 }
 
 /****************************************************************************/

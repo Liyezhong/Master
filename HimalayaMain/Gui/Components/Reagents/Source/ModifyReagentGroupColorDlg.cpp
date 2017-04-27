@@ -132,14 +132,14 @@ void CModifyReagentGroupColorDlg::changeEvent(QEvent *p_Event)
 void CModifyReagentGroupColorDlg::RetranslateUI()
 {
     m_MessageDlg.SetButtonText(1, QApplication::translate("Reagents::CModifyReagentGroupColorDlg",
-                                                          "OK", 0, QApplication::UnicodeUTF8));
+                                                          "OK", Q_NULLPTR, -1));
 
     m_strCancel = QApplication::translate("Reagents::CModifyReagentGroupColorDlg",
-                                          "Cancel", 0, QApplication::UnicodeUTF8);
+                                          "Cancel", Q_NULLPTR, -1);
 
     m_strClose =  QApplication::translate("Reagents::CModifyReagentGroupColorDlg",
-                                          "Close", 0, QApplication::UnicodeUTF8);
-    m_strOK = QApplication::translate("Reagents::CModifyReagentGroupColorDlg", "OK", 0, QApplication::UnicodeUTF8);
+                                          "Close", Q_NULLPTR, -1);
+    m_strOK = QApplication::translate("Reagents::CModifyReagentGroupColorDlg", "OK", Q_NULLPTR, -1);
 
 }
 

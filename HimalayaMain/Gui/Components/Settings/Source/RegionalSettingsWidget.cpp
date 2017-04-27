@@ -217,7 +217,7 @@ void CRegionalSettingsWidget::ResetButtons()
 /****************************************************************************/
 void CRegionalSettingsWidget::RetranslateUI()
 {
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CRegionalSettingsWidget", "Regional Settings", 0, QApplication::UnicodeUTF8));
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CRegionalSettingsWidget", "Regional Settings", Q_NULLPTR, -1));
 }
 
 void CRegionalSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)

@@ -73,6 +73,8 @@ void CProgramSelfTest::SendSignalSelfTestDone(bool flag)
 
 void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
+    SendSignalSelfTestDone(true);
+
     switch(m_CurrentState)
     {
         case SELFTEST_AC_VOLTAGE:

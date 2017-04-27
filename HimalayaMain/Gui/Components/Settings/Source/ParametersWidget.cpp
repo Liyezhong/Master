@@ -99,7 +99,7 @@ void CParametersWidget::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CParametersWidget::RetranslateUI()
 {
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CParametersWidget", "Parameter", 0, QApplication::UnicodeUTF8));
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CParametersWidget", "Parameter", Q_NULLPTR, -1));
 }
 
 } // end namespace Settings

@@ -231,8 +231,8 @@ void CLanguageWidget::ResetButtons()
 /****************************************************************************/
 void CLanguageWidget::RetranslateUI()
 {
-    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CLanguageWidget", "Languages", 0, QApplication::UnicodeUTF8));
-    (void) m_LanguageModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Settings::CLanguageModel", "Language", 0, QApplication::UnicodeUTF8),0);
+    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CLanguageWidget", "Languages", Q_NULLPTR, -1));
+    (void) m_LanguageModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Settings::CLanguageModel", "Language", Q_NULLPTR, -1),0);
 }
 
 /****************************************************************************/

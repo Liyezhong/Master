@@ -556,53 +556,53 @@ void CModifyReagentRMSDlg::OnOkClicked(QString EnteredText)
 /****************************************************************************/
 void CModifyReagentRMSDlg::RetranslateUI()
 {
-    m_strInforMsg = QApplication::translate("Reagents::CModifyReagentRMSDlg", "Information Message", 0, QApplication::UnicodeUTF8);
-    m_strOK = QApplication::translate("Reagents::CModifyReagentRMSDlg", "OK", 0, QApplication::UnicodeUTF8);
+    m_strInforMsg = QApplication::translate("Reagents::CModifyReagentRMSDlg", "Information Message", Q_NULLPTR, -1);
+    m_strOK = QApplication::translate("Reagents::CModifyReagentRMSDlg", "OK", Q_NULLPTR, -1);
 
     mp_MessageDlg->SetTitle(m_strInforMsg);
     mp_MessageDlg->SetButtonText(1, m_strOK);
 
     m_strCassettesUntilChange = QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                          "Cassettes until change", 0, QApplication::UnicodeUTF8);
+                                          "Cassettes until change", Q_NULLPTR, -1);
 
     m_strCyclesUntilChange = QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                     "Cycles until change", 0, QApplication::UnicodeUTF8);
+                                                     "Cycles until change", Q_NULLPTR, -1);
 
     m_strDaysUntilChange = QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                     "Days until change", 0, QApplication::UnicodeUTF8);
+                                                     "Days until change", Q_NULLPTR, -1);
 
     m_strEnterValidName =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                           "Please enter the reagent Name", 0, QApplication::UnicodeUTF8);
+                                                           "Please enter the reagent Name", Q_NULLPTR, -1);
 
     m_strReagentNameHasLaicaString =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                   "Reagent name shall not contain 'leica'.", 0, QApplication::UnicodeUTF8);
+                                                   "Reagent name shall not contain 'leica'.", Q_NULLPTR, -1);
 
     m_strInputReagentSameName =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                         "The same reagent name is in use already. Please change the reagent name.", 0, QApplication::UnicodeUTF8);
+                                                         "The same reagent name is in use already. Please change the reagent name.", Q_NULLPTR, -1);
 
     m_strEnterValidData =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                               "Please enter valid data", 0, QApplication::UnicodeUTF8);
+                                               "Please enter valid data", Q_NULLPTR, -1);
 
     m_strSelectReagentGroup =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                               "Please select reagent group", 0, QApplication::UnicodeUTF8);
+                                               "Please select reagent group", Q_NULLPTR, -1);
 
     m_strReagentAddFailed =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                               "Failed to add the reagent. Please contact service.", 0, QApplication::UnicodeUTF8);
+                                               "Failed to add the reagent. Please contact service.", Q_NULLPTR, -1);
 
     m_strReagentCopyFailed =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                               "Failed to copy the reagent. Please contact service.", 0, QApplication::UnicodeUTF8);
+                                               "Failed to copy the reagent. Please contact service.", Q_NULLPTR, -1);
 
     m_strEnterCassetteValue =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                       "Please enter the number of cassettes", 0, QApplication::UnicodeUTF8);
+                                                       "Please enter the number of cassettes", Q_NULLPTR, -1);
 
     m_strEnterCycleValue =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                               "Enter Cycle Value", 0, QApplication::UnicodeUTF8);
+                                                               "Enter Cycle Value", Q_NULLPTR, -1);
 
     m_strEnterDayValue =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                               "Enter Day Value", 0, QApplication::UnicodeUTF8);
+                                                               "Enter Day Value", Q_NULLPTR, -1);
 
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                              "Enter Reagent Name", 0, QApplication::UnicodeUTF8));
+                                              "Enter Reagent Name", Q_NULLPTR, -1));
 }
 
 void CModifyReagentRMSDlg::OnUserRoleChanged()

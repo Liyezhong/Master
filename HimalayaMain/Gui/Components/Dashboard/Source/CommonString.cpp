@@ -13,13 +13,13 @@ namespace CommonString
     QString strWarning;
     void RetranslateUIString()
     {
-        strOK = QApplication::translate("CommonString", "OK", 0, QApplication::UnicodeUTF8);
-        strYes = QApplication::translate("CommonString", "Yes", 0, QApplication::UnicodeUTF8);
-        strNo  =  QApplication::translate("CommonString", "No", 0, QApplication::UnicodeUTF8);
-        strClose = QApplication::translate("CommonString", "Close", 0, QApplication::UnicodeUTF8);
-        strCancel = QApplication::translate("CommonString", "Cancel", 0, QApplication::UnicodeUTF8);
-        strInforMsg = QApplication::translate("CommonString", "Information Message", 0, QApplication::UnicodeUTF8);
-        strConfirmMsg = QApplication::translate("CommonString", "Confirmation Message", 0, QApplication::UnicodeUTF8);
-        strWarning =  QApplication::translate("CommonString", "Warning", 0, QApplication::UnicodeUTF8);
+        strOK = QApplication::translate("CommonString", "OK", Q_NULLPTR, -1);
+        strYes = QApplication::translate("CommonString", "Yes", Q_NULLPTR, -1);
+        strNo  =  QApplication::translate("CommonString", "No", Q_NULLPTR, -1);
+        strClose = QApplication::translate("CommonString", "Close", Q_NULLPTR, -1);
+        strCancel = QApplication::translate("CommonString", "Cancel", Q_NULLPTR, -1);
+        strInforMsg = QApplication::translate("CommonString", "Information Message", Q_NULLPTR, -1);
+        strConfirmMsg = QApplication::translate("CommonString", "Confirmation Message", Q_NULLPTR, -1);
+        strWarning =  QApplication::translate("CommonString", "Warning", Q_NULLPTR, -1);
     }
 }

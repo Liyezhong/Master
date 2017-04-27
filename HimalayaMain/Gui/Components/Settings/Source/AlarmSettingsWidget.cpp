@@ -290,28 +290,24 @@ void CAlarmSettingsWidget::ResetButtons()
 /****************************************************************************/
 void CAlarmSettingsWidget::RetranslateUI()
 {
-    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Alarm", 0, QApplication::UnicodeUTF8));
-    mp_Ui->groupBox->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Information", 0, QApplication::UnicodeUTF8));
-    mp_Ui->informationButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", 0, QApplication::UnicodeUTF8));
-    mp_Ui->groupBox_1->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Warning", 0, QApplication::UnicodeUTF8));
-    mp_Ui->warningButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", 0, QApplication::UnicodeUTF8));
-    mp_Ui->groupBox_2->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Error", 0, QApplication::UnicodeUTF8));
-    mp_Ui->errorButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", 0, QApplication::UnicodeUTF8));
+    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Alarm", Q_NULLPTR, -1));
+    mp_Ui->groupBox->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Information", Q_NULLPTR, -1));
+    mp_Ui->informationButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", Q_NULLPTR, -1));
+    mp_Ui->groupBox_1->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Warning", Q_NULLPTR, -1));
+    mp_Ui->warningButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", Q_NULLPTR, -1));
+    mp_Ui->groupBox_2->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Error", Q_NULLPTR, -1));
+    mp_Ui->errorButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", Q_NULLPTR, -1));
     // texts to be displayed
     m_TextSound = QApplication::translate("Settings::CAlarmSettingsWidget",
-                                          "Sound: %1", 0,
-                                          QApplication::UnicodeUTF8);
+                                          "Sound: %1", 0, -1);
     m_TextVolume = QApplication::translate("Settings::CAlarmSettingsWidget",
-                                           "Volume: %1", 0,
-                                           QApplication::UnicodeUTF8);
+                                           "Volume: %1", 0, -1);
     m_TextPeriodicOff =
             QApplication::translate("Settings::CAlarmSettingsWidget",
-                                    "Periodic: Off", 0,
-                                    QApplication::UnicodeUTF8);
+                                    "Periodic: Off", 0, -1);
     m_TextPeriodicTime =
             QApplication::translate("Settings::CAlarmSettingsWidget",
-                                    "Periodic time (Min.): %1", 0,
-                                    QApplication::UnicodeUTF8);
+                                    "Periodic time (Min.): %1", 0, -1);
 }
 
 void CAlarmSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)

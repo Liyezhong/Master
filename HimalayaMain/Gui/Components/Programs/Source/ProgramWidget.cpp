@@ -584,40 +584,40 @@ int CProgramWidget::GetNumberOfUserPrograms()
 void CProgramWidget::RetranslateUI()
 {
     MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Programs::CProgramWidget", "Programs",
-                                                                 0, QApplication::UnicodeUTF8));
+                                                                 Q_NULLPTR, -1));
     //Added void to please lint
     (void) m_ProgramModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
-    "Number", 0, QApplication::UnicodeUTF8),0);
+    "Number", Q_NULLPTR, -1),0);
     (void) m_ProgramModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
-    "Apply", 0, QApplication::UnicodeUTF8),0);
+    "Apply", Q_NULLPTR, -1),0);
     (void) m_ProgramModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
-    "Name", 0, QApplication::UnicodeUTF8),0);
+    "Name", Q_NULLPTR, -1),0);
     (void) m_ProgramModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
-    "Duration", 0, QApplication::UnicodeUTF8),0);
+    "Duration", Q_NULLPTR, -1),0);
     (void) m_ProgramModel.setHeaderData(3,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
-    "Icon", 0, QApplication::UnicodeUTF8),0);
+    "Icon", Q_NULLPTR, -1),0);
 
     m_strEditProgram = QApplication::translate("Programs::CProgramWidget", "Edit Program",
-                                                                   0, QApplication::UnicodeUTF8);
+                                                                   Q_NULLPTR, -1);
 
     m_strViewProgram = QApplication::translate("Programs::CProgramWidget", "View Program",
-                                                                   0, QApplication::UnicodeUTF8);
+                                                                   Q_NULLPTR, -1);
 
     m_strNewProgram = QApplication::translate("Programs::CProgramWidget", "New Program",
-                                                                   0, QApplication::UnicodeUTF8);
+                                                                   Q_NULLPTR, -1);
 
     m_strDelProgram = QApplication::translate("Programs::CProgramWidget", "Do you really want to delete the selected program?",
-                                              0, QApplication::UnicodeUTF8);
+                                              Q_NULLPTR, -1);
 
     m_strView = QApplication::translate("Programs::CProgramWidget", "View",
-                                              0, QApplication::UnicodeUTF8);
+                                              Q_NULLPTR, -1);
 
     m_strEdit = QApplication::translate("Programs::CProgramWidget", "Edit",
-                                              0, QApplication::UnicodeUTF8);
-    m_strConfirmMsg = QApplication::translate("Programs::CProgramWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
+                                              Q_NULLPTR, -1);
+    m_strConfirmMsg = QApplication::translate("Programs::CProgramWidget", "Confirmation Message", Q_NULLPTR, -1);
 
-    m_strYes = QApplication::translate("Programs::CProgramWidget", "Yes", 0, QApplication::UnicodeUTF8);
-    m_strCancel = QApplication::translate("Programs::CProgramWidget", "Cancel", 0, QApplication::UnicodeUTF8);
+    m_strYes = QApplication::translate("Programs::CProgramWidget", "Yes", Q_NULLPTR, -1);
+    m_strCancel = QApplication::translate("Programs::CProgramWidget", "Cancel", Q_NULLPTR, -1);
 
 
 }

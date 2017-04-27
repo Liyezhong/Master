@@ -78,7 +78,7 @@ CUserPrivilegeWidget::CUserPrivilegeWidget(QWidget *p_Parent,
     CONNECTSIGNALSLOTGUI(mp_Ui->btnUser, clicked(), this, OnBtnUserClicked());
 
     mp_KeyBoardWidget = p_KeyBoardWidget;
-    SetPanelTitle(QApplication::translate("Users::CUserPrivilegeWidget", "User", 0, QApplication::UnicodeUTF8));
+    SetPanelTitle(QApplication::translate("Users::CUserPrivilegeWidget", "User", Q_NULLPTR, -1));
 	
 	m_Timer = new QTimer(this);
     m_Timer->setInterval(8*60*1000);//8 minutes, enter idle;
@@ -263,7 +263,7 @@ void CUserPrivilegeWidget::OnBtnAdministratorClicked()
     m_SupervisorBtnClicked = true;
     if (mp_KeyBoardWidget) {
         mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Users::CUserPrivilegeWidget",
-                            "Enter Password", 0, QApplication::UnicodeUTF8));
+                            "Enter Password", Q_NULLPTR, -1));
         mp_KeyBoardWidget->SetPasswordMode(true);
         mp_KeyBoardWidget->SetValidation(true);
         mp_KeyBoardWidget->SetMaxCharLength(MAX_CHAR_LENGTH);
@@ -290,7 +290,7 @@ void CUserPrivilegeWidget::OnBtnServiceClicked()
     m_ServiceUserBtnClicked = true;
     if (mp_KeyBoardWidget) {
         mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Users::CUserPrivilegeWidget",
-                            "Enter Password", 0, QApplication::UnicodeUTF8));
+                            "Enter Password", Q_NULLPTR, -1));
         mp_KeyBoardWidget->SetPasswordMode(true);
         mp_KeyBoardWidget->SetValidation(true);
         mp_KeyBoardWidget->SetMinCharLength(4);
@@ -317,7 +317,7 @@ void CUserPrivilegeWidget::OnBtnChangePasswordClicked()
     m_PwdType = "Old";
     if (mp_KeyBoardWidget) {
         mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Users::CUserPrivilegeWidget",
-                            "Enter Password", 0, QApplication::UnicodeUTF8));
+                            "Enter Password", Q_NULLPTR, -1));
         mp_KeyBoardWidget->SetPasswordMode(true);
         mp_KeyBoardWidget->SetValidation(true);
         mp_KeyBoardWidget->SetMaxCharLength(MAX_CHAR_LENGTH);
@@ -454,14 +454,14 @@ void CUserPrivilegeWidget::ChangeInAdminPassword(const QString &PasswordType)
         if (PasswordType.compare("New") == 0) {
             m_PwdType = "New";
             mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Users::CUserPrivilegeWidget",
-                                "Enter New Password", 0, QApplication::UnicodeUTF8));
+                                "Enter New Password", Q_NULLPTR, -1));
             // make it true so that still we are in change password
             m_ChangePasswdBtnClicked = true;
         }
         else if(PasswordType.compare("Confirm") == 0) {
             m_PwdType = "Confirm";
             mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Users::CUserPrivilegeWidget",
-                               "Confirm New Password", 0, QApplication::UnicodeUTF8));
+                               "Confirm New Password", Q_NULLPTR, -1));
             // make it true so that still we are in change password
             m_ChangePasswdBtnClicked = true;
         }
@@ -536,23 +536,22 @@ void CUserPrivilegeWidget::DisconnectKeyBoardSignalSlots()
 /****************************************************************************/
 void CUserPrivilegeWidget::RetranslateUI()
 {
-    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Users::CUserPrivilegeWidget", "User", 0,
-                                                                 QApplication::UnicodeUTF8));
+    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Users::CUserPrivilegeWidget", "User", 0, -1));
 
     if (mp_KeyBoardWidget) {
         if (m_SupervisorBtnClicked || m_ServiceUserBtnClicked || m_ChangePasswdBtnClicked) {
             mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Users::CUserPrivilegeWidget",
-                                                                              "Enter Password", 0, QApplication::UnicodeUTF8));
+                                                                              "Enter Password", Q_NULLPTR, -1));
         }
         if (m_PwdType == "New") {
             mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Users::CUserPrivilegeWidget",
                                                                               "Enter New Password",
-                                                                              0, QApplication::UnicodeUTF8));
+                                                                              Q_NULLPTR, -1));
         }
         if (m_PwdType == "Confirm") {
             mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Users::CUserPrivilegeWidget",
                                                                               "Confirm New Password",
-                                                                              0, QApplication::UnicodeUTF8));
+                                                                              Q_NULLPTR, -1));
         }
     }
 }

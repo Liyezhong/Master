@@ -26,6 +26,8 @@
 #include "HimalayaDataContainer/Containers/ReagentGroupColor/Include/ReagentGroupColorList.h"
 #include "HimalayaDataContainer/Containers/ReagentGroupColor/Include/ReagentGroupColor.h"
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
+#include <QDataStream>
+
 //lint -sem(QHash::insert, custodial(1))
 
 namespace DataManager {

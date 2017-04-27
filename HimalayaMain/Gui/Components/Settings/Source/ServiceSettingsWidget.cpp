@@ -344,10 +344,10 @@ void CServiceSettingsWidget::ResetButtons()
 /****************************************************************************/
 void CServiceSettingsWidget::RetranslateUI()
 {
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CServiceSettingsWidget", "Maintenance", 0, QApplication::UnicodeUTF8));
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CServiceSettingsWidget", "Maintenance", Q_NULLPTR, -1));
    m_strShutdownConfirm12Hrs = QApplication::translate("Settings::CServiceSettingsWidget",
                         "If the instrument is shut down now, you may have to wait %1 hours to ensure the paraffin is melted before running the next program. Do you really want to shut down your instrument?",
-                                           0, QApplication::UnicodeUTF8);
+                                           Q_NULLPTR, -1);
 }
 
 /****************************************************************************/

@@ -123,7 +123,7 @@ void CDateTimeWidget::showEvent(QShowEvent *p_Event) {
 /****************************************************************************/
 void CDateTimeWidget::RetranslateUI()
 {
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CDateTimeWidget", "Date/Time", 0, QApplication::UnicodeUTF8));
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CDateTimeWidget", "Date/Time", Q_NULLPTR, -1));
 }
 
 void CDateTimeWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)

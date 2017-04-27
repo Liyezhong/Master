@@ -1076,9 +1076,9 @@ void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &settings)
     CONNECTSIGNALSLOT(mp_UserSettingWaitDialog, Timeout(), mp_MessageDlg, Show());
 
     mp_UserSettingWaitDialog->SetDialogTitle(QApplication::translate("Core::CDataConnector", "Device Communication",
-                                                          0, QApplication::UnicodeUTF8));
+                                                          Q_NULLPTR, -1));
     mp_UserSettingWaitDialog->SetText(QApplication::translate("Core::CDataConnector", "Saving settings ...",
-                                                   0, QApplication::UnicodeUTF8));
+                                                   Q_NULLPTR, -1));
     mp_UserSettingWaitDialog->SetTimeout(100000);
     mp_UserSettingWaitDialog->show();
 
@@ -1116,39 +1116,39 @@ void CDataConnector::SendCmdPlayTestToneAlarm(quint8 Volume, quint8 Sound, Globa
 /****************************************************************************/
 void CDataConnector::RetranslateUI()
 {
-   m_strCommunicationError = QApplication::translate("Core::CDataConnector", "Communication error. Please try again or contact your local service.", 0, QApplication::UnicodeUTF8);
-   m_strCommunicationErrorTitle = QApplication::translate("Core::CDataConnector", "Communication Error", 0, QApplication::UnicodeUTF8);
+   m_strCommunicationError = QApplication::translate("Core::CDataConnector", "Communication error. Please try again or contact your local service.", Q_NULLPTR, -1);
+   m_strCommunicationErrorTitle = QApplication::translate("Core::CDataConnector", "Communication Error", Q_NULLPTR, -1);
    if (mp_MessageDlg)
    {
         mp_MessageDlg->SetTitle(m_strCommunicationErrorTitle);
    }
-   m_strChangeNotSave = QApplication::translate("Core::CDataConnector", "The changes can not be saved.", 0, QApplication::UnicodeUTF8);
+   m_strChangeNotSave = QApplication::translate("Core::CDataConnector", "The changes can not be saved.", Q_NULLPTR, -1);
    if (mp_MessageDlg)
    {
         mp_MessageDlg->SetText(m_strChangeNotSave);
    }
-   m_strStartup = QApplication::translate("Core::CDataConnector", "Startup", 0, QApplication::UnicodeUTF8);
-   m_strInitDevCom = QApplication::translate("Core::CDataConnector", "Initializing device communication ...", 0, QApplication::UnicodeUTF8);
-   m_strDisconnect = QApplication::translate("Core::CDataConnector", "Disconnect", 0, QApplication::UnicodeUTF8);
-   m_strReinitDeviceCommunication = QApplication::translate("Core::CDataConnector", "Reinitializing device communication ...", 0, QApplication::UnicodeUTF8);
-   m_strError = QApplication::translate("Core::CDataConnector", "Error", 0, QApplication::UnicodeUTF8);
-   m_strInformation = QApplication::translate("Core::CDataConnector", "Information", 0, QApplication::UnicodeUTF8);
+   m_strStartup = QApplication::translate("Core::CDataConnector", "Startup", Q_NULLPTR, -1);
+   m_strInitDevCom = QApplication::translate("Core::CDataConnector", "Initializing device communication ...", Q_NULLPTR, -1);
+   m_strDisconnect = QApplication::translate("Core::CDataConnector", "Disconnect", Q_NULLPTR, -1);
+   m_strReinitDeviceCommunication = QApplication::translate("Core::CDataConnector", "Reinitializing device communication ...", Q_NULLPTR, -1);
+   m_strError = QApplication::translate("Core::CDataConnector", "Error", Q_NULLPTR, -1);
+   m_strInformation = QApplication::translate("Core::CDataConnector", "Information", Q_NULLPTR, -1);
 
-   m_strWarning = QApplication::translate("Core::CDataConnector", "Warning", 0, QApplication::UnicodeUTF8);
-   m_strOK = QApplication::translate("Core::CDataConnector", "OK", 0, QApplication::UnicodeUTF8);
-   m_strDeviceCommunication = QApplication::translate("Core::CDataConnector", "Operation ongoing", 0, QApplication::UnicodeUTF8);
-   m_strSavingSettings = QApplication::translate("Core::CDataConnector", "Saving Settings ...", 0, QApplication::UnicodeUTF8);
-   m_strUserExport = QApplication::translate("Core::CDataConnector", "User Export", 0, QApplication::UnicodeUTF8);
-   m_strExportUserData = QApplication::translate("Core::CDataConnector", "Exporting user data ...", 0, QApplication::UnicodeUTF8);
+   m_strWarning = QApplication::translate("Core::CDataConnector", "Warning", Q_NULLPTR, -1);
+   m_strOK = QApplication::translate("Core::CDataConnector", "OK", Q_NULLPTR, -1);
+   m_strDeviceCommunication = QApplication::translate("Core::CDataConnector", "Operation ongoing", Q_NULLPTR, -1);
+   m_strSavingSettings = QApplication::translate("Core::CDataConnector", "Saving Settings ...", Q_NULLPTR, -1);
+   m_strUserExport = QApplication::translate("Core::CDataConnector", "User Export", Q_NULLPTR, -1);
+   m_strExportUserData = QApplication::translate("Core::CDataConnector", "Exporting user data ...", Q_NULLPTR, -1);
 
-   m_strServiceExport = QApplication::translate("Core::CDataConnector", "Service Export", 0, QApplication::UnicodeUTF8);
-   m_strExportServiceData = QApplication::translate("Core::CDataConnector", "Exporting service data ...", 0, QApplication::UnicodeUTF8);
+   m_strServiceExport = QApplication::translate("Core::CDataConnector", "Service Export", Q_NULLPTR, -1);
+   m_strExportServiceData = QApplication::translate("Core::CDataConnector", "Exporting service data ...", Q_NULLPTR, -1);
 
-   m_strImport = QApplication::translate("Core::CDataConnector", "Import", 0, QApplication::UnicodeUTF8);
-   m_strImportData = QApplication::translate("Core::CDataConnector", "Importing data ...", 0, QApplication::UnicodeUTF8);
+   m_strImport = QApplication::translate("Core::CDataConnector", "Import", Q_NULLPTR, -1);
+   m_strImportData = QApplication::translate("Core::CDataConnector", "Importing data ...", Q_NULLPTR, -1);
 
-   m_strLogFile = QApplication::translate("Core::CDataConnector", "Log Files", 0, QApplication::UnicodeUTF8);
-   m_strGettingDailyLog = QApplication::translate("Core::CDataConnector", "Getting the daily run log file ...", 0, QApplication::UnicodeUTF8);
+   m_strLogFile = QApplication::translate("Core::CDataConnector", "Log Files", Q_NULLPTR, -1);
+   m_strGettingDailyLog = QApplication::translate("Core::CDataConnector", "Getting the daily run log file ...", Q_NULLPTR, -1);
 }
 
 
@@ -1342,9 +1342,9 @@ void CDataConnector::ExecutionStateHandler(Global::tRefType Ref, const NetComman
 
         if (Command.m_WaitDialogText == Global::SOFTWARE_UPDATE_TEXT) {
             mp_WaitDlgExecChanged->SetDialogTitle(QApplication::translate("Core::CDataConnector", "Software Update",
-                                                                  0, QApplication::UnicodeUTF8));
+                                                                  Q_NULLPTR, -1));
             mp_WaitDlgExecChanged->SetText(QApplication::translate("Core::CDataConnector", "Updating the software ...",
-                                                           0, QApplication::UnicodeUTF8));
+                                                           Q_NULLPTR, -1));
             mp_WaitDlgExecChanged->show();
         }
 
@@ -1389,13 +1389,23 @@ void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands
     }
     (void)mp_LanguageFile->flush();
 
+    QLocale::Language lastLang = Global::UITranslator::TranslatorInstance().GetDefaultLanguage();
+    QApplication* pApp =  dynamic_cast<QApplication*>(QCoreApplication::instance());
+
     if (!m_Translator.load(mp_LanguageFile->fileName())) {
-        qDebug()<<"\n\nTranslations failed";
-        m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(false));
-        (void)mp_LanguageFile->remove();
-        delete mp_LanguageFile;
-        mp_LanguageFile = NULL;
-        return;
+        if ((lastLang == QLocale::English) && (QLocale::English == Command.GetCurrentLanuage()))
+        {
+            QEvent* e = new QEvent(QEvent::LanguageChange);
+            QCoreApplication::postEvent(pApp, e);
+        }
+        else {
+            qDebug()<<"\n\nTranslations failed";
+            m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(false));
+            (void)mp_LanguageFile->remove();
+            delete mp_LanguageFile;
+            mp_LanguageFile = NULL;
+            return;
+        }
     }
     qApp->installTranslator(&m_Translator);
     m_LanguageChangeCount++;
@@ -1406,7 +1416,6 @@ void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands
     }
     mp_OldFile = mp_LanguageFile;
 
-    QLocale::Language lastLang = Global::UITranslator::TranslatorInstance().GetDefaultLanguage();
     QString strFontFamily;
     if (QLocale::Korean == Command.GetCurrentLanuage())
     {
@@ -1419,7 +1428,6 @@ void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands
 
     if  (!strFontFamily.isEmpty())
     {
-        QApplication* pApp =  dynamic_cast<QApplication*>(QCoreApplication::instance());
         QFont font;
         font.setPointSize(11);
         font.setFamily(strFontFamily);
@@ -2091,39 +2099,39 @@ void CDataConnector::OnRCSoftwareUpdateHandler(Global::tRefType Ref, const Remot
 
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
     mp_MessageDlg->SetTitle(QApplication::translate("Core::CDataConnector", "Information",
-                                                    0, QApplication::UnicodeUTF8));
+                                                    Q_NULLPTR, -1));
     mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CDataConnector", "OK",
-                                                           0, QApplication::UnicodeUTF8));
+                                                           Q_NULLPTR, -1));
     mp_MessageDlg->HideButtons();
 
     if(RemoteCare::SWUpdate_Available == Command.GetUpdateType()) {
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
                                                        "New software is available. Click on \"Remote SW Update\" to start the update.",
-                                                       0, QApplication::UnicodeUTF8));
+                                                       Q_NULLPTR, -1));
         EnableUpdateButton = true;
     }
     else if(RemoteCare::SWUpdate_NotAvailable == Command.GetUpdateType()) {
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
                         "New software is not available.",
-                                                       0, QApplication::UnicodeUTF8));
+                                                       Q_NULLPTR, -1));
         EnableUpdateButton = false;
     }
     else if(RemoteCare::SWUpdate_DownloadFailed == Command.GetUpdateType()) {
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
                         "Failed to download the new software from RCServer. Please contact service.",
-                                                       0, QApplication::UnicodeUTF8));
+                                                       Q_NULLPTR, -1));
         EnableUpdateButton = false;
     } else if (RemoteCare::SWUpdate_DownloadSuccess == Command.GetUpdateType()) {
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
                         "Downloading of the new software from remote server is complete.  Press \"Ok\" to start thesoftware update.",
-                                                       0, QApplication::UnicodeUTF8));
+                                                       Q_NULLPTR, -1));
         mp_MessageDlg->HideButtons();
         (void)mp_MessageDlg->exec();
        return;
     } else if (RemoteCare::SWUpdate_UpdateFailed == Command.GetUpdateType()) {
 //        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
 //                        "Software update failed.",
-//                                                       0, QApplication::UnicodeUTF8));
+//                                                       Q_NULLPTR, -1));
 //        mp_MessageDlg->HideButtons();
 //        (void)mp_MessageDlg->exec();
        return;
@@ -2151,10 +2159,10 @@ void CDataConnector::SendRCSWUpdate()
 
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
     mp_MessageDlg->SetTitle(QApplication::translate("Core::CDataConnector", "Information",
-                                                    0, QApplication::UnicodeUTF8));
+                                                    Q_NULLPTR, -1));
     mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
                     "Now download the update package from the remote server. Please wait...",
-                                                   0, QApplication::UnicodeUTF8));
+                                                   Q_NULLPTR, -1));
     mp_MessageDlg->HideAllButtons();
     (void)mp_MessageDlg->show();
 
@@ -2183,14 +2191,14 @@ void CDataConnector::OnRCRequestRemoteSessionHandler(Global::tRefType Ref, const
     if(RemoteCare::RemoteSession_Requested == Command.GetRequestType()) {
         mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
         mp_MessageDlg->SetTitle(QApplication::translate("Core::CDataConnector", "Confirmation Message",
-                                                         0, QApplication::UnicodeUTF8));
+                                                         Q_NULLPTR, -1));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CDataConnector", "OK",
-                                                               0, QApplication::UnicodeUTF8));
+                                                               Q_NULLPTR, -1));
         mp_MessageDlg->SetButtonText(3, QApplication::translate("Core::CDataConnector", "Cancel",
-                                                               0, QApplication::UnicodeUTF8));
+                                                               Q_NULLPTR, -1));
         mp_MessageDlg->HideCenterButton();
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector", "Remote Session has been requested by a remote user.",
-                                                        0, QApplication::UnicodeUTF8));
+                                                        Q_NULLPTR, -1));
         if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
             // Send command CmdRCRequestRemoteSession on "ok" pressed.
             RemoteCare::CmdRCRequestRemoteSession Cmd(RC_REQUEST_COMMAND_TIME_OUT, RemoteCare::RemoteSession_Accepted);
@@ -2206,12 +2214,12 @@ void CDataConnector::OnRCRequestRemoteSessionHandler(Global::tRefType Ref, const
 
         mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
         mp_MessageDlg->SetTitle(QApplication::translate("Core::CDataConnector", "Information Message",
-                                                         0, QApplication::UnicodeUTF8));
+                                                         Q_NULLPTR, -1));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CDataConnector", "OK",
-                                                               0, QApplication::UnicodeUTF8));
+                                                               Q_NULLPTR, -1));
         mp_MessageDlg->HideButtons();
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector", "Remote session has been ended by the remote user.",
-                                                        0, QApplication::UnicodeUTF8));
+                                                        Q_NULLPTR, -1));
         (void)mp_MessageDlg->exec();
     }
 }

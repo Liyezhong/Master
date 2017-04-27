@@ -176,11 +176,11 @@ void CProgramRunningPanelWidget::changeEvent(QEvent *p_Event)
 
 void CProgramRunningPanelWidget::RetranslateUI()
 {
-    m_strAborting  = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Aborting...", 0, QApplication::UnicodeUTF8);
-    m_strAborted   = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Aborted.", 0, QApplication::UnicodeUTF8);
-    m_strCompleted = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Completed!", 0, QApplication::UnicodeUTF8);
-    m_strStation   = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Station", 0, QApplication::UnicodeUTF8);
-    m_strTemp      = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Temp.", 0, QApplication::UnicodeUTF8);
+    m_strAborting  = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Aborting...", Q_NULLPTR, -1);
+    m_strAborted   = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Aborted.", Q_NULLPTR, -1);
+    m_strCompleted = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Completed!", Q_NULLPTR, -1);
+    m_strStation   = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Station", Q_NULLPTR, -1);
+    m_strTemp      = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Temp.", Q_NULLPTR, -1);
 }
 
 void CProgramRunningPanelWidget::SetUserSettings(DataManager::CUserSettings *pUserSettings)

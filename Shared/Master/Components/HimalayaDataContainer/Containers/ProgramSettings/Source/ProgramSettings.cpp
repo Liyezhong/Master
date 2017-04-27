@@ -33,6 +33,7 @@
 #include "HimalayaDataContainer/Containers/ProgramSettings/Include/ProgramSettings.h"
 #include "DataManager/Helper/Include/DataManagerEventCodes.h"
 #include "Global/Include/EventObject.h"
+#include <QDataStream>
 
 namespace DataManager {
 

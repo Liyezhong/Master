@@ -25,6 +25,7 @@
 #include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
 #include "Global/Include/UITranslator.h"
+#include <QDataStream>
 //lint -sem(QHash::insert, custodial(1))
 
 namespace DataManager {

@@ -272,19 +272,19 @@ void CAlarmSettingsDlg::ResetButtons()
 /****************************************************************************/
 void CAlarmSettingsDlg::RetranslateUI()
 {
-   mp_Ui->sound_scrollpanel->SetTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Sound", 0, QApplication::UnicodeUTF8));
-   mp_Ui->scrollPanel->SetTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Volume", 0, QApplication::UnicodeUTF8));
-   QString trimmedString = Core::CGlobalHelper::TrimText(this->fontMetrics(), QApplication::translate("Settings::CAlarmSettingsDlg", "Periodic Time", 0, QApplication::UnicodeUTF8),
+   mp_Ui->sound_scrollpanel->SetTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Sound", Q_NULLPTR, -1));
+   mp_Ui->scrollPanel->SetTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Volume", Q_NULLPTR, -1));
+   QString trimmedString = Core::CGlobalHelper::TrimText(this->fontMetrics(), QApplication::translate("Settings::CAlarmSettingsDlg", "Periodic Time", Q_NULLPTR, -1),
                                                    95);
    mp_Ui->periodictime_scrolltable->SetTitle(trimmedString);
 
-   trimmedString = Core::CGlobalHelper::TrimText(this->fontMetrics(), QApplication::translate("Settings::CAlarmSettingsDlg", "Minute", 0, QApplication::UnicodeUTF8),
+   trimmedString = Core::CGlobalHelper::TrimText(this->fontMetrics(), QApplication::translate("Settings::CAlarmSettingsDlg", "Minute", Q_NULLPTR, -1),
                                                    90);
    mp_Ui->periodictime_scrolltable->SetSubtitle(trimmedString, 0);
 
-   SetDialogTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Edit Information", 0, QApplication::UnicodeUTF8));
-   SetDialogTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Edit Error", 0, QApplication::UnicodeUTF8));
-   SetDialogTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Edit Warning", 0, QApplication::UnicodeUTF8));
+   SetDialogTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Edit Information", Q_NULLPTR, -1));
+   SetDialogTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Edit Error", Q_NULLPTR, -1));
+   SetDialogTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Edit Warning", Q_NULLPTR, -1));
 
 }
 

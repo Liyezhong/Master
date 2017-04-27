@@ -24,6 +24,7 @@
 #include "Global/Include/EventObject.h"
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
 #include "HimalayaDataContainer/Helper/Include/HimalayaDataManagerEventCodes.h"
+#include <QDataStream>
 
 namespace DataManager {
 

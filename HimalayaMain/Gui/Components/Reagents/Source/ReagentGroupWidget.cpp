@@ -198,12 +198,12 @@ void CReagentGroupWidget::SelectionChanged(QModelIndex Index)
 void CReagentGroupWidget::RetranslateUI()
 {
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagents::CReagentRMSWidget",
-                                                        "Groups", 0, QApplication::UnicodeUTF8));
+                                                        "Groups", Q_NULLPTR, -1));
    (void) m_ReagentGroupModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentGroupModel",
-                                                        "Reagent Group", 0, QApplication::UnicodeUTF8),0);
+                                                        "Reagent Group", Q_NULLPTR, -1),0);
    (void) m_ReagentGroupModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentGroupModel",
-                                                          "Color", 0, QApplication::UnicodeUTF8),0);
-   m_strSelectColor = QApplication::translate("Reagents::CReagentGroupWidget", "Select Color", 0, QApplication::UnicodeUTF8);
+                                                          "Color", Q_NULLPTR, -1),0);
+   m_strSelectColor = QApplication::translate("Reagents::CReagentGroupWidget", "Select Color", Q_NULLPTR, -1);
 }
 
 /****************************************************************************/
