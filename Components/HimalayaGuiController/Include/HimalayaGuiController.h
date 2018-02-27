@@ -31,7 +31,7 @@
 namespace HimalayaGui {
 
 /// internal name of the external process
-const QString GUI_PROCESS_NAME = "Himalaya Device GUI";
+const QString GUI_PROCESS_NAME = "Skyline Device GUI";
 
 /****************************************************************************/
 /**

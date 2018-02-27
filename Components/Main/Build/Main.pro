@@ -6,7 +6,7 @@
 
 ################# override some pri settings #################
 TEMPLATE = app
-TARGET = himalaya
+TARGET = skyline
 CONFIG -= static
 QT +=   xml \
         network \

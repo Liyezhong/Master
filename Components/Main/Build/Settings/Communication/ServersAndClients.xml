@@ -17,7 +17,7 @@
      some other file later) -->
     <identity>
         <gui>
-            <name>Himalaya Device GUI</name>
+            <name>Skyline Device GUI</name>
             <version>1.0</version>
             <servertype>gui</servertype>
         </gui>
@@ -104,7 +104,7 @@
         </axeda>
         <gui>
             <client>
-                <name>Himalaya Device GUI</name>
+                <name>Skyline Device GUI</name>
                 <version>1.0</version>
             </client>
         </gui>
