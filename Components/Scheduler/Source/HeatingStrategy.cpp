@@ -1220,7 +1220,7 @@ bool HeatingStrategy:: CheckRTBottomsDifference(qreal temp1, qreal temp2)
 {
     if ( isEffectiveTemp(temp1) && isEffectiveTemp(temp2))
     {
-        if (std::abs(temp1 - temp2) >= m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId])
+        if (std::abs(long(temp1 - temp2)) >= m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId])
         {
             return false;
         }
