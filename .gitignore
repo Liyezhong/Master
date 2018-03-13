@@ -24,7 +24,12 @@ lib*/
 bin_dbg/
 bin_rel/
 obj_*/
+<<<<<<< HEAD
 
+=======
+moc_rel/
+moc_dbg/
+>>>>>>> 4de110014ce3988878b68eb67bb621a4d7d92947
 # Ignore log files
 *.log
 
@@ -52,3 +57,12 @@ AeDemo*
 
 # Generated header files
 ProtoTest/Include/Revision.h
+<<<<<<< HEAD
+=======
+
+# Doxygen
+*/Documentation/Doxygen/output
+
+# Subprojects
+RemoteCareAgent
+>>>>>>> 4de110014ce3988878b68eb67bb621a4d7d92947

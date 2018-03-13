@@ -1,0 +1,3 @@
+                <functionmodule type="rfid11785" key="${FM_KEY}" name="${FM_KEY}" interface="${FM_CHANNEL}">
+                </functionmodule>
+

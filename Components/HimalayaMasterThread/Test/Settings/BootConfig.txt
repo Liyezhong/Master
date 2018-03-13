@@ -1,0 +1,3 @@
+Main_Rebooted:No
+Reboot_Count:0
+Software_Update_Status:NA

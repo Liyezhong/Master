@@ -1,0 +1,9 @@
+HeatingOvenSlice:20180207-153404,20180207-154106
+Scenario:214
+LastRVPosition:2
+ProgramID:U1
+StationList:S1,
+ProgramStepID:0
+StationID:S1
+ErrorFlag:0
+LastReagentGroup:RG1

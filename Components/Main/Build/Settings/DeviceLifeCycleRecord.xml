@@ -1,0 +1,74 @@
+<DeviceLifeCycles Version="0">
+    <DeviceList>
+        <Device Key="LA">
+            <Functionmodules>
+                <Functionmodule Key="AL_level_sensor_temp_ctrl">
+                    <Parameter Value="0" Key="temp_lsensor_LifeCycle"/>
+                </Functionmodule>
+                <Functionmodule Key="AL_pressure_ctrl">
+                    <Parameter Value="0" Key="ActiveCarbonFilter_LifeTime"/>
+                    <Parameter Value="0" Key="CarbonFilter_FirstRecord_Flag"/>
+                    <Parameter Value="0" Key="Exhaust_Fan_LifeTime"/>
+                    <Parameter Value="0" Key="History_Pump_OperationTime"/>
+                    <Parameter Value="0" Key="Valve1_LifeCycle"/>
+                    <Parameter Value="0" Key="Valve2_LifeCycle"/>
+                </Functionmodule>
+                <Functionmodule Key="temp_tube1">
+                    <Parameter Value="0" Key="History_OperationTime"/>
+                </Functionmodule>
+                <Functionmodule Key="temp_tube2">
+                    <Parameter Value="0" Key="History_OperationTime"/>
+                </Functionmodule>
+            </Functionmodules>
+        </Device>
+        <Device Key="OtherDevice">
+            <Functionmodules>
+                <Functionmodule Key="EBox">
+                    <Parameter Value="0" Key="EBox_LifeTime"/>
+                </Functionmodule>
+                <Functionmodule Key="PressureSensor">
+                    <Parameter Value="0" Key="Pressure_Sensor_LifeTime"/>
+                </Functionmodule>
+                <Functionmodule Key="TouchScreen">
+                    <Parameter Value="0" Key="Touch_Screen_LifeTime"/>
+                </Functionmodule>
+                <Functionmodule Key="VentilationFan">
+                    <Parameter Value="0" Key="Ventilation_Fan_LifeTime"/>
+                </Functionmodule>
+            </Functionmodules>
+        </Device>
+        <Device Key="OvenDevice">
+            <Functionmodules>
+                <Functionmodule Key="Oven_Cover_Sensor">
+                    <Parameter Value="0" Key="oven_door_status_LifeCycle"/>
+                </Functionmodule>
+                <Functionmodule Key="temp_oven_bottom">
+                    <Parameter Value="0" Key="History_OperationTime"/>
+                </Functionmodule>
+                <Functionmodule Key="temp_oven_top">
+                    <Parameter Value="0" Key="History_OperationTime"/>
+                </Functionmodule>
+            </Functionmodules>
+        </Device>
+        <Device Key="RetortDevice">
+            <Functionmodules>
+                <Functionmodule Key="Retort_Lid_Lock">
+                    <Parameter Value="0" Key="lid_status_LifeCycle"/>
+                </Functionmodule>
+                <Functionmodule Key="temp_retort_bottom">
+                    <Parameter Value="0" Key="History_OperationTime"/>
+                </Functionmodule>
+            </Functionmodules>
+        </Device>
+        <Device Key="RotaryValveDevice">
+            <Functionmodules>
+                <Functionmodule Key="motor_rv">
+                    <Parameter Value="0" Key="History_OperationTime"/>
+                </Functionmodule>
+                <Functionmodule Key="temp_rv">
+                    <Parameter Value="0" Key="History_OperationTime"/>
+                </Functionmodule>
+            </Functionmodules>
+        </Device>
+    </DeviceList>
+</DeviceLifeCycles>
