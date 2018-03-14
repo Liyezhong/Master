@@ -3520,7 +3520,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
                                                     const MsgClasses::CmdProgramAction &Cmd)
 {
     m_Mutex.lock();
-    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdProgramAction(Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ProgramActionType(),
+    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdProgramAction(Cmd.GetRetortId(), Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ProgramActionType(),
                                                                                         Cmd.DelayTime(), Cmd.ProgramRunDuration(), Cmd.GetReagentExpiredFlag())));
     m_Mutex.unlock();
     this->SendAcknowledgeOK(Ref);
@@ -3678,7 +3678,8 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
     m_CurrentBottlePosition.ReagentGrpId = "";
     m_CurrentBottlePosition.RvPos = RV_UNDEF;
     //send back the proposed program end time
-    MsgClasses::CmdProgramSelectedReply* commandPtr(new MsgClasses::CmdProgramSelectedReply(5000, timeProposed,
+    MsgClasses::CmdProgramSelectedReply* commandPtr(new MsgClasses::CmdProgramSelectedReply(5000, 3/*todo: replace with exact retort id*/,
+                                                                                            timeProposed,
                                                                                 paraffinMeltCostedtime,
                                                                                 costedTimeBeforeParaffin,
                                                                                 whichStep,
