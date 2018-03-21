@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdALStopCmdExec::NAME = "Scheduler::ALStopCmdExec";
 
-CmdALStopCmdExec::CmdALStopCmdExec(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdALStopCmdExec::CmdALStopCmdExec(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

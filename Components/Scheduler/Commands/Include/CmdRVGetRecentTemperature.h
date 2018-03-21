@@ -44,7 +44,7 @@ public:
      *  \return from CmdRVGetRecentTemperature
      */
     /****************************************************************************/
-    CmdRVGetRecentTemperature(int Timeout, SchedulerMainThreadController *controller);
+    CmdRVGetRecentTemperature(int Timeout, const QString& sender);
     ~CmdRVGetRecentTemperature();
 
     static QString NAME;    ///< Command name.

@@ -44,7 +44,7 @@ public:
      *  \return from CmdALSetPressureCtrlOFF
      */
     /****************************************************************************/
-    CmdALSetPressureCtrlOFF(int Timeout, SchedulerMainThreadController *controller);
+    CmdALSetPressureCtrlOFF(int Timeout, const QString& sender);
     ~CmdALSetPressureCtrlOFF();
 
     static QString NAME;    ///< Command name.

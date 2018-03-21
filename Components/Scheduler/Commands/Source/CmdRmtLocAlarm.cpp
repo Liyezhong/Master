@@ -26,8 +26,8 @@ namespace Scheduler {
 
 QString CmdRmtLocAlarm::NAME = "Scheduler::RmtLocAlarm";
 
-CmdRmtLocAlarm::CmdRmtLocAlarm(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller),
+CmdRmtLocAlarm::CmdRmtLocAlarm(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender),
     opcode(-1)
 {
 }

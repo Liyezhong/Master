@@ -149,6 +149,7 @@ private:
     bool    m_TasksAborted;                                         //!< Flag to indicate if tasks have been aborted
     quint8  m_PressureForCleaningSeq;
     qint64  m_PressureStartTime;
+    QString m_Sender;
 };
 }
 #endif // PROGRAM_PRE_TEST_H

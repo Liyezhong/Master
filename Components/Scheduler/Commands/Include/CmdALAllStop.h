@@ -44,7 +44,7 @@ public:
      *  \return from CmdALAllStop
      */
     /****************************************************************************/
-    CmdALAllStop(int Timeout, SchedulerMainThreadController *controller);
+    CmdALAllStop(int Timeout, const QString& sender);
     ~CmdALAllStop();
 
     static QString NAME;    ///< Command name.

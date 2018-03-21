@@ -44,7 +44,7 @@ public:
      *  \return from CmdALGetRecentTemperature
      */
     /****************************************************************************/
-    CmdALGetRecentTemperature(int Timeout, SchedulerMainThreadController *controller);
+    CmdALGetRecentTemperature(int Timeout, const QString& sender);
     ~CmdALGetRecentTemperature();
 
     static QString NAME;    ///< Command name.

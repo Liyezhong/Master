@@ -18,7 +18,7 @@ HEADERS += ../Include/*.h \
             Mock/MockIDeviceProcessing.h
 
 UseDepLibs(Global DataLogging Threads NetCommands DeviceControl DataManager RemoteCareManager \
-           RemoteCareController HeartBeatManager EventHandler GPIOManager ExternalProcessController \
+           RemoteCareController HeartBeatManager EventHandler ExternalProcessController \
            NetworkComponents StateMachines PasswordManager SWUpdateManager ExportController EncryptionDecryption)
 
 LIBS += -ldl

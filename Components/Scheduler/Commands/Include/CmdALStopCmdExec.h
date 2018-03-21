@@ -44,7 +44,7 @@ public:
      *  \return from CmdALFilling
      */
     /****************************************************************************/
-    CmdALStopCmdExec(int Timeout, SchedulerMainThreadController *controller);
+    CmdALStopCmdExec(int Timeout, const QString& sender);
     ~CmdALStopCmdExec();
 
     static QString NAME;    ///< Command name.

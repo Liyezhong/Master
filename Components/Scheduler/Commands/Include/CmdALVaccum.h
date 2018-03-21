@@ -44,7 +44,7 @@ public:
      *  \return from CmdALVaccum
      */
     /****************************************************************************/
-    CmdALVaccum(int Timeout, SchedulerMainThreadController *controller);
+    CmdALVaccum(int Timeout, const QString& sender);
     ~CmdALVaccum();
 
     static QString NAME;    ///< Command name.

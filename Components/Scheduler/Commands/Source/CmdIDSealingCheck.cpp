@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdIDSealingCheck::NAME = "Scheduler::IDSealingCheck";
 
-CmdIDSealingCheck::CmdIDSealingCheck(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdIDSealingCheck::CmdIDSealingCheck(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdRVStartTemperatureControl::NAME = "Scheduler::RVStartTemperatureControl";
 
-CmdRVStartTemperatureControl::CmdRVStartTemperatureControl(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdRVStartTemperatureControl::CmdRVStartTemperatureControl(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

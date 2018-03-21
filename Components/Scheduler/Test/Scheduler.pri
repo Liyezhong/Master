@@ -1,14 +1,14 @@
 # include pri file from Master/Test
 
-!include("../../../../../../Platform/Master/Test/Platform.pri") {
-    error("../../../../../../Platform/Master/Test/Platform.pri not found")
+!include("../../../../Shared/Master/Test/Platform.pri") {
+    error("../../../../Shared/Master/Test/Platform.pri not found")
 }
 
 DEFINES += GOOGLE_MOCK
-INCLUDEPATH += ../../../../../HimalayaMain/Master/Include \
+INCLUDEPATH += ../../../../Master/Include \
                ../../../../../Shared/Master/Components \
-               ../../../../Common/Components \
-               ../../../../../../Platform/Master/Components \
+               ../../../../Shared/Common/Components \
+               ../../../../Shared/Master/Components \
 #Add google-mock related headers into our project
 INCLUDEPATH += /usr/local/include
 
@@ -16,12 +16,12 @@ INCLUDEPATH += /usr/local/include
 ### stuff for adding libraries ####
 ###################################
 #Add google-mock related libraries into our project
-PRE_TARGETDEPS  += /usr/local/lib/gmock/libgmock.a
-LIBS            += /usr/local/lib/gmock/libgmock.a
-PRE_TARGETDEPS  += /usr/local/lib/gtest/libgtest.a
-LIBS            += /usr/local/lib/gtest/libgtest.a
+PRE_TARGETDEPS  += /usr/local/lib/libgmock.a
+LIBS            += /usr/local/lib/libgmock.a
+PRE_TARGETDEPS  += /usr/local/lib/libgtest.a
+LIBS            += /usr/local/lib/libgtest.a
 
-EXTRACOMPONENTDIR = ../../../../../../Platform/Master/Components
+EXTRACOMPONENTDIR = ../../../../Shared/Master/Components
 
 # this function adds all libraries passed as arguments to the linker and dependency list
 defineTest(UseDepLibs){
@@ -32,8 +32,8 @@ defineTest(UseDepLibs){
         PRE_TARGETDEPS  += $$THELIBPATH/lib$${TheLib}.a
         LIBS            += $$THELIBPATH/lib$${TheLib}.a
     }
-    PRE_TARGETDEPS  += ../../../../../Shared/Master/Components/HimalayaDataContainer/Build/lib_$$CONFIG_SUFFIX/libHimalayaDataContainer.a
-    LIBS            += ../../../../../Shared/Master/Components/HimalayaDataContainer/Build/lib_$$CONFIG_SUFFIX/libHimalayaDataContainer.a
+    PRE_TARGETDEPS  += ../../../../Shared/Common/Components/HimalayaDataContainer/Build/lib_$$CONFIG_SUFFIX/libHimalayaDataContainer.a
+    LIBS            += ../../../../Shared/Common/Components/HimalayaDataContainer/Build/lib_$$CONFIG_SUFFIX/libHimalayaDataContainer.a
     PRE_TARGETDEPS  += ../../HimalayaDataManager/Build/lib_$$CONFIG_SUFFIX/libHimalayaDataManager.a
     LIBS            += ../../HimalayaDataManager/Build/lib_$$CONFIG_SUFFIX/libHimalayaDataManager.a
     PRE_TARGETDEPS  += ../../HimalayaMasterThread/Build/lib_$$CONFIG_SUFFIX/libHimalayaMasterThread.a

@@ -32,10 +32,10 @@ namespace Scheduler{
  *
  */
 /****************************************************************************/
-CmdSchedulerCommandBase::CmdSchedulerCommandBase(int Timeout, SchedulerMainThreadController *controller):
+CmdSchedulerCommandBase::CmdSchedulerCommandBase(int Timeout, const QString& sender):
     Command(Timeout),
     m_Response(true),
-    mp_SchedulerThreadController(controller)
+    m_Sender(sender)
 {
 }
 

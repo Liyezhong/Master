@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdALAllStop::NAME = "Scheduler::ALAllStop";
 
-CmdALAllStop::CmdALAllStop(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdALAllStop::CmdALAllStop(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdALGetRecentPressure::NAME = "Scheduler::ALGetRecentPressure";
 
-CmdALGetRecentPressure::CmdALGetRecentPressure(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdALGetRecentPressure::CmdALGetRecentPressure(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

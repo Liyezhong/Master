@@ -403,7 +403,7 @@ void CSchedulerStateMachine::OnTasksDone(bool flag)
     mp_SchedulerThreadController->StopTimer();
     if (!flag){
         mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
-        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController), false);
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender), false);
     }
     mp_SchedulerThreadController->RaiseError(mp_SchedulerThreadController->GetEventKey(), DCL_ERR_FCT_CALL_SUCCESS, 0, flag);
     emit sigStateChange();
@@ -414,7 +414,7 @@ void CSchedulerStateMachine::OnTasksDoneRsStandyWithTissue(bool flag)
     mp_SchedulerThreadController->StopTimer();
     if (!flag){
         mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
-        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController), false);
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender), false);
     }
     mp_SchedulerThreadController->RaiseError(mp_SchedulerThreadController->GetEventKey(), DCL_ERR_FCT_CALL_SUCCESS, 0, flag);
     emit sigStateChange();
@@ -434,7 +434,7 @@ void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
     if (false == flag)
     {
         mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
-        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController), false);
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender), false);
 
         mp_SchedulerThreadController->RaiseError(0, DCL_ERR_DEV_INTER_TISSUE_PROTECT_REPORT, 0, false);
         emit sigStateChange();
@@ -1272,7 +1272,7 @@ void CSchedulerStateMachine::HandleRsRVGetOriginalPositionAgainWorkFlow(const QS
     switch (m_RVGetOriginalPosition)
     {
     case MOVE_TO_INITIAL_POS:
-        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, m_Sender));
         m_RVGetOriginalPosition = CHECK_INITIAL_POS_RESULT;
         m_RVOrgPosCmdTime = QDateTime::currentMSecsSinceEpoch();
         break;
@@ -1324,7 +1324,7 @@ void CSchedulerStateMachine::HandleRcPressureWorkFlow(const QString& cmdName, De
             qreal currentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL;
             if (qAbs(currentPressure-30.0) < 5.0)
             {
-                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender));
                 m_RcPressureSeq++;
             }
         }
@@ -1422,7 +1422,7 @@ void CSchedulerStateMachine::HandleRcFillingWorkFlow(const QString& cmdName, Dev
     case CHECK_SEALING_POS:
         if (true == mp_SchedulerThreadController->IsRVRightPosition(SEAL_POS))
         {
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender));
             m_RcFilling = RELEASE_PRESSURE;
         }
         break;
@@ -1748,7 +1748,7 @@ void CSchedulerStateMachine::HandleRcRestart(const QString& cmdName)
         case 0:
         {
             mp_SchedulerThreadController->OnBeginDrain();
-            CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
+            CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, m_Sender);
             QString stationID = mp_SchedulerThreadController->GetCurrentStationID();
             cmd->SetRVPosition(mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID));
             cmd->SetDrainPressure(40.0);
@@ -1793,7 +1793,7 @@ void CSchedulerStateMachine::HandleRsMoveToPSeal(const QString& cmdName,  Device
     case BUILD_VACUUM:
         if(0 == startReq)
         {
-            CmdALVaccum* cmd = new CmdALVaccum(500, mp_SchedulerThreadController);
+            CmdALVaccum* cmd = new CmdALVaccum(500, m_Sender);
             cmd->SetTargetPressure(-1.0);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
             startReq++;
@@ -1815,7 +1815,7 @@ void CSchedulerStateMachine::HandleRsMoveToPSeal(const QString& cmdName,  Device
     case MOVE_INITIALIZE_POSITION:
         if(0 == startReq)
         {
-            CmdRVReqMoveToInitialPosition *cmd = new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController);
+            CmdRVReqMoveToInitialPosition *cmd = new CmdRVReqMoveToInitialPosition(500, m_Sender);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
             startReq++;
         }
@@ -1836,7 +1836,7 @@ void CSchedulerStateMachine::HandleRsMoveToPSeal(const QString& cmdName,  Device
     case MOVE_SEALPOSITION:
         if(0 == startReq)
         {
-            CmdRVReqMoveToRVPosition* CmdMvRV = new CmdRVReqMoveToRVPosition(500, mp_SchedulerThreadController);
+            CmdRVReqMoveToRVPosition* CmdMvRV = new CmdRVReqMoveToRVPosition(500, m_Sender);
             CmdMvRV->SetRVPosition(DeviceControl::RV_SEAL_16);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(CmdMvRV);
             startReq++;
@@ -1861,7 +1861,7 @@ void CSchedulerStateMachine::HandleRsMoveToPSeal(const QString& cmdName,  Device
     case REALSE_PRESSRE:
         if(0 == startReq)
         {
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender));
             startReq++;
         }
         else if("Scheduler::ALReleasePressure" == cmdName)
@@ -1891,7 +1891,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
         if (0 == m_PressureCalibrationSeq)
         {
             mp_SchedulerThreadController->LogDebug("Begin pressure calibration for Bottle check");
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender));
             m_PressureCalibrationSeq++;
         }
         else if (1 == m_PressureCalibrationSeq)
@@ -1948,7 +1948,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
                 mp_SchedulerThreadController->LogDebug(QString("Bottle check for tube %1").arg(m_BottleCheckStationIter->first));
                 if (!reagentGroupId.isEmpty())
                 {
-                    CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_SchedulerThreadController);
+                    CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, m_Sender);
                     cmd->SetReagentGrpID(reagentGroupId);
                     cmd->SetTubePos(tubePos);
                     mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
@@ -2050,7 +2050,7 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
                 m_HasFinishForceDrain = false;
                 m_SentInfoForLockLid =  false;
                 RecordRetortLidOpened();
-                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender));
                 m_PssmAbortingSeq++;
             }
             else if (1 == m_PssmAbortingSeq)
@@ -2061,7 +2061,7 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
                     if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                     {
                         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DRAINING);
-                        CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
+                        CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, m_Sender);
                         QString stationID = mp_SchedulerThreadController->GetCurrentStationID();
                         RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID);
                         cmd->SetRVPosition((quint32)(tubePos));

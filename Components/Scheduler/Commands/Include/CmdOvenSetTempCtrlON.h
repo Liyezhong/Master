@@ -44,7 +44,7 @@ public:
      *  \return from CmdOvenSetTempCtrlON
      */
     /****************************************************************************/
-    CmdOvenSetTempCtrlON(int Timeout, SchedulerMainThreadController *controller);
+    CmdOvenSetTempCtrlON(int Timeout, const QString& sender);
     ~CmdOvenSetTempCtrlON();
 
     static QString NAME;    ///< Command name.

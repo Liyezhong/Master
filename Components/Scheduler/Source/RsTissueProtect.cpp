@@ -122,14 +122,14 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
 
             if (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="2")      // For filling
             {
-                CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, mp_SchedulerController);
+                CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, m_Sender);
                 ALStopCmd->SetCmdType(0); //for SYNC_CMD_AL_PROCEDURE_SUCKING_LEVELSENSOR
                 mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
                 m_CurrentStep = STOP_CMDEXEC;
             }
             else if (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="6") // For Draining
             {
-                CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, mp_SchedulerController);
+                CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, m_Sender);
                 ALStopCmd->SetCmdType(1); //for SYNC_CMD_AL_PROCEDURE_DRAINING
                 mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
                 m_CurrentStep = STOP_CMDEXEC;
@@ -156,7 +156,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         if (0 == m_DrainCurReagentSeq)
         {
             mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Drain_cur_Reagent state");
-            CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerController);
+            CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, m_Sender);
             mp_SchedulerController->LogDebug(QString("current station ID is: %1").arg(m_lastStationID));
             RVPosition_t tubePos = mp_SchedulerController->GetRVTubePositionByStationID(m_lastStationID);
             cmd->SetRVPosition((quint32)(tubePos));
@@ -204,7 +204,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 else if (DCL_ERR_DEV_RV_MOTOR_LOSTCURRENTPOSITION == retCode)
                 {
                     m_MoveToTubeSeq = 3;
-                    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerController));
+                    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, m_Sender));
                 }
                 else
                 {
@@ -345,7 +345,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 if (DCL_ERR_DEV_LA_FILLING_OVERFLOW == retCode)
                 {
                     mp_SchedulerController->LogDebug(QString(" Return code of program Step Filling is filling overflow"));
-                    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdALPressure(500, mp_SchedulerController));
+                    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdALPressure(500, m_Sender));
                     m_StartWaitTime = QDateTime::currentMSecsSinceEpoch();
                     m_CurrentStep = WAIT_8S;
 
@@ -665,7 +665,7 @@ void CRsTissueProtect::OnMoveToTube()
     mp_SchedulerController->UpdateCurProgramStepInfo(m_StationID, m_ReagentGroup);
     RVPosition_t RVPos = mp_SchedulerController->GetRVTubePositionByStationID(m_StationID);
     mp_SchedulerController->LogDebug(QString("In OnMoveToTube, tube position is %1").arg(RVPos));
-    CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_SchedulerController);
+    CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, m_Sender);
     cmd->SetRVPosition(RVPos);
     mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
 }
@@ -674,7 +674,7 @@ void CRsTissueProtect::OnMoveToSeal()
 {
     RVPosition_t RVPos = mp_SchedulerController->GetRVSealPositionByStationID(m_StationID);
     mp_SchedulerController->LogDebug(QString("In OnMoveToSeal, seal position is %1").arg(RVPos));
-    CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_SchedulerController);
+    CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, m_Sender);
     cmd->SetRVPosition(RVPos);
     mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
 }
@@ -682,7 +682,7 @@ void CRsTissueProtect::OnMoveToSeal()
 void CRsTissueProtect::OnReleasePressure()
 {
     mp_SchedulerController->LogDebug("In RS_Tissue_Protect, begin to run CmdALReleasePressure");
-    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerController));
+    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender));
 }
 
 bool CRsTissueProtect::TryNextSafeReagent()

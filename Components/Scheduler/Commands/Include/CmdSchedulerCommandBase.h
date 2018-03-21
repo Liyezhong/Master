@@ -45,7 +45,7 @@ public:
      *  \param controller
      */
     /****************************************************************************/
-    CmdSchedulerCommandBase(int Timeout, SchedulerMainThreadController* controller);
+    CmdSchedulerCommandBase(int Timeout, const QString& sender);
     virtual ~CmdSchedulerCommandBase();
 
     /****************************************************************************/
@@ -161,13 +161,16 @@ public:
     /****************************************************************************/
     void SetResponse(bool response) {m_Response = response;}
 
+    // todo: return the caller's id
+    QString GetSender() const {return m_Sender;}
+
 private:
     CmdSchedulerCommandBase();                                                    ///< Not implemented.
     CmdSchedulerCommandBase(const CmdSchedulerCommandBase &);                     ///< Not implemented.
     const CmdSchedulerCommandBase & operator = (const CmdSchedulerCommandBase &); ///< Not implemented.
     bool    m_Response;                                                           ///< flag for response
 protected:
-    SchedulerMainThreadController *mp_SchedulerThreadController;       ///<  Definition/Declaration of variable mp_SchedulerThreadController
+    QString m_Sender;       ///<  Definition/Declaration of variable mp_SchedulerThreadController
 }; // end class CmdSchedulerCommandBase
 
 typedef QSharedPointer<Scheduler::CmdSchedulerCommandBase>  SchedulerCommandShPtr_t;   ///< Typedef for shared pointer of command.

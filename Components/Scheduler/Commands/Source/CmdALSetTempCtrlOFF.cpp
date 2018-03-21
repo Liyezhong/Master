@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdALSetTempCtrlOFF::NAME = "Scheduler::ALSetTempCtrlOFF";
 
-CmdALSetTempCtrlOFF::CmdALSetTempCtrlOFF(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdALSetTempCtrlOFF::CmdALSetTempCtrlOFF(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

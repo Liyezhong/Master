@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdOvenStartTemperatureControlWithPID::NAME = "Scheduler::OvenStartTemperatureControlWithPID";
 
-CmdOvenStartTemperatureControlWithPID::CmdOvenStartTemperatureControlWithPID(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdOvenStartTemperatureControlWithPID::CmdOvenStartTemperatureControlWithPID(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

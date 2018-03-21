@@ -83,7 +83,7 @@
 
 #ifdef GOOGLE_MOCK
 #include <gmock/gmock.h>
-#include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
+#include "DeviceControl/Test/Mock/MockDeviceControl.h"
 #else
 #include "DeviceControl/Include/Interface/IDeviceProcessing.h"
 #endif
@@ -94,7 +94,7 @@ namespace Scheduler{
 /*lint -e525 */
 
 template <class DP>
-SchedulerCommandProcessor<DP>::SchedulerCommandProcessor(SchedulerMainThreadController *controller) :
+SchedulerCommandProcessor<DP>::SchedulerCommandProcessor(SchedulerMainThreadController* controller) :
     mp_SchedulerThreadController(controller),
     mp_IDeviceProcessing(NULL)
 {
@@ -179,8 +179,8 @@ void SchedulerCommandProcessor<DP>::run4Slot()
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportLevelSensorStatus1(), this, ReportLevelSensorStatus1());
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportFillingTimeOut2Min(), this, ReportFillingTimeOut2Min());
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportDrainingTimeOut2Min(), this, ReportDrainingTimeOut2Min());
-    CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&),
-                     this, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&));
+//    CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReporExecuteCmdtGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&),
+//                     this, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&));
     CONNECTSIGNALSLOT(&m_TickTimer, timeout(), this, OnTickTimer());
     CONNECTSIGNALSLOT(this, SigShutDownDevice(), this, OnShutDownDevice());
     CONNECTSIGNALSLOT(this, SigNotifySavedServiceInfor(const QString&), this, OnNotifySavedServiceInfor(const QString&));
@@ -305,6 +305,7 @@ template <class DP>
 void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_t& scmd)
 {
     QString cmdName = scmd->GetName();
+    QString sender = scmd.data()->GetSender();
 
         if ("Scheduler::StartConfigurationService" == cmdName)
         {
@@ -338,7 +339,7 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
         }
         else if  ("Scheduler::ALReleasePressure" == cmdName)
         {
-            scmd->SetResult(mp_IDeviceProcessing->ALReleasePressure());
+            scmd->SetResult(mp_IDeviceProcessing->ALReleasePressure(sender));
             mp_SchedulerThreadController->LogDebug("==CMD==:Release pressure.");
         }
         else if  ("Scheduler::ALPressure" == cmdName)
@@ -807,7 +808,7 @@ void SchedulerCommandProcessor<DP>::OnResetActiveCarbonFilterLifetime4Slot(quint
 
 
 #ifdef GOOGLE_MOCK
-template class Scheduler::SchedulerCommandProcessor<DeviceControl::MockIDeviceProcessing>;
+template class Scheduler::SchedulerCommandProcessor<DeviceControl::MockDeviceControl>;
 #else
 template class Scheduler::SchedulerCommandProcessor<DeviceControl::IDeviceProcessing>;
 #endif

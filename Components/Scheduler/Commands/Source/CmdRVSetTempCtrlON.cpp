@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdRVSetTempCtrlON::NAME = "Scheduler::RVSetTempCtrlON";
 
-CmdRVSetTempCtrlON::CmdRVSetTempCtrlON(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdRVSetTempCtrlON::CmdRVSetTempCtrlON(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

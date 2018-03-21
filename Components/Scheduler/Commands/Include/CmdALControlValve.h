@@ -45,7 +45,7 @@ public:
      *  \return from CmdALControlValve
      */
     /****************************************************************************/
-    CmdALControlValve(int Timeout, SchedulerMainThreadController *controller);
+    CmdALControlValve(int Timeout, const QString& sender);
     ~CmdALControlValve();
 
     static QString NAME;    ///< Command name.

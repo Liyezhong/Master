@@ -44,7 +44,7 @@ public:
      *  \return from CmdALSetTempCtrlON
      */
     /****************************************************************************/
-    CmdALSetTempCtrlON(int Timeout, SchedulerMainThreadController *controller);
+    CmdALSetTempCtrlON(int Timeout, const QString& sender);
     ~CmdALSetTempCtrlON();
 
     static QString NAME;    ///< Command name.

@@ -44,7 +44,7 @@ public:
      *  \return from CmdRTUnlock
      */
     /****************************************************************************/
-    CmdRTUnlock(int Timeout, SchedulerMainThreadController *controller);
+    CmdRTUnlock(int Timeout, const QString& sender);
     ~CmdRTUnlock();
 
     static QString NAME;    ///< Command name.

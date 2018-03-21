@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdALReleasePressure::NAME = "Scheduler::ALReleasePressure";
 
-CmdALReleasePressure::CmdALReleasePressure(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdALReleasePressure::CmdALReleasePressure(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

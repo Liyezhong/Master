@@ -44,7 +44,7 @@ public:
      *  \return from CmdRVGetTemperatureControlState
      */
     /****************************************************************************/
-    CmdRVGetTemperatureControlState(int Timeout, SchedulerMainThreadController *controller);
+    CmdRVGetTemperatureControlState(int Timeout, const QString& sender);
     ~CmdRVGetTemperatureControlState();
 
     static QString NAME;    ///< Command name.

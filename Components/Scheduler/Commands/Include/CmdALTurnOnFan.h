@@ -45,7 +45,7 @@ public:
      *  \return from CmdALTurnOnFan
      */
     /****************************************************************************/
-    CmdALTurnOnFan(int Timeout, SchedulerMainThreadController *controller);
+    CmdALTurnOnFan(int Timeout, const QString& sender);
     ~CmdALTurnOnFan();
 
     static QString NAME;    ///< Command name.

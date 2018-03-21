@@ -95,6 +95,7 @@ private:
     StateList_t                      m_CurrentState;                //!< Current state
     qint64                           m_StartTime;                    //!< The begin time
     quint8                           m_MoveToSealingSeq;             //!< Sequence of moving to seaing position
+    QString m_Sender;
 };
 
 }

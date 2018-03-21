@@ -44,7 +44,7 @@ public:
      *  \return from CmdPerTurnOnMainRelay
      */
     /****************************************************************************/
-    CmdPerTurnOnMainRelay(int Timeout, SchedulerMainThreadController *controller);
+    CmdPerTurnOnMainRelay(int Timeout, const QString& sender);
     ~CmdPerTurnOnMainRelay();
 
     static QString NAME;    ///< Command name.

@@ -115,6 +115,7 @@ private:
     StateList_t                    m_CurrentState;          //!< The current state
     qint64                m_StartCheckingTime;              //!< start-up time for checking temperature module current status
     quint8                m_StandbyType;                    //!< RS_Sandby_WithTissue or RS_Standby.
+    QString m_Sender;
 };
 }
 #endif // RSSTANDBY_WITH_TISSUE_H

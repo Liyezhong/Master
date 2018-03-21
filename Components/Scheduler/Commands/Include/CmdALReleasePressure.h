@@ -46,7 +46,7 @@ public:
      *  \return from CmdALReleasePressure
      */
     /****************************************************************************/
-    CmdALReleasePressure(int Timeout, SchedulerMainThreadController *controller);
+    CmdALReleasePressure(int Timeout, const QString& sender);
     ~CmdALReleasePressure();
 
     static QString NAME;    ///< Command name.

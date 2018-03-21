@@ -240,6 +240,7 @@ private:
     quint8                          m_ASB3SwitchType;                   //!< ASB3 Switch Type
     quint8                          m_ASB5SwitchType;                   //!< ASB5 Switch Type
     quint8                          m_IsLoged;                          //!< wether loged
+    QString m_Sender;
 };
 
 }

@@ -217,6 +217,7 @@ private:
     bool    m_IsRetortLidClosed;                                                ///< Is the retort lid closed currently?
     bool    m_HasFinishForceDrain;                                              ///< Has it finish ForceDrain?
     bool    m_SentInfoForLockLid;                                               ///< whether sent the prompt of lock lid or not
+    QString m_Sender;
 private:
     /****************************************************************************/
     /*!

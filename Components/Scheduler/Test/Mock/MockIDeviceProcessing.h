@@ -69,6 +69,8 @@ signals:
 class MockIDeviceProcessing : public FackIDeviceProcessing
 {
 public:
+    MockIDeviceProcessing(int DevProcTimerInterval = 10)
+    {}
     void InitializationFinished()
 	{
         emit ReportInitializationFinished(DEVICE_INSTANCE_ID_DEVPROC, DCL_ERR_FCT_CALL_SUCCESS);

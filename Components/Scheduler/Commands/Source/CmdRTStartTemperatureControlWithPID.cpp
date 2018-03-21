@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdRTStartTemperatureControlWithPID::NAME = "Scheduler::RTStartTemperatureControlWithPID";
 
-CmdRTStartTemperatureControlWithPID::CmdRTStartTemperatureControlWithPID(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdRTStartTemperatureControlWithPID::CmdRTStartTemperatureControlWithPID(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

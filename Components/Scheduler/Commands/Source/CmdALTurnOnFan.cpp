@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdALTurnOnFan::NAME = "Scheduler::ALTurnOnFan";
 
-CmdALTurnOnFan::CmdALTurnOnFan(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdALTurnOnFan::CmdALTurnOnFan(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

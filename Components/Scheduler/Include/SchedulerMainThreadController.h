@@ -287,6 +287,7 @@ typedef enum
     IDLE_READY_OK
 }IdleStepState_t;
 
+
     /****************************************************************************/
     /**
      * @brief Controller class for the main scheduler thread.
@@ -299,8 +300,17 @@ typedef enum
 #ifdef GOOGLE_MOCK
 		// add "friend class TestSchedulerController" for UT
         friend class TestSchedulerMainThreadController;
+        friend class TestSchedulerCommandProcessor;
 #endif
-
+public:
+        enum Sender_t
+        {
+            Unknow = -1,
+            RetortA,
+            RetortB,
+            Instrument,
+        };
+        Q_ENUM(Sender_t)
     private:
         QTimer m_TickTimer;       ///<  Definition/Declaration of variable m_TickTimer
         QMutex m_Mutex;       ///<  Definition/Declaration of variable m_Mutex
@@ -398,6 +408,7 @@ typedef enum
         bool    m_bWaitToPauseCmdYes;                         ///< flag to indicate if PauseYes command is selected
         bool    m_IsResumeFromPause;                          ///< flag to indicate if we are resuming from pause state
         SchedulerStateMachine_t m_StateAtPause;               ///< The state when pause occurs
+        QString m_Sender;
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.

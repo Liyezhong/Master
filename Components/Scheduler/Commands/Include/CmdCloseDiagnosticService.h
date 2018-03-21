@@ -44,7 +44,7 @@ public:
      *  \return from CmdCloseDiagnosticService
      */
     /****************************************************************************/
-    CmdCloseDiagnosticService(int Timeout, SchedulerMainThreadController *controller);
+    CmdCloseDiagnosticService(int Timeout, const QString& sender);
     ~CmdCloseDiagnosticService();
 
     static QString NAME;    ///< Command name.

@@ -49,7 +49,7 @@ CRsStandbyWithTissue::~CRsStandbyWithTissue()
 void CRsStandbyWithTissue::OnReleasePressure()
 {
     mp_SchedulerController->LogDebug("In RS_Standby_WithTissue or RS_Standby, begin to run CmdALReleasePressure");
-    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerController));
+    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender));
 }
 
 void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)

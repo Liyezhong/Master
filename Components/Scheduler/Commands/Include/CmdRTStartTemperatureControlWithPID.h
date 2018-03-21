@@ -46,7 +46,7 @@ public:
      *  \return from CmdRTStartTemperatureControlWithPID
      */
     /****************************************************************************/
-    CmdRTStartTemperatureControlWithPID(int Timeout, SchedulerMainThreadController *controller);
+    CmdRTStartTemperatureControlWithPID(int Timeout, const QString& sender);
     ~CmdRTStartTemperatureControlWithPID();
 
     static QString NAME;    ///< Command name.
@@ -240,7 +240,7 @@ private:
 	mutable quint16 m_ControllerGain;       ///<  Definition/Declaration of variable m_ControllerGain
 	mutable quint16 m_ResetTime;       ///<  Definition/Declaration of variable m_ResetTime
 	mutable quint16 m_DerivativeTime;       ///<  Definition/Declaration of variable m_DerivativeTime
-	
+    QString m_Sender;
 };
 
 

@@ -44,7 +44,7 @@ public:
      *  \return from CmdRmtLocAlarm
      */
     /****************************************************************************/
-    CmdRmtLocAlarm(int Timeout, SchedulerMainThreadController *controller);
+    CmdRmtLocAlarm(int Timeout, const QString& sender);
     ~CmdRmtLocAlarm();
 
     static QString NAME;    ///< Command name.

@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdStartAdjustmentService::NAME = "Scheduler::StartAdjustmentService";
 
-CmdStartAdjustmentService::CmdStartAdjustmentService(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdStartAdjustmentService::CmdStartAdjustmentService(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdRTUnlock::NAME = "Scheduler::RTUnlock";
 
-CmdRTUnlock::CmdRTUnlock(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdRTUnlock::CmdRTUnlock(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

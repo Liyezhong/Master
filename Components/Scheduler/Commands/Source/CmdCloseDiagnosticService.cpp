@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdCloseDiagnosticService::NAME = "Scheduler::CloseDiagnosticService";
 
-CmdCloseDiagnosticService::CmdCloseDiagnosticService(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdCloseDiagnosticService::CmdCloseDiagnosticService(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

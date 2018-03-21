@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdRVReqMoveToRVPosition::NAME = "Scheduler::RVReqMoveToRVPosition";
 
-CmdRVReqMoveToRVPosition::CmdRVReqMoveToRVPosition(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdRVReqMoveToRVPosition::CmdRVReqMoveToRVPosition(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdIDBottleCheck::NAME = "Scheduler::IDBottleCheck";
 
-CmdIDBottleCheck::CmdIDBottleCheck(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdIDBottleCheck::CmdIDBottleCheck(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

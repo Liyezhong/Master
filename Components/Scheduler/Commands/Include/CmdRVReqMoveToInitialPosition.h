@@ -46,7 +46,7 @@ public:
      *  \return from CmdRVReqMoveToInitialPosition
      */
     /****************************************************************************/
-    CmdRVReqMoveToInitialPosition(int Timeout, SchedulerMainThreadController *controller);
+    CmdRVReqMoveToInitialPosition(int Timeout, const QString& sender);
     ~CmdRVReqMoveToInitialPosition();
 
     static QString NAME;    ///< Command name.

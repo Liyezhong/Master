@@ -44,7 +44,7 @@ public:
      *  \return from CmdIDSealingCheck
      */
     /****************************************************************************/
-    CmdIDSealingCheck(int Timeout, SchedulerMainThreadController *controller);
+    CmdIDSealingCheck(int Timeout, const QString& sender);
     ~CmdIDSealingCheck();
 
     static QString NAME;    ///< Command name.

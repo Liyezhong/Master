@@ -159,7 +159,7 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
             {
 
                 m_MoveToSealingSeq = 0;
-                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender));
                 m_CurrentState = RSFILLINGAFTERFLUSH_RELEASEPRESSURE;
             }
             else

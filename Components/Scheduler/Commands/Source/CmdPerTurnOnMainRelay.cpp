@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdPerTurnOnMainRelay::NAME = "Scheduler::PerTurnOnMainRelay";
 
-CmdPerTurnOnMainRelay::CmdPerTurnOnMainRelay(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdPerTurnOnMainRelay::CmdPerTurnOnMainRelay(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

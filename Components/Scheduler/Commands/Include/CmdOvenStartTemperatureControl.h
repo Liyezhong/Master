@@ -44,7 +44,7 @@ public:
      *  \return from CmdOvenStartTemperatureControl
      */
     /****************************************************************************/
-    CmdOvenStartTemperatureControl(int Timeout, SchedulerMainThreadController *controller);
+    CmdOvenStartTemperatureControl(int Timeout, const QString& sender);
     ~CmdOvenStartTemperatureControl();
 
     static QString NAME;    ///< Command name.

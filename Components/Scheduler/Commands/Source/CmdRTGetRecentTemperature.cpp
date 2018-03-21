@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdRTGetRecentTemperature::NAME = "Scheduler::RTGetRecentTemperature";
 
-CmdRTGetRecentTemperature::CmdRTGetRecentTemperature(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdRTGetRecentTemperature::CmdRTGetRecentTemperature(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

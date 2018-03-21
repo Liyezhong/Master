@@ -44,7 +44,7 @@ public:
      *  \return from CmdIDBottleCheck
      */
     /****************************************************************************/
-    CmdIDBottleCheck(int Timeout, SchedulerMainThreadController *controller);
+    CmdIDBottleCheck(int Timeout, const QString& sender);
     ~CmdIDBottleCheck();
 
     static QString NAME;    ///< Command name.

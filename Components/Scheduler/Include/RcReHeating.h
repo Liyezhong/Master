@@ -194,6 +194,7 @@ private:
     qint64                          m_ReleasePressureTime;              //!< Time of releasing pressure
     quint8                          m_IsLoged;                          //!< Whether loged
     bool                            m_IsMeltingMsgSend;                 //!< flag for melting message sent or not
+    QString m_Sender;
 };
 
 }

@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdIDForceDraining::NAME = "Scheduler::IDForceDraining";
 
-CmdIDForceDraining::CmdIDForceDraining(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller),m_TargetPressure(AL_TARGET_PRESSURE_POSITIVE),m_ReagentGrpID("RG2")
+CmdIDForceDraining::CmdIDForceDraining(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender),m_TargetPressure(AL_TARGET_PRESSURE_POSITIVE),m_ReagentGrpID("RG2")
 {
 }
 

@@ -6,12 +6,12 @@
                     <Parameter Value="0" Key="temp_lsensor_LifeCycle"/>
                 </Functionmodule>
                 <Functionmodule Key="AL_pressure_ctrl">
-                    <Parameter Value="0" Key="ActiveCarbonFilter_LifeTime"/>
+                    <Parameter Value="112146" Key="ActiveCarbonFilter_LifeTime"/>
                     <Parameter Value="0" Key="CarbonFilter_FirstRecord_Flag"/>
-                    <Parameter Value="0" Key="Exhaust_Fan_LifeTime"/>
+                    <Parameter Value="112146" Key="Exhaust_Fan_LifeTime"/>
                     <Parameter Value="0" Key="History_Pump_OperationTime"/>
-                    <Parameter Value="0" Key="Valve1_LifeCycle"/>
-                    <Parameter Value="0" Key="Valve2_LifeCycle"/>
+                    <Parameter Value="16" Key="Valve1_LifeCycle"/>
+                    <Parameter Value="16" Key="Valve2_LifeCycle"/>
                 </Functionmodule>
                 <Functionmodule Key="temp_tube1">
                     <Parameter Value="0" Key="History_OperationTime"/>
@@ -24,16 +24,16 @@
         <Device Key="OtherDevice">
             <Functionmodules>
                 <Functionmodule Key="EBox">
-                    <Parameter Value="0" Key="EBox_LifeTime"/>
+                    <Parameter Value="112164" Key="EBox_LifeTime"/>
                 </Functionmodule>
                 <Functionmodule Key="PressureSensor">
-                    <Parameter Value="0" Key="Pressure_Sensor_LifeTime"/>
+                    <Parameter Value="112164" Key="Pressure_Sensor_LifeTime"/>
                 </Functionmodule>
                 <Functionmodule Key="TouchScreen">
-                    <Parameter Value="0" Key="Touch_Screen_LifeTime"/>
+                    <Parameter Value="112164" Key="Touch_Screen_LifeTime"/>
                 </Functionmodule>
                 <Functionmodule Key="VentilationFan">
-                    <Parameter Value="0" Key="Ventilation_Fan_LifeTime"/>
+                    <Parameter Value="112164" Key="Ventilation_Fan_LifeTime"/>
                 </Functionmodule>
             </Functionmodules>
         </Device>

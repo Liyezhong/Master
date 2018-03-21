@@ -417,6 +417,7 @@ private:
     qreal                               m_RTSideCurrentTemp;            //!< Retort side current temperature just for self test
     qreal                               m_RVHeatingRodCurrentTemp;      //!< RV heating rod current temperature just for self test
     std::bitset<6>                      m_OvenSensorsCheck;             //!< Bits for individual Oven sensors check
+    QString m_Sender;
 
     /****************************************************************************/
     /*!

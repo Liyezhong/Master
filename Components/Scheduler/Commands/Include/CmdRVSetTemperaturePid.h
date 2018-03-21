@@ -44,7 +44,7 @@ public:
      *  \return from CmdRVSetTemperaturePid
      */
     /****************************************************************************/
-    CmdRVSetTemperaturePid(int Timeout, SchedulerMainThreadController *controller);
+    CmdRVSetTemperaturePid(int Timeout, const QString& sender);
     ~CmdRVSetTemperaturePid();
 
     static QString NAME;    ///< Command name.

@@ -44,7 +44,7 @@ public:
      *  \return from CmdRestartConfigurationService
      */
     /****************************************************************************/
-    CmdRestartConfigurationService(int Timeout, SchedulerMainThreadController *controller);
+    CmdRestartConfigurationService(int Timeout, const QString& sender);
     ~CmdRestartConfigurationService();
 
     static QString NAME;    ///< Command name.

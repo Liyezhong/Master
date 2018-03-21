@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdALSetPressureCtrlOFF::NAME = "Scheduler::ALSetPressureCtrlOFF";
 
-CmdALSetPressureCtrlOFF::CmdALSetPressureCtrlOFF(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdALSetPressureCtrlOFF::CmdALSetPressureCtrlOFF(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

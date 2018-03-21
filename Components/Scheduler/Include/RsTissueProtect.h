@@ -169,6 +169,7 @@ private:
     CRsTissueProtect& operator=(const CRsTissueProtect& rhs);
     QString GetCurReagentType(const QString& lastReagentGroup);
     QString GetStationID();
+    QString m_Sender;
 };
 }
 #endif // RS_TISSUE_PROTECT_H

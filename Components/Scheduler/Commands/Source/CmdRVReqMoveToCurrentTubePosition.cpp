@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdRVReqMoveToCurrentTubePosition::NAME = "Scheduler::RVReqMoveToCurrentTubePosition";
 
-CmdRVReqMoveToCurrentTubePosition::CmdRVReqMoveToCurrentTubePosition(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdRVReqMoveToCurrentTubePosition::CmdRVReqMoveToCurrentTubePosition(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

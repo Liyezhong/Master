@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdStartDiagnosticService::NAME = "Scheduler::StartDiagnosticService";
 
-CmdStartDiagnosticService::CmdStartDiagnosticService(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdStartDiagnosticService::CmdStartDiagnosticService(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

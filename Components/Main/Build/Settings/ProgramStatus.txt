@@ -1,9 +1,9 @@
-HeatingOvenSlice:20180314-083220,20180314-084022
-Scenario:4
+HeatingOvenSlice:20180319-083426,20180319-110705
+Scenario:3
 LastRVPosition:3
-ProgramID:
-StationList:S1,
+ProgramID:L03
+StationList:S1,S2,S3,S4,S5,S6,S7,S8,S9,S10,S11,P1,P2,P3,
 ProgramStepID:0
 StationID:S1
-ErrorFlag:0
+ErrorFlag:1
 LastReagentGroup:

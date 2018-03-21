@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdTemplate::NAME = "Scheduler::Template";
 
-CmdTemplate::CmdTemplate(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdTemplate::CmdTemplate(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

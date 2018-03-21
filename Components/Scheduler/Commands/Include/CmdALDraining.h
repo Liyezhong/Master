@@ -44,7 +44,7 @@ public:
      *  \return from CmdALDraining
      */
     /****************************************************************************/
-    CmdALDraining(int Timeout, SchedulerMainThreadController *controller);
+    CmdALDraining(int Timeout, const QString& sender);
     ~CmdALDraining();
 
     static QString NAME;    ///< Command name.

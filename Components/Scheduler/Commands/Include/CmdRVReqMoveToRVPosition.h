@@ -46,7 +46,7 @@ public:
      *  \return from CmdRVReqMoveToRVPosition
      */
     /****************************************************************************/
-    CmdRVReqMoveToRVPosition(int Timeout, SchedulerMainThreadController *controller);
+    CmdRVReqMoveToRVPosition(int Timeout, const QString& sender);
     ~CmdRVReqMoveToRVPosition();
 
     static QString NAME;    ///< Command name.

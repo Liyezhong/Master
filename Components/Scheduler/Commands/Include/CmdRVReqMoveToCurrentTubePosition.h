@@ -46,7 +46,7 @@ public:
      *  \return from CmdRVReqMoveToCurrentTubePosition 
      */
     /****************************************************************************/
-    CmdRVReqMoveToCurrentTubePosition(int Timeout, SchedulerMainThreadController *controller);
+    CmdRVReqMoveToCurrentTubePosition(int Timeout, const QString& sender);
     ~CmdRVReqMoveToCurrentTubePosition();
 
     static QString NAME;    ///< Command name.

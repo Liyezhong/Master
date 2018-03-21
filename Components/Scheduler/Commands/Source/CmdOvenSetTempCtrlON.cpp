@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdOvenSetTempCtrlON::NAME = "Scheduler::OvenSetTempCtrlON";
 
-CmdOvenSetTempCtrlON::CmdOvenSetTempCtrlON(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdOvenSetTempCtrlON::CmdOvenSetTempCtrlON(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

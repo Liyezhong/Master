@@ -44,7 +44,7 @@ public:
      *  \return from CmdOvenSetTemperaturePid
      */
     /****************************************************************************/
-    CmdOvenSetTemperaturePid(int Timeout, SchedulerMainThreadController *controller);
+    CmdOvenSetTemperaturePid(int Timeout, const QString& sender);
     ~CmdOvenSetTemperaturePid();
 
     static QString NAME;    ///< Command name.

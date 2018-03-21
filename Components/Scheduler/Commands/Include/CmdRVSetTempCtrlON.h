@@ -44,7 +44,7 @@ public:
      *  \return from CmdRVSetTempCtrlON
      */
     /****************************************************************************/
-    CmdRVSetTempCtrlON(int Timeout, SchedulerMainThreadController *controller);
+    CmdRVSetTempCtrlON(int Timeout, const QString& sender);
     ~CmdRVSetTempCtrlON();
 
     static QString NAME;    ///< Command name.

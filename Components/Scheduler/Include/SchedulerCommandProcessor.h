@@ -544,6 +544,7 @@ protected:
 template <class DP>
 class SchedulerCommandProcessor : public SchedulerCommandProcessorBase 
 {
+    friend class TestSchedulerCommandProcessor;
 public:
     /****************************************************************************/
     /**
@@ -552,7 +553,7 @@ public:
      *
      */
     /****************************************************************************/
-    explicit SchedulerCommandProcessor(SchedulerMainThreadController *controller);
+    explicit SchedulerCommandProcessor(SchedulerMainThreadController* controller);
     ~SchedulerCommandProcessor();
 	/****************************************************************************/
 	/*!
@@ -664,7 +665,7 @@ private:
      *  \return from pushCmd4Slot
      */
     /****************************************************************************/
-    virtual void pushCmd4Slot(CmdSchedulerCommandBase *cmd, bool response);
+    virtual void pushCmd4Slot(CmdSchedulerCommandBase *cmd, bool response);    
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function DevProcInitialisationAckn4Slot
@@ -741,6 +742,7 @@ private:
 
     QQueue<Scheduler::SchedulerCommandShPtr_t> m_Cmds;       ///<  Definition/Declaration of variable m_Cmds
     QMutex m_CmdMutex;       ///<  Definition/Declaration of variable m_CmdMutex
+    QString m_Sender;
 };
 
 } // end of namespace Scheduler

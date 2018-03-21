@@ -44,7 +44,7 @@ public:
      *  \return from CmdTemplate
      */
     /****************************************************************************/
-    CmdTemplate(int Timeout, SchedulerMainThreadController *controller);
+    CmdTemplate(int Timeout, const QString& sender);
     ~CmdTemplate();
 
     static QString NAME;    ///< Command name.

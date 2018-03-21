@@ -44,7 +44,7 @@ public:
      *  \return from CmdALStartTemperatureControl
      */
     /****************************************************************************/
-    CmdALStartTemperatureControl(int Timeout, SchedulerMainThreadController *controller);
+    CmdALStartTemperatureControl(int Timeout, const QString& sender);
     ~CmdALStartTemperatureControl();
 
     static QString NAME;    ///< Command name.

@@ -44,7 +44,7 @@ public:
      *  \return from CmdPerTurnOffMainRelay
      */
     /****************************************************************************/
-    CmdPerTurnOffMainRelay(int Timeout, SchedulerMainThreadController *controller);
+    CmdPerTurnOffMainRelay(int Timeout, const QString& sender);
     ~CmdPerTurnOffMainRelay();
 
     static QString NAME;    ///< Command name.

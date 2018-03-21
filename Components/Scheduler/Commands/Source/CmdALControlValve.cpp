@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdALControlValve::NAME = "Scheduler::ALControlValve";
 
-CmdALControlValve::CmdALControlValve(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdALControlValve::CmdALControlValve(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

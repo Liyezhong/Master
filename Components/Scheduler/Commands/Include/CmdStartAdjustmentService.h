@@ -44,7 +44,7 @@ public:
      *  \return from CmdStartAdjustmentService
      */
     /****************************************************************************/
-    CmdStartAdjustmentService(int Timeout, SchedulerMainThreadController *controller);
+    CmdStartAdjustmentService(int Timeout, const QString& sender);
     ~CmdStartAdjustmentService();
 
     static QString NAME;    ///< Command name.

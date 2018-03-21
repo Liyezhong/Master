@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdRTSetTemperatureSwitchState::NAME = "Scheduler::RTSetTemperatureSwitchState";
 
-CmdRTSetTemperatureSwitchState::CmdRTSetTemperatureSwitchState(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdRTSetTemperatureSwitchState::CmdRTSetTemperatureSwitchState(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

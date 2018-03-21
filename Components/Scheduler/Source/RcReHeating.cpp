@@ -133,7 +133,7 @@ void CRcReHeating::HandlePressureCalibration(const QString &cmdName)
     if (0 == m_PressureCalibrationSeq)
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_RELEASE_PRESSURE_CALIBRATION);
-        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender));
         m_PressureCalibrationSeq++;
     }
     else if (1 == m_PressureCalibrationSeq)
@@ -376,7 +376,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
         if (0 == m_StartReq)
         {
             RVPosition_t sealPos = mp_SchedulerThreadController->GetRVSealPositionByStationID(m_LastStationID);
-            CmdRVReqMoveToCurrentTubePosition* cmd = new CmdRVReqMoveToCurrentTubePosition(500, mp_SchedulerThreadController);
+            CmdRVReqMoveToCurrentTubePosition* cmd = new CmdRVReqMoveToCurrentTubePosition(500, m_Sender);
             cmd->SetRVPosition(sealPos);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
             m_StartReq++;
@@ -418,7 +418,7 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
 
     if (0 == m_StartReq)
     {
-        CmdALPressure* cmd  = new CmdALPressure(500, mp_SchedulerThreadController);
+        CmdALPressure* cmd  = new CmdALPressure(500, m_Sender);
         cmd->SetTargetPressure(40.0);
         mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
         m_StartReq ++;
@@ -438,7 +438,7 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
         if (QDateTime::currentMSecsSinceEpoch() - m_StartPressureTime > 60*1000)
         {
             mp_SchedulerThreadController->LogDebug("Complete forced draining and release pressure in RcReHeating");
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender));
             m_StartReq++;
             mp_SchedulerThreadController->OnStopDrain();
         }

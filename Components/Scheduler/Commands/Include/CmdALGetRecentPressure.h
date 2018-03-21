@@ -44,7 +44,7 @@ public:
      *  \return from CmdALGetRecentPressure
      */
     /****************************************************************************/
-    CmdALGetRecentPressure(int Timeout, SchedulerMainThreadController *controller);
+    CmdALGetRecentPressure(int Timeout, const QString& sender);
     ~CmdALGetRecentPressure();
 
     static QString NAME;    ///< Command name.

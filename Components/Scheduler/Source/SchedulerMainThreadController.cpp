@@ -74,7 +74,8 @@
 #include "NetCommands/Include/CmdSystemAction.h"
 #include "Global/Include/UITranslator.h"
 #ifdef GOOGLE_MOCK
-#include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
+//#include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
+#include "DeviceControl/Test/Mock/MockDeviceControl.h"
 #endif
 #include "float.h"
 #include "Global/Include/EventObject.h"
@@ -116,7 +117,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_TickTimer(this)
         , m_SchedulerCommandProcessorThread(new QThread())
         #ifdef GOOGLE_MOCK
-        , m_SchedulerCommandProcessor(new SchedulerCommandProcessor<MockIDeviceProcessing>(this))
+        , m_SchedulerCommandProcessor(new SchedulerCommandProcessor<MockDeviceControl>(this))
         #else
         , m_SchedulerCommandProcessor(new SchedulerCommandProcessor<IDeviceProcessing>(this))
         #endif
@@ -500,7 +501,7 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
     if(flag)
     {
         // Turn on fan, and we will open it all the time
-        m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this), false);
+        m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, m_Sender), false);
 
         bool bErrorHandlingFailed = m_ProgramStatusInfor.GetErrorFlag();
         if(!m_ProgramStatusInfor.IsProgramFinished())//power failure
@@ -807,7 +808,7 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
                     m_SentInfoForLockLidIdle = false;
                     RaiseEvent(EVENT_SCHEDULER_DRAIN_10S_NOT_OPEN_RETORT_LID);
 
-                    CmdALPressure* CmdPressure = new CmdALPressure(500, this);
+                    CmdALPressure* CmdPressure = new CmdALPressure(500, m_Sender);
                     CmdPressure->SetTargetPressure(30.0);
                     m_SchedulerCommandProcessor->pushCmd(CmdPressure);
                     m_PressureStartTime = QDateTime::currentMSecsSinceEpoch();
@@ -834,7 +835,7 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
             case IDLE_MOVE_RV_INITIALIZE:
                 if(0 == m_RVPositioinChSeqForIdle)
                 {
-                    m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, this));
+                    m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, m_Sender));
                     m_RVPositioinChSeqForIdle++;
                 }
                 else if("Scheduler::RVReqMoveToInitialPosition" == cmdName)
@@ -854,7 +855,7 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
             case IDLE_MOVE_TUBE_2:
                 if(0 == m_RVPositioinChSeqForIdle)
                 {
-                   CmdRVReqMoveToRVPosition *CmdMvRV = new CmdRVReqMoveToRVPosition(500, this);
+                   CmdRVReqMoveToRVPosition *CmdMvRV = new CmdRVReqMoveToRVPosition(500, m_Sender);
                     CmdMvRV->SetRVPosition(DeviceControl::RV_TUBE_2);
                     m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
                     m_RVPositioinChSeqForIdle++;
@@ -1612,7 +1613,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             if(!m_IsReleasePressureOfSoakFinish)
             {
-                m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
+                m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  m_Sender));
                 m_IsReleasePressureOfSoakFinish = true;
             }
             else if("Scheduler::ALReleasePressure" == cmdName)
@@ -3925,7 +3926,7 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
 void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetCode)
 {
     // Turn off local/remote alarm by default
-    CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, this);
+    CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, m_Sender);
     cmd->SetRmtLocOpcode(-1);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
@@ -3935,7 +3936,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         RaiseEvent(EVENT_SCHEDULER_SLAVE_BOARD_INITIALIZED_SUCCESSFULLY);//log
         ReturnCode_t retCode;
         //hardware not ready yet
-        m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, this));
+        m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, m_Sender));
         SchedulerCommandShPtr_t resPerTurnOnRelay;
         PopDeviceControlCmdQueue(resPerTurnOnRelay, "Scheduler::PerTurnOnMainRelay");
         (void)resPerTurnOnRelay->GetResult(retCode); 
@@ -4216,7 +4217,7 @@ void SchedulerMainThreadController::RcBottleCheckI()
     if(m_CurrentBottlePosition.RvPos != RV_UNDEF && !m_CurrentBottlePosition.ReagentGrpId.isEmpty())
     {
         LogDebug(QString("BottleCheckI check for tube %1").arg(m_CurrentBottlePosition.RvPos));
-        CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, this);
+        CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, m_Sender);
         cmd->SetReagentGrpID(m_CurrentBottlePosition.ReagentGrpId);
         cmd->SetTubePos(m_CurrentBottlePosition.RvPos);
         m_SchedulerCommandProcessor->pushCmd(cmd);
@@ -4231,14 +4232,14 @@ void SchedulerMainThreadController::RcBottleCheckI()
 void SchedulerMainThreadController::MoveRVToInit()
 {
     LogDebug("Send cmd to DCL to let RV move to init position. ");
-    m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, this));
+    m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, m_Sender));
 }
 
 
 void SchedulerMainThreadController::ReleasePressure()
 {
     RaiseEvent(EVENT_SCHEDULER_RELEASE_PREASURE);
-    m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500, this));
+    m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500, m_Sender));
 }
 
 void SchedulerMainThreadController::OnEnterPssmProcessing()
@@ -4255,7 +4256,7 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
         if (!m_CurProgramStepInfo.isPressure && !m_CurProgramStepInfo.isVacuum)
         {
             RaiseEvent(EVENT_SCHEDULER_RELEASE_PREASURE);
-            m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
+            m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  m_Sender));
         }
         if(0 == m_CurProgramStepIndex)
         {
@@ -4363,7 +4364,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         m_CleaningDry.CurrentState = CDS_MOVE_TO_SEALING_13;
         break;
     case CDS_MOVE_TO_SEALING_13:
-        CmdMvRV = new CmdRVReqMoveToRVPosition(500, this);
+        CmdMvRV = new CmdRVReqMoveToRVPosition(500, m_Sender);
         CmdMvRV->SetRVPosition(DeviceControl::RV_SEAL_13);
         m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
         m_CleaningDry.CurrentState = CDS_WAIT_HIT_POSITION;
@@ -4379,7 +4380,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
             }
             else if (DCL_ERR_DEV_RV_MOTOR_LOSTCURRENTPOSITION == retCode)
             {
-                m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, this));
+                m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, m_Sender));
                 m_CleaningDry.CurrentState = CDS_MOVE_TO_INIT_POS;
             }
             else
@@ -4473,7 +4474,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         }
         break;
     case CDS_MOVE_TO_TUBE_13:
-        CmdMvRV = new CmdRVReqMoveToRVPosition(500, this);
+        CmdMvRV = new CmdRVReqMoveToRVPosition(500, m_Sender);
         CmdMvRV->SetRVPosition(DeviceControl::RV_TUBE_13);
         m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
         m_CleaningDry.CurrentState = CDS_WAIT_HIT_TUBE_13;
@@ -4510,7 +4511,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
 bool SchedulerMainThreadController::MoveRV(RVPosition_type type)
 {
     /*lint -e593 */
-    CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
+    CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, m_Sender);
     RVPosition_t targetPos = RV_UNDEF;
 
     if(TUBE_POS == type ) //tube position
@@ -4551,7 +4552,7 @@ void SchedulerMainThreadController::Fill()
     //Update current scenario
     this->UpdateCurrentScenario();
     CheckResuemFromPause(PSSM_FILLING);
-    CmdALFilling* cmd  = new CmdALFilling(500, this);
+    CmdALFilling* cmd  = new CmdALFilling(500, m_Sender);
 
     // only cleaning program need to suck another 2 seconds after level sensor triggering.
     if(!m_CurProgramID.isEmpty() && m_CurProgramID.at(0) == 'C')
@@ -4641,7 +4642,7 @@ bool SchedulerMainThreadController::ShutdownFailedHeaters()
         break;
     case FAN:
     {
-        m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, this));
+        m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, m_Sender));
         SchedulerCommandShPtr_t pResHeatingCmd;
         PopDeviceControlCmdQueue(pResHeatingCmd, "Scheduler::ALTurnOffFan");
         ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
@@ -4662,7 +4663,7 @@ bool SchedulerMainThreadController::ShutdownFailedHeaters()
 bool SchedulerMainThreadController::RestartFailedHeaters()
 {
     // Reopen Main Relay before restarting heaters
-    m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, this), false);
+    m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, m_Sender), false);
 
     HeaterType_t heaterType = this->GetFailerHeaterType();
     switch (heaterType)
@@ -4716,7 +4717,7 @@ bool SchedulerMainThreadController::RestartFailedHeaters()
         break;
     case FAN:
     {
-        m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this));
+        m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, m_Sender));
         SchedulerCommandShPtr_t pResHeatingCmd;
         PopDeviceControlCmdQueue(pResHeatingCmd, "Scheduler::ALTurnOnFan");
         ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
@@ -4840,7 +4841,7 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
 void SchedulerMainThreadController::FillRsTissueProtect(const QString& StationID, bool EnableInsufficientCheck, bool SafeReagent4Paraffin)
 {
     LogDebug("Send cmd to DCL to Fill in Rs_Tissue_Protect");
-    CmdALFilling* cmd  = new CmdALFilling(500, this);
+    CmdALFilling* cmd  = new CmdALFilling(500, m_Sender);
     cmd->SetDelayTime(0);
 
     cmd->SetEnableInsufficientCheck(EnableInsufficientCheck);
@@ -4970,7 +4971,7 @@ void SchedulerMainThreadController::OnStopFill()
 void SchedulerMainThreadController::RCDrain()
 {
     LogDebug("Send cmd to DCL to RcDrain");
-    CmdALDraining* cmd  = new CmdALDraining(500, this);
+    CmdALDraining* cmd  = new CmdALDraining(500, m_Sender);
     cmd->SetDelayTime(5000);
     cmd->SetDrainPressure(40.0);
     cmd->SetIgnorePressure(true);
@@ -4987,7 +4988,7 @@ void SchedulerMainThreadController::RCDrain()
 void SchedulerMainThreadController::RCForceDrain()
 {
     LogDebug("Send cmd to DCL to RcForceDrain");
-    CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, this);
+    CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, m_Sender);
     cmd->SetRVPosition(this->GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID));
     cmd->SetDrainPressure(40.0);
     m_SchedulerCommandProcessor->pushCmd(cmd);
@@ -5006,7 +5007,7 @@ void SchedulerMainThreadController::Drain()
     // Update current scenario
     this->UpdateCurrentScenario();
     CheckResuemFromPause(PSSM_DRAINING);
-    CmdALDraining* cmd  = new CmdALDraining(500, this);
+    CmdALDraining* cmd  = new CmdALDraining(500, m_Sender);
 
     quint32 gapTime = m_EndTimeAndStepTime.GapTime;
     if( "RG6" == m_CurProgramStepInfo.reagentGroup && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) )
@@ -5029,7 +5030,7 @@ void SchedulerMainThreadController::Drain()
 void SchedulerMainThreadController::RcDrainAtOnce()
 {
     LogDebug("Send cmd to DCL to Drain in RC_Drain_AtOnce");
-    CmdALDraining* cmd  = new CmdALDraining(500, this);
+    CmdALDraining* cmd  = new CmdALDraining(500, m_Sender);
     //todo: get delay time here
     cmd->SetDelayTime(5000);
     cmd->SetIgnorePressure(true);
@@ -5067,7 +5068,7 @@ void SchedulerMainThreadController::OnStopDrain()
 void SchedulerMainThreadController::Pressure()
 {
     RaiseEvent(EVENT_SCHEDULER_SET_PRESSURE,QStringList()<<QString("[%1]").arg(AL_TARGET_PRESSURE_POSITIVE));
-    m_SchedulerCommandProcessor->pushCmd(new CmdALPressure(500, this));
+    m_SchedulerCommandProcessor->pushCmd(new CmdALPressure(500, m_Sender));
     m_TickTimer.start();
 }
 
@@ -5075,7 +5076,7 @@ void SchedulerMainThreadController::HighPressure()
 {
 
     RaiseEvent(EVENT_SCHEDULER_SET_PRESSURE,QStringList()<<QString("[%1]").arg(40));
-    CmdALPressure* cmd = new CmdALPressure(500, this);
+    CmdALPressure* cmd = new CmdALPressure(500, m_Sender);
     cmd->SetTargetPressure(40.0);
     m_SchedulerCommandProcessor->pushCmd(cmd);
     m_TickTimer.start();
@@ -5085,7 +5086,7 @@ void SchedulerMainThreadController::Vaccum()
 {
 
     RaiseEvent(EVENT_SCHEDULER_SET_PRESSURE,QStringList()<<QString("[%1]").arg(AL_TARGET_PRESSURE_NEGATIVE));
-    m_SchedulerCommandProcessor->pushCmd(new CmdALVaccum(500, this));
+    m_SchedulerCommandProcessor->pushCmd(new CmdALVaccum(500, m_Sender));
     m_TickTimer.start();
 }
 
@@ -5093,7 +5094,7 @@ void SchedulerMainThreadController::AllStop()
 {
     LogDebug("Send cmd to DCL to ALLStop");
     (void)m_SchedulerCommandProcessor->ALBreakAllOperation();
-    m_SchedulerCommandProcessor->pushCmd(new CmdALAllStop(500, this));
+    m_SchedulerCommandProcessor->pushCmd(new CmdALAllStop(500, m_Sender));
 }
 
 void SchedulerMainThreadController::Pause()
@@ -5108,7 +5109,7 @@ void SchedulerMainThreadController::Pause()
 
     GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
     //First of all, release pressure
-    m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,this), false);
+    m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,m_Sender), false);
 
 #if 0
     //update the remaining time for the current step
@@ -5797,7 +5798,7 @@ void SchedulerMainThreadController::HandleRmtLocAlarm(quint32 ctrlcmd)
         return ;
     }
 
-    CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, this);
+    CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, m_Sender);
     cmd->SetRmtLocOpcode(opcode);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 }
@@ -6203,7 +6204,7 @@ bool SchedulerMainThreadController::RaiseError(const quint32 EventKey, ReturnCod
 
         if ((520070300 == ErrorID) || (513030081 == ErrorID) || (512040401 == ErrorID)){
             this->GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
-            this->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, this), false);
+            this->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender), false);
         }
     }
     else

@@ -27,8 +27,8 @@ namespace Scheduler{
 
 QString CmdRTSetTempCtrlOFF::NAME = "Scheduler::RTSetTempCtrlOFF";
 
-CmdRTSetTempCtrlOFF::CmdRTSetTempCtrlOFF(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+CmdRTSetTempCtrlOFF::CmdRTSetTempCtrlOFF(int Timeout, const QString& sender):
+    CmdSchedulerCommandBase(Timeout, sender)
 {
 }
 

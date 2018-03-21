@@ -49,7 +49,7 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     ,m_ASB5SwitchType(0)
     ,m_IsLoged(0)
 {
-    CONNECTSIGNALSLOT(this, SigSelfTestDone(bool), mp_SchedulerThreadController, OnSelfTestDone(bool));
+    CONNECTSIGNALSLOT(this, SigSelfTestDone(bool), mp_SchedulerThreadController, OnSelfTestDone(bool));    
 }
 
 CProgramSelfTest::~CProgramSelfTest()
@@ -105,7 +105,7 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
         case SET_VOLTAGE_ASB3_SWITCH:
             if(0 == m_StartReq)
             {
-                CmdRVSetTemperatureSwitchState* cmd = new CmdRVSetTemperatureSwitchState(500, mp_SchedulerThreadController);
+                CmdRVSetTemperatureSwitchState* cmd = new CmdRVSetTemperatureSwitchState(500, m_Sender);
                 cmd->SetHeaterVoltage(-1);
                 cmd->SetAutoType(AUTO_SWITCH_ENABLE);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
@@ -133,7 +133,7 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
         case SET_VOLTAGE_ASB5_SWITCH:
             if(0 == m_StartReq)
             {
-                CmdRTSetTemperatureSwitchState* cmd = new CmdRTSetTemperatureSwitchState(500, mp_SchedulerThreadController);
+                CmdRTSetTemperatureSwitchState* cmd = new CmdRTSetTemperatureSwitchState(500, m_Sender);
                 cmd->SetType(RT_BOTTOM);
                 cmd->SetHeaterVoltage(-1);
                 cmd->SetAutoType(AUTO_SWITCH_ENABLE);
@@ -268,7 +268,7 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
         case CHECK_VOLTAGE_RANGE_AGAIN:
             if(0 == m_StartReq)
             {
-                CmdRVSetTemperatureSwitchState* cmd = new CmdRVSetTemperatureSwitchState(500, mp_SchedulerThreadController);
+                CmdRVSetTemperatureSwitchState* cmd = new CmdRVSetTemperatureSwitchState(500, m_Sender);
                 cmd->SetAutoType(AUTO_SWITCH_DISABLE);
                 cmd->SetHeaterVoltage(m_ASB5SwitchType);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
@@ -443,7 +443,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
         case START_PUMP:
             if(0 == m_StartReq)
             {
-                CmdALPressure *cmdPressure = new CmdALPressure(500, mp_SchedulerThreadController);
+                CmdALPressure *cmdPressure = new CmdALPressure(500, m_Sender);
                 cmdPressure->SetTargetPressure(0.0);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmdPressure);
                 m_StartReq++;
@@ -472,7 +472,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
 
                 if(0 == m_StartReq)
                 {
-                    mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+                    mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender));
                     m_StartReq++;
                     //mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_PUMP);
                 }
@@ -491,7 +491,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
         case START_VALVE1:
             if(0 == m_StartReq)
             {
-                CmdALControlValve* cmd = new CmdALControlValve(500, mp_SchedulerThreadController);
+                CmdALControlValve* cmd = new CmdALControlValve(500, m_Sender);
                 cmd->SetValveIndex(VALVE_1_INDEX);
                 cmd->SetValveState(VALVE_STATE_OPEN);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
@@ -528,7 +528,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
             {
                 if(0 == m_StartReq)
                 {
-                    CmdALControlValve* cmd = new CmdALControlValve(500, mp_SchedulerThreadController);
+                    CmdALControlValve* cmd = new CmdALControlValve(500, m_Sender);
                     cmd->SetValveIndex(VALVE_1_INDEX);
                     cmd->SetValveState(VALVE_STATE_CLOSE);
                     mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
@@ -558,7 +558,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
         case START_VALVE2:
             if(0 == m_StartReq)
             {
-                CmdALControlValve* cmd = new CmdALControlValve(500, mp_SchedulerThreadController);
+                CmdALControlValve* cmd = new CmdALControlValve(500, m_Sender);
                 cmd->SetValveIndex(VALVE_2_INDEX);
                 cmd->SetValveState(VALVE_STATE_OPEN);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
@@ -595,7 +595,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
             {
                 if(0 == m_StartReq)
                 {
-                    CmdALControlValve* cmd = new CmdALControlValve(500, mp_SchedulerThreadController);
+                    CmdALControlValve* cmd = new CmdALControlValve(500, m_Sender);
                     cmd->SetValveIndex(VALVE_2_INDEX);
                     cmd->SetValveState(VALVE_STATE_CLOSE);
                     mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
@@ -625,7 +625,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
         case START_EXHAUSTFAN:
             if(0 == m_StartReq)
             {
-                CmdALTurnOnFan* cmd = new CmdALTurnOnFan(500, mp_SchedulerThreadController);
+                CmdALTurnOnFan* cmd = new CmdALTurnOnFan(500, m_Sender);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                 m_StartReq++;
                 mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_FAN);
@@ -660,7 +660,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
             {
                 if(0 == m_StartReq)
                 {
-                    CmdALTurnOffFan* cmd = new CmdALTurnOffFan(500, mp_SchedulerThreadController);
+                    CmdALTurnOffFan* cmd = new CmdALTurnOffFan(500, m_Sender);
                     mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                     m_StartReq++;
                     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_FAN);
