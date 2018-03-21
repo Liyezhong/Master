@@ -65,21 +65,8 @@ namespace Scheduler {
 class SchedulerCommandProcessorBase;
 class CSchedulerStateMachine;
 class HeatingStrategy;
-/****************************************************************************/
-/*!
- *  \brief  Definition/Declaration of class ProgramStepInfor
- */
-/****************************************************************************/
-
-typedef struct {
-    QString stationID;       ///<  Definition/Declaration of variable stationID
-    QString nextStationID;   ///< Definition/Declaration of variable stationID
-    qint64 durationInSeconds;       ///<  Definition/Declaration of variable durationInSeconds
-    int temperature;       ///<  Definition/Declaration of variable temperature
-    bool isPressure;       ///<  Definition/Declaration of variable isPressure
-    bool isVacuum;       ///<  Definition/Declaration of variable isVacuum
-    QString reagentGroup;       ///<  Definition/Declaration of variable reagentGroup
-} ProgramStepInfor;
+class CProgramSelfTest;
+class CSchedulerStateHandler;
 
 const qint64 TIME_FOR_FIX_TIME = 180;    ///< seconds for fix time
 const quint64 EVENTID_ALARM_FOR_DRAIN = 610000100; ///< Event ID for alarm Draining
@@ -93,44 +80,6 @@ const quint64 EVENTID_ALARM_FOR_DRAIN = 610000100; ///< Event ID for alarm Drain
 #define TIME_FOR_DRAIN                        60     ///< seconds for draing
 #define TIME_FOR_MOVE_NEXT_TUBE               8      ///< seconds for move next tube
 #define TIME_FOR_COOLING_DOWN                 1200   ///< seconds for cooling down
-
-/****************************************************************************/
-/*!
- *  \brief  Definition/Declaration of struct ProgramStepInfor
- */
-/****************************************************************************/
-typedef struct
-{
-    QString ReagentGroupID;       ///<  Definition/Declaration of variable ReagentGroupID
-    QString StationID;       ///<  Definition/Declaration of variable StationID
-}ProgramStationInfo_t;
-
-/****************************************************************************/
-/*!
- *  \brief  Definition/Declaration of struct ProgramStepInfor
- */
-/****************************************************************************/
-typedef struct
-{
-    qint64 OvenStartHeatingTime;       ///<  Definition/Declaration of variable OvenStartHeatingTime
-    qint64 DelayProgramStartTime;       ///<  Definition/Declaration of variable DelayProgramStartTime
-    qint64 PauseStartTime;       ///<  Definition/Declaration of variable PauseStartTime
-    qint64 CurStepSoakStartTime;       ///<  Definition/Declaration of variable CurStepSoakStartTime
-    qint64 ProposeSoakStartTime;       ///<  SoakStartTime, exclude the delay time
-    qint64 SystemErrorStartTime;       ///<  Time point when system error occurring
-}SchedulerTimeStamps_t;
-
-/****************************************************************************/
-/*!
- *  \brief  Definition/Declaration of struct ProgramStepInfor
- */
-/****************************************************************************/
-typedef struct
-{
-    QString StationID;       ///<  Definition/Declaration of variable StationID
-    int UsedTimes;       ///<  Definition/Declaration of variable UsedTimes
-
-}StationUseRecord_t;
 
 /****************************************************************************/
 /*!
@@ -191,29 +140,6 @@ typedef enum
     POWERFAILURE_RUN
 } PowerFailureStep_t;
 
-
-/****************************************************************************/
-/*!
- *  \brief struct for ProgramEndTime
- */
-/****************************************************************************/
-typedef struct
-{
-    bool    WarningFlagForStepTime;                     ///< the warning flag for step time
-    bool    WarningFlagForBufferTime;                   ///< the warning flag for buffer time
-    int     FirstParaffinIndex;                         ///< the first paraffin index
-    quint32 PreTestTime;                                ///< the time of pretest (second unit)
-    quint32 ParaffinStepsCostTime;                      ///< the paraffin steps cost time (second unit)
-    quint32 Scenario260CostTime;                        ///< the scenario cost time (second unit)
-    qint64  GapTime;                                    ///< the gap of step time (millisecond unit)
-    qint64  StartTime;                                  ///< the start time of move tube (millisecond unit)
-    qint64  EndTime;                                    ///< the end time of move seal (millisecond unit)
-    qint64  UserSetEndTime;                             ///< user input the end time (millisecond unit)
-    qint64  BufferTime;                                 ///< the buffer time (millisecond unit)
-    qint64  TotalParaffinProcessingTime;               ///< the total paraffin processing time (second unit)
-    qint64  LastParaffinProcessingTime;                ///< the last paraffin processing time (second unit)
-}ProgramEndTime_t;
-
 /****************************************************************************/
 /*!
  *  \brief struct for Received command
@@ -244,48 +170,22 @@ typedef struct
 /****************************************************************************/
 typedef enum
 {
-    CDS_READY,
-    CDS_MOVE_TO_SEALING_13,
-    CDS_WAIT_HIT_POSITION,
-    CDS_WAIT_HIT_TEMPERATURE,
-    CDS_MOVE_TO_INIT_POS,
-    CDS_VACUUM,
-    CDS_WAIT_HIT_PPRESSURE,
-    CDS_WAITING_DRY,
-    CDS_STOP_VACUUM,
-    CDS_STOP_HEATING,
-    CDS_WAIT_COOLDWON,
-    CDS_MOVE_TO_TUBE_13,
-    CDS_WAIT_HIT_TUBE_13,
-    CDS_SUCCESS,
-    CDS_ERROR
-}DryStepsStateMachine;
-
-/****************************************************************************/
-/*!
- *  \brief struct for Cleaning Dry
- */
-/****************************************************************************/
-typedef struct
-{
-    DryStepsStateMachine CurrentState;      //!< the current state
-    quint64 StepStartTime;                  //!< the step start time
-    bool warningReport;                     //!< the warning report
-} CleaningDry_t;
-
-/****************************************************************************/
-/*!
- *  \brief enum for Cleaning Dry step
- */
-/****************************************************************************/
-typedef enum
-{
     IDLE_HEATING_RV,
     IDLE_DRAIN_10S,
     IDLE_MOVE_RV_INITIALIZE,
     IDLE_MOVE_TUBE_2,
     IDLE_READY_OK
 }IdleStepState_t;
+
+/****************************************************************************/
+/*!
+ *  \brief struct for nondevice command
+ */
+/****************************************************************************/
+typedef struct {
+    QString Retort_name;
+    ControlCommandType_t Cmd;
+}NonDeviceCommand_t;
 
     /****************************************************************************/
     /**
@@ -311,73 +211,47 @@ typedef enum
 
         QThread* m_SchedulerCommandProcessorThread;       ///<  Definition/Declaration of variable m_SchedulerCommandProcessorThread
         SchedulerCommandProcessorBase*  m_SchedulerCommandProcessor;       ///<  Definition/Declaration of variable m_SchedulerCommandProcessor
-        CSchedulerStateMachine* m_SchedulerMachine;       ///<  Definition/Declaration of variable m_SchedulerMachine
+        //CSchedulerStateMachine* m_SchedulerMachine;       ///<  Definition/Declaration of variable m_SchedulerMachine
+        QMap<QString, QSharedPointer<CSchedulerStateHandler>> m_SchedulerStateHandlerList;
         DataManager::CDataManager       *mp_DataManager;       ///<  Definition/Declaration of variable mp_DataManager
-        int m_CurProgramStepIndex;        ///<  Definition/Declaration of variable m_CurProgramStepIndex
-        int m_FirstProgramStepIndex;      ///<  Definition/Declaration of variable m_CurProgramStepIndex
-        QString m_CurReagnetName;       ///<  Definition/Declaration of variable m_CurReagnetName
-        ProgramStepInfor m_CurProgramStepInfo;       ///<  Definition/Declaration of variable m_CurProgramStepInfo
-        QString m_CurProgramID;       ///<  Definition/Declaration of variable m_CurProgramID
-        QString m_NewProgramID;       ///<  Definition/Declaration of variable m_NewProgramID
-        qreal m_PressureAL;       ///<  Definition/Declaration of variable m_PressureAL
         qreal m_TempALLevelSensor;       ///<  Definition/Declaration of variable m_TempALLevelSensor
         qreal m_TempALTube1;       ///<  Definition/Declaration of variable m_TempALTube1
         qreal m_TempALTube2;       ///<  Definition/Declaration of variable m_TempALTube2
         qreal m_TempRV1;       ///<  Definition/Declaration of variable m_TempRV1
-        qreal m_TempRV2;       ///<  Definition/Declaration of variable m_TempRV2
-        RVPosition_t m_PositionRV;       ///<  Definition/Declaration of variable m_PositionRV
-        qreal m_TempRTBottom;       ///<  Definition/Declaration of variable m_TempRTBottom
-        qreal m_TempRTSide;       ///<  Definition/Declaration of variable m_TempRTSide
-        qreal m_TempOvenBottom;       ///<  Definition/Declaration of variable m_TempOvenBottom
-        qreal m_TempOvenTop;       ///<  Definition/Declaration of variable m_TempOvenTop
+        qreal m_TempRV2;            ///<  Definition/Declaration of variable m_TempRV2
         quint16 m_OvenLidStatus;       ///<  Definition/Declaration of variable m_OvenLidStatus
         quint16 m_RetortLockStatus;       ///<  Definition/Declaration of variable m_RetortLockStatus
-        QStringList m_UsedStationIDs;        ///< in a whole of program processing
-        SchedulerTimeStamps_t m_TimeStamps;     ///<  Definition/Declaration of variable m_TimeStamps
-        QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
-        QList<ProgramStationInfo_t> m_StationAndReagentList;    ///<    Definition/Declaration of variable m_StationList
-        int m_ProcessCassetteCount;       ///<  Definition/Declaration of variable m_ProcessCassetteCount
-        int m_ProcessCassetteNewCount;       ///<  Definition/Declaration of variable m_ProcessCassetteNewCount
+
         quint32 m_EventKey;                                   ///< Current Event key
         ReturnCode_t m_CurErrEventID;                         ///< Current Event ID
-        quint32 m_CurrentScenario;                            ///< Current Scenario
         QSharedPointer<HeatingStrategy> mp_HeatingStrategy;   ///< Definition/Declaration of variable mp_HeatingStrategy
         Global::tRefType    m_RefCleanup;                     ///< Command reference of the cleanup command
-        qint64 m_delayTime;                                   ///< Delay time set by user
         bool m_IsInSoakDelay;                                 ///< Delay in Soak
         bool m_IsPrecheckMoveRV;                            ///< precheck done move rv
         qint64 m_lastPVTime;                                  ///< Time for last PV operation
         qint8 m_ProcessingPV;                                 ///< flag to indicate P or V operation
         bool m_completionNotifierSent;                        ///< Flag to indication if program completion is sent to Gui.
-        bool m_IsCleaningProgram;                             ///< cleaning program run or not
         bool m_CleanAckSentGui;                                ///< flag to indicate if cleaning ack to gui or not
         CProgramStatusInfor m_ProgramStatusInfor;              ///< Program Status Infor
         BottlePosition_t    m_CurrentBottlePosition;          ///< the current BottlePosition for bottle check
-        SchedulerStateMachine_t m_CurrentStepState;           ///< The current protocol(program) step, which is used to recovery from RC_Restart
         bool m_hasParaffin;                                   ///< the program has paraffin
         bool m_IsReleasePressureOfSoakFinish;                 ///< wether release pressure when soak finish
-        bool m_Is5MinPause;                                   ///< Instrument alarm when pausing exceed 5 minutes
-        bool m_Is10MinPause;                                  ///< Local alarm when pausing exceed 10 minutes
-        bool m_Is15MinPause;                                  ///< Remote alarm when pausing exceed 15 minutes
         QVector<SlaveAttr_t>  m_SlaveAttrList;                ///< Attribute list of Slave modules
         qint8   m_ReEnterFilling;                             ///< When restart filling, the sequence of re-entering filling
         qint64  m_TimeReEnterFilling;                         ///< Time when re-enter filling
         bool    m_CheckRemoteAlarmStatus;                     ///< flag to check m_CheckRemoteAlarmStatus
         bool    m_CheckLocalAlarmStatus;                      ///< flag to check m_CheckLocalAlarmStatus
         bool    m_DisableAlarm;                               ///< disable alarm or not
-        qint8    m_LocalAlarmPreviousStatus;                   /// -1 - unknow status, 0 - connected, 1 - not connected
-        qint8    m_RemoteAlarmPreviousStatus;                  /// -1 - unknow status, 0 - connected, 1 - not connected
+        qint8   m_LocalAlarmPreviousStatus;                   /// -1 - unknow status, 0 - connected, 1 - not connected
+        qint8   m_RemoteAlarmPreviousStatus;                  /// -1 - unknow status, 0 - connected, 1 - not connected
         qint8   m_PssmStepFinSeq;                             ///< sequence of PSSM_STEP_FIN stage
         QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;///< Event-Scenario-Error parser
-        ProgramEndTime_t m_EndTimeAndStepTime;                ///< the end tiem and step time buffer
         QVector<QString> m_UnknownErrorLogVector;             ///< the unknow error log vector
         bool    m_InternalErrorRecv;                          ///< Internal error was received
-        CleaningDry_t   m_CleaningDry;                        ///< Structure for cleaning dry
         bool    m_CheckOvenCover;                             ///< check the oven cover
         bool    m_bWaitToPause;                               ///< Wait to be Paused
 		bool    m_TransitionPeriod;                           ///< flag to indicate transition period
         PowerFailureStep_t m_PowerFailureStep;                ///< the power failure step
-        bool    m_IsWaitHeatingRV;                            ///< wait heating RV
         bool    m_IsSendMsgForWaitHeatRV;                     ///< wether send message for waiting heating RV
         bool    m_IsErrorStateForHM;                          ///< enter the error state
         bool    m_ReportExhaustFanWarning;                    ///< flag to report exhaust fan warning
@@ -399,6 +273,9 @@ typedef enum
         bool    m_IsResumeFromPause;                          ///< flag to indicate if we are resuming from pause state
         SchedulerStateMachine_t m_StateAtPause;               ///< The state when pause occurs
 
+        bool    m_IsSelfTestDone;
+        QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;  ///< for self-test
+
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
@@ -419,15 +296,16 @@ typedef enum
          */
         /****************************************************************************/
         void HardwareMonitor(const QString& StepID);
-        //process commands, like: program Start, Pause, Abort.
+
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of function ProcessNonDeviceCommand
-         *
-         *  \return from ProcessNonDeviceCommand
+         *  \brief Handle the whole work flow for Program Self-Test
+         *  \param cmdName - command name
+         *  \param retCode - return code
          */
         /****************************************************************************/
-        void ProcessNonDeviceCommand();
+        void HandleSelfTestWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function PeekNonDeviceCommand
@@ -435,155 +313,7 @@ typedef enum
          *  \return from PeekNonDeviceCommand
          */
         /****************************************************************************/
-        ControlCommandType_t PeekNonDeviceCommand();
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function GetReagentName
-         *
-         *  \param ReagentID = const QString type parameter
-         *
-         *  \return from GetReagentName
-         */
-        /****************************************************************************/
-        QString GetReagentName(const QString& ReagentID);
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function GetReagentGroupID
-         *
-         *  \param ReagentID = const QString type parameter
-         *
-         *  \return from GetReagentGroupID
-         */
-        /****************************************************************************/
-        QString GetReagentGroupID(const QString& ReagentID);
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function GetScenarioBySchedulerState
-         *
-         *  \param State = SchedulerStateMachine_t type parameter
-         *  \param ReagentGroup =  QString type parameter
-         *
-         *  \return from GetScenarioBySchedulerState
-         */
-        /****************************************************************************/
-        qint32 GetScenarioBySchedulerState(SchedulerStateMachine_t State, QString ReagentGroup);
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function IsCleaningReagent
-         *
-         *  \param ReagentID = const QString type parameter
-         *
-         *  \return from IsCleaningReagent
-         */
-        /****************************************************************************/
-        bool IsCleaningReagent(const QString& ReagentID);
-
-
-        /****************************************************************************/
-        /*!
-         *  \brief pop Command from Q2
-         */
-        /****************************************************************************/
-         bool GetNextProgramStepInformation(const QString& ProgramID, ProgramStepInfor& ProgramStepInfor, bool onlyGetFirstProgramStepIndex = false);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function GetLeftProgramStepsNeededTime
-          *
-          *  \param ProgramID = const QString type parameter
-          *  \param BeginProgramStepID = int type  default parameter
-          *
-          *  \return from GetLeftProgramStepsNeededTime
-          */
-         /****************************************************************************/
-         quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID, int BeginProgramStepID = 0);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function GetCurrentProgramStepNeededTime
-          *
-          *  \param ProgramID = const QString type parameter
-          *
-          *  \return from GetCurrentProgramStepNeededTime
-          */
-         /****************************************************************************/
-         quint32 GetCurrentProgramStepNeededTime(const QString& ProgramID);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function PrepareProgramStationList
-          *
-          *  \param ProgramID = const QString type parameter
-          *  \param beginStep =  int type parameter
-          *
-          *  \return from PrepareProgramStationList
-          */
-         /****************************************************************************/
-         bool PrepareProgramStationList(const QString& ProgramID, int beginStep = 0);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function SelectStationFromReagentID
-          *
-          *  \param ReagentID = const QString type parameter
-          *  \param unusedStationIDs
-          *  \param usedStations
-          *  \param isLastStep
-          *
-          *  \return from SelectStationFromReagentID
-          */
-         /****************************************************************************/
-         QString SelectStationFromReagentID(const QString& ReagentID,
-                                           ListOfIDs_t& unusedStationIDs,
-                                           QList<StationUseRecord_t>& usedStations,
-                                           bool isLastStep);
-
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function SelectStationByReagent
-          *
-          *  \param pReagent = const DataManager::CReagent type parameter
-          *  \param unusedStationIDs
-          *  \param usedStations
-          *  \param bFindNewestOne
-          *  \param rmsMode
-          *
-          *  \return from SelectStationByReagent
-          */
-         /****************************************************************************/
-         QString SelectStationByReagent(const DataManager::CReagent* pReagent,
-                                                                             ListOfIDs_t& unusedStationIDs,
-                                                                             QList<StationUseRecord_t>& usedStations,
-                                                                             bool bFindNewestOne,
-                                                                             Global::RMSOptions_t rmsMode) const;
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function GetStationIDFromProgramStep
-          *
-          *  \param ProgramStepIndex = int type parameter
-          *
-          *  \return from GetStationIDFromProgramStep
-          */
-         /****************************************************************************/
-         QString GetStationIDFromProgramStep(int ProgramStepIndex);
-
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function IsLastStep
-          *
-          *  \param currentStepIndex = int type parameter
-          *  \param currentProgramID = const QString type parameter
-          *
-          *  \return from IsLastStep
-          */
-         /****************************************************************************/
-         bool IsLastStep(int currentStepIndex,const QString& currentProgramID);
-
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function WhichStepHasNoSafeReagent
-          *
-          *  \return from IsLastStep
-          */
-         /****************************************************************************/
-         int WhichStepHasNoSafeReagent(const QString& ProgramID);
+        NonDeviceCommand_t PeekNonDeviceCommand();
 
          /****************************************************************************/
          /*!
@@ -682,83 +412,6 @@ typedef enum
 
          /****************************************************************************/
          /*!
-          *  \brief prepare for idle
-          *  \param ctrlCmd command from GUI
-          *  \param cmd command from DC
-          *
-          */
-         /****************************************************************************/
-         void PrepareForIdle(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
-
-         /****************************************************************************/
-         /*!
-          *  \brief Get current step index for SafeReagent
-          *
-          *
-          */
-         /****************************************************************************/
-         int CurStepIndexForSafeReagent();
-
-signals:
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of signal signalProgramStart
-          *  \param ProgramID
-          */
-         /****************************************************************************/
-         void signalProgramStart(const QString& ProgramID);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of signal signalProgramPause
-          */
-         /****************************************************************************/
-         void signalProgramPause();
-
-         /****************************************************************************/
-         /*!
-          *  \brief  signal to resume paused/error program
-          */
-         /****************************************************************************/
-         void NotifyResume();
-private slots:
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of slot HandleInitState
-          */
-         /****************************************************************************/
-         void HandleInitState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of slot HandleInitState
-          *  \param ctrlCmd command from GUI
-          *  \param cmd command from DC
-          */
-         /****************************************************************************/
-         void HandlePowerFailure(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
-
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of slot HandleIdleState
-          */
-         /****************************************************************************/
-         void HandleIdleState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
-
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of slot HandleRunState
-          */
-         /****************************************************************************/
-         void HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
-
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of slot HandleErrorState
-          */
-         /****************************************************************************/
-         void HandleErrorState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd, SchedulerStateMachine_t currentState);
-
-         /****************************************************************************/
-         /*!
           *  \brief  Definition/Declaration of slot CheckLevelSensorTemperature
           *
           *  \param targetTemperature = qreal type parameter
@@ -767,13 +420,6 @@ private slots:
           */
          /****************************************************************************/
          bool CheckLevelSensorTemperature(qreal targetTemperature);
-
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of slot AllStop
-          */
-         /****************************************************************************/
-         void AllStop();
 
          /****************************************************************************/
          /*!
@@ -813,19 +459,6 @@ private slots:
 
          /****************************************************************************/
          /*!
-          *  \brief  Slot for reporting Filling Timout 2Min;
-          */
-         /****************************************************************************/
-         void OnReportFillingTimeOut2Min();
-
-         /****************************************************************************/
-         /*!
-          *  \brief  Slot for reporting Draining Timout 2Min;
-          */
-         /****************************************************************************/
-         void OnReportDrainingTimeOut2Min();
-         /****************************************************************************/
-         /*!
           *  \brief  Slot for HW error occuring;
           */
          /****************************************************************************/
@@ -839,33 +472,11 @@ private slots:
 
          /****************************************************************************/
          /*!
-          *  \brief  Slot for begin to Heating RV befor filling
-          */
-         /****************************************************************************/
-         void OnFillingHeatingRV();
-
-         /****************************************************************************/
-         /*!
-          *  \brief  Slot for begin to Heating RV befor filling Level sensor
-          */
-         /****************************************************************************/
-         void OnEnterHeatingLevelSensor();
-
-         /****************************************************************************/
-         /*!
           *  \brief  Slot for pretest done
           */
          /****************************************************************************/
          void OnPreTestDone();
-         /****************************************************************************/
-         /*!
-          *  \brief  Slot to exit init State
-          *
-          *  \param  void
-          *
-          *  \return void
-          */
-         void OnExitedInitState();
+
          /****************************************************************************/
          /*!
           *  \brief  Slot for reporting error from DeviceControl
@@ -878,35 +489,7 @@ private slots:
           */
          /****************************************************************************/
          void OnReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function UpdateStationReagentStatus
-          *  \iparam  bOnlyNew = only add new added cassette numbers
-          *  \return from UpdateStationReagentStatus
-          */
-         /****************************************************************************/
-         void UpdateStationReagentStatus(bool bOnlyNew);
-         /****************************************************************************/
-         /*!
-          *  \brief  Get the type of safe reagent
-          *  \param  curReagentGroupID = the current used reagent group
-          *  \param  firstTimeUseReagent = When the error is happening, is it first time to use the current reagent?
-          *
-          *  \return the type of safe reagent
-          */
-         /****************************************************************************/
-         QString GetSafeReagentType(const QString& curReagentGroupID, bool firstTimeUseReagent);
 
-         /****************************************************************************/
-         /*!
-          *  \brief  according to the specified reagent group to get the stations in the current prorgam
-          *  \param  specifiedReagentGroup = the specified reagent group
-          *  \param  stationList = station containers
-          *
-          *  \return NULL
-          */
-         /****************************************************************************/
-         void GetSpecifiedStations(const QString& specifiedReagentGroup, QList<QString>& stationList);
 protected:
 
         /****************************************************************************/
@@ -1219,30 +802,6 @@ protected:
 
         /****************************************************************************/
         /**
-         *  \brief reset the time parameter
-         */
-        /****************************************************************************/
-        void ResetTheTimeParameter();
-
-        /****************************************************************************/
-        /**
-         *  \brief Calculate the gap time(in seconds)
-         *  \param IsStartTime - bool flag
-         *  \param IsEndTime - bool flag
-         */
-        /****************************************************************************/
-        void CalculateTheGapTimeAndBufferTime(bool IsStartTime, bool IsEndTime);
-
-        /****************************************************************************/
-        /**
-         *  \brief Get the time(in seconds) that PreTest
-         *  \return from GetPreTestTime of qint64
-         */
-        /****************************************************************************/
-        quint32 GetPreTestTime();
-
-        /****************************************************************************/
-        /**
          *  \brief Get the RV moving steps
          *  \param firstPos - qint32
          *  \param endPos - qint32
@@ -1265,46 +824,7 @@ protected:
          *  \param pressureOffset - qreal type
          */
         /****************************************************************************/
-        void SetLastPressureOffset(qreal pressureOffset);
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function GetCurProgramID
-         *
-         *  \return from GetCurProgramID
-         */
-        /****************************************************************************/
-        QString GetCurProgramID() {return m_CurProgramID; }
-		/****************************************************************************/
-		/*!
-		 *  \brief  Definition/Declaration of function GetCurProgramStepIndex
-		 *
-		 *  \return from GetCurProgramStepIndex
-		 */
-		/****************************************************************************/
-        int	GetCurProgramStepIndex() { return m_CurProgramStepIndex; }
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function GetRVTubePositionByStationID
-         *
-         *  \param stationID = const QString type parameter
-         *
-         *  \return from GetRVTubePositionByStationID
-         */
-        /****************************************************************************/
-        static RVPosition_t GetRVTubePositionByStationID(const QString& stationID);
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function GetRVSealPositionByStationID
-         *
-         *  \param stationID = const QString type parameter
-         *
-         *  \return from GetRVSealPositionByStationID
-         */
-        /****************************************************************************/
-        static RVPosition_t GetRVSealPositionByStationID(const QString& stationID);
+        void SetLastPressureOffset(qreal pressureOffset);   
 
         /****************************************************************************/
         /**
@@ -1322,13 +842,6 @@ protected:
         /****************************************************************************/
         QSharedPointer<HeatingStrategy> GetHeatingStrategy() const { return mp_HeatingStrategy; }
 
-        /****************************************************************************/
-        /**
-         *  \brief Get current secenario in Scheduler
-         *  \return quint32 - current scenario
-         */
-        /****************************************************************************/
-        quint32 GetCurrentScenario() const {  return m_CurrentScenario; }
 
         /****************************************************************************/
         /**
@@ -1353,33 +866,6 @@ protected:
          */
         /****************************************************************************/
         void SendOutErrMsg(ReturnCode_t EventId, bool IsErrorMsg = true);
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Move Rotary Valve tube to the target position
-         *  \param  type - type of RV moving (tubue position or sealing position)
-         *  \return void
-         */
-        /****************************************************************************/
-        bool MoveRV(RVPosition_type type);
-
-        /****************************************************************************/
-        /*!
-         *  \brief  do cleaning dry step
-         *  \param  ctrlCmd - ControlCommandType_t
-         *  \param  cmd - SchedulerCommandShPtr_t
-         */
-        /****************************************************************************/
-        void DoCleaningDryStep(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
-
-        /****************************************************************************/
-        /*!
-         *  \brief  IS Rotary Valve target position
-         *  \param  type - type of RV moving (tubue position or sealing position)
-         *  \return bool
-         */
-        /****************************************************************************/
-        bool IsRVRightPosition(RVPosition_type type);
 
         /****************************************************************************/
         /*!
@@ -1426,14 +912,6 @@ protected:
         /****************************************************************************/
         bool CheckSensorTempOverange();
 
-        /****************************************************************************/
-        /*!
-         *  \brief  Check is cleaning progaram run
-         *  \return bool, ture - success, false -failure
-         *
-         */
-        /****************************************************************************/
-        inline bool IsCleaningProgram() const { return m_IsCleaningProgram; }
 
         /****************************************************************************/
         /*!
@@ -1466,67 +944,6 @@ protected:
 
         /****************************************************************************/
         /*!
-         *  \brief  Get current station ID
-         *  \return QString current station ID
-         */
-        /****************************************************************************/
-        QString GetCurrentStationID() { return m_CurProgramStepInfo.stationID; }
-        /****************************************************************************/
-        /*!
-         *  \brief  Set current station ID
-         *  \param  StationID - QString station ID
-         *  \param  ReagentGroup - QString
-         *  \return void
-         */
-        /****************************************************************************/
-        void UpdateCurProgramStepInfo(const QString& StationID, const QString& ReagentGroup)
-        {
-            m_CurProgramStepInfo.stationID = StationID;
-            m_CurProgramStepInfo.reagentGroup = ReagentGroup;
-        }
-        /****************************************************************************/
-        /*!
-         *  \brief  Set current step state
-         *  \param  stepState - chedulerStateMachine_t current step state
-         */
-        /****************************************************************************/
-        void SetCurrentStepState(SchedulerStateMachine_t stepState) { m_CurrentStepState = stepState; }
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Get current step state
-         *  \return Current step state
-         */
-        /****************************************************************************/
-        SchedulerStateMachine_t GetCurrentStepState() { return m_CurrentStepState; }
-
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function GetSafeReagentStationList
-         *  \param  curReagentGroupID = the current used reagent group
-         *  \param  excludeCurStation =  whether the current station shall be excluded or not?
-         *  \param  firstTimeUseReagent = When the error is happening, is it first time to use the current reagent?
-         *  \param  the gotten safe reagent list
-         *
-         *  \return from IsLastStep
-         */
-        /****************************************************************************/
-        bool GetSafeReagentStationList(const QString& curReagentGroupID, bool excludeCurStation, bool firstTimeUseReagent, QList<QString>& stationList);
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function GetSafeReagentForSpecial just for scenario 200
-         *  \param  index - int type
-         *  \param  reagentGroupID - QString type
-         *  \param  stationList - QList<QString>
-         *  \return from bool
-         */
-        /****************************************************************************/
-        bool GetSafeReagentForSpecial(int index, QString& reagentGroupID, QList<QString>& stationList);
-
-        /****************************************************************************/
-        /*!
          *  \brief  Definition/Declaration of function SendPowerFailureMsg
          */
         /****************************************************************************/
@@ -1538,13 +955,6 @@ protected:
          */
         /****************************************************************************/
         void SendSafeReagentFinishedCmd();
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function CompleteRsAbort
-         */
-        /****************************************************************************/
-        void CompleteRsAbort();
 
         /****************************************************************************/
         /*!
@@ -1577,22 +987,6 @@ protected:
 
         /****************************************************************************/
         /*!
-         *  \brief  Get last reagent group
-         *  \return QString last reagent group
-         */
-        /****************************************************************************/
-        QString GetLastReagentGroup() { return m_ProgramStatusInfor.GetLastReagentGroup(); }
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Send Bottle Check Reply command to GUI
-         *  \return bool from IsRetortContaminted
-         */
-        /****************************************************************************/
-        bool IsRetortContaminted() {return m_ProgramStatusInfor.IsRetortContaminted(); }
-
-        /****************************************************************************/
-        /*!
          *  \brief  Send bottleCheck reply
          *  \param stationId - QString
          *  \param type - DataManager::BottleCheckStatusType_t
@@ -1601,12 +995,7 @@ protected:
         /****************************************************************************/
         void SendBottleCheckReply(const QString& stationId, DataManager::BottleCheckStatusType_t type);
 
-        /****************************************************************************/
-        /*!
-         *  \brief  On enter idle state
-         */
-        /****************************************************************************/
-        void OnEnterIdleState();
+        void OnStartStateHandler();
 
         /****************************************************************************/
         /*!
@@ -1649,43 +1038,6 @@ protected:
 
         /****************************************************************************/
         /*!
-         *  \brief  Check is there clearing reagent used in the current program?
-         *  \return true indicates clearing reagent is existing in the current program, otherwise return false
-         *
-         */
-        /****************************************************************************/
-        bool CurProgramHasClearingReagent();
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Check whether it is the first time to use the specified current reagent group or not
-         *  \param  reagentGroupID = the specified current reagent group
-         *  \return true indicates the first time to use the current reagent group,
-         *     otherwise return false
-         *
-         */
-        /****************************************************************************/
-        bool IsFirstTimeUseCurReagent(const QString& reagentGroupID);
-
-        /****************************************************************************/
-        /*!
-         *  \brief  get the type of reagent before the current program step
-         *  \return reagent group
-         *
-         */
-        /****************************************************************************/
-        QString ReagentGroupOfLastStep();
-        /****************************************************************************/
-        /*!
-         *  \brief Get ReagentID for the Current program step
-         *
-         *  \return ReagentID for the Current program step
-         *
-         */
-        /****************************************************************************/
-        QString ReagentIdOfCurProgramStep();
-        /****************************************************************************/
-        /*!
          *  \brief Get the status of retort lock
          *
          *  \return 1 indicates the retort lid is open. 0 as closed
@@ -1711,96 +1063,6 @@ protected:
          */
         /****************************************************************************/
         void OnDCLConfigurationFinished(ReturnCode_t RetCode);
-
-        /****************************************************************************/
-        /*!
-         *  \brief  On exit idle state
-         */
-        /****************************************************************************/
-        void OnExitIdleState();
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Protocol filling
-         */
-        /****************************************************************************/
-        void Fill();
-
-        /****************************************************************************/
-        /*!
-         *  \brief  slot to handle the logic on stopping filling
-         */
-        /****************************************************************************/
-        void OnStopFill();
-
-        /****************************************************************************/
-        /*!
-         *  \brief  slot to handle the logic for entrance of PSSM_PROCESSING(SOAK)
-         */
-        /****************************************************************************/
-        void OnEnterPssmProcessing();
-
-        /****************************************************************************/
-        /*!
-         *  \brief  slot to handle Draing
-         */
-        /****************************************************************************/
-        void Drain();
-
-        /****************************************************************************/
-        /*!
-         *  \brief  slot to begin draining
-         */
-        /****************************************************************************/
-        void OnBeginDrain();
-
-        /****************************************************************************/
-        /*!
-         *  \brief  slot to stop draining
-         */
-        /****************************************************************************/
-        void OnStopDrain();
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of slot Pressure
-         */
-        /****************************************************************************/
-        void Pressure();
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of slot Pressure
-         */
-        /****************************************************************************/
-        void HighPressure();
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of slot Vaccum
-         */
-        /****************************************************************************/
-        void Vaccum();
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of slot RC_Drain
-         */
-        /****************************************************************************/
-        void RCDrain();
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of slot RC_ForceDrain
-         */
-        /****************************************************************************/
-        void RCForceDrain();
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of slot RC_Drain_AtOnce
-         */
-        /****************************************************************************/
-        void RcDrainAtOnce();
 
         /****************************************************************************/
         /*!
@@ -1866,12 +1128,6 @@ protected:
          */
         /****************************************************************************/
         void OnEnterPssMProgFin();
-        /****************************************************************************/
-        /*!
-         *  \brief  Slot for entering OnEnterDryStepState stage
-         */
-        /****************************************************************************/
-        void OnEnterDryStepState();
 
         /****************************************************************************/
         /*!

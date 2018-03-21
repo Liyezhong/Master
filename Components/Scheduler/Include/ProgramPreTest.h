@@ -28,6 +28,7 @@
 namespace Scheduler{
 
 class SchedulerMainThreadController;
+class CSchedulerStateHandler;
 
 /****************************************************************************/
 /*!
@@ -45,7 +46,7 @@ public:
      *
      */
     /****************************************************************************/
-    CProgramPreTest(SchedulerMainThreadController* SchedController);
+    CProgramPreTest(SchedulerMainThreadController* SchedController, CSchedulerStateHandler* SchedStateHandler);
 
     /****************************************************************************/
     /*!
@@ -131,6 +132,7 @@ private:
         MOVE_TO_TUBE
     } StateList_t;
     SchedulerMainThreadController *mp_SchedulerThreadController;    //!< Pointer to Scheduler Thread Controller
+    CSchedulerStateHandler* mp_SchedulerStatehandler;
     StateList_t m_CurrentState;                                     //!< Current state of PreTest
     qint64  m_RTTempStartTime;                                      //!< Start time for turning on RT Tempeture control On
 	quint32	m_RTTempOffSeq;											//!< Sequence of RT sensors temperature off

@@ -33,6 +33,7 @@ namespace Scheduler{
 
 class SchedulerMainThreadController;
 class CSchedulerStateMachine;
+class CSchedulerStateHandler;
 /****************************************************************************/
 /*!
  * \brief Program running State machine for RcReheating
@@ -52,7 +53,7 @@ public:
      *  \param  StateMachine = CSchedulerStateMachine
      */
     /****************************************************************************/
-    CRcReHeating(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine);
+    CRcReHeating(SchedulerMainThreadController* SchedController, CSchedulerStateHandler* StateHandler, CSchedulerStateMachine* StateMachine);
 
     /****************************************************************************/
     /*!
@@ -180,6 +181,7 @@ private:
 private:
     SchedulerMainThreadController*  mp_SchedulerThreadController;       //!< Pointer to Scheduler Thread Controller
     CSchedulerStateMachine*         mp_StateMachine;                    //!< pointer to scheduler state machine
+    CSchedulerStateHandler*         mp_SchedulerStateHandler;           //!<
     StateList_t                     m_CurrentStep;                      //!< the current step
     qint32                          m_LastScenario;                     //!< last scenario of power failure
     qint32                          m_StartReq;                         //!< count start command

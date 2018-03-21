@@ -28,8 +28,9 @@ namespace Scheduler{
 /*lint -e1551 */
 /*lint -e616 */
 
-CRsFillingAfterFlush::CRsFillingAfterFlush(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine)
+CRsFillingAfterFlush::CRsFillingAfterFlush(SchedulerMainThreadController* SchedController, CSchedulerStateHandler* SchedulerStatehandler, CSchedulerStateMachine* StateMachine)
     :mp_SchedulerThreadController(SchedController)
+    ,mp_SchedulerStateHandler(SchedulerStatehandler)
     ,mp_StateMachine(StateMachine)
 {
     m_CurrentState = RSFILLINGAFTERFLUSH_INIT;
@@ -58,7 +59,7 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
     switch(m_CurrentState)
     {
     case RSFILLINGAFTERFLUSH_INIT:
-        mp_SchedulerThreadController->HighPressure();
+        mp_SchedulerStateHandler->HighPressure();
         m_CurrentState = RSFILLINGAFTERFLUSH_PRESSURE;
         break;
     case RSFILLINGAFTERFLUSH_PRESSURE:
@@ -113,7 +114,7 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
         }
         else if (2 == retValue)
         {
-            mp_SchedulerThreadController->Fill();
+            mp_SchedulerStateHandler->Fill();
             m_CurrentState = RSFILLINGAFTERFLUSH_FILLING;
         }
         break;
@@ -121,7 +122,7 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
         mp_SchedulerThreadController->LogDebug("RsFillingAfterFlush: In filling state");
         if( "Scheduler::ALFilling" == cmdName)
         {
-            mp_SchedulerThreadController->OnStopFill();
+            mp_SchedulerStateHandler->OnStopFill();
             if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
                 m_StartTime = 0;
@@ -130,7 +131,7 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
             }
             else
             {
-                mp_SchedulerThreadController->MoveRV(SEAL_POS);
+                mp_SchedulerStateHandler->MoveRV(SEAL_POS);
                 m_CurrentState = RSFILLINGAFTERFLUSH_MOVETOSEALING;
             }
         }
@@ -155,7 +156,7 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
         }
         else
         {
-            if (true == mp_SchedulerThreadController->IsRVRightPosition(SEAL_POS))
+            if (true == mp_SchedulerStateHandler->IsRVRightPosition(SEAL_POS))
             {
 
                 m_MoveToSealingSeq = 0;
@@ -175,7 +176,7 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
         {
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-                mp_SchedulerThreadController->SetCurrentStepState(PSSM_PROCESSING);
+                mp_SchedulerStateHandler->SetCurrentStepState(PSSM_PROCESSING);
                 m_StartTime = 0;
                 m_MoveToSealingSeq = 0;
                 mp_StateMachine->OnTasksDone(true);

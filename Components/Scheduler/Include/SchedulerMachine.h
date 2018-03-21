@@ -42,6 +42,7 @@ class CRcReport;
 class CProgramPreTest;
 class CProgramSelfTest;
 class SchedulerMainThreadController;
+class CSchedulerStateHandler;
 class SchedulerCommandProcessorBase;
 class CRsFillingAfterFlush;
 class CRsTissueProtect;
@@ -57,6 +58,7 @@ class CSchedulerStateMachine : public QObject
     Q_OBJECT
 private:
     SchedulerMainThreadController *mp_SchedulerThreadController;                        ///<  Definition/Declaration of variable mp_SchedulerThreadController
+    CSchedulerStateHandler* mp_SchedulerStateHandler;
     SchedulerStateMachine_t m_CurrentState;                                             ///<  Definition/Declaration of variable m_CurrentState
     QSharedPointer<QStateMachine> mp_SchedulerMachine;                                  ///<  Scheduler state machine
     SchedulerStateMachine_t m_PreviousState;                                            ///<  Definition/Declaration of variable m_PreviousState
@@ -233,7 +235,7 @@ public:
      *  \param  SchedulerThreadController
      */
     /****************************************************************************/
-    CSchedulerStateMachine(SchedulerMainThreadController* SchedulerThreadController);
+    CSchedulerStateMachine(SchedulerMainThreadController* SchedulerThreadController, CSchedulerStateHandler* SchedulerStateHandler);
     ~CSchedulerStateMachine();
 
     /****************************************************************************/

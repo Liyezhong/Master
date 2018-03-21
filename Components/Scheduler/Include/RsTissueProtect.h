@@ -28,6 +28,7 @@
 namespace Scheduler{
 
 class SchedulerMainThreadController;
+class CSchedulerStateHandler;
 class CSchedulerStateMachine;
 
 /****************************************************************************/
@@ -67,7 +68,7 @@ public:
      *
      */
     /****************************************************************************/
-    CRsTissueProtect(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine);
+    CRsTissueProtect(SchedulerMainThreadController* SchedController, CSchedulerStateHandler* SchedulerStatehandler, CSchedulerStateMachine* StateMachine);
 
     /****************************************************************************/
     /*!
@@ -146,6 +147,7 @@ private:
 private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
     CSchedulerStateMachine*        mp_StateMachine;         //!< Pointer to CSchedulerStateMachine
+    CSchedulerStateHandler*        mp_SchedulerStateHandler;
     bool m_IsLevelSensorRelated;                            //!< flag to indicate if the error is related to level sensor
     QString m_StationID;                                    //!< Station ID
     QString m_lastStationID;                                //!< last used station ID
