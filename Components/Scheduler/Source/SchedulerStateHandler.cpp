@@ -626,13 +626,13 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
 
         if(CTRL_CMD_PAUSE == ctrlCmd)
         {
-            //mp_SchedulerThreadController->SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            mp_SchedulerThreadController->SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
             m_bWaitToPause = true;
         }
 
         if (CTRL_CMD_RS_PAUSE_CMD_YES == ctrlCmd)
         {
-            //mp_SchedulerThreadController->SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            mp_SchedulerThreadController->SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
             m_bWaitToPauseCmdYes = true;
         }
 
@@ -665,13 +665,13 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
 
         if(CTRL_CMD_PAUSE == ctrlCmd)
         {
-            //TO do --- SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            mp_SchedulerThreadController->SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
             m_bWaitToPause = true;
         }
 
         if (CTRL_CMD_RS_PAUSE_CMD_YES == ctrlCmd)
         {
-            //TO do --- SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            mp_SchedulerThreadController->SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
             m_bWaitToPauseCmdYes = true;
         }
 
@@ -690,7 +690,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
             if (m_bWaitToPause)
             {
                 //dismiss the prompt of waiting for pause
-                //TO do --- SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+                mp_SchedulerThreadController->SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
                 m_bWaitToPause = false;
                 mp_SchedulerThreadController->LogDebug(QString("Program Step Beginning Pause"));
                 m_ProgramStatusInfor.SetScenario(m_CurrentScenario+1);
@@ -712,7 +712,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
             {
                 if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
-                    //TO do --- SendOutErrMsg(retCode);
+                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
                 }
             }
         }
@@ -739,7 +739,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
                 AllStop();
                 m_lastPVTime = 0;
             }
-            //To do --- SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            mp_SchedulerThreadController->SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
             m_bWaitToPauseCmdYes = true;
             mp_SchedulerThreadController->LogDebug(QString("Program Step Beginning Drain Pause"));
             m_SchedulerMachine->NotifyDrain4Pause(PSSM_PROCESSING);
@@ -749,7 +749,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
         if (m_bWaitToPause)
         {
             //dismiss the prompt of waiting for pause
-            //TO do --- SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+            mp_SchedulerThreadController->SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
             m_bWaitToPause = false;
             mp_SchedulerThreadController->LogDebug(QString("Program Step Beginning Pause"));
             m_SchedulerMachine->NotifyPause(SM_UNDEF);
@@ -768,12 +768,12 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
         {
             if(m_EndTimeAndStepTime.WarningFlagForStepTime)
             {
-                // To do --- SendOutErrMsg(DCL_ERR_DEV_LA_PROCESS_INTERVAL_TIMEOUT_4MIN, false);
+                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PROCESS_INTERVAL_TIMEOUT_4MIN, false);
                 m_EndTimeAndStepTime.WarningFlagForStepTime = false;
             }
             else if(m_EndTimeAndStepTime.WarningFlagForBufferTime)
             {
-                //To do --- SendOutErrMsg(DCL_ERR_DEV_LA_ENDTIME_TIMEOUT, false);
+                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_ENDTIME_TIMEOUT, false);
                 m_EndTimeAndStepTime.WarningFlagForBufferTime = false;
             }
         }
@@ -822,7 +822,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
                 }
                 else
                 {
-                    //To do --- SendOutErrMsg(retCode);
+                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
                 }
             }
             if(CTRL_CMD_DRAIN == ctrlCmd && m_completionNotifierSent)
@@ -882,12 +882,12 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
                         if (0 == m_ProcessingPV) // for Pressure
                         {
                             m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
-                            //TO do --- SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_PRESSURE, false);
+                            mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_PRESSURE, false);
                         }
                         else if (1 == m_ProcessingPV)
                         {
                             m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
-                            //TO do --- SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, false);
+                            mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, false);
                         }
                     }
                 }
@@ -901,7 +901,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
 
         if(CTRL_CMD_PAUSE == ctrlCmd)
         {
-            //TO do --- SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            mp_SchedulerThreadController->SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
             m_bWaitToPause = true;
         }
         m_SchedulerMachine->HandlePssmMoveTubeWorkflow(cmdName, retCode);
@@ -912,7 +912,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
 
         if(CTRL_CMD_PAUSE == ctrlCmd)
         {
-            //TO do --- SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            mp_SchedulerThreadController->SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
             m_bWaitToPause = true;
         }
 
@@ -926,7 +926,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
                 if (m_bWaitToPause || m_bWaitToPauseCmdYes)
                 {
                      //dismiss the prompt of waiting for pause
-                    //TO do --- SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+                    mp_SchedulerThreadController->SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
                     m_bWaitToPause = false;
                     if (m_bWaitToPauseCmdYes)
                     {
@@ -942,7 +942,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
             else
             {
                 mp_SchedulerThreadController->LogDebug(QString("Program Step Draining Build Pressure timeout"));
-                // TO do --- SendOutErrMsg(retCode);
+                mp_SchedulerThreadController->SendOutErrMsg(retCode);
             }
         }
     }
@@ -951,7 +951,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
         m_CurrentStepState = PSSM_RV_POS_CHANGE;
         if(CTRL_CMD_PAUSE == ctrlCmd)
         {
-            //TO do --- SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            mp_SchedulerThreadController->SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
             m_bWaitToPause = true;
         }
 
@@ -960,7 +960,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
             if (m_bWaitToPause)
             {
                 //dismiss the prompt of waiting for pause
-                //TO do --- SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+                mp_SchedulerThreadController->SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
                 m_bWaitToPause = false;
                 mp_SchedulerThreadController->LogDebug(QString("Program Step Beginning Pause"));
                 m_SchedulerMachine->NotifyPause(SM_UNDEF);
@@ -975,7 +975,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
             {
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
-                    //TO do --- SendOutErrMsg(retCode);
+                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
                 }
             }
         }
@@ -1919,21 +1919,21 @@ bool CSchedulerStateHandler::GetNextProgramStepInformation(const QString& Progra
 void CSchedulerStateHandler::OnReportFillingTimeOut2Min()
 {
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
-//    quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
-//    if (0 != Scenario)
-//    {
-//        SendOutErrMsg(DCL_ERR_DEV_LA_FILLING_TIMEOUT_2MIN, false);
-//    }
+    quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
+    if (0 != Scenario)
+    {
+        mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_FILLING_TIMEOUT_2MIN, false);
+    }
 }
 
 void CSchedulerStateHandler::OnReportDrainingTimeOut2Min()
 {
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
-//    quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
-//    if (0 != Scenario)
-//    {
-//        SendOutErrMsg(DCL_ERR_DEV_LA_DRAINING_TIMEOUT_EMPTY_2MIN, false);
-//    }
+    quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
+    if (0 != Scenario)
+    {
+        mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_DRAINING_TIMEOUT_EMPTY_2MIN, false);
+    }
 }
 
 bool CSchedulerStateHandler::PrepareProgramStationList(const QString& ProgramID, int beginStep)

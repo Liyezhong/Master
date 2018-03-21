@@ -402,13 +402,6 @@ typedef struct {
           */
          /****************************************************************************/
          void CheckCarbonFilterExpired();
-         /****************************************************************************/
-         /*!
-          *  \brief Send program acknowledge to GUI
-          *
-          */
-         /****************************************************************************/
-         void SendProgramAcknowledge(DataManager::ProgramAcknownedgeType_t ackType);
 
          /****************************************************************************/
          /*!
@@ -691,6 +684,14 @@ protected:
             }
             Global::EventObject::Instance().RaiseEvent(Event,ParList,Active);
         }
+
+        /****************************************************************************/
+        /*!
+         *  \brief Send program acknowledge to GUI
+         *
+         */
+        /****************************************************************************/
+        void SendProgramAcknowledge(DataManager::ProgramAcknownedgeType_t ackType);
 
         /****************************************************************************/
         /**
