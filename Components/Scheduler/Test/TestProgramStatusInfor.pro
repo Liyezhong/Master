@@ -4,7 +4,7 @@
 
 TARGET = utProgramStatusInfor
 
-INCLUDEPATH += ../../../../../../Platform/Common/Components/
+INCLUDEPATH += ../../../../Shared/Common/Components/
 
 SOURCES +=  TestProgramStatusInfor.cpp \
             ../Source/ProgramStatusInfor.cpp

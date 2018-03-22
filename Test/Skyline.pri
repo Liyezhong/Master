@@ -6,7 +6,7 @@
 TEMPLATE = app
 
 # config for test
-CONFIG += qtestlib \
+CONFIG += testlib \
           warn_on \
           qt \
           thread \
@@ -25,18 +25,15 @@ CONFIG += debug_and_release
 
 # we include current directory
 INCLUDEPATH += ../.. \
-               ../../../../../Shared/Master/Components \
-               ../../../../../../Platform/Master/Components \
-               ../../../../../HimalayaMain/Master/Include/
-INCLUDEPATH += ../../../../../../Platform/Common/Components
+               ../../../../Shared/Master/Components \
+               ../../../../Master/Include/
 
 # we depend of own source and library
 DEPENDPATH += . \
               ../Include \
               ../Source \
               ../.. \
-              ../../../../../Shared/Master/Components \
-              ../../../../../../Platform/Master/Components
+              ../../../../Shared/Master/Components \
 
 # compute CONFIG_SUFFIX depending on debug / release
 CONFIG(debug, debug|release) {
@@ -60,8 +57,7 @@ DESTDIR = bin_$$CONFIG_SUFFIX
 ### stuff for adding libraries ####
 ###################################
 COMPONENTDIR = ../..
-COMPONENTDIRSH = ../../../../../Shared/Master/Components
-COMPONENTDIRPL = ../../../../../../Platform/Master/Components
+COMPONENTDIRSH = ../../../../Shared/Master/Components
 
 # this function adds all libraries passed as arguments to the linker and dependency list
 defineTest(UseLibs){
@@ -98,7 +94,7 @@ defineTest(UseLibsPlatform){
     Args=$$ARGS
     LIBS += -Wl,--start-group
     for(TheLib, Args) {
-        THELIBPATH       = $$COMPONENTDIRPL/$$TheLib/Build/lib_$$CONFIG_SUFFIX
+        THELIBPATH       = $$COMPONENTDIRSH/$$TheLib/Build/lib_$$CONFIG_SUFFIX
         PRE_TARGETDEPS  += $$THELIBPATH/lib$${TheLib}.a
         LIBS            += $$THELIBPATH/lib$${TheLib}.a
     }

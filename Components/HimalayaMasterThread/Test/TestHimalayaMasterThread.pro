@@ -1,5 +1,5 @@
-!include("../../../Test/Himalaya.pri") {
-    error("../../../Test/Himalaya.pri not found")
+!include("../../../Test/Skyline.pri") {
+    error("../../../Test/Skyline.pri not found")
 }
 
 QT +=   xml \
@@ -10,7 +10,6 @@ TARGET = utTestHimalayaMasterThread
 SOURCES += TestHimalayaMasterThread.cpp
 
 INCLUDEPATH += ../../../../ \
-  ../../../../../../../../Platform/Master/Components/ \
   ../../../../../Shared/Master/Components
 
 DEPENDPATH += ../../../../

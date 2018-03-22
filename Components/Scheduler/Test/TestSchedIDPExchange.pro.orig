@@ -1,24 +1,28 @@
-!include("TestHeatingStrategy.pri") {
-    error("TestHeatingStrategy.pri not found")
+!include("TestSchedIDPExchange.pri") {
+    error("TestSchedIDPExchange.pri not found")
 }
 
-TARGET = utTestHeatingStrategy
+TARGET = utTestSchedIDPExchange
 
 SOURCES += ../Source/*.cpp \
-            ../Commands/Source/*.cpp
-SOURCES +=  TestHeatingStrategy.cpp
+			../Commands/Source/*.cpp \
+                        TestSchedIDPExchange.cpp
 
 INCLUDEPATH += ../../../../Shared/Common/Components/
 
 HEADERS += ../Include/*.h \
             ../../../../Shared/Master/Components/DeviceControl/Include/Interface/*.h \
+<<<<<<< 4b95a21bb8b3949beadefa094437869dc51d5dce
+            ../../../../Shared//Master/Components/DeviceControl/Include/Global/*.h \
+            ../../../../Shared//Common/Components/FunctionModules/*.h \
+=======
             ../../../../Shared/Master/Components/DeviceControl/Include/Global/*.h \
             ../../../../Shared/Common/Components/FunctionModules/*.h \
-            ../Commands/Include/*.h \
+>>>>>>> update for UT project
+                ../Commands/Include/*.h \
             Mock/MockIDeviceProcessing.h
 
 UseDepLibs(Global DataLogging Threads NetCommands DeviceControl DataManager RemoteCareManager \
            RemoteCareController HeartBeatManager EventHandler ExternalProcessController \
            NetworkComponents StateMachines PasswordManager SWUpdateManager ExportController EncryptionDecryption)
-
 LIBS += -ldl

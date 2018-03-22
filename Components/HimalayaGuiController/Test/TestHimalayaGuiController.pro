@@ -1,13 +1,11 @@
-!include("../../../Test/Himalaya.pri") {
-    error("../../../Test/Himalaya.pri not found")
+!include("../../../Test/Skyline.pri") {
+    error("../../../Test/Skyline.pri not found")
 }
 
 TARGET = utTestHimalayaGuiController
 SOURCES += TestHimalayaGuiController.cpp
 
 INCLUDEPATH += ../../../../ \
-  ../../../../../../Platform/Master/Components/ \
-  ../../../../../../Platform/Common/Components/ \
   ../../../../../Shared/Master/Components
 
 DEPENDPATH += ../../../../
