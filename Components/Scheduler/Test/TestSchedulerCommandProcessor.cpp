@@ -291,7 +291,7 @@ void TestSchedulerCommandProcessor::retortId_is_recevied()
     // arrange
     static QString x;
 
-    EXPECT_CALL(*mp_IDeviceControl, ALReleasePressure(_)).WillOnce(WithArgs<0>(Invoke([] (const QString id){ x = id; auto ret = (id == "TestSender")? DCL_ERR_FCT_CALL_SUCCESS : DCL_ERR_FCT_CALL_FAILED; return ret;})));
+    EXPECT_CALL(*mp_IDeviceControl, ALReleasePressure()).WillOnce((Return(DCL_ERR_FCT_CALL_SUCCESS)));
     Scheduler::SchedulerCommandShPtr_t cmd = Scheduler::SchedulerCommandShPtr_t(new CmdALReleasePressure(500, "TestSender"));
 
     // act
@@ -302,8 +302,6 @@ void TestSchedulerCommandProcessor::retortId_is_recevied()
     ReturnCode_t result;
     dynamic_cast<CmdALReleasePressure*>(cmd.data())->GetResult(result);
     QCOMPARE(result, DCL_ERR_FCT_CALL_SUCCESS);
-    qDebug() << x;
-    QVERIFY2(x == "TestSender", "retortId");
 }
 
 void TestSchedulerCommandProcessor::cleanupTestCase(){
