@@ -21,6 +21,7 @@
 
 #include "Scheduler/Include/ProgramPreTest.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
+#include "Scheduler/Include/SchedulerStateHandler.h"
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Include/SchedulerEventCodes.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
@@ -37,8 +38,8 @@ namespace Scheduler{
 /*lint -e527 */
 /*lint -e616 */
 
-CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
-    :mp_SchedulerThreadController(SchedController)
+CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController, CSchedulerStateHandler* SchedStateHandler )
+    :mp_SchedulerThreadController(SchedController), mp_SchedulerStatehandler(SchedStateHandler)
 {
     m_CurrentState = PRETEST_INIT;
     m_RTTempStartTime = 0;
@@ -127,7 +128,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         }
         else if(1 == m_IsLoged)
         {
-            if(mp_SchedulerThreadController->IsCleaningProgram())
+            if(mp_SchedulerStatehandler->IsCleaningProgram())
             {
                 PressureForCleaning();
             }
@@ -227,7 +228,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         if (0 == m_PressureCalibrationSeq)
         {
             mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_RELEASE_PRESSURE_CALIBRATION);
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender), "0");
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender));
             m_PressureCalibrationSeq++;
         }
         else if (1 == m_PressureCalibrationSeq)
@@ -292,7 +293,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         if (0 == m_RVPositioinChkSeq)
         {
             mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_MOVETO_INITIALIZE_POSITION);
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, m_Sender), "0");
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, m_Sender));
             m_RVPositioinChkSeq++;
         }
         else
@@ -323,11 +324,11 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         if (0 == m_PressureSealingChkSeq)
         {
             mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SEALING_TEST);
-            RVPosition_t RVSealPos = mp_SchedulerThreadController->GetRVSealPositionByStationID(mp_SchedulerThreadController->GetCurrentStationID());
+            RVPosition_t RVSealPos = mp_SchedulerStatehandler->GetRVSealPositionByStationID(mp_SchedulerStatehandler->GetCurrentStationID());
             CmdIDSealingCheck* cmd = new CmdIDSealingCheck(500, m_Sender);
             cmd->SetSealPosition(RVSealPos);
             cmd->SetThresholdPressure(5.0);
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd, "0");
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
             m_PressureSealingChkSeq++;
         }
         else
@@ -372,10 +373,10 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
     case MOVE_TO_TUBE:
         if (0 == m_MoveToTubeSeq)
         {
-            mp_SchedulerThreadController->MoveRV(TUBE_POS);
+            mp_SchedulerStatehandler->MoveRV(TUBE_POS);
             m_MoveToTubeSeq++;
         }
-        else if(mp_SchedulerThreadController->IsRVRightPosition(TUBE_POS))
+        else if(mp_SchedulerStatehandler->IsRVRightPosition(TUBE_POS))
         {
             mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_PRETEST_SUCCESS);
 			m_MoveToTubeSeq = 0;
@@ -437,7 +438,7 @@ void CProgramPreTest::PressureForCleaning()
 {
     if(0 == m_PressureForCleaningSeq)
     {
-        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALPressure(500, m_Sender), "0");
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALPressure(500, m_Sender));
         m_PressureStartTime = QDateTime::currentMSecsSinceEpoch();
         m_PressureForCleaningSeq++;
         mp_SchedulerThreadController->LogDebug("Drain for 20 seconds before cleaning.");

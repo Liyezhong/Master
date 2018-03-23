@@ -26,6 +26,7 @@
 #include <QCoreApplication>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
+#include "Scheduler/Include/SchedulerStateHandler.h"
 
 namespace Scheduler
 {
@@ -48,7 +49,7 @@ public:
      *
      */
     /****************************************************************************/
-    CRsFillingAfterFlush(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine);
+    CRsFillingAfterFlush(SchedulerMainThreadController* SchedController, CSchedulerStateHandler* SchedulerStatehandler, CSchedulerStateMachine* StateMachine);
 
     /****************************************************************************/
     /*!
@@ -92,6 +93,7 @@ private:
 private:
     SchedulerMainThreadController*   mp_SchedulerThreadController;  //!< Pointer to Scheduler Thread Controller
     CSchedulerStateMachine*          mp_StateMachine;               //!< State machine for FillingAfterFlush
+    CSchedulerStateHandler*          mp_SchedulerStateHandler;
     StateList_t                      m_CurrentState;                //!< Current state
     qint64                           m_StartTime;                    //!< The begin time
     quint8                           m_MoveToSealingSeq;             //!< Sequence of moving to seaing position

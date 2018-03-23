@@ -17,7 +17,8 @@ QT -= gui
 QT += core \
       xml \
       xmlpatterns \
-      network
+      network \
+      testlib
 
 # both debug and release
 CONFIG += debug_and_release
@@ -26,6 +27,7 @@ CONFIG += debug_and_release
 # we include current directory
 INCLUDEPATH += ../.. \
                ../../../../Shared/Master/Components \
+               ../../../../Shared/Common/Components \
                ../../../../Master/Include/
 
 # we depend of own source and library
@@ -33,7 +35,7 @@ DEPENDPATH += . \
               ../Include \
               ../Source \
               ../.. \
-              ../../../../Shared/Master/Components \
+              ../../Shared/Master/Components \
 
 # compute CONFIG_SUFFIX depending on debug / release
 CONFIG(debug, debug|release) {
@@ -57,7 +59,8 @@ DESTDIR = bin_$$CONFIG_SUFFIX
 ### stuff for adding libraries ####
 ###################################
 COMPONENTDIR = ../..
-COMPONENTDIRSH = ../../../../Shared/Master/Components
+COMPONENTDIRSHC = ../../../../Shared/Common/Components
+COMPONENTDIRSHM = ../../../../Shared/Master/Components
 
 # this function adds all libraries passed as arguments to the linker and dependency list
 defineTest(UseLibs){
@@ -79,7 +82,7 @@ defineTest(UseLibsShared){
     Args=$$ARGS
     LIBS += -Wl,--start-group
     for(TheLib, Args) {
-        THELIBPATH       = $$COMPONENTDIRSH/$$TheLib/Build/lib_$$CONFIG_SUFFIX
+        THELIBPATH       = $$COMPONENTDIRSHC/$$TheLib/Build/lib_$$CONFIG_SUFFIX
         PRE_TARGETDEPS  += $$THELIBPATH/lib$${TheLib}.a
         LIBS            += $$THELIBPATH/lib$${TheLib}.a
     }
@@ -94,7 +97,7 @@ defineTest(UseLibsPlatform){
     Args=$$ARGS
     LIBS += -Wl,--start-group
     for(TheLib, Args) {
-        THELIBPATH       = $$COMPONENTDIRSH/$$TheLib/Build/lib_$$CONFIG_SUFFIX
+        THELIBPATH       = $$COMPONENTDIRSHM/$$TheLib/Build/lib_$$CONFIG_SUFFIX
         PRE_TARGETDEPS  += $$THELIBPATH/lib$${TheLib}.a
         LIBS            += $$THELIBPATH/lib$${TheLib}.a
     }

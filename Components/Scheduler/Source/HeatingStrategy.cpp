@@ -320,7 +320,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         m_RTLevelSensor.SetTemp4High = false; //for each scenario, set the initial value is false
         m_RTLevelSensor.SetTemp4Low = false;  //for each scenario, set the initial value is false
 
-        if(4 == m_CurScenario && "RG6" != mp_SchedulerController->GetLastReagentGroup())
+        if(4 == m_CurScenario /*&& "RG6" != mp_SchedulerController->GetLastReagentGroup()*/)
         {
             retCode = StopTemperatureControl("RTSide");
             if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
@@ -612,11 +612,11 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPreTest(const QString& H
     {
         m_RTTop.curModuleId = "1";
         qreal userInputTemp = 0;
-        if(mp_SchedulerController->GetCurProgramStepIndex() >= 0 )
-        {
-            userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
-            ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
-        }
+//        if(mp_SchedulerController->GetCurProgramStepIndex() >= 0 )
+//        {
+//            userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
+//            ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
+//        }
         if(userInputTemp < 0)
         {
             (void)this->StopTemperatureControl("RTSide");
@@ -639,11 +639,11 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPreTest(const QString& H
     {
         m_RTBottom.curModuleId = "1";
         qreal userInputTemp = 0;
-        if(mp_SchedulerController->GetCurProgramStepIndex() >= 0 )
-        {
-            userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
-            ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
-        }
+//        if(mp_SchedulerController->GetCurProgramStepIndex() >= 0 )
+//        {
+//            userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
+//            ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
+//        }
         if(userInputTemp < 0)
         {
             (void)this->StopTemperatureControl("RTSide");
@@ -916,6 +916,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPowerFailure(const QStri
 
 ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
 {
+#if 0
     CmdSchedulerCommandBase* pHeatingCmd = NULL;
     if ("LevelSensor" == HeaterName)
     {
@@ -1154,6 +1155,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
         m_LAWaxTrap.OTCheckPassed = false;
     }
     mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd, false);
+#endif
 
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
@@ -1400,6 +1402,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
 
 DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSensor& heatingSensor, RTTempCtrlType_t RTType)
 {
+#if 0
     QMap<QString, FunctionModule>::iterator iter = heatingSensor.functionModuleList.begin();
     for (; iter!=heatingSensor.functionModuleList.end(); ++iter)
     {
@@ -1464,7 +1467,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         return DCL_ERR_FCT_CALL_SUCCESS;
 
     }
-
+#endif
     // The current scenario is NOT related to Level Sensor's ones.
     return DCL_ERR_FCT_CALL_SUCCESS;
 }

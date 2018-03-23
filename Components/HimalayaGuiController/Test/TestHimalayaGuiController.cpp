@@ -96,13 +96,14 @@ public:
 
     static void installMsgHandler()
     {
-        (void)qInstallMsgHandler(HimalayaMessageHandler);
+        (void)qInstallMessageHandler(HimalayaMessageHandler);
         logFile.setFileName("DebugOutput.log");
         (void)logFile.open(QIODevice::WriteOnly | QIODevice::Text);
     }
 
-    static void HimalayaMessageHandler(QtMsgType type, const char *msg)
+    static void HimalayaMessageHandler(QtMsgType type, const QMessageLogContext & context, const QString & msg)
     {
+
       QString txt;
       QTextStream out(&logFile);
 

@@ -21,6 +21,7 @@
 #include "Scheduler/Include/RcReHeating.h"
 #include "Global/Include/Utils.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
+#include "Scheduler/Include/SchedulerStateHandler.h"
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Include/SchedulerEventCodes.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToCurrentTubePosition.h"
@@ -29,8 +30,9 @@
 
 namespace Scheduler{
 
-CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine)
+CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController, CSchedulerStateHandler* StateHandler, CSchedulerStateMachine* StateMachine)
     :mp_SchedulerThreadController(SchedController)
+    ,mp_SchedulerStateHandler(StateHandler)
     ,mp_StateMachine(StateMachine)
     ,m_CurrentStep(INIT_STATE)
     ,m_LastScenario(0)
@@ -350,20 +352,20 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="1")
             || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="7"))
     {
-        if (mp_SchedulerThreadController->GetCurProgramID().at(0) == 'C')
+        if (mp_SchedulerStateHandler->GetCurProgramID().at(0) == 'C')
         {
             if (203 == m_LastScenario)
             {
-                mp_SchedulerThreadController->SetCurrentStepState(PSSM_CLEANING_DRY_STEP);
+                mp_SchedulerStateHandler->SetCurrentStepState(PSSM_CLEANING_DRY_STEP);
             }
             else
             {
-                mp_SchedulerThreadController->SetCurrentStepState(PSSM_INIT);
+                mp_SchedulerStateHandler->SetCurrentStepState(PSSM_INIT);
             }
         }
         else
         {
-            mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
+            mp_SchedulerStateHandler->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
         }
         mp_SchedulerThreadController->LogDebug(QString("RcReheating always succeeds in the scenario %1").arg(m_LastScenario));
         mp_StateMachine->OnTasksDone(true);
@@ -375,7 +377,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
     {
         if (0 == m_StartReq)
         {
-            RVPosition_t sealPos = mp_SchedulerThreadController->GetRVSealPositionByStationID(m_LastStationID);
+            RVPosition_t sealPos = mp_SchedulerStateHandler->GetRVSealPositionByStationID(m_LastStationID);
             CmdRVReqMoveToCurrentTubePosition* cmd = new CmdRVReqMoveToCurrentTubePosition(500, m_Sender);
             cmd->SetRVPosition(sealPos);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
@@ -394,7 +396,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                 }
             }
 
-            RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(m_LastStationID);
+            RVPosition_t tubePos = mp_SchedulerStateHandler->GetRVTubePositionByStationID(m_LastStationID);
             if (tubePos == mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
             {
                 mp_SchedulerThreadController->LogDebug(QString("RV has backed to tube position in Power Failure: %1").arg(tubePos));
@@ -423,7 +425,7 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
         mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
         m_StartReq ++;
         m_StartPressureTime = QDateTime::currentMSecsSinceEpoch();
-        mp_SchedulerThreadController->OnBeginDrain();
+        mp_SchedulerStateHandler->OnBeginDrain();
         mp_SchedulerThreadController->LogDebug("Begin to forced draining in RcReHeating");
     }
     else if (1 == m_StartReq)
@@ -440,20 +442,20 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
             mp_SchedulerThreadController->LogDebug("Complete forced draining and release pressure in RcReHeating");
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender));
             m_StartReq++;
-            mp_SchedulerThreadController->OnStopDrain();
+            mp_SchedulerStateHandler->OnStopDrain();
         }
     }
     else if (3 == m_StartReq)
     {
         if ("Scheduler::ALReleasePressure" == cmdName)
         {
-            if (mp_SchedulerThreadController->GetCurProgramID().at(0) == 'C')
+            if (mp_SchedulerStateHandler->GetCurProgramID().at(0) == 'C')
             {
-                mp_SchedulerThreadController->SetCurrentStepState(PSSM_INIT);
+                mp_SchedulerStateHandler->SetCurrentStepState(PSSM_INIT);
             }
             else
             {
-                mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
+                mp_SchedulerStateHandler->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
             }
             mp_StateMachine->OnTasksDone(true);
             m_StartReq = 0;

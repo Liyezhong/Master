@@ -14,4 +14,4 @@ DEPENDPATH += ../../../../
 UseLibs(HimalayaDataManager HimalayaMasterThread Scheduler HimalayaGuiController HimalayaDataManager)
 UseLibsShared(HimalayaDataContainer)
 UseLibsPlatform(ExternalProcessController Threads HeartBeatManager ExportController SWUpdateManager EncryptionDecryption RemoteCareController RemoteCareManager DataLogging Global StateMachines DeviceControl EventHandler DataManager NetCommands NetworkComponents PasswordManager)
-LIBS += -lrt
+LIBS += -lrt -ldl
