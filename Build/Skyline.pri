@@ -19,7 +19,9 @@ QT += core \
 INCLUDEPATH += ../.. \
                ../../../../Shared/Common/Components \
                ../../../../Shared/Master/Components \
-               ../../../../Master/Include/
+               ../../../../Master/Include/ \
+               ../../../../Shared/ExternalPackages/xsde/libxsde/
+               ../../../../Shared/ExternalPackages//Hypodermic/Hypodermic
 
 DEPENDPATH +=  ../.. \
                ../../../../Shared/Common/Components \
@@ -29,7 +31,7 @@ DEPENDPATH +=  ../.. \
 CONFIG += debug_and_release
 #CONFIG += build_all
 
-QMAKE_CXXFLAGS += -Wall -std=c++0x
+QMAKE_CXXFLAGS += -Wall $$QMAKE_CXXFLAGS_CXX1Z
 
 CONFIG(debug, debug|release) {
     CONFIG_SUFFIX = dbg

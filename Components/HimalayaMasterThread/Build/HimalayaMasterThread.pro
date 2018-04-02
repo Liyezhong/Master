@@ -4,7 +4,8 @@
 
 QT += core gui
 
-INCLUDEPATH += ../../../../../../Shared/Common/Components
+INCLUDEPATH += ../../../../../../Shared/Common/Components \
+
 
 TARGET = HimalayaMasterThread
 

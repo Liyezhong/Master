@@ -86,7 +86,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_PssmPreTestState.data(), entered(), this, OnEnterPretest());
     mp_PssmFillingHeatingRVState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmFillingLevelSensorHeatingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    CONNECTSIGNALSLOT(mp_PssmFillingLevelSensorHeatingState.data(), entered(), mp_SchedulerThreadController, OnEnterHeatingLevelSensor());
+    CONNECTSIGNALSLOT(mp_PssmFillingLevelSensorHeatingState.data(), entered(), mp_SchedulerStateHandler, OnEnterHeatingLevelSensor());
     mp_PssmFillingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmRVMoveToSealState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmProcessingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));

@@ -121,7 +121,7 @@ void TestSchedulerCommandProcessor::initTestCase()
 //    mp_DataManager = new DataManager::CDataManager(mp_HMThreadController);
 //    m_pSchedulerMainController->DataManager(mp_DataManager);
 
-\
+   mp_SchdCmdProcessor->run();
 
     mp_IDeviceControl = new DeviceControl::MockDeviceControl();
 

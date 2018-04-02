@@ -7,6 +7,28 @@
         <nodetype>0</nodetype>
         <nodeindex>0</nodeindex>
         <serial_number serialno="holdrio4711"> </serial_number>
+        <retorts>
+            <retort name="RetortA" index="0">
+                <devices>
+                    <device name="RotaryValveDevice" id="0x000080C0"/>
+                    <device name="AirLiquidDevice" id="0x000080C0"/>
+                    <device name="OvenDevice" id="0x000080C2"/>
+                    <device name="RetortDevice" id="0x000080C3"/>
+                    <device name="PeripheryDevice" id="0x000080C4"/>
+                    <device name="OtherDevice" id="0x000080C5"/>
+                </devices>
+            </retort>
+            <retort name="RetortA" index="1">
+                <devices>
+                    <device name="RotaryValveDevice" id="0x000080C0"/>
+                    <device name="AirLiquidDevice" id="0x000080C7"/>
+                    <device name="OvenDevice" id="0x000080C2"/>
+                    <device name="RetortDevice" id="0x000080C8"/>
+                    <device name="PeripheryDevice" id="0x000080C4"/>
+                    <device name="OtherDevice" id="0x000080C6"/>
+                </devices>
+            </retort>
+        </retorts>
     </parameter_master>
     <parameter_slaves>
         <slave type="base" key="asb3_0" name="asb 3 0" virtual="0">
@@ -225,6 +247,25 @@
                 <functionmodule key="OtherDevice_Ventilation_Fan" fct_instanceID="0x2007E"/>
                 <functionmodule key="OtherDevice_Touch_Screen" fct_instanceID="0x3007E"/>
                 <functionmodule key="OtherDevice_Pressure_Sensor" fct_instanceID="0x4007E"/>				
+            </functionmodules>
+        </device>
+         <device type="AirLiquidDevice" dev_instanceID="0x000080C7" optional="0">
+            <functionmodules>
+				<functionmodule key="AL_Base" fct_instanceID="0x0000F"/>
+                <functionmodule key="AL_pressure_ctrl" fct_instanceID="0x1000F"/>
+                <functionmodule key="AL_level_sensor_temp_ctrl" fct_instanceID="0x2000F"/>
+                <functionmodule key="AL_tube1_temp_ctrl" fct_instanceID="0x3000F"/>
+                <functionmodule key="AL_tube2_temp_ctrl" fct_instanceID="0x4000F"/>
+            <!--    <functionmodule key="AL_fan_digital_output" fct_instanceID="0x5000F"/>-->
+            </functionmodules>
+        </device>
+        <device type="RetortDevice" dev_instanceID="0x000080C8" optional="0">
+            <functionmodules>
+				<functionmodule key="RETORT_Base" fct_instanceID="0x00005"/>
+                <functionmodule key="RETORT_bottom_temp_ctrl" fct_instanceID="0x30005"/>
+                <functionmodule key="RETORT_side_temp_ctrl" fct_instanceID="0x40005"/>
+                <functionmodule key="RETORT_lock_digital_output" fct_instanceID="0x6000F"/>
+                <functionmodule key="RETORT_lock_digital_input" fct_instanceID="0x9000F"/>
             </functionmodules>
         </device>
     </devices>

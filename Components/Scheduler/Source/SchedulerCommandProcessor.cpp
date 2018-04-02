@@ -87,6 +87,9 @@
 #else
 #include "DeviceControl/Include/Interface/IDeviceProcessing.h"
 #endif
+#include"DeviceControl/Include/Simulation/DeviceControlSim.h"
+
+
 
 namespace Scheduler{
 /*lint -e534 */
@@ -164,6 +167,8 @@ void SchedulerCommandProcessor<DP>::run4Slot()
 #ifndef GOOGLE_MOCK
     //Initialize IDeviceProcessing
     mp_IDeviceProcessing = new DP(20);
+
+
 #endif
 
     //connect(mp_IDeviceProcessing, SIGNAL(ReportInitializationFinished(DevInstanceID_t, ReturnCode_t)), this, SLOT(DevProcInitialisationAckn(DevInstanceID_t, ReturnCode_t)), Qt::QueuedConnection);
@@ -187,7 +192,11 @@ void SchedulerCommandProcessor<DP>::run4Slot()
     CONNECTSIGNALSLOT(this, SigResetActiveCarbonFilterLifetime(quint32), this, OnResetActiveCarbonFilterLifetime(quint32));
     m_TickTimer.setInterval(500);
     m_TickTimer.start();
-
+    if(dynamic_cast<DeviceControl::DeviceControlSim*>(mp_IDeviceProcessing) != NULL)
+    {
+        auto pSim = dynamic_cast<DeviceControl::DeviceControlSim*>(mp_IDeviceProcessing);
+        pSim->Start();
+    }
 }
 
 template <class DP>
@@ -810,5 +819,6 @@ void SchedulerCommandProcessor<DP>::OnResetActiveCarbonFilterLifetime4Slot(quint
 #ifdef GOOGLE_MOCK
 template class Scheduler::SchedulerCommandProcessor<DeviceControl::MockDeviceControl>;
 #else
+template class Scheduler::SchedulerCommandProcessor<DeviceControl::DeviceControlSim>;
 template class Scheduler::SchedulerCommandProcessor<DeviceControl::IDeviceProcessing>;
 #endif

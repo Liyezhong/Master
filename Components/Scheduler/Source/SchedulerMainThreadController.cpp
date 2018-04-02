@@ -57,7 +57,7 @@
 #include "Global/Include/UITranslator.h"
 #ifdef GOOGLE_MOCK
 //#include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
-#include "DeviceControl/Test/Mock/MockDeviceControl.h"
+
 #endif
 #include "float.h"
 #include "Global/Include/EventObject.h"
@@ -71,6 +71,9 @@
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
 #include <Scheduler/Include/SchedulerStateHandler.h>
 #include <Scheduler/Include/ProgramSelfTest.h>
+#include <Hypodermic/Hypodermic.h>
+#include "DeviceControl/Test/Mock/MockDeviceControl.h"
+#include "DeviceControl/Include/Simulation/DeviceControlSim.h"
 
 using namespace DataManager;
 
@@ -100,11 +103,11 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         : Threads::ThreadController(TheHeartBeatSource, "SchedulerMainThread")
         , m_TickTimer(this)
         , m_SchedulerCommandProcessorThread(new QThread())
-        #ifdef GOOGLE_MOCK
-        , m_SchedulerCommandProcessor(new SchedulerCommandProcessor<MockDeviceControl>(this))
-        #else
-        , m_SchedulerCommandProcessor(new SchedulerCommandProcessor<IDeviceProcessing>(this))
-        #endif
+//        #ifdef GOOGLE_MOCK
+//        , m_SchedulerCommandProcessor(new SchedulerCommandProcessor<IDeviceControl>(this))
+//        #else
+//        , m_SchedulerCommandProcessor(new SchedulerCommandProcessor<IDeviceProcessing>(this))
+//        #endif
         , mp_DataManager(NULL)
         , m_OvenLidStatus(UNDEFINED_VALUE)
         , m_RetortLockStatus(UNDEFINED_VALUE)
@@ -180,6 +183,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP,0);
+
 }
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
@@ -229,6 +233,16 @@ void SchedulerMainThreadController::RegisterCommands()
 
 void SchedulerMainThreadController::CreateAndInitializeObjects()
 {
+    QString mode = mp_DataManager->GetDeviceConfigurationInterface()->GetDeviceConfiguration()->GetValue("Mode");
+
+#ifdef GOOGLE_MOCK
+    m_SchedulerCommandProcessor = (new SchedulerCommandProcessor<IDeviceControl>(this));
+
+#endif
+    if(mode.toLower() == "simulation")
+        m_SchedulerCommandProcessor = (new SchedulerCommandProcessor<DeviceControlSim>(this));
+    else
+        m_SchedulerCommandProcessor = (new SchedulerCommandProcessor<IDeviceProcessing>(this));
 
     m_SchedulerCommandProcessor->moveToThread(m_SchedulerCommandProcessorThread);
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessorThread, started(), m_SchedulerCommandProcessor, run());
@@ -242,8 +256,8 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, DeviceProcessDestroyed(),this, DevProcDestroyed());
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&),
                      this, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&));
-    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportFillingTimeOut2Min(),this, OnReportFillingTimeOut2Min());
-    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportDrainingTimeOut2Min(),this, OnReportDrainingTimeOut2Min());
+//    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportFillingTimeOut2Min(),this, OnReportFillingTimeOut2Min());
+//    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportDrainingTimeOut2Min(),this, OnReportDrainingTimeOut2Min());
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportError(quint32, quint16, quint16, quint16, QDateTime),this, OnReportError(quint32, quint16, quint16, quint16, QDateTime));
     CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, ResetActiveCarbonFilterLifeTime(quint32),
                      this, ResetActiveCarbonFilterLifetime(quint32));
