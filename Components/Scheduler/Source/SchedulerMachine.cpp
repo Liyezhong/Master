@@ -86,7 +86,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_PssmPreTestState.data(), entered(), this, OnEnterPretest());
     mp_PssmFillingHeatingRVState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmFillingLevelSensorHeatingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    CONNECTSIGNALSLOT(mp_PssmFillingLevelSensorHeatingState.data(), entered(), mp_SchedulerThreadController, OnEnterHeatingLevelSensor());
+    CONNECTSIGNALSLOT(mp_PssmFillingLevelSensorHeatingState.data(), entered(), mp_SchedulerStateHandler, OnEnterHeatingLevelSensor());
     mp_PssmFillingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmRVMoveToSealState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmProcessingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
@@ -229,7 +229,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmProcessingState->addTransition(this, SIGNAL(sigDrain4Pause()), mp_PssmRVMoveToTubeState.data());
     CONNECTSIGNALSLOT(mp_PssmPause.data(), entered(), mp_SchedulerThreadController, Pause());
 
-    CONNECTSIGNALSLOT(mp_SchedulerThreadController, NotifyResume(), this, OnNotifyResume());
+    CONNECTSIGNALSLOT(mp_SchedulerStateHandler, NotifyResume(), this, OnNotifyResume());
 
     //For Pssm Aborting
     CONNECTSIGNALSLOT(this, sigOnForceDrain(), mp_SchedulerStateHandler, OnBeginDrain());
@@ -397,6 +397,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_PressureDriftOffset = 0.0;
     m_NonRVErrorOccured = false;
     m_HadRetortLidOpened = false;
+    m_Sender = mp_SchedulerStateHandler->GetRetortName();
 }
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
