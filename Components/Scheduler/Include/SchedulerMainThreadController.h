@@ -415,25 +415,16 @@ typedef struct {
          /****************************************************************************/
          bool CheckLevelSensorTemperature(qreal targetTemperature);
 
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of slot Pause
-          */
-         /****************************************************************************/
-         void Pause();
+
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of slot MoveRVToInit
           */
          /****************************************************************************/
-         void MoveRVToInit();
+         //void MoveRVToInit();
 
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of slot DevProcDestroyed
-          */
-         /****************************************************************************/
-         void DevProcDestroyed();
+    private slots:
+
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of slot ReportGetServiceInfo
@@ -483,6 +474,13 @@ typedef struct {
           */
          /****************************************************************************/
          void OnReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp);
+
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot DevProcDestroyed
+          */
+         /****************************************************************************/
+         void DevProcDestroyed();
 
 protected:
 
@@ -1047,6 +1045,7 @@ protected:
          */
         /****************************************************************************/
         inline quint16 RetortLockStatus() { return m_RetortLockStatus; }
+
     public slots:
 
         /****************************************************************************/
@@ -1103,6 +1102,13 @@ protected:
 
         /****************************************************************************/
         /*!
+         *  \brief  Definition/Declaration of slot Pause
+         */
+        /****************************************************************************/
+        void Pause();
+
+        /****************************************************************************/
+        /*!
          *  \brief  Send out Tisue Protect done message to GUI
          *  \param  flag = To indicate if safe reagent is fully passed or passed with warning
          */
@@ -1137,6 +1143,7 @@ protected:
          */
         /****************************************************************************/
         void OnStartTimer() { m_TickTimer.start(); }
+
     };
 
 } // EONS ::Scheduler

@@ -6,7 +6,7 @@
 
 DEFINES += GOOGLE_MOCK
 INCLUDEPATH += ../../../../Master/Include \
-               ../../../../../Shared/Master/Components \
+               ../../../../Shared/Master/Components \
                ../../../../Shared/Common/Components \
                ../../../../Shared/Master/Components \
 #Add google-mock related headers into our project
