@@ -40,8 +40,6 @@
 #include "Global/Include/Commands/AckOKNOK.h"
 #include "Scheduler/Include/SchedulerLogging.h"
 #include "Scheduler/Include/EventScenarioErrorXMLInfo.h"
-#include "DeviceControl/Include/Interface/IDeviceControl.h"
-#include "Hypodermic/Hypodermic.h"
 
 using namespace DeviceControl;
 
@@ -277,7 +275,7 @@ typedef struct {
         QString m_Sender;
 
         bool    m_IsSelfTestDone;
-        QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;  ///< for self-test        
+        QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;  ///< for self-test
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -397,7 +395,7 @@ typedef struct {
          void GetStringIDList(quint32 ErrorID,
                               Global::tTranslatableStringList &EventStringParList,
                               Global::tTranslatableStringList &EventRDStringParList);
-private slots:
+
          /****************************************************************************/
          /*!
           *  \brief Check active carbon filter is expired
@@ -417,25 +415,16 @@ private slots:
          /****************************************************************************/
          bool CheckLevelSensorTemperature(qreal targetTemperature);
 
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of slot Pause
-          */
-         /****************************************************************************/
-         void Pause();
+
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of slot MoveRVToInit
           */
          /****************************************************************************/
-//         void MoveRVToInit();
+         //void MoveRVToInit();
 
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of slot DevProcDestroyed
-          */
-         /****************************************************************************/
-         void DevProcDestroyed();
+    private slots:
+
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of slot ReportGetServiceInfo
@@ -485,6 +474,13 @@ private slots:
           */
          /****************************************************************************/
          void OnReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp);
+
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot DevProcDestroyed
+          */
+         /****************************************************************************/
+         void DevProcDestroyed();
 
 protected:
 
@@ -1049,6 +1045,7 @@ protected:
          */
         /****************************************************************************/
         inline quint16 RetortLockStatus() { return m_RetortLockStatus; }
+
     public slots:
 
         /****************************************************************************/
@@ -1102,6 +1099,13 @@ protected:
          */
         /****************************************************************************/
         void DisablePauseButton();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot Pause
+         */
+        /****************************************************************************/
+        void Pause();
 
         /****************************************************************************/
         /*!

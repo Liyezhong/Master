@@ -329,6 +329,8 @@ void SchedulerMainThreadController::CleanupAndDestroyObjects()
 
 void SchedulerMainThreadController::OnGoReceived()
 {
+    qDebug()<<"************************************************ master thread on go received...";
+    OnDCLConfigurationFinished(DCL_ERR_FCT_CALL_SUCCESS);
 }
 
 void SchedulerMainThreadController::OnStopReceived()
@@ -1717,7 +1719,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
     {
         RaiseEvent(EVENT_SCHEDULER_SLAVE_BOARD_INITIALIZED_FAILURE,QStringList()<<QString::number(RetCode));
     }
-
+#if 0
     if(!working)
     {
         //send command to main controller to tell init failed
@@ -1741,7 +1743,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
     {
         return;
     }
-
+#endif
     mp_ProgramSelfTest = QSharedPointer<CProgramSelfTest>(new CProgramSelfTest(this));
 
 	// Create HeatingStrategy
@@ -1751,9 +1753,28 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
 //    LogDebug(QString("Current state of Scheduler is: %1").arg(m_SchedulerMachine->GetCurrentState()));
 //    m_SchedulerMachine->Start();
 //    //m_TickTimer.start();
+    if(QFile::exists("../Settings/RetortConfiguration.txt"))
+    {
+        QFile Test("../Settings/RetortConfiguration.txt");
+        if (Test.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            QTextStream in(&Test);
+            while(!in.atEnd())
+            {
+                QString RetortName = in.readLine();
+                if (!RetortName.isEmpty())
+                {
+                    qDebug()<<"Get retort name:"<<RetortName;
+                    if (m_SchedulerStateHandlerList.find(RetortName) == m_SchedulerStateHandlerList.end())
+                        m_SchedulerStateHandlerList.insert(RetortName,
+                                                           QSharedPointer<CSchedulerStateHandler>(new CSchedulerStateHandler(RetortName, this, mp_DataManager)));
+                }
+            }
+            Test.close();
+        }
+    }
 
-    m_SchedulerStateHandlerList.insert(QString("Retort1"), QSharedPointer<CSchedulerStateHandler>(new CSchedulerStateHandler(QString("Retort1"), this, mp_DataManager)));
-    m_SchedulerStateHandlerList.insert(QString("Retort2"), QSharedPointer<CSchedulerStateHandler>(new CSchedulerStateHandler(QString("Retort1"), this, mp_DataManager)));
+    qDebug()<<"************************ DCL configuration finished....: state handler size:"<<m_SchedulerStateHandlerList.size();
     m_TickTimer.start();
 }
 

@@ -318,7 +318,7 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 
         if ("Scheduler::StartConfigurationService" == cmdName)
         {
-            scmd->SetResult(mp_IDeviceProcessing->WithSender(sender)->StartConfigurationService());
+            //scmd->SetResult(mp_IDeviceProcessing->WithSender(sender)->StartConfigurationService());
         }
         else if ("Scheduler::RestartConfigurationService" == cmdName)
         {
@@ -348,7 +348,7 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
         }
         else if  ("Scheduler::ALReleasePressure" == cmdName)
         {
-            scmd->SetResult(mp_IDeviceProcessing->WithSender(sender)->ALReleasePressure());
+            //scmd->SetResult(mp_IDeviceProcessing->WithSender(sender)->ALReleasePressure());
             mp_SchedulerThreadController->LogDebug("==CMD==:Release pressure.");
         }
         else if  ("Scheduler::ALPressure" == cmdName)

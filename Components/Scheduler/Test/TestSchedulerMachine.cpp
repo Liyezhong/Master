@@ -28,6 +28,7 @@
 #include "HimalayaMasterThread/Include/HimalayaMasterThreadController.h"
 #include "HimalayaDataManager/Include/DataManager.h"
 #include "Scheduler/Include/SchedulerMachine.h"
+#include "Scheduler/Include/SchedulerStateHandler.h"
 
 using::testing::Return;
 using::testing::AtLeast;
@@ -116,6 +117,7 @@ private:
     MockIDeviceProcessing*                      mp_IDeviceProcessing;
     SchedulerMainThreadController*              m_pSchedulerMainController;
     CSchedulerStateMachine*                     m_pSchedulerMachine;
+    CSchedulerStateHandler*                     m_pSchedulerStateHandler;
 	
 private slots:
     /****************************************************************************/
