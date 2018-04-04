@@ -200,6 +200,7 @@ private:
     bool m_Is15MinPause;                                  ///< Remote alarm when pausing exceed 15 minutes
     bool m_IsResumeFromPause;                             ///< flag to indicate if we are resuming from pause state
     bool m_TransitionPeriod;                              ///< flag to indicate transition period
+    bool m_hasParaffin;                                   ///< the program has paraffin
     qreal m_PressureAL;                                   ///<  Definition/Declaration of variable m_PressureAL
     qreal m_TempRTBottom;                                 ///<  Definition/Declaration of variable m_TempRTBottom
     qreal m_TempRTSide;                                   ///<  Definition/Declaration of variable m_TempRTSide
@@ -479,6 +480,17 @@ public:
     bool IsRetortContaminted() {return m_ProgramStatusInfor.IsRetortContaminted(); }
 
     void Start() { m_SchedulerMachine->Start(); }
+
+    /****************************************************************************/
+    /*!
+     *  \brief	Check if program has paraffin reagent
+     *  \return bool
+     *
+     */
+    /****************************************************************************/
+    inline bool HasParaffinReagent() const { return m_hasParaffin;  }
+
+    void ProgramSelectedReply(Global::tRefType Ref, const QString& ProgramID, int paraffinStepIndex);
 
 private:
     /****************************************************************************/

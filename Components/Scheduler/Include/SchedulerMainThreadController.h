@@ -234,7 +234,6 @@ typedef struct {
         bool m_CleanAckSentGui;                                ///< flag to indicate if cleaning ack to gui or not
         CProgramStatusInfor m_ProgramStatusInfor;              ///< Program Status Infor
         BottlePosition_t    m_CurrentBottlePosition;          ///< the current BottlePosition for bottle check
-        bool m_hasParaffin;                                   ///< the program has paraffin
         bool m_IsReleasePressureOfSoakFinish;                 ///< wether release pressure when soak finish
         QVector<SlaveAttr_t>  m_SlaveAttrList;                ///< Attribute list of Slave modules
         qint8   m_ReEnterFilling;                             ///< When restart filling, the sequence of re-entering filling
@@ -911,16 +910,6 @@ protected:
          */
         /****************************************************************************/
         bool CheckSensorTempOverange();
-
-
-        /****************************************************************************/
-        /*!
-         *  \brief	Check if program has paraffin reagent 
-         *  \return bool 
-         *
-         */
-        /****************************************************************************/
-        inline bool HasParaffinReagent() const { return m_hasParaffin;  }
 
         /****************************************************************************/
         /*!
