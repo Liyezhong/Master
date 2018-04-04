@@ -98,6 +98,7 @@ private:
     CSchedulerStateMachine*         mp_SchedulerMachine;    //!< stateMechine of RS_TSensorErr_3Min_Rety
     StateList_t                     m_CurrentState;         //!< the current state
     qint64                          m_WaitBeginTime;       //!< Wait 3Min begin time
+    QString m_Sender;
 };
 
 }

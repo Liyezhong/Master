@@ -154,7 +154,7 @@ public:
 	 *  \return from HardwareMonitor
 	 */
 	/****************************************************************************/
-	virtual HardwareMonitor_t HardwareMonitor() = 0;
+    virtual HardwareMonitor_t HardwareMonitor(const QString& ) = 0;
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function ALBreakAllOperation
@@ -562,7 +562,7 @@ public:
 	 *  \return from HardwareMonitor
 	 */
 	/****************************************************************************/
-	virtual HardwareMonitor_t HardwareMonitor();
+    virtual HardwareMonitor_t HardwareMonitor(const QString& sender);
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function ALBreakAllOperation

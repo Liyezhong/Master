@@ -91,6 +91,7 @@ private:
     StateList_t              m_CurrentState;                //!< The current state
     qint64  m_CheckPressureTime;                            //!< time for checking pressure
     quint32 m_Counter;                                      //!< counter for retry times
+    QString m_Sender;
 };
 }
 #endif // RS_PRESSURE_OVERRANGE_3S_RETRY

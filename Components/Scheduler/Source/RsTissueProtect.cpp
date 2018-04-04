@@ -261,7 +261,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         else
         {
-            qreal tempLevelSensor = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALLevelSensor;
+            qreal tempLevelSensor = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).TempALLevelSensor;
             quint16 retValue = mp_SchedulerController->GetHeatingStrategy()->CheckTemperatureOverTime("LevelSensor",tempLevelSensor);
             if (0 == retValue)
             {

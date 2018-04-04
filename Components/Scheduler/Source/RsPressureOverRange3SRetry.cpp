@@ -67,7 +67,7 @@ void CRsPressureOverRange3SRetry::HandleWorkFlow(const QString& cmdName, ReturnC
     {
     case CHECK_PRESSURE:
         mp_SchedulerController->LogDebug("RS_PressureOverRange_3SRetry, in state CHECK_PRESSURE");
-        if (qAbs(mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL) >= 40.0)
+        if (qAbs(mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).PressureAL) >= 40.0)
         {
             m_CheckPressureTime = QDateTime::currentMSecsSinceEpoch();
             m_Counter++;

@@ -683,12 +683,12 @@ void HeatingStrategy::InitSelfTest()
 
 void HeatingStrategy::UpdateOvenParamAt110V()
 {
-    HardwareMonitor_t strctHWMonitor = mp_SchedulerCommandProcessor->HardwareMonitor();
+    HardwareMonitor_t strctHWMonitor = mp_SchedulerCommandProcessor->HardwareMonitor(m_Sender);
     qreal curTemp = strctHWMonitor.TempOvenBottom1;
     for (int i=0; i<2; i++)
     {
         DelaySomeTime(500);
-        HardwareMonitor_t strctHWMonitor = mp_SchedulerCommandProcessor->HardwareMonitor();
+        HardwareMonitor_t strctHWMonitor = mp_SchedulerCommandProcessor->HardwareMonitor(m_Sender);
         curTemp += strctHWMonitor.TempOvenBottom1;
     }
     curTemp = curTemp/3;
@@ -744,7 +744,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
         qreal TempRTBottom = 80;
         if(NotSureTemperature)
         {
-            TempRTBottom = mp_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1;
+            TempRTBottom = mp_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRTBottom1;
             if(isEffectiveTemp(TempRTBottom))
             {
                 if(TempRTBottom < m_RTBottom.functionModuleList[m_RTBottom.curModuleId].MaxTemperature - 25)
@@ -798,7 +798,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
         qreal TempRV1 = 80;
         if(NotSureTemperature)
         {
-            TempRV1 = mp_SchedulerCommandProcessor->HardwareMonitor().TempRV1;
+            TempRV1 = mp_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRV1;
             if(isEffectiveTemp(TempRV1))
             {
                 if(TempRV1 < m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].MaxTemperature - 25)
@@ -2624,7 +2624,7 @@ void HeatingStrategy::Init260ParamList(bool IsClickStartProgram)
 
 bool HeatingStrategy::Check260SensorsTemp(bool IsPowerFailure)
 {
-    HardwareMonitor_t strctHWMonitor = mp_SchedulerCommandProcessor->HardwareMonitor();
+    HardwareMonitor_t strctHWMonitor = mp_SchedulerCommandProcessor->HardwareMonitor(m_Sender);
     if (false == m_SensorsChecking.ovenTopPass)
     {
         qreal ovenTopTemp = strctHWMonitor.TempOvenTop;

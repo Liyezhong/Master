@@ -274,7 +274,7 @@ void CRcReHeating::CheckTheTemperature()
            || 203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297) )
     {
         //for normal program and cleaning program
-        tmperature = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempRV2;
+        tmperature = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).TempRV2;
         if(!mp_SchedulerThreadController->GetHeatingStrategy()->isEffectiveTemp(tmperature))
         {
             m_CountTheEffectiveTemp++;
@@ -397,7 +397,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             }
 
             RVPosition_t tubePos = mp_SchedulerStateHandler->GetRVTubePositionByStationID(m_LastStationID);
-            if (tubePos == mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
+            if (tubePos == mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).PositionRV)
             {
                 mp_SchedulerThreadController->LogDebug(QString("RV has backed to tube position in Power Failure: %1").arg(tubePos));
                 m_CurrentStep = BEGIN_DRAIN;

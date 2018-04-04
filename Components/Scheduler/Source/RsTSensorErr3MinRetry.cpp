@@ -130,19 +130,19 @@ void CRsTSensorErr3MinRetry::HandleWorkFlow(const QString& cmdName, DeviceContro
 bool CRsTSensorErr3MinRetry::CheckTSensorCurrentStatus()
 {
     bool ret = true;
-    qreal temp1 = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempOvenTop;
+    qreal temp1 = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).TempOvenTop;
     if (false == mp_SchedulerThreadController->GetHeatingStrategy()->CheckSensorTempOverRange("OvenTop", temp1) )
     {
         ret = false;
     }
 
-    qreal temp2 = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempOvenBottom1;
+    qreal temp2 = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).TempOvenBottom1;
     if ( false == mp_SchedulerThreadController->GetHeatingStrategy()->CheckSensorTempOverRange("OvenBottom", temp2) )
     {
         ret = false;
     }
 
-    qreal temp3 = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempOvenBottom2;
+    qreal temp3 = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).TempOvenBottom2;
     if ( false == mp_SchedulerThreadController->GetHeatingStrategy()->CheckSensorTempOverRange("OvenBottom", temp3) )
     {
         ret = false;

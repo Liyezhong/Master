@@ -100,7 +100,7 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
         break;
     case RSFILLINGAFTERFLUSH_CHECKLEVELSENSORTEMP:
         mp_SchedulerThreadController->LogDebug("RsFillingAfterFlush: In check Levelsensor temperature state");
-        tempLevelSensor = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempALLevelSensor;
+        tempLevelSensor = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).TempALLevelSensor;
         retValue = mp_SchedulerThreadController->GetHeatingStrategy()->CheckTemperatureOverTime("LevelSensor",tempLevelSensor);
         if (0 == retValue)
         {

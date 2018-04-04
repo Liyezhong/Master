@@ -5,5 +5,5 @@ ProgramID:L03
 StationList:S1,S2,S3,S4,S5,S6,S7,S8,S9,S10,S11,P1,P2,P3,
 ProgramStepID:0
 StationID:S1
-ErrorFlag:1
+ErrorFlag:0
 LastReagentGroup:

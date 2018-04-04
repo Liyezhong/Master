@@ -2185,90 +2185,90 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
     switch (heaterType)
     {
     case LEVELSENSOR:
-        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempALLevelSensor;
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempALLevelSensor;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("LevelSensor", temp1) )
             return false;
         break;
     case LATUBE1:
-        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempALTube1;
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempALTube1;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("LA_Tube1", temp1) )
             return false;
         break;
     case LATUBE2:
-        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempALTube2;
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempALTube2;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("LA_Tube2", temp1) )
             return false;
         break;
     case RV:
-        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempRV1;
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRV1;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RVRod", temp1) )
             return false;
-        temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempRV2;
+        temp2 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRV2;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RVOutle", temp2) )
             return false;
         break;
     case RETORT:
-        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTSide;
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRTSide;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RTSide", temp1) )
             return false;
-        temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1;
+        temp2 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRTBottom1;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RTBottom", temp2) )
             return false;
-        if (false == mp_HeatingStrategy->CheckRTBottomsDifference(m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1,
-                                                         m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom2))
+        if (false == mp_HeatingStrategy->CheckRTBottomsDifference(m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRTBottom1,
+                                                         m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRTBottom2))
         {
             return false;
         }
-        temp3 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom2;
+        temp3 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRTBottom2;
         if(false == mp_HeatingStrategy->CheckSensorTempOverRange("RTBottom", temp3))
         {
             return false;
         }
         break;
     case RETORT_NOSIGNAL:
-        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTSide;
-        temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1;
-        temp3 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom2;
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRTSide;
+        temp2 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRTBottom1;
+        temp3 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRTBottom2;
         if (qFuzzyCompare(temp1,299) || qFuzzyCompare(temp2,299) || qFuzzyCompare(temp3,299))
         {
             return false;
         }
         break;
     case OVEN:
-        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenTop;
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempOvenTop;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenTop", temp1) )
             return false;
-        temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenBottom1;
+        temp2 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempOvenBottom1;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenBottom", temp2) )
             return false;
-        temp3 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenBottom2;
+        temp3 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempOvenBottom2;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenBottom", temp3))
             return false;
         break;
     case ASB5:
-        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTSide;
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRTSide;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RTSide", temp1) )
             return false;
-        temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1;
+        temp2 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRTBottom1;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RTBottom", temp2) )
             return false;
-        if (false == mp_HeatingStrategy->CheckRTBottomsDifference(m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1,
-                                                         m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom2))
+        if (false == mp_HeatingStrategy->CheckRTBottomsDifference(m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRTBottom1,
+                                                         m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRTBottom2))
         {
             return false;
         }
-        temp3 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom2;
+        temp3 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempRTBottom2;
         if(false == mp_HeatingStrategy->CheckSensorTempOverRange("RTBottom", temp3))
         {
             return false;
         }
-        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenTop;
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempOvenTop;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenTop", temp1) )
             return false;
-        temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenBottom1;
+        temp2 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempOvenBottom1;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenBottom", temp2) )
             return false;
-        temp3 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenBottom2;
+        temp3 = m_SchedulerCommandProcessor->HardwareMonitor(m_Sender).TempOvenBottom2;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenBottom", temp3))
             return false;
         break;

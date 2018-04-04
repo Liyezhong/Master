@@ -60,6 +60,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_CurrentState = SM_UNDEF;
 
     mp_SchedulerMachine = QSharedPointer<QStateMachine>(new QStateMachine());
+    m_Sender = mp_SchedulerStateHandler->GetRetortName();
 
     // Layer one states
     mp_InitState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
@@ -1197,7 +1198,7 @@ void CSchedulerStateMachine::EnterRcLevelsensorHeatingOvertime()
 
 void CSchedulerStateMachine::HandleRcCheckRTLockWorkFlow()
 {
-    if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().RetortLockStatus == 1)
+    if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).RetortLockStatus == 1)
     {
         this->OnTasksDone(false);
     }
@@ -1225,7 +1226,7 @@ void CSchedulerStateMachine::HandleRcLevelSensorHeatingOvertimeWorkFlow()
         }
         break;
     case CHECK_TEMPERATURE:
-        tempLevelSensor = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempALLevelSensor;
+        tempLevelSensor = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).TempALLevelSensor;
         retValue = mp_SchedulerThreadController->GetHeatingStrategy()->CheckTemperatureOverTime("LevelSensor",tempLevelSensor);
         if (0 == retValue)
         {
@@ -1279,7 +1280,7 @@ void CSchedulerStateMachine::HandleRsRVGetOriginalPositionAgainWorkFlow(const QS
         m_RVOrgPosCmdTime = QDateTime::currentMSecsSinceEpoch();
         break;
     case CHECK_INITIAL_POS_RESULT:
-        if (1 == mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV) //Initial position
+        if (1 == mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).PositionRV) //Initial position
         {
             m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
             this->OnTasksDone(true);
@@ -1323,7 +1324,7 @@ void CSchedulerStateMachine::HandleRcPressureWorkFlow(const QString& cmdName, De
     {
         if ((QDateTime::currentMSecsSinceEpoch()- m_RcPressureDelayTime) <= 30 * 1000)
         {
-            qreal currentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL;
+            qreal currentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).PressureAL;
             if (qAbs(currentPressure-30.0) < 5.0)
             {
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, m_Sender));
@@ -1390,7 +1391,7 @@ void CSchedulerStateMachine::HandleRcFillingWorkFlow(const QString& cmdName, Dev
         }
         break;
     case CHECK_FILLINGTEMP:
-        tempLevelSensor = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempALLevelSensor;
+        tempLevelSensor = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).TempALLevelSensor;
         retValue = mp_SchedulerThreadController->GetHeatingStrategy()->CheckTemperatureOverTime("LevelSensor",tempLevelSensor);
         if (0 == retValue)
         {
@@ -1579,7 +1580,7 @@ void CSchedulerStateMachine::HandleRsPauseWorkFlow(ControlCommandType_t ctrlCmd)
         }
         else
         {
-            if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().OvenLidStatus == 0)
+            if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).OvenLidStatus == 0)
             {
                 OnTasksDone(true);
             }
@@ -1603,7 +1604,7 @@ void CSchedulerStateMachine::HandleRsPauseWorkFlow(ControlCommandType_t ctrlCmd)
         }
         else
         {
-            if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().OvenLidStatus == 0)
+            if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).OvenLidStatus == 0)
             {
                 OnTasksDone(true);
             }
@@ -1627,7 +1628,7 @@ void CSchedulerStateMachine::HandleRsPauseWorkFlow(ControlCommandType_t ctrlCmd)
         }
         else
         {
-            if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().OvenLidStatus == 0)
+            if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).OvenLidStatus == 0)
             {
                 OnTasksDone(true);
             }
@@ -1640,7 +1641,7 @@ void CSchedulerStateMachine::HandleRsPauseWorkFlow(ControlCommandType_t ctrlCmd)
     }
     else
     {
-        if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().OvenLidStatus == 0)
+        if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).OvenLidStatus == 0)
         {
             OnTasksDone(true);
         }
@@ -1682,7 +1683,7 @@ void CSchedulerStateMachine::HandleRsRVWaitingTempUpWorkFlow(const QString& cmdN
         }
         break;
     case CHECK_RVTEMP:
-         if(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempRV2 < 40)
+         if(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).TempRV2 < 40)
          {
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_RsRVWaitingTempUpTime > 10 * 1000)
@@ -1843,7 +1844,7 @@ void CSchedulerStateMachine::HandleRsMoveToPSeal(const QString& cmdName,  Device
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(CmdMvRV);
             startReq++;
         }
-        else if(DeviceControl::RV_SEAL_16 == mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
+        else if(DeviceControl::RV_SEAL_16 == mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).PositionRV)
         {
             startReq = 0;
             m_RsMoveToPSeal = REALSE_PRESSRE;
@@ -2267,7 +2268,7 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
         {
             threshPressure = 25.0;
         }
-        if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL >= threshPressure)
+        if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).PressureAL >= threshPressure)
         {
             mp_SchedulerThreadController->ReleasePressure();
             m_PssmMVTubePressureTime = QDateTime::currentMSecsSinceEpoch();

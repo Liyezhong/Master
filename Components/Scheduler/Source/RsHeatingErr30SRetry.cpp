@@ -138,11 +138,11 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
             }
             else if (heaterType == LATUBE1ABNORMAL)
             {
-                ret = mp_SchedulerController->GetHeatingStrategy()->CheckLATbueTempAbnormal(mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALTube1);
+                ret = mp_SchedulerController->GetHeatingStrategy()->CheckLATbueTempAbnormal(mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).TempALTube1);
             }
             else if (heaterType == LATUBE2ABNORMAL)
             {
-                ret = mp_SchedulerController->GetHeatingStrategy()->CheckLATbueTempAbnormal(mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALTube2);
+                ret = mp_SchedulerController->GetHeatingStrategy()->CheckLATbueTempAbnormal(mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).TempALTube2);
             }
             else
             {
