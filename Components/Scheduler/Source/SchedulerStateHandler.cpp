@@ -272,7 +272,7 @@ void CSchedulerStateHandler::ProgramSelectedReply(Global::tRefType Ref, const QS
     m_ProcessCassetteCount = 0;
     m_ProcessCassetteNewCount = 0;
     //send back the proposed program end time
-    MsgClasses::CmdProgramSelectedReply* commandPtr(new MsgClasses::CmdProgramSelectedReply(5000, m_RetortName.toInt(), timeProposed,
+    MsgClasses::CmdProgramSelectedReply* commandPtr(new MsgClasses::CmdProgramSelectedReply(5000, m_RetortName, timeProposed,
                                                                                 paraffinMeltCostedtime,
                                                                                 costedTimeBeforeParaffin,
                                                                                 whichStep,

@@ -1,4 +1,4 @@
-HeatingOvenSlice:20180319-083426,20180319-110705
+HeatingOvenSlice:
 Scenario:3
 LastRVPosition:3
 ProgramID:L03

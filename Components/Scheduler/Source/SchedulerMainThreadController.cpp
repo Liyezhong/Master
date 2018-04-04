@@ -1592,7 +1592,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
     qDebug()<<"************* on program selected id:"<<curProgramID;
     qDebug()<<"************* on program selected retort:"<<Cmd.GetRetortId();
 
-    CSchedulerStateHandler* stateHandler = m_SchedulerStateHandlerList[QString::number(Cmd.GetRetortId())].data();
+    CSchedulerStateHandler* stateHandler = m_SchedulerStateHandlerList[Cmd.GetRetortId()].data();
     if (stateHandler)
     {
         m_CurrentBottlePosition.ReagentGrpId = "";
