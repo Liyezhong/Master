@@ -103,6 +103,7 @@ CSchedulerStateHandler::CSchedulerStateHandler(QString RetortName, SchedulerMain
   , m_Is5MinPause(false)
   , m_Is10MinPause(false)
   , m_Is15MinPause(false)
+  , m_hasParaffin(false)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     memset(&m_CleaningDry, 0, sizeof(m_CleaningDry));
@@ -191,7 +192,7 @@ void CSchedulerStateHandler::HandleStateCommand(ControlCommandType_t ctrlCmd, Sc
     if(CTRL_CMD_ABORT == ctrlCmd && ((currentState & 0xFF) == SM_IDLE || (currentState & 0xFF) == SM_BUSY))
     {
         //tell main controller scheduler is starting to abort
-        MsgClasses::CmdProgramAcknowledge* commandPtrAbortBegin(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_ABORT_BEGIN));
+        MsgClasses::CmdProgramAcknowledge* commandPtrAbortBegin(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_ABORT_BEGIN, m_RetortName));
         Q_ASSERT(commandPtrAbortBegin);
         Global::tRefType fRef = mp_SchedulerThreadController->GetNewCommandRef();
         mp_SchedulerThreadController->SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortBegin));
@@ -233,6 +234,53 @@ void CSchedulerStateHandler::HandleStateCommand(ControlCommandType_t ctrlCmd, Sc
     default:
         mp_SchedulerThreadController->LogDebug(QString("Scheduler main controller gets unexpected state: %1").arg(currentState));
     }
+}
+
+void CSchedulerStateHandler::ProgramSelectedReply(Global::tRefType Ref, const QString& ProgramID, int paraffinStepIndex)
+{
+    m_hasParaffin = false;
+    GetNextProgramStepInformation(ProgramID, m_CurProgramStepInfo, true);//only to get m_CurProgramStepIndex
+    ResetTheTimeParameter();
+
+    unsigned int timeProposed = 0;
+    unsigned int paraffinMeltCostedtime = 0;
+    unsigned int costedTimeBeforeParaffin = 0;
+    int whichStep = 0;
+    if (m_CurProgramStepIndex != -1)
+    {
+        m_FirstProgramStepIndex = m_CurProgramStepIndex;
+        PrepareProgramStationList(ProgramID, m_CurProgramStepIndex);
+        timeProposed = GetLeftProgramStepsNeededTime(ProgramID);
+        m_CurProgramStepIndex = -1;
+
+        paraffinMeltCostedtime = mp_SchedulerThreadController->GetOvenHeatingTime();
+        if (-1 != paraffinStepIndex)//has Paraffin
+        {
+            m_hasParaffin = true;
+            int timeParaffinSteps = GetLeftProgramStepsNeededTime(ProgramID, paraffinStepIndex);
+            costedTimeBeforeParaffin = timeProposed - timeParaffinSteps;
+        }
+
+        //cheack safe reagent
+        whichStep = WhichStepHasNoSafeReagent(ProgramID);
+    }
+    else
+    {
+        m_StationList.clear();
+    }
+
+    m_ProcessCassetteCount = 0;
+    m_ProcessCassetteNewCount = 0;
+    //send back the proposed program end time
+    MsgClasses::CmdProgramSelectedReply* commandPtr(new MsgClasses::CmdProgramSelectedReply(5000, m_RetortName.toInt(), timeProposed,
+                                                                                paraffinMeltCostedtime,
+                                                                                costedTimeBeforeParaffin,
+                                                                                whichStep,
+                                                                                mp_SchedulerThreadController->GetSecondsForMeltingParaffin(),
+                                                                                m_StationList,
+                                                                                m_FirstProgramStepIndex));
+    Q_ASSERT(commandPtr);
+    mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 }
 
 void CSchedulerStateHandler::HandleInitState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
@@ -297,7 +345,7 @@ void CSchedulerStateHandler::HandleIdleState(ControlCommandType_t ctrlCmd, Sched
         if(m_CurProgramStepIndex != -1)
         {
             //send command to main controller to tell program is starting
-            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN, m_RetortName));
             Q_ASSERT(commandPtrFinish);
             Global::tRefType fRef = mp_SchedulerThreadController->GetNewCommandRef();
             mp_SchedulerThreadController->SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
@@ -347,6 +395,7 @@ void CSchedulerStateHandler::HandleIdleState(ControlCommandType_t ctrlCmd, Sched
 
             //send command to main controller to tell the left time
             MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000,
+                                                                                                          m_RetortName,
                                                                                                           Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_PRECHECK),
                                                                                                           m_CurProgramStepIndex, m_EndTimeAndStepTime.PreTestTime));
             Q_ASSERT(commandPtr);
@@ -527,7 +576,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
                 if(m_ProgramStatusInfor.IsRetortContaminted())
                 {
                     //send command to main controller to tell program finished
-                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_AS_POWER_FAILURE));
+                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_AS_POWER_FAILURE, m_RetortName));
                     Q_ASSERT(commandPtrFinish);
                     Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
                     mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
@@ -535,7 +584,8 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
                 }
                 else
                 {
-                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_AS_POWER_FAILURE_NO_CONTAMINATED));
+                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_AS_POWER_FAILURE_NO_CONTAMINATED
+                                                                                                              , m_RetortName));
                     Q_ASSERT(commandPtrFinish);
                     Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
                     mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
@@ -800,7 +850,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
                         //this is last step, need to notice user
                         if(!m_completionNotifierSent)
                         {
-                            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
+                            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE, m_RetortName));
                             Q_ASSERT(commandPtrFinish);
                             Global::tRefType fRef = mp_SchedulerThreadController->GetNewCommandRef();
                             mp_SchedulerThreadController->SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
@@ -1039,7 +1089,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
 
 
         //send command to main controller to tell the left time
-        MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", m_CurProgramStepIndex, 0));
+        MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, "", m_CurProgramStepIndex, 0));
         Q_ASSERT(commandPtr);
         Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
         mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -1047,14 +1097,14 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
         if(m_ProgramStatusInfor.IsRetortContaminted())
         {
             //send command to main controller to tell program finished
-            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED, m_RetortName));
             Q_ASSERT(commandPtrFinish);
             Ref = mp_SchedulerThreadController->GetNewCommandRef();
             mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
         }
         else
         {
-            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_NO_CONTAMINATED));
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_NO_CONTAMINATED, m_RetortName));
             Q_ASSERT(commandPtrFinish);
             Ref = mp_SchedulerThreadController->GetNewCommandRef();
             mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
@@ -1078,12 +1128,12 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
             m_IsResumeFromPause = true;
 
             // tell the main controller the program is resuming
-            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::SHOW_RESUME_MSG_DLG));
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::SHOW_RESUME_MSG_DLG, m_RetortName));
             Q_ASSERT(commandPtrFinish);
             Global::tRefType fRef = mp_SchedulerThreadController->GetNewCommandRef();
             mp_SchedulerThreadController->SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
 
-            MsgClasses::CmdProgramAcknowledge* commandPtrRunBegin(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
+            MsgClasses::CmdProgramAcknowledge* commandPtrRunBegin(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN, m_RetortName));
             Q_ASSERT(commandPtrRunBegin);
             fRef = mp_SchedulerThreadController->GetNewCommandRef();
             mp_SchedulerThreadController->SendCommand(fRef, Global::CommandShPtr_t(commandPtrRunBegin));
@@ -1118,7 +1168,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
                 m_Is15MinPause = true;
 
                 ProgramAcknownedgeType_t type =  DataManager::PROGRAM_PAUSE_TIMEOUT_15MINTUES;
-                MsgClasses::CmdProgramAcknowledge* commandPtrPauseEnable(new MsgClasses::CmdProgramAcknowledge(5000, type));
+                MsgClasses::CmdProgramAcknowledge* commandPtrPauseEnable(new MsgClasses::CmdProgramAcknowledge(5000, type, m_RetortName));
                 Q_ASSERT(commandPtrPauseEnable);
                 Global::tRefType fRef = mp_SchedulerThreadController->GetNewCommandRef();
                 mp_SchedulerThreadController->SendCommand(fRef, Global::CommandShPtr_t(commandPtrPauseEnable));
@@ -1381,7 +1431,7 @@ void CSchedulerStateHandler::DoCleaningDryStep(ControlCommandType_t ctrlCmd, Sch
     {
     case CDS_READY:
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_DRY_PROCESSING);
-        commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_DRY_PROCESSING),
+        commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_DRY_PROCESSING),
                                                                 m_CurProgramStepIndex, TIME_FOR_CLEANING_DRY_STEP + TIME_FOR_COOLING_DOWN);
         Q_ASSERT(commandPtr);
         Ref = mp_SchedulerThreadController->GetNewCommandRef();
@@ -1491,7 +1541,7 @@ void CSchedulerStateHandler::DoCleaningDryStep(ControlCommandType_t ctrlCmd, Sch
 
         if(QDateTime::currentMSecsSinceEpoch() - m_CleaningDry.StepStartTime >= TIME_FOR_COOLING_DOWN * 1000)
         {
-            MsgClasses::CmdProgramAcknowledge* CmdCoolingDownFaild = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_COOLING_DWON);
+            MsgClasses::CmdProgramAcknowledge* CmdCoolingDownFaild = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_COOLING_DWON, m_RetortName);
             Q_ASSERT(CmdCoolingDownFaild);
             Global::tRefType fRef = mp_SchedulerThreadController->GetNewCommandRef();
             mp_SchedulerThreadController->SendCommand(fRef, Global::CommandShPtr_t(CmdCoolingDownFaild));
@@ -2685,7 +2735,7 @@ void CSchedulerStateHandler::OnFillingHeatingRV()
     mp_SchedulerThreadController->UpdateCurrentScenario();
     mp_SchedulerThreadController->CheckResuemFromPause(PSSM_FILLING_RVROD_HEATING);
     quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
+    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
     mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));

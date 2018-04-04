@@ -111,7 +111,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , mp_HeatingStrategy(NULL)
         , m_RefCleanup(Global::RefManager<Global::tRefType>::INVALID)
         , m_IsInSoakDelay(false)
-        , m_hasParaffin(false)
         ,m_InternalErrorRecv(false)
         ,m_bWaitToPause(false)
         ,m_ReagentExpiredFlag("")
@@ -429,6 +428,7 @@ void SchedulerMainThreadController::OnTickTimer()
 
 void SchedulerMainThreadController::HandleSelfTestWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
+    qDebug()<<"**************** handler self test, cmd:"<<cmdName<<retCode;
     mp_ProgramSelfTest->HandleWorkFlow(cmdName, retCode);
 }
 
@@ -1572,60 +1572,19 @@ void SchedulerMainThreadController::OnKeepCassetteCount(Global::tRefType Ref, co
 
 void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, const MsgClasses::CmdProgramSelected & Cmd)
 {
-    m_hasParaffin = false;
     this->SendAcknowledgeOK(Ref);
     //m_delayTime = 0;
     QString curProgramID = Cmd.GetProgramID();
-    //m_CurProgramStepIndex = -1;
-#if 0
-    CSchedulerStateHandler* stateHandler = m_SchedulerStateHandlerMap[Cmd.GetRetortName()];
-    (void)stateHandler->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);//only to get m_CurProgramStepIndex
+    qDebug()<<"************* on program selected id:"<<curProgramID;
+    qDebug()<<"************* on program selected retort:"<<Cmd.GetRetortId();
 
-    stateHandler->ResetTheTimeParameter();
-    unsigned int timeProposed = 0;
-    unsigned int paraffinMeltCostedtime = 0;
-    unsigned int costedTimeBeforeParaffin = 0;
-    int whichStep = 0;
-    if (m_CurProgramStepIndex != -1)
+    CSchedulerStateHandler* stateHandler = m_SchedulerStateHandlerList[QString::number(Cmd.GetRetortId())].data();
+    if (stateHandler)
     {
-        m_FirstProgramStepIndex = m_CurProgramStepIndex;
-        (void)stateHandler->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
-        timeProposed = stateHandler->GetLeftProgramStepsNeededTime(curProgramID);
-        m_CurProgramStepIndex = -1;
-
-        paraffinMeltCostedtime = this->GetOvenHeatingTime();
-        int paraffinStepIndex = Cmd.ParaffinStepIndex();
-        if (-1 != paraffinStepIndex)//has Paraffin
-        {
-            m_hasParaffin = true;
-            int timeParaffinSteps = stateHandler->GetLeftProgramStepsNeededTime(curProgramID, paraffinStepIndex);
-            costedTimeBeforeParaffin = timeProposed - timeParaffinSteps;
-        }
-
-        //cheack safe reagent
-        whichStep = stateHandler->WhichStepHasNoSafeReagent(curProgramID);
+        m_CurrentBottlePosition.ReagentGrpId = "";
+        m_CurrentBottlePosition.RvPos = RV_UNDEF;
+        stateHandler->ProgramSelectedReply(Ref, curProgramID, Cmd.ParaffinStepIndex());
     }
-    else
-    {
-        m_StationList.clear();
-    }
-
-    m_ProcessCassetteCount = 0;
-    m_ProcessCassetteNewCount = 0;
-    m_CurrentBottlePosition.ReagentGrpId = "";
-    m_CurrentBottlePosition.RvPos = RV_UNDEF;
-    //send back the proposed program end time
-    MsgClasses::CmdProgramSelectedReply* commandPtr(new MsgClasses::CmdProgramSelectedReply(5000, timeProposed,
-                                                                                paraffinMeltCostedtime,
-                                                                                costedTimeBeforeParaffin,
-                                                                                whichStep,
-                                                                                GetSecondsForMeltingParaffin(),
-                                                                                m_StationList,
-                                                                                m_FirstProgramStepIndex));
-    Q_ASSERT(commandPtr);
-    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
-#endif
 }
 
 void SchedulerMainThreadController::OnQuitAppShutdown(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdown & Cmd)
