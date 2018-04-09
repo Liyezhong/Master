@@ -58,6 +58,7 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController,
     m_TasksAborted = false;
     m_PressureForCleaningSeq = 0;
     m_PressureStartTime = 0;
+    m_Sender = mp_SchedulerStatehandler->GetRetortName();
 
     CONNECTSIGNALSLOT(this, TasksDone(), mp_SchedulerThreadController, OnPreTestDone());
 }
@@ -97,6 +98,8 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             return;
         }
     }
+
+    qDebug()<<" *********************** handler pre test workflow:"<<m_CurrentState;
 
     switch (m_CurrentState)
     {
