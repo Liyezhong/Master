@@ -195,7 +195,7 @@ void SchedulerCommandProcessor<DP>::run4Slot()
     if(dynamic_cast<DeviceControl::DeviceControlSim*>(mp_IDeviceProcessing) != NULL)
     {
         auto pSim = dynamic_cast<DeviceControl::DeviceControlSim*>(mp_IDeviceProcessing);
-        pSim->Start();
+//        pSim->Start();
     }
 }
 
