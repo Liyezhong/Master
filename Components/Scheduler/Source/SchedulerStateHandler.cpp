@@ -636,7 +636,6 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
     else if (PSSM_FILLING_RVROD_HEATING == stepState)
     {
         m_CurrentStepState = PSSM_FILLING_RVROD_HEATING;
-        m_SchedulerMachine->NotifyLevelSensorHeatingReady();
 
         if(m_CurProgramStepInfo.reagentGroup == "RG6")
         {
@@ -672,6 +671,9 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
 
 //            m_SchedulerMachine->NotifyRVRodHeatingReady();
         }
+
+        qDebug()<<"************************ NotifyRVRodHeatingReady";
+        m_SchedulerMachine->NotifyRVRodHeatingReady();
     }
     else if (PSSM_FILLING_LEVELSENSOR_HEATING == stepState)
     {
@@ -686,6 +688,9 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
             m_SchedulerMachine->NotifyPause(SM_UNDEF);
             return;
         }
+
+        qDebug()<<"************************ NotifyLevelSensorHeatingReady";
+        m_SchedulerMachine->NotifyLevelSensorHeatingReady();
 //TO do ---
 //        if(mp_HNotifyRVRodHeatingReadyeatingStrategy->CheckLevelSensorHeatingStatus())
 //        {
@@ -716,6 +721,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
 
         if( "Scheduler::ALFilling" == cmdName)
         {
+            qDebug()<<"************************ fill result:"<<retCode;
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_FILLING_SUCCESSFULLY);
@@ -727,6 +733,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
                 }
                 else
                 {
+                    qDebug()<<"************************ NotifyFillFinished";
                     m_SchedulerMachine->NotifyFillFinished();
                 }
             }
@@ -782,6 +789,8 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
                 m_SchedulerMachine->NotifyDrain4Pause(SM_UNDEF);
                 return;
             }
+
+            qDebug()<<"************************ NotifyRVMoveToSealReady";
             m_SchedulerMachine->NotifyRVMoveToSealReady();
         }
         else
@@ -1813,7 +1822,8 @@ void CSchedulerStateHandler::Pressure()
 {
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_PRESSURE,QStringList()<<QString("[%1]").arg(AL_TARGET_PRESSURE_POSITIVE));
     m_SchedulerCommandProcessor->pushCmd(new CmdALPressure(500, m_RetortName));
-    //m_TickTimer.start();
+
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateHandler::HighPressure()
@@ -1823,7 +1833,8 @@ void CSchedulerStateHandler::HighPressure()
     CmdALPressure* cmd = new CmdALPressure(500, m_RetortName);
     cmd->SetTargetPressure(40.0);
     m_SchedulerCommandProcessor->pushCmd(cmd);
-    //m_TickTimer.start();
+
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateHandler::Vaccum()
@@ -1831,7 +1842,8 @@ void CSchedulerStateHandler::Vaccum()
 
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_PRESSURE,QStringList()<<QString("[%1]").arg(AL_TARGET_PRESSURE_NEGATIVE));
     m_SchedulerCommandProcessor->pushCmd(new CmdALVaccum(500, "0"));
-    //m_TickTimer.start();
+
+    mp_SchedulerThreadController->StartTimer();
 }
 
 int CSchedulerStateHandler::CurStepIndexForSafeReagent()
@@ -2569,6 +2581,7 @@ void CSchedulerStateHandler::OnEnterPssmProcessing()
             }
         }
     }
+    mp_SchedulerThreadController->StartTimer();
 }
 
 bool CSchedulerStateHandler::MoveRV(RVPosition_type type)
@@ -2649,6 +2662,8 @@ void CSchedulerStateHandler::Fill()
 
     // Update station reagent status
     this->UpdateStationReagentStatus(false);
+
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateHandler::Drain()
@@ -2674,7 +2689,8 @@ void CSchedulerStateHandler::Drain()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
     mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-    //m_TickTimer.start();
+
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateHandler::OnStopFill()
@@ -2700,7 +2716,8 @@ void CSchedulerStateHandler::RCDrain()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
     mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-    //m_TickTimer.start();
+
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateHandler::RCForceDrain()
@@ -2716,7 +2733,8 @@ void CSchedulerStateHandler::RCForceDrain()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
     mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-    //m_TickTimer.start();
+
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateHandler::RcDrainAtOnce()
@@ -2734,7 +2752,8 @@ void CSchedulerStateHandler::RcDrainAtOnce()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
     mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-    //m_TickTimer.start();
+
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateHandler::OnBeginDrain()
@@ -3223,7 +3242,8 @@ void CSchedulerStateHandler::OnEnterDryStepState()
     m_CleaningDry.CurrentState = CDS_READY;
     m_CleaningDry.StepStartTime = 0;
     m_CleaningDry.warningReport = false;
-    //m_TickTimer.start();
+
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateHandler::HardwareMonitor(const QString& StepID)
