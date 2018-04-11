@@ -251,7 +251,8 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
 
     //timer setting
     CONNECTSIGNALSLOT(&m_TickTimer, timeout(), this, OnTickTimer());
-    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor,DCLConfigurationFinished(ReturnCode_t),this,OnDCLConfigurationFinished(ReturnCode_t));
+    qRegisterMetaType<QList<QString>>("QList<QString>");
+    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor,DCLConfigurationFinished(ReturnCode_t, QList<QString>),this,OnDCLConfigurationFinished(ReturnCode_t, QList<QString>));
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, DeviceProcessDestroyed(),this, DevProcDestroyed());
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&),
                      this, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&));
@@ -329,7 +330,7 @@ void SchedulerMainThreadController::CleanupAndDestroyObjects()
 void SchedulerMainThreadController::OnGoReceived()
 {
     qDebug()<<"************************************************ master thread on go received...";
-    OnDCLConfigurationFinished(DCL_ERR_FCT_CALL_SUCCESS);
+
 }
 
 void SchedulerMainThreadController::OnStopReceived()
@@ -1030,6 +1031,7 @@ NonDeviceCommand_t SchedulerMainThreadController::PeekNonDeviceCommand()
             //return CTRL_CMD_START;
         }
         if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_PAUSE)
+                //return CTRL_CMD_START;
         {
             SchedulerStateMachine_t currentState;// = m_SchedulerMachine->GetCurrentState();
             if (PSSM_FILLING == currentState || PSSM_RV_MOVE_TO_SEAL == currentState || PSSM_PROCESSING == currentState)
@@ -1671,7 +1673,7 @@ void SchedulerMainThreadController::OnTakeOutSpecimenFinished(Global::tRefType R
     m_Mutex.unlock();
 }
 
-void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetCode)
+void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetCode, QList<QString> retorts)
 {
     // Turn off local/remote alarm by default
     CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, m_Sender);
@@ -1736,25 +1738,13 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
 //    LogDebug(QString("Current state of Scheduler is: %1").arg(m_SchedulerMachine->GetCurrentState()));
 //    m_SchedulerMachine->Start();
 //    //m_TickTimer.start();
-    if(QFile::exists("../Settings/RetortConfiguration.txt"))
+    m_SchedulerStateHandlerList.clear();
+    foreach(auto name, retorts)
     {
-        QFile Test("../Settings/RetortConfiguration.txt");
-        if (Test.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            QTextStream in(&Test);
-            while(!in.atEnd())
-            {
-                QString RetortName = in.readLine();
-                if (!RetortName.isEmpty())
-                {
-                    qDebug()<<"Get retort name:"<<RetortName;
-                    if (m_SchedulerStateHandlerList.find(RetortName) == m_SchedulerStateHandlerList.end())
-                        m_SchedulerStateHandlerList.insert(RetortName,
-                                                           QSharedPointer<CSchedulerStateHandler>(new CSchedulerStateHandler(RetortName, this, mp_DataManager)));
-                }
-            }
-            Test.close();
-        }
+            qDebug()<<"Get retort name:"<<name;
+            if (m_SchedulerStateHandlerList.find(name) == m_SchedulerStateHandlerList.end())
+            m_SchedulerStateHandlerList.insert(name,
+                                               QSharedPointer<CSchedulerStateHandler>(new CSchedulerStateHandler(name, this, mp_DataManager)));
     }
 
     qDebug()<<"************************ DCL configuration finished....: state handler size:"<<m_SchedulerStateHandlerList.size();

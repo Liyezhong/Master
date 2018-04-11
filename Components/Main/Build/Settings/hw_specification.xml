@@ -21,9 +21,9 @@
             <retort name="Retort_B" index="1">
                 <devices>
                     <device name="RotaryValveDevice" id="0x000080C0"/>
-                    <device name="AirLiquidDevice" id="0x000080C7"/>
+                    <device name="AirLiquidDevice" id="0x000080C1"/>
                     <device name="OvenDevice" id="0x000080C2"/>
-                    <device name="RetortDevice" id="0x000080C8"/>
+                    <device name="RetortDevice" id="0x000080C3"/>
                     <device name="PeripheryDevice" id="0x000080C4"/>
                     <device name="OtherDevice" id="0x000080C6"/>
                 </devices>

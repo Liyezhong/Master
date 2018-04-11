@@ -197,7 +197,7 @@ void SchedulerCommandProcessor<DP>::run4Slot()
     if(dynamic_cast<DeviceControl::DeviceControlSim*>(mp_IDeviceProcessing) != NULL)
     {
         auto pSim = dynamic_cast<DeviceControl::DeviceControlSim*>(mp_IDeviceProcessing);
-//        pSim->Start();
+        pSim->Start();
     }
 }
 
@@ -282,7 +282,13 @@ void SchedulerCommandProcessor<DP>::DevProcConfigurationAckn4Slot(quint32 instan
     {
         //some error happens
     }
-    emit DCLConfigurationFinished(hdlInfo);
+
+    auto config = mp_IDeviceProcessing->GetDeviceConfig();
+    for(auto retort = config->parameter_master().retorts().retort().begin(); retort != config->parameter_master().retorts().retort().end(); retort++)
+    {
+        m_Sender << QString::fromStdString((*retort).name());
+    }
+    emit DCLConfigurationFinished(hdlInfo, m_Sender);
 }
 
 template <class DP>

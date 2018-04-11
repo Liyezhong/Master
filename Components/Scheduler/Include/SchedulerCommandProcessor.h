@@ -246,7 +246,7 @@ signals:
      *  \param  RetCode
      */
     /****************************************************************************/
-    void DCLConfigurationFinished(ReturnCode_t RetCode);
+    void DCLConfigurationFinished(ReturnCode_t RetCode, QList<QString>);
 
     /****************************************************************************/
     /*!
@@ -742,7 +742,7 @@ private:
 
     QQueue<Scheduler::SchedulerCommandShPtr_t> m_Cmds;       ///<  Definition/Declaration of variable m_Cmds
     QMutex m_CmdMutex;       ///<  Definition/Declaration of variable m_CmdMutex
-    QString m_Sender;
+    QList<QString> m_Sender;
 };
 
 } // end of namespace Scheduler

@@ -1052,7 +1052,7 @@ protected:
          *  \return from OnDCLConfigurationFinished
          */
         /****************************************************************************/
-        void OnDCLConfigurationFinished(ReturnCode_t RetCode);
+        void OnDCLConfigurationFinished(ReturnCode_t RetCode, QList<QString> retorts);
 
         /****************************************************************************/
         /*!
