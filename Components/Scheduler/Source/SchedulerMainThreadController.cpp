@@ -71,7 +71,6 @@
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
 #include <Scheduler/Include/SchedulerStateHandler.h>
 #include <Scheduler/Include/ProgramSelfTest.h>
-#include <Hypodermic/Hypodermic.h>
 #include "DeviceControl/Test/Mock/MockDeviceControl.h"
 #include "DeviceControl/Include/Simulation/DeviceControlSim.h"
 

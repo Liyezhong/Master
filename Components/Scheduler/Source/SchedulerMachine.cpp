@@ -885,7 +885,7 @@ void CSchedulerStateMachine::NotifyTempsReady()
 
 void CSchedulerStateMachine::NotifyLevelSensorHeatingReady()
 {
-     mp_SchedulerThreadController->StopTimer();
+    mp_SchedulerThreadController->StopTimer();
     emit sigLevelSensorHeatingReady();
 }
 
