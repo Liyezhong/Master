@@ -220,7 +220,7 @@ void CSchedulerStateHandler::HandleStateCommand(ControlCommandType_t ctrlCmd, Sc
     {
     case SM_INIT:
         //In INIT state will do self test
-        //HardwareMonitor("INIT");
+        HardwareMonitor("INIT");
         HandleRmtLocAlarm(ctrlCmd);
         HandleInitState(ctrlCmd, sCmd);
         break;
@@ -230,19 +230,19 @@ void CSchedulerStateHandler::HandleStateCommand(ControlCommandType_t ctrlCmd, Sc
         break;
     case SM_IDLE:
         qDebug()<<"DBG"<<"Scheduler main controller state: IDLE";
-        //HardwareMonitor( "IDLE" );
+        HardwareMonitor( "IDLE" );
         HandleRmtLocAlarm(ctrlCmd);
         HandleIdleState(ctrlCmd,cmd);
         break;
     case SM_BUSY:
         qDebug()<<"DBG"<<"Scheduler main controller state: RUN";
-        //HardwareMonitor( m_CurProgramID );
+        HardwareMonitor( m_CurProgramID );
         HandleRmtLocAlarm(ctrlCmd);
         HandleRunState(ctrlCmd, sCmd);
         break;
     case SM_ERROR:
         qDebug()<<"DBG"<<"Scheduler main controller state: ERROR";
-        //HardwareMonitor( "ERROR" );
+        HardwareMonitor( "ERROR" );
         HandleRmtLocAlarm(ctrlCmd);
         HandleErrorState(ctrlCmd, sCmd, currentState);
         break;
@@ -636,8 +636,11 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
     else if (PSSM_FILLING_RVROD_HEATING == stepState)
     {
         m_CurrentStepState = PSSM_FILLING_RVROD_HEATING;
+        m_SchedulerMachine->NotifyLevelSensorHeatingReady();
+
         if(m_CurProgramStepInfo.reagentGroup == "RG6")
         {
+
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
                 //TO do ---
@@ -648,7 +651,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
                 return;
             }
 
-            //TO do ---
+            //TO do ---PressureAL
 //            if(mp_HeatingStrategy->Check260SensorsTemp())
 //            {
 //                LogDebug("Program Step Heating Rotary Valve heating rod OK");
@@ -667,7 +670,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
                 return;
             }
 
-            m_SchedulerMachine->NotifyRVRodHeatingReady();
+//            m_SchedulerMachine->NotifyRVRodHeatingReady();
         }
     }
     else if (PSSM_FILLING_LEVELSENSOR_HEATING == stepState)
@@ -684,7 +687,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
             return;
         }
 //TO do ---
-//        if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
+//        if(mp_HNotifyRVRodHeatingReadyeatingStrategy->CheckLevelSensorHeatingStatus())
 //        {
 //            //m_IsProcessing = false;
 //            LogDebug("Program Step Heating Level sensor stage OK");
@@ -2802,6 +2805,7 @@ void CSchedulerStateHandler::OnFillingHeatingRV()
     }
 
     //m_TickTimer.start();
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateHandler::OnEnterHeatingLevelSensor()
@@ -2815,6 +2819,7 @@ void CSchedulerStateHandler::OnEnterHeatingLevelSensor()
        mp_SchedulerThreadController->EnablePauseButton();
     }
     //m_TickTimer.start();
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateHandler::CompleteRsAbort()
@@ -3219,6 +3224,160 @@ void CSchedulerStateHandler::OnEnterDryStepState()
     m_CleaningDry.StepStartTime = 0;
     m_CleaningDry.warningReport = false;
     //m_TickTimer.start();
+}
+
+void CSchedulerStateHandler::HardwareMonitor(const QString& StepID)
+{
+    if(m_CheckTheHardwareStatus <= 2)  // Wait for about 500ms*3 = 1500ms to start hardware monitor
+    {
+        m_CheckTheHardwareStatus++;
+        return;
+    }
+    QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
+    quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
+    m_IsErrorStateForHM = false;
+
+    HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor(m_RetortName);
+    // log to Sensor data file
+    m_CountTheLogSenserData++;
+    if(m_CountTheLogSenserData >= 2)
+    {
+        SchedulerLogging::getInstance().logSensorData(strctHWMonitor.toLogString());
+        m_CountTheLogSenserData = 0;
+    }
+    if(StepID.compare("INIT") != 0)
+    {
+        m_ProgramStatusInfor.UpdateOvenHeatingTime(QDateTime::currentMSecsSinceEpoch(),strctHWMonitor.OvenHeatingStatus);
+    }
+
+    // Monitor local and remote alarm
+#if 0
+    if (false == m_DisableAlarm)
+    {
+        if (1 == strctHWMonitor.RemoteAlarmStatus && m_CheckRemoteAlarmStatus)
+        {
+            SendOutErrMsg(DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, false);
+            m_CheckRemoteAlarmStatus = false;
+        }
+        if (1 == strctHWMonitor.LocalAlarmStatus && m_CheckLocalAlarmStatus)
+        {
+            SendOutErrMsg(DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, false);
+            m_CheckLocalAlarmStatus = false;
+        }
+    }
+#else
+//    if (1 == strctHWMonitor.RemoteAlarmStatus && m_RemoteAlarmPreviousStatus < 1) //alarm was unplugged
+//    {
+//        RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, m_CurrentScenario, true);
+//        m_RemoteAlarmPreviousStatus = 1;
+//    }
+//    else if(0 == strctHWMonitor.RemoteAlarmStatus && m_RemoteAlarmPreviousStatus == 1)// alarm was plugged
+//    {
+//        m_RemoteAlarmPreviousStatus = 0;
+//        RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, 0,true, false);
+//    }
+//    if (1 == strctHWMonitor.LocalAlarmStatus && m_LocalAlarmPreviousStatus < 1) //alarm was unplugged
+//    {
+//        RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, m_CurrentScenario, true);
+//        m_LocalAlarmPreviousStatus = 1;
+//    }
+//    else if(0 == strctHWMonitor.LocalAlarmStatus && m_LocalAlarmPreviousStatus == 1) //alarm was unplugged
+//    {
+//        RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, 0,true, false);
+//        m_LocalAlarmPreviousStatus = 0;
+//    }
+#endif
+
+    if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
+    {
+        if(((m_RetortLockStatus == 0) ||(m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 1))
+        {
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, false));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
+            mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+        }
+        if(((m_RetortLockStatus == 1) || (m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 0))
+        {
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, true));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
+            mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+        }
+        m_RetortLockStatus = strctHWMonitor.RetortLockStatus;
+    }
+
+    if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
+    {
+        if(((m_OvenLidStatus == 0) ||(m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 1))
+        {
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, false));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
+            mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+        }
+        if(((m_OvenLidStatus == 1) || (m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 0))
+        {
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, true));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
+            mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+        }
+        m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
+    }
+    if("ERROR" == StepID)
+    {
+        m_IsErrorStateForHM = true;
+    }
+
+    // Monitor the sensors' current
+//    if ("ERROR" != StepID && 0 != m_CurrentScenario)
+//    {
+//        m_CurrentScenario = Scenario;
+//        mp_SchedulerThreadController->CheckSlaveAllSensor(m_CurrentScenario, strctHWMonitor);
+//    }
+
+//    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.PressureAL))
+//    {
+//        m_PressureAL = strctHWMonitor.PressureAL;
+//    }
+//    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempALLevelSensor))
+//    {
+//        m_TempALLevelSensor = strctHWMonitor.TempALLevelSensor;
+//    }
+//    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempALTube1))
+//    {
+//        m_TempALTube1 = strctHWMonitor.TempALTube1;
+//    }
+//    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempALTube2))
+//    {
+//        m_TempALTube2 = strctHWMonitor.TempALTube2;
+//    }
+//    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRV1))
+//    {
+//        m_TempRV1 = strctHWMonitor.TempRV1;
+//    }
+//    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRV2))
+//    {
+//        m_TempRV2 = strctHWMonitor.TempRV2;
+//    }
+//    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRTBottom1))
+//    {
+//        m_TempRTBottom = strctHWMonitor.TempRTBottom1;
+//    }
+//    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRTSide))
+//    {
+//        m_TempRTSide = strctHWMonitor.TempRTSide;
+//    }
+//    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempOvenBottom1))
+//    {
+//        m_TempOvenBottom = strctHWMonitor.TempOvenBottom1;
+//    }
+//    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempOvenTop))
+//    {
+//        m_TempOvenTop = strctHWMonitor.TempOvenTop;
+//    }
+    m_PositionRV = strctHWMonitor.PositionRV;
 }
 
 }

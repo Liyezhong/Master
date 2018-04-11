@@ -216,6 +216,13 @@ private:
     QList<ProgramStationInfo_t> m_StationAndReagentList;  ///<  Definition/Declaration of variable m_StationList
     CleaningDry_t   m_CleaningDry;                        ///< Structure for cleaning dry
     quint32 m_CurrentScenario;                            ///< Current Scenario
+    quint32 m_CountTheLogSenserData;
+    bool m_IsErrorStateForHM;
+    quint32 m_CheckTheHardwareStatus;
+//    quint32 m_RemoteAlarmPreviousStatus;
+//    quint32 m_LocalAlarmPreviousStatus;
+    quint32 m_RetortLockStatus;
+    quint32 m_OvenLidStatus;
 
     QString m_RetortName;
 
@@ -689,6 +696,8 @@ private:
      */
     /****************************************************************************/
     qint32 GetScenarioBySchedulerState(SchedulerStateMachine_t State, QString ReagentGroup);
+
+    void HardwareMonitor(const QString&);
 
 signals:
      /****************************************************************************/
