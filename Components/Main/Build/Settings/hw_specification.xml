@@ -8,22 +8,31 @@
         <nodeindex>0</nodeindex>
         <serial_number serialno="holdrio4711"> </serial_number>
         <retorts>
-            <retort name="RetortA" index="0">
+            <retort name="Retort_A" index="0">
                 <devices>
                     <device name="RotaryValveDevice" id="0x000080C0"/>
-                    <device name="AirLiquidDevice" id="0x000080C0"/>
+                    <device name="AirLiquidDevice" id="0x000080C1"/>
                     <device name="OvenDevice" id="0x000080C2"/>
                     <device name="RetortDevice" id="0x000080C3"/>
                     <device name="PeripheryDevice" id="0x000080C4"/>
-                    <device name="OtherDevice" id="0x000080C5"/>
+                    <device name="OtherDevice" id="0x000080C6"/>
                 </devices>
             </retort>
-            <retort name="RetortA" index="1">
+            <retort name="Retort_B" index="1">
                 <devices>
                     <device name="RotaryValveDevice" id="0x000080C0"/>
                     <device name="AirLiquidDevice" id="0x000080C7"/>
                     <device name="OvenDevice" id="0x000080C2"/>
                     <device name="RetortDevice" id="0x000080C8"/>
+                    <device name="PeripheryDevice" id="0x000080C4"/>
+                    <device name="OtherDevice" id="0x000080C6"/>
+                </devices>
+            </retort>
+            <retort name="Common" index="2">
+                <devices>
+                    <device name="RotaryValveDevice" id="0x000080C0"/>
+                    <device name="AirLiquidDevice" id="0x000080C7"/>
+                    <device name="OvenDevice" id="0x000080C2"/>
                     <device name="PeripheryDevice" id="0x000080C4"/>
                     <device name="OtherDevice" id="0x000080C6"/>
                 </devices>

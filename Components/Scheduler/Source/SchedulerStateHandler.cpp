@@ -188,6 +188,21 @@ void CSchedulerStateHandler::HandleStateCommand(ControlCommandType_t ctrlCmd, Sc
     SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
     m_SchedulerMachine->UpdateCurrentState(currentState);
 
+    qDebug()<<"********** HandleStateCommand currentState:"<<currentState;
+    qDebug()<<QTime::currentTime()<<"********** HandleStateCommand CommandType_t:"<<ctrlCmd;
+    if (cmd != NULL)
+    {
+        qDebug()<<"********** HandleStateCommand Command retort name:"<<cmd->GetSender();
+        qDebug()<<"********** HandleStateCommand Command name:"<<cmd->GetName();
+    }
+
+
+    SchedulerCommandShPtr_t sCmd;
+    if (cmd != NULL && cmd->GetSender() == m_RetortName)
+    {
+        sCmd = cmd;
+    }
+
     // We only handle Abort in Idle and Busy
     if(CTRL_CMD_ABORT == ctrlCmd && ((currentState & 0xFF) == SM_IDLE || (currentState & 0xFF) == SM_BUSY))
     {
@@ -207,11 +222,11 @@ void CSchedulerStateHandler::HandleStateCommand(ControlCommandType_t ctrlCmd, Sc
         //In INIT state will do self test
         //HardwareMonitor("INIT");
         HandleRmtLocAlarm(ctrlCmd);
-        HandleInitState(ctrlCmd, cmd);
+        HandleInitState(ctrlCmd, sCmd);
         break;
     case SM_POWER_FAILURE:
         HandleRmtLocAlarm(ctrlCmd);
-        HandlePowerFailure(ctrlCmd, cmd);
+        HandlePowerFailure(ctrlCmd, sCmd);
         break;
     case SM_IDLE:
         qDebug()<<"DBG"<<"Scheduler main controller state: IDLE";
@@ -223,13 +238,13 @@ void CSchedulerStateHandler::HandleStateCommand(ControlCommandType_t ctrlCmd, Sc
         qDebug()<<"DBG"<<"Scheduler main controller state: RUN";
         //HardwareMonitor( m_CurProgramID );
         HandleRmtLocAlarm(ctrlCmd);
-        HandleRunState(ctrlCmd, cmd);
+        HandleRunState(ctrlCmd, sCmd);
         break;
     case SM_ERROR:
         qDebug()<<"DBG"<<"Scheduler main controller state: ERROR";
         //HardwareMonitor( "ERROR" );
         HandleRmtLocAlarm(ctrlCmd);
-        HandleErrorState(ctrlCmd, cmd, currentState);
+        HandleErrorState(ctrlCmd, sCmd, currentState);
         break;
     default:
         mp_SchedulerThreadController->LogDebug(QString("Scheduler main controller gets unexpected state: %1").arg(currentState));
@@ -306,6 +321,7 @@ void CSchedulerStateHandler::HandleInitState(ControlCommandType_t ctrlCmd, Sched
 //    {
 //        m_SchedulerMachine->HandleSelfTestWorkFlow(cmdName, retCode);
 //    }
+    qDebug()<<"************* HandleInitState, ctrlcmd:"<<ctrlCmd;
     m_SchedulerMachine->SendSchedulerInitComplete();
 }
 
@@ -313,11 +329,20 @@ void CSchedulerStateHandler::HandleIdleState(ControlCommandType_t ctrlCmd, Sched
 {
     m_CurrentStepState = SM_IDLE;
     Q_UNUSED(cmd)
+    qDebug()<<"************* HandleIdleState, ctrlcmd:"<<ctrlCmd;
     if(m_IsWaitHeatingRV)
     {
         //TO do ---
         //PrepareForIdle(ctrlCmd, cmd);
-        //return;
+        MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
+        Q_ASSERT(commandPtr);
+        Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
+        mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+        m_IsWaitHeatingRV = false;
+
+        //In this case, master SW will be in idle state
+        mp_SchedulerThreadController->SendSystemBusy2GUI(false);
+        return;
     }
     switch (ctrlCmd)
     {
@@ -837,7 +862,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
         {
             if(!m_IsReleasePressureOfSoakFinish)
             {
-                m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  "0"));
+                m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  m_RetortName));
                 m_IsReleasePressureOfSoakFinish = true;
             }
             else if("Scheduler::ALReleasePressure" == cmdName)
@@ -1439,7 +1464,7 @@ void CSchedulerStateHandler::DoCleaningDryStep(ControlCommandType_t ctrlCmd, Sch
         m_CleaningDry.CurrentState = CDS_MOVE_TO_SEALING_13;
         break;
     case CDS_MOVE_TO_SEALING_13:
-        CmdMvRV = new CmdRVReqMoveToRVPosition(500, "0");
+        CmdMvRV = new CmdRVReqMoveToRVPosition(500, m_RetortName);
         CmdMvRV->SetRVPosition(DeviceControl::RV_SEAL_13);
         m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
         m_CleaningDry.CurrentState = CDS_WAIT_HIT_POSITION;
@@ -1455,7 +1480,7 @@ void CSchedulerStateHandler::DoCleaningDryStep(ControlCommandType_t ctrlCmd, Sch
             }
             else if (DCL_ERR_DEV_RV_MOTOR_LOSTCURRENTPOSITION == retCode)
             {
-                m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, "0"));
+                m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, m_RetortName));
                 m_CleaningDry.CurrentState = CDS_MOVE_TO_INIT_POS;
             }
             else
@@ -1549,7 +1574,7 @@ void CSchedulerStateHandler::DoCleaningDryStep(ControlCommandType_t ctrlCmd, Sch
         }
         break;
     case CDS_MOVE_TO_TUBE_13:
-        CmdMvRV = new CmdRVReqMoveToRVPosition(500, "0");
+        CmdMvRV = new CmdRVReqMoveToRVPosition(500, m_RetortName);
         CmdMvRV->SetRVPosition(DeviceControl::RV_TUBE_13);
         m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
         m_CleaningDry.CurrentState = CDS_WAIT_HIT_TUBE_13;
@@ -1586,7 +1611,7 @@ void CSchedulerStateHandler::AllStop()
 {
     mp_SchedulerThreadController->LogDebug("Send cmd to DCL to ALLStop");
     (void)m_SchedulerCommandProcessor->ALBreakAllOperation();
-    m_SchedulerCommandProcessor->pushCmd(new CmdALAllStop(500, "0"));
+    m_SchedulerCommandProcessor->pushCmd(new CmdALAllStop(500, m_RetortName));
 }
 
 bool CSchedulerStateHandler::IsRVRightPosition(RVPosition_type type)
@@ -1776,7 +1801,7 @@ void CSchedulerStateHandler::HandleRmtLocAlarm(quint32 ctrlcmd)
         return ;
     }
 
-    CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, "0");
+    CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, m_RetortName);
     cmd->SetRmtLocOpcode(opcode);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 }
@@ -1784,7 +1809,7 @@ void CSchedulerStateHandler::HandleRmtLocAlarm(quint32 ctrlcmd)
 void CSchedulerStateHandler::Pressure()
 {
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_PRESSURE,QStringList()<<QString("[%1]").arg(AL_TARGET_PRESSURE_POSITIVE));
-    m_SchedulerCommandProcessor->pushCmd(new CmdALPressure(500, "0"));
+    m_SchedulerCommandProcessor->pushCmd(new CmdALPressure(500, m_RetortName));
     //m_TickTimer.start();
 }
 
@@ -1792,7 +1817,7 @@ void CSchedulerStateHandler::HighPressure()
 {
 
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_PRESSURE, QStringList()<<QString("[%1]").arg(40));
-    CmdALPressure* cmd = new CmdALPressure(500, "0");
+    CmdALPressure* cmd = new CmdALPressure(500, m_RetortName);
     cmd->SetTargetPressure(40.0);
     m_SchedulerCommandProcessor->pushCmd(cmd);
     //m_TickTimer.start();
@@ -2496,7 +2521,7 @@ void CSchedulerStateHandler::OnEnterPssmProcessing()
         if (!m_CurProgramStepInfo.isPressure && !m_CurProgramStepInfo.isVacuum)
         {
             mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_RELEASE_PREASURE);
-            m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  "0"));
+            m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  m_RetortName));
         }
         if(0 == m_CurProgramStepIndex)
         {
@@ -2546,7 +2571,7 @@ void CSchedulerStateHandler::OnEnterPssmProcessing()
 bool CSchedulerStateHandler::MoveRV(RVPosition_type type)
 {
     /*lint -e593 */
-    CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, "0");
+    CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, m_RetortName);
     RVPosition_t targetPos = RV_UNDEF;
 
     if(TUBE_POS == type ) //tube position
@@ -2587,7 +2612,7 @@ void CSchedulerStateHandler::Fill()
     //Update current scenario
     //this->UpdateCurrentScenario();
     //CheckResuemFromPause(PSSM_FILLING);
-    CmdALFilling* cmd  = new CmdALFilling(500, "0");
+    CmdALFilling* cmd  = new CmdALFilling(500, m_RetortName);
 
     // only cleaning program need to suck another 2 seconds after level sensor triggering.
     if(!m_CurProgramID.isEmpty() && m_CurProgramID.at(0) == 'C')
@@ -2629,7 +2654,7 @@ void CSchedulerStateHandler::Drain()
     // Update current scenario
     //this->UpdateCurrentScenario();
     //CheckResuemFromPause(PSSM_DRAINING);
-    CmdALDraining* cmd  = new CmdALDraining(500, "0");
+    CmdALDraining* cmd  = new CmdALDraining(500, m_RetortName);
 
     quint32 gapTime = m_EndTimeAndStepTime.GapTime;
     if( "RG6" == m_CurProgramStepInfo.reagentGroup && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) )
@@ -2661,7 +2686,7 @@ void CSchedulerStateHandler::OnStopFill()
 void CSchedulerStateHandler::RCDrain()
 {
     mp_SchedulerThreadController->LogDebug("Send cmd to DCL to RcDrain");
-    CmdALDraining* cmd  = new CmdALDraining(500, "0");
+    CmdALDraining* cmd  = new CmdALDraining(500, m_RetortName);
     cmd->SetDelayTime(5000);
     cmd->SetDrainPressure(40.0);
     cmd->SetIgnorePressure(true);
@@ -2678,7 +2703,7 @@ void CSchedulerStateHandler::RCDrain()
 void CSchedulerStateHandler::RCForceDrain()
 {
     mp_SchedulerThreadController->LogDebug("Send cmd to DCL to RcForceDrain");
-    CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, "0");
+    CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, m_RetortName);
     //cmd->SetRVPosition(this->GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID));
     cmd->SetDrainPressure(40.0);
     m_SchedulerCommandProcessor->pushCmd(cmd);
@@ -2694,7 +2719,7 @@ void CSchedulerStateHandler::RCForceDrain()
 void CSchedulerStateHandler::RcDrainAtOnce()
 {
     mp_SchedulerThreadController->LogDebug("Send cmd to DCL to Drain in RC_Drain_AtOnce");
-    CmdALDraining* cmd  = new CmdALDraining(500, "0");
+    CmdALDraining* cmd  = new CmdALDraining(500, m_RetortName);
     //todo: get delay time here
     cmd->SetDelayTime(5000);
     cmd->SetIgnorePressure(true);

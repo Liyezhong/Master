@@ -90,7 +90,9 @@
 #include"DeviceControl/Include/Simulation/DeviceControlSim.h"
 
 
-
+namespace DeviceControl {
+hwconfigType* IDeviceControl::m_pDeviceConfig = NULL;
+}
 namespace Scheduler{
 /*lint -e534 */
 /*lint -e613 */

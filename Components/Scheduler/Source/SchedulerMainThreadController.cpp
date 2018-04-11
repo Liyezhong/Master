@@ -57,7 +57,7 @@
 #include "Global/Include/UITranslator.h"
 #ifdef GOOGLE_MOCK
 //#include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
-
+#include "DeviceControl/Test/Mock/MockDeviceControl.h"
 #endif
 #include "float.h"
 #include "Global/Include/EventObject.h"
@@ -432,10 +432,31 @@ void SchedulerMainThreadController::OnTickTimer()
     }
     else
     {
-        CSchedulerStateHandler* stateHandler = m_SchedulerStateHandlerList[newControllerCmd.Retort_name].data();
-        if (stateHandler)
+//        CSchedulerStateHandler* stateHandler = m_SchedulerStateHandlerList[newControllerCmd.Retort_name].data();
+//        if (stateHandler)
+//        {
+//            stateHandler->HandleStateCommand(newControllerCmd.Cmd, cmd);
+//        }
+        if (cmd != NULL)
         {
-            stateHandler->HandleStateCommand(newControllerCmd.Cmd, cmd);
+            qDebug()<<"************** handler state command. sender: "<<cmd->GetSender()<<cmd->GetName();
+        }
+        qDebug()<<"************** handler state command. RetortName: "<<newControllerCmd.Retort_name;
+
+        QMap<QString, QSharedPointer<CSchedulerStateHandler>>::const_iterator itr;
+        for (itr = m_SchedulerStateHandlerList.constBegin(); itr != m_SchedulerStateHandlerList.constEnd(); ++itr)
+        {
+            CSchedulerStateHandler* stateHandler = itr.value().data();
+            QString RetortName = stateHandler->GetRetortName();
+            if (newControllerCmd.Retort_name == RetortName)
+            {
+                stateHandler->HandleStateCommand(newControllerCmd.Cmd, cmd);
+            }
+            else
+            {
+                stateHandler->HandleStateCommand(CTRL_CMD_NONE, cmd);
+            }
+
         }
     }
 }
@@ -448,13 +469,15 @@ void SchedulerMainThreadController::HandleSelfTestWorkFlow(const QString& cmdNam
 
 void SchedulerMainThreadController::OnSelfTestDone(bool flag)
 {
+    qDebug()<<"***************** self test is done. flag:"<<flag;
     if(flag)
     {
         // Turn on fan, and we will open it all the time
         m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, m_Sender), false);
 
         bool bErrorHandlingFailed = m_ProgramStatusInfor.GetErrorFlag();
-        if(!m_ProgramStatusInfor.IsProgramFinished())//power failure
+        //if(!m_ProgramStatusInfor.IsProgramFinished())//power failure
+        if (false) // for demo test, we ignore the power failure
         {
 //            MsgClasses::CmdRecoveryFromPowerFailure* commandPtr(
 //                        new MsgClasses::CmdRecoveryFromPowerFailure(5000,m_ProgramStatusInfor.GetProgramId(),
@@ -536,6 +559,7 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
 
 void SchedulerMainThreadController::OnStartStateHandler()
 {
+    qDebug()<<"********* Start state handler.";
     QMap<QString, QSharedPointer<CSchedulerStateHandler>>::const_iterator itr;
     for (itr = m_SchedulerStateHandlerList.constBegin(); itr != m_SchedulerStateHandlerList.constEnd(); ++itr)
     {
