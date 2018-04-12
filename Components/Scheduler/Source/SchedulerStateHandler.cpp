@@ -991,6 +991,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
             mp_SchedulerThreadController->SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
             m_bWaitToPause = true;
         }
+        qDebug()<<"********************** rv move to tube workflow";
         m_SchedulerMachine->HandlePssmMoveTubeWorkflow(cmdName, retCode);
     }
     else if(PSSM_DRAINING == stepState)
@@ -1559,7 +1560,7 @@ void CSchedulerStateHandler::DoCleaningDryStep(ControlCommandType_t ctrlCmd, Sch
     #endif
         break;
     case CDS_STOP_VACUUM:
-        mp_SchedulerThreadController->ReleasePressure();
+        mp_SchedulerThreadController->ReleasePressure(m_RetortName);
         m_CleaningDry.CurrentState = CDS_STOP_HEATING;
         break;
     case CDS_STOP_HEATING:

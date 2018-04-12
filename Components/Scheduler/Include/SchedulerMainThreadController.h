@@ -1066,7 +1066,7 @@ protected:
          *  \brief  Definition/Declaration of slot ReleasePressure
          */
         /****************************************************************************/
-        void ReleasePressure();
+        void ReleasePressure(const QString& Sender = "Common");
 
         /****************************************************************************/
         /*!
