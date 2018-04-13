@@ -459,13 +459,13 @@ void CSchedulerStateMachine::OnRVMoveToSeal()
 
 void CSchedulerStateMachine::InitRVMoveToTubeState()
 {
+    qDebug()<<"************** init rv move to tube state";
     //Update scheduler's current scenario
     mp_SchedulerThreadController->UpdateCurrentScenario();
     mp_SchedulerThreadController->CheckResuemFromPause(PSSM_RV_MOVE_TO_TUBE);
     m_PssmMVTubeSeq = 0;
     mp_SchedulerStateHandler->Pressure();
     m_PssmMVTubePressureTime = QDateTime::currentMSecsSinceEpoch();
-    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateMachine::OnEnterErrorWaitState()
@@ -2218,6 +2218,7 @@ void CSchedulerStateMachine::RecordRetortLidOpened()
 
 void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, DeviceControl::ReturnCode_t retCode, bool isAbortState)
 {
+    qDebug()<<"************* HandlePssmMoveTubeWorkflow, seq:"<<m_PssmMVTubeSeq;
     if (0 == m_PssmMVTubeSeq)
     {
         if ("Scheduler::ALPressure" == cmdName)
@@ -2270,7 +2271,7 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
         }
         if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).PressureAL >= threshPressure)
         {
-            mp_SchedulerThreadController->ReleasePressure();
+            mp_SchedulerThreadController->ReleasePressure(m_Sender);
             m_PssmMVTubePressureTime = QDateTime::currentMSecsSinceEpoch();
             m_PssmMVTubeSeq++;
         }

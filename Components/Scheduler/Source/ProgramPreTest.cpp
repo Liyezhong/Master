@@ -451,7 +451,7 @@ void CProgramPreTest::PressureForCleaning()
         if(QDateTime::currentMSecsSinceEpoch() - m_PressureStartTime> 20*1000)
         {
 
-            mp_SchedulerThreadController->ReleasePressure();
+            mp_SchedulerThreadController->ReleasePressure(mp_SchedulerStatehandler->GetRetortName());
             m_CurrentState = TEMPSENSORS_CHECKING;
             m_IsLoged = 0;
             m_PressureForCleaningSeq = 0;

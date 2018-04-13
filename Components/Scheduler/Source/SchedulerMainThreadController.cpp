@@ -441,7 +441,7 @@ void SchedulerMainThreadController::OnTickTimer()
         {
             qDebug()<<"************** handler state command. sender: "<<cmd->GetSender()<<cmd->GetName();
         }
-        qDebug()<<"************** handler state command. RetortName: "<<newControllerCmd.Retort_name;
+        qDebug()<<"************** handler state command. RetortName: "<<newControllerCmd.Retort_name<<newControllerCmd.Cmd;
 
         QMap<QString, QSharedPointer<CSchedulerStateHandler>>::const_iterator itr;
         for (itr = m_SchedulerStateHandlerList.constBegin(); itr != m_SchedulerStateHandlerList.constEnd(); ++itr)
@@ -1073,6 +1073,7 @@ NonDeviceCommand_t SchedulerMainThreadController::PeekNonDeviceCommand()
         }
         if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_DRAIN)
         {
+            qDebug()<<"********************** program drain...";
             cmd_type.Cmd = CTRL_CMD_DRAIN;
             return cmd_type;
             //return CTRL_CMD_DRAIN;
@@ -1994,10 +1995,10 @@ void SchedulerMainThreadController::RcBottleCheckI()
     m_TickTimer.start();
 }
 
-void SchedulerMainThreadController::ReleasePressure()
+void SchedulerMainThreadController::ReleasePressure(const QString& Sender)
 {
     RaiseEvent(EVENT_SCHEDULER_RELEASE_PREASURE);
-    m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500, m_Sender));
+    m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500, Sender));
 }
 
 bool SchedulerMainThreadController::ShutdownFailedHeaters()
