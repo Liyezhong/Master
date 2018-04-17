@@ -334,7 +334,7 @@ void CSchedulerStateHandler::HandleIdleState(ControlCommandType_t ctrlCmd, Sched
     {
         //TO do ---
         //PrepareForIdle(ctrlCmd, cmd);
-        MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
+        MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY, m_RetortName));
         Q_ASSERT(commandPtr);
         Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
         mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -2851,7 +2851,7 @@ void CSchedulerStateHandler::CompleteRsAbort()
     m_SchedulerMachine->SendRunComplete();
 
     // tell the main controller the program has been aborted
-    MsgClasses::CmdProgramAborted* commandPtrAbortFinish(new MsgClasses::CmdProgramAborted(5000, m_ProgramStatusInfor.IsRetortContaminted()));
+    MsgClasses::CmdProgramAborted* commandPtrAbortFinish(new MsgClasses::CmdProgramAborted(m_RetortName, 5000, m_ProgramStatusInfor.IsRetortContaminted()));
     Q_ASSERT(commandPtrAbortFinish);
     Global::tRefType fRef = mp_SchedulerThreadController->GetNewCommandRef();
     mp_SchedulerThreadController->SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortFinish));
@@ -3212,7 +3212,7 @@ void CSchedulerStateHandler::OnEnterIdleState()
     if (m_ProgramStatusInfor.IsRetortContaminted() && !m_CleanAckSentGui)
     {
         m_CleanAckSentGui = true;
-        MsgClasses::CmdEnterCleaningProgram* commandEnterCleaning(new MsgClasses::CmdEnterCleaningProgram(5000, m_ProgramStatusInfor.GetLastReagentGroup()));
+        MsgClasses::CmdEnterCleaningProgram* commandEnterCleaning(new MsgClasses::CmdEnterCleaningProgram(m_RetortName, 5000, m_ProgramStatusInfor.GetLastReagentGroup()));
         Q_ASSERT(commandEnterCleaning);
         Global::tRefType fRef = mp_SchedulerThreadController->GetNewCommandRef();
         mp_SchedulerThreadController->SendCommand(fRef, Global::CommandShPtr_t(commandEnterCleaning));
