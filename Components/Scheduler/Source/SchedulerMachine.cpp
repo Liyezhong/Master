@@ -2242,7 +2242,7 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
         }
         else
         {
-            // Do nothing, just wait
+            //Do nothing, just wait
         }
     }
     else if (1 == m_PssmMVTubeSeq)

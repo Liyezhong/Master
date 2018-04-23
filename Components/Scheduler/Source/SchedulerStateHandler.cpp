@@ -188,14 +188,7 @@ void CSchedulerStateHandler::HandleStateCommand(ControlCommandType_t ctrlCmd, Sc
     SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
     m_SchedulerMachine->UpdateCurrentState(currentState);
 
-    qDebug()<<"********** HandleStateCommand currentState:"<<currentState;
-    qDebug()<<QTime::currentTime()<<"********** HandleStateCommand CommandType_t:"<<ctrlCmd;
-    if (cmd != NULL)
-    {
-        qDebug()<<"********** HandleStateCommand Command retort name:"<<cmd->GetSender();
-        qDebug()<<"********** HandleStateCommand Command name:"<<cmd->GetName();
-    }
-
+    qDebug()<<QString("[%1]********** HandleStateCommand %2 currentState:%3").arg(QTime::currentTime().toString()).arg(m_RetortName).arg(CurStateName(currentState));
 
     SchedulerCommandShPtr_t sCmd;
     if (cmd != NULL && cmd->GetSender() == m_RetortName)
@@ -229,19 +222,19 @@ void CSchedulerStateHandler::HandleStateCommand(ControlCommandType_t ctrlCmd, Sc
         HandlePowerFailure(ctrlCmd, sCmd);
         break;
     case SM_IDLE:
-        qDebug()<<"DBG"<<"Scheduler main controller state: IDLE";
+        qDebug()<<m_RetortName<<" DBG"<<"Scheduler main controller state: IDLE";
         HardwareMonitor( "IDLE" );
         HandleRmtLocAlarm(ctrlCmd);
         HandleIdleState(ctrlCmd,cmd);
         break;
     case SM_BUSY:
-        qDebug()<<"DBG"<<"Scheduler main controller state: RUN";
+        qDebug()<<m_RetortName<<" DBG"<<"Scheduler main controller state: RUN";
         HardwareMonitor( m_CurProgramID );
         HandleRmtLocAlarm(ctrlCmd);
         HandleRunState(ctrlCmd, sCmd);
         break;
     case SM_ERROR:
-        qDebug()<<"DBG"<<"Scheduler main controller state: ERROR";
+        qDebug()<<m_RetortName<<" DBG"<<"Scheduler main controller state: ERROR";
         HardwareMonitor( "ERROR" );
         HandleRmtLocAlarm(ctrlCmd);
         HandleErrorState(ctrlCmd, sCmd, currentState);
@@ -321,7 +314,6 @@ void CSchedulerStateHandler::HandleInitState(ControlCommandType_t ctrlCmd, Sched
 //    {
 //        m_SchedulerMachine->HandleSelfTestWorkFlow(cmdName, retCode);
 //    }
-    qDebug()<<"************* HandleInitState, ctrlcmd:"<<ctrlCmd;
     m_SchedulerMachine->SendSchedulerInitComplete();
 }
 
@@ -329,12 +321,11 @@ void CSchedulerStateHandler::HandleIdleState(ControlCommandType_t ctrlCmd, Sched
 {
     m_CurrentStepState = SM_IDLE;
     Q_UNUSED(cmd)
-    qDebug()<<"************* HandleIdleState, ctrlcmd:"<<ctrlCmd;
     if(m_IsWaitHeatingRV)
     {
         //TO do ---
         //PrepareForIdle(ctrlCmd, cmd);
-        MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
+        MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY, m_RetortName));
         Q_ASSERT(commandPtr);
         Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
         mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -1125,7 +1116,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
             }
         }
 
-
+        qDebug()<<"*********************** notify program finished....";
         //send command to main controller to tell the left time
         MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, "", m_CurProgramStepIndex, 0));
         Q_ASSERT(commandPtr);
@@ -2851,7 +2842,7 @@ void CSchedulerStateHandler::CompleteRsAbort()
     m_SchedulerMachine->SendRunComplete();
 
     // tell the main controller the program has been aborted
-    MsgClasses::CmdProgramAborted* commandPtrAbortFinish(new MsgClasses::CmdProgramAborted(5000, m_ProgramStatusInfor.IsRetortContaminted()));
+    MsgClasses::CmdProgramAborted* commandPtrAbortFinish(new MsgClasses::CmdProgramAborted(m_RetortName, 5000, m_ProgramStatusInfor.IsRetortContaminted()));
     Q_ASSERT(commandPtrAbortFinish);
     Global::tRefType fRef = mp_SchedulerThreadController->GetNewCommandRef();
     mp_SchedulerThreadController->SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortFinish));
@@ -3212,7 +3203,7 @@ void CSchedulerStateHandler::OnEnterIdleState()
     if (m_ProgramStatusInfor.IsRetortContaminted() && !m_CleanAckSentGui)
     {
         m_CleanAckSentGui = true;
-        MsgClasses::CmdEnterCleaningProgram* commandEnterCleaning(new MsgClasses::CmdEnterCleaningProgram(5000, m_ProgramStatusInfor.GetLastReagentGroup()));
+        MsgClasses::CmdEnterCleaningProgram* commandEnterCleaning(new MsgClasses::CmdEnterCleaningProgram(m_RetortName, 5000, m_ProgramStatusInfor.GetLastReagentGroup()));
         Q_ASSERT(commandEnterCleaning);
         Global::tRefType fRef = mp_SchedulerThreadController->GetNewCommandRef();
         mp_SchedulerThreadController->SendCommand(fRef, Global::CommandShPtr_t(commandEnterCleaning));
@@ -3313,14 +3304,14 @@ void CSchedulerStateHandler::HardwareMonitor(const QString& StepID)
     {
         if(((m_RetortLockStatus == 0) ||(m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 1))
         {
-            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, false));
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(m_RetortName, 5000, DataManager::RETORT_LOCK, false));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
             mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
         if(((m_RetortLockStatus == 1) || (m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 0))
         {
-            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, true));
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(m_RetortName, 5000, DataManager::RETORT_LOCK, true));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
             mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -3332,14 +3323,14 @@ void CSchedulerStateHandler::HardwareMonitor(const QString& StepID)
     {
         if(((m_OvenLidStatus == 0) ||(m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 1))
         {
-            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, false));
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(m_RetortName, 5000, DataManager::PARAFFIN_BATH_LOCK, false));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
             mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
         if(((m_OvenLidStatus == 1) || (m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 0))
         {
-            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, true));
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(m_RetortName, 5000, DataManager::PARAFFIN_BATH_LOCK, true));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
             mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -3399,6 +3390,24 @@ void CSchedulerStateHandler::HardwareMonitor(const QString& StepID)
 //        m_TempOvenTop = strctHWMonitor.TempOvenTop;
 //    }
     m_PositionRV = strctHWMonitor.PositionRV;
+}
+
+QString CSchedulerStateHandler::CurStateName(SchedulerStateMachine_t state)
+{
+    static const QHash<SchedulerStateMachine_t, QString> SchedulerStates = {{SM_UNDEF, "SM_UNDEF"}, {SM_INIT, "SM_INIT"}, \
+        {SM_POWER_FAILURE, "SM_POWER_FAILURE"}, {SM_IDLE, "SM_IDLE"}, {SM_BUSY, "SM_BUSY"}, {SM_ERROR, "SM_ERROR"}, \
+        {SM_INIT_SELFTEST, "SM_INIT_SELFTEST"}, {PSSM_INIT, "PSSM_INIT"}, {PSSM_PRETEST, "PSSM_PRETEST"}, \
+        {PSSM_FILLING_RVROD_HEATING, "PSSM_FILLING_RVROD_HEATING"}, {PSSM_FILLING_LEVELSENSOR_HEATING, "PSSM_FILLING_LEVELSENSOR_HEATING"}, \
+        {PSSM_FILLING, "PSSM_FILLING"}, {PSSM_RV_MOVE_TO_SEAL, "PSSM_RV_MOVE_TO_SEAL"}, {PSSM_PROCESSING, "PSSM_PROCESSING"}, \
+        {PSSM_RV_MOVE_TO_TUBE, "PSSM_RV_MOVE_TO_TUBE"}, {PSSM_DRAINING, "PSSM_DRAINING"}, {PSSM_RV_POS_CHANGE, "PSSM_RV_POS_CHANGE"},
+        {PSSM_STEP_PROGRAM_FINISH, "PSSM_STEP_PROGRAM_FINISH"}, {PSSM_PROGRAM_FINISH, "PSSM_PROGRAM_FINISH"}};
+
+    if (SchedulerStates.find(state) != SchedulerStates.end())
+    {
+        return SchedulerStates[state];
+    }
+
+    return "Unknow_State";
 }
 
 }
