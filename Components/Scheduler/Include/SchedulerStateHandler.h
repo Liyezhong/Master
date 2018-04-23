@@ -499,6 +499,8 @@ public:
 
     void ProgramSelectedReply(Global::tRefType Ref, const QString& ProgramID, int paraffinStepIndex);
 
+    QString CurStateName(SchedulerStateMachine_t state);
+
 private:
     /****************************************************************************/
     /*!

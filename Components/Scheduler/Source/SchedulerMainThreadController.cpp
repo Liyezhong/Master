@@ -327,7 +327,6 @@ void SchedulerMainThreadController::CleanupAndDestroyObjects()
 
 void SchedulerMainThreadController::OnGoReceived()
 {
-    qDebug()<<"************************************************ master thread on go received...";
     OnDCLConfigurationFinished(DCL_ERR_FCT_CALL_SUCCESS);
 }
 
@@ -431,11 +430,6 @@ void SchedulerMainThreadController::OnTickTimer()
     }
     else
     {
-//        CSchedulerStateHandler* stateHandler = m_SchedulerStateHandlerList[newControllerCmd.Retort_name].data();
-//        if (stateHandler)
-//        {
-//            stateHandler->HandleStateCommand(newControllerCmd.Cmd, cmd);
-//        }
         if (cmd != NULL)
         {
             qDebug()<<"************** handler state command. sender: "<<cmd->GetSender()<<cmd->GetName();
@@ -529,6 +523,8 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
         else
         {
             m_IsSelfTestDone = true;
+
+            InitProgramStatus();
 
             if(1 == bErrorHandlingFailed)
             {
@@ -1540,7 +1536,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
                                                            <<Global::TranslatableString(ProgramNameID));
             }
         }
-        CheckCarbonFilterExpired();
+        //CheckCarbonFilterExpired();
         return;
     }
     else if(Cmd.ProgramActionType() == DataManager::PROGRAM_PAUSE)
