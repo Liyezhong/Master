@@ -124,9 +124,6 @@ LIBS += -pthread
 LIBS += -ldl
 
 ################ external libraries and headers
-LIBS += -L"../../../../Shared/ExternalPackages/boost_1_66_0/stage/lib"
-INCLUDEPATH += ../../../../Shared/ExternalPackages/boost_1_66_0/
-DEPENDPATH += ../../../../Shared/ExternalPackages/boost_1_66_0/
 LIBS += ../../../../Shared/ExternalPackages/xsde/libxsde/xsde/libxsde.a
 INCLUDEPATH += ../../../../Shared/ExternalPackages/xsde/libxsde/
 DEPENDPATH8[ += ../../../../Shared/ExternalPackages/xsde/libxsde/

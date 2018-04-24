@@ -21,7 +21,6 @@ INCLUDEPATH += ../.. \
                ../../../../Shared/Master/Components \
                ../../../../Master/Include/ \
                ../../../../Shared/ExternalPackages/xsde/libxsde/
-               ../../../../Shared/ExternalPackages//Hypodermic/Hypodermic
 
 DEPENDPATH +=  ../.. \
                ../../../../Shared/Common/Components \

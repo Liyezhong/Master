@@ -80,6 +80,7 @@
 #include "Scheduler/Commands/Include/CmdALControlValve.h"
 #include "Scheduler/Commands/Include/CmdRVSetTemperatureSwitchState.h"
 #include "Scheduler/Commands/Include/CmdRTSetTemperatureSwitchState.h"
+#include "future"
 
 #ifdef GOOGLE_MOCK
 #include <gmock/gmock.h>
@@ -326,6 +327,7 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 
         if ("Scheduler::StartConfigurationService" == cmdName)
         {
+            std::future<ReturnCode_t> f = std::async(std::launch::async, [this](){return this->mp_IDeviceProcessing->StartConfigurationService();});
             scmd->SetResult(mp_IDeviceProcessing->StartConfigurationService());
         }
         else if ("Scheduler::RestartConfigurationService" == cmdName)
