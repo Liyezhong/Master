@@ -20,7 +20,7 @@ INCLUDEPATH += ../.. \
                ../../../../Shared/Common/Components \
                ../../../../Shared/Master/Components \
                ../../../../Master/Include/ \
-               ../../../../Shared/ExternalPackages/xsde/libxsde/
+               ../../../../Shared/ExternalPackages/xsde/xsde-3.2.0-x86_64-linux-gnu/libxsde/
 
 DEPENDPATH +=  ../.. \
                ../../../../Shared/Common/Components \

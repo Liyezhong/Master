@@ -71,7 +71,9 @@
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
 #include <Scheduler/Include/SchedulerStateHandler.h>
 #include <Scheduler/Include/ProgramSelfTest.h>
+#ifdef GOOGLE_MOCK
 #include "DeviceControl/Test/Mock/MockDeviceControl.h"
+#endif
 #include "DeviceControl/Include/Simulation/DeviceControlSim.h"
 
 using namespace DataManager;
