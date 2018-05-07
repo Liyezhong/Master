@@ -134,29 +134,18 @@ contains(QMAKE_HOST.arch, x86_64):{
     CONFIG += 64bit
 }
 
-contains(QMAKE_CC, arm):{
-    CONFIG += ARM
-}
 
 CONFIG(32bit) {
     XSDEDir = ../../../../Shared/ExternalPackages/xsde/xsde-3.2.0-i686-linux-gnu/libxsde
 }
 
 CONFIG(64bit) {
-    XSDEDir = ../../../../Shared/ExternalPackages/xsde/xsde-3.2.0-x86_64-linux-gnu/libxsde/
-}
-
-CONFIG(ARM) {
-    XSDEDir = ../../../../Shared/ExternalPackages/xsde/xsde-3.2.0-i686-linux-gnu/libxsde
+    XSDEDir = ../../../../Shared/ExternalPackages/xsde/xsde-3.2.0-x86_64-linux-gnu/libxsde
 }
 
 INCLUDEPATH += $$XSDEDir
 DEPENDPATH +=  $$XSDEDir
 
-CONFIG(ARM) {
-    LIBS += $$XSDEDir/xsde/arm/libxsde.a
-} else {
-    LIBS += $$XSDEDir/xsde/libxsde.a
-}
-
+LIBS += $$XSDEDir/xsde/libxsde.a
+QMAKE_PRE_LINK = make -C $$XSDEDir
 
