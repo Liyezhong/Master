@@ -60,7 +60,7 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController,
     m_PressureStartTime = 0;
     m_Sender = mp_SchedulerStatehandler->GetRetortName();
 
-    CONNECTSIGNALSLOT(this, TasksDone(), mp_SchedulerThreadController, OnPreTestDone());
+    CONNECTSIGNALSLOT(this, TasksDone(const QString&), mp_SchedulerThreadController, OnPreTestDone(const QString&));
 }
 
 CProgramPreTest::~CProgramPreTest()
@@ -115,7 +115,6 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPreTest("RTBottom");
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
-                    //m_CurrentState = TEMPSENSORS_CHECKING;
                     m_RTTempStartTime = QDateTime::currentMSecsSinceEpoch();
                 }
                 else
@@ -263,6 +262,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             {
                 m_PressureCalibrationSeq = 0;
                 m_PressureCalibrationCounter = 0;
+                m_CurrentState = RV_POSITION_CHECKING;//for demo
                 mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURESENSOR_PRECHECK_FAILED);
             }
             else if (m_PressureCalibrationCounter > 0)
@@ -389,7 +389,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 break;
             }
             mp_SchedulerThreadController->StopTimer();
-            emit TasksDone();
+            emit TasksDone(mp_SchedulerStatehandler->GetRetortName());
         }
         else
         {

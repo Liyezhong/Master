@@ -459,7 +459,7 @@ typedef struct {
           *  \brief  Slot for pretest done
           */
          /****************************************************************************/
-         void OnPreTestDone();
+         void OnPreTestDone(const QString& RetortID);
 
          /****************************************************************************/
          /*!

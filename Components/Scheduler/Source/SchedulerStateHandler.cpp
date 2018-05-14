@@ -412,6 +412,7 @@ void CSchedulerStateHandler::HandleIdleState(ControlCommandType_t ctrlCmd, Sched
             //send command to main controller to tell the left time
             MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000,
                                                                                                           m_RetortName,
+                                                                                                          "",
                                                                                                           Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_PRECHECK),
                                                                                                           m_CurProgramStepIndex, m_EndTimeAndStepTime.PreTestTime));
             Q_ASSERT(commandPtr);
@@ -987,7 +988,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
     }
     else if(PSSM_DRAINING == stepState)
     {
-        m_CurrentStepState = PSSM_DRAINING;
+        m_CurrentStepState = PSSM_DRAINING;     
 
         if(CTRL_CMD_PAUSE == ctrlCmd)
         {
@@ -1028,6 +1029,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
     else if(PSSM_RV_POS_CHANGE == stepState)
     {
         m_CurrentStepState = PSSM_RV_POS_CHANGE;
+
         if(CTRL_CMD_PAUSE == ctrlCmd)
         {
             mp_SchedulerThreadController->SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
@@ -1062,9 +1064,16 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
     else if(PSSM_STEP_PROGRAM_FINISH == stepState)
     {
         m_CurrentStepState = PSSM_STEP_PROGRAM_FINISH;
+
+
         if (0 == m_PssmStepFinSeq)
         {
             //TO do --- m_UnknownErrorLogVector.clear();
+            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, "", "Step Finished", m_CurProgramStepIndex, 0));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
+            mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
             mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_FINISHED,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex));
             m_PssmStepFinSeq++;
         }
@@ -1118,7 +1127,7 @@ void CSchedulerStateHandler::HandleRunState(ControlCommandType_t ctrlCmd, Schedu
 
         qDebug()<<"*********************** notify program finished....";
         //send command to main controller to tell the left time
-        MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, "", m_CurProgramStepIndex, 0));
+        MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, "", "Program Finished", m_CurProgramStepIndex, 0));
         Q_ASSERT(commandPtr);
         Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
         mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -1460,7 +1469,7 @@ void CSchedulerStateHandler::DoCleaningDryStep(ControlCommandType_t ctrlCmd, Sch
     {
     case CDS_READY:
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_DRY_PROCESSING);
-        commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_DRY_PROCESSING),
+        commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, "", Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_DRY_PROCESSING),
                                                                 m_CurProgramStepIndex, TIME_FOR_CLEANING_DRY_STEP + TIME_FOR_COOLING_DOWN);
         Q_ASSERT(commandPtr);
         Ref = mp_SchedulerThreadController->GetNewCommandRef();
@@ -2516,6 +2525,10 @@ void CSchedulerStateHandler::UpdateStationReagentStatus(bool bOnlyNew)
 
 void CSchedulerStateHandler::OnEnterPssmProcessing()
 {
+    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, "", "Processing", m_CurProgramStepIndex, 0));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
+    mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
     // Update current sceanrio
 //    this->UpdateCurrentScenario();
 //    CheckResuemFromPause(PSSM_PROCESSING);
@@ -2616,6 +2629,11 @@ bool CSchedulerStateHandler::MoveRV(RVPosition_type type)
 
 void CSchedulerStateHandler::Fill()
 {
+    MsgClasses::CmdCurrentProgramStepInfor* commandStepPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, "", "Filling", m_CurProgramStepIndex, 0));
+    Q_ASSERT(commandStepPtr);
+    Global::tRefType RefStep = mp_SchedulerThreadController->GetNewCommandRef();
+    mp_SchedulerThreadController->SendCommand(RefStep, Global::CommandShPtr_t(commandStepPtr));
+
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_FILLING);
     //Update current scenario
     //this->UpdateCurrentScenario();
@@ -2660,8 +2678,14 @@ void CSchedulerStateHandler::Fill()
 
 void CSchedulerStateHandler::Drain()
 {
+    MsgClasses::CmdCurrentProgramStepInfor* commandStepPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, "", "Draining", m_CurProgramStepIndex, 0));
+    Q_ASSERT(commandStepPtr);
+    Global::tRefType RefStep = mp_SchedulerThreadController->GetNewCommandRef();
+    mp_SchedulerThreadController->SendCommand(RefStep, Global::CommandShPtr_t(commandStepPtr));
+
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DRAINING);
     // Update current scenario
+
     //this->UpdateCurrentScenario();
     //CheckResuemFromPause(PSSM_DRAINING);
     CmdALDraining* cmd  = new CmdALDraining(500, m_RetortName);
@@ -2769,12 +2793,14 @@ void CSchedulerStateHandler::OnStopDrain()
 }
 
 void CSchedulerStateHandler::OnFillingHeatingRV()
-{
+{   
     // Update current sceanrio
     mp_SchedulerThreadController->UpdateCurrentScenario();
     mp_SchedulerThreadController->CheckResuemFromPause(PSSM_FILLING_RVROD_HEATING);
     quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
+    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, m_CurReagnetName,
+                                                                                                  "Heating RV",
+                                                                                                  m_CurProgramStepIndex, leftSeconds));
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
     mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -2821,6 +2847,11 @@ void CSchedulerStateHandler::OnFillingHeatingRV()
 
 void CSchedulerStateHandler::OnEnterHeatingLevelSensor()
 {
+    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_RetortName, "", "Heating LS", m_CurProgramStepIndex, 0));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
+    mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
     // Update current sceanrio
     //this->UpdateCurrentScenario();
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_HEATING_LEVEL_SENSOR_FOR_FILLING);

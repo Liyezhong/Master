@@ -1425,7 +1425,7 @@ void SchedulerMainThreadController::SendCoverLidOpenMsg()
 }
 
 void SchedulerMainThreadController::OnEnterPssMStepFin()
-{
+{    
     CheckResuemFromPause(PSSM_STEP_PROGRAM_FINISH);
     m_PssmStepFinSeq = 0;
     m_TickTimer.start();
@@ -3102,10 +3102,10 @@ void SchedulerMainThreadController::OnBackToBusy()
 
 }
 
-void SchedulerMainThreadController::OnPreTestDone()
+void SchedulerMainThreadController::OnPreTestDone(const QString& RetortID)
 {
     ProgramAcknownedgeType_t type =  DataManager::PROGRAM_PRETEST_DONE;
-    MsgClasses::CmdProgramAcknowledge* commandPreTest(new MsgClasses::CmdProgramAcknowledge(5000, type));
+    MsgClasses::CmdProgramAcknowledge* commandPreTest(new MsgClasses::CmdProgramAcknowledge(5000, type, RetortID));
     Q_ASSERT(commandPreTest);
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPreTest));
