@@ -102,6 +102,7 @@ public:
     /****************************************************************************/
     void ResetVarList(){m_StartReq = 0; m_IsLoged = 0;}
 
+    void SetSender(const QString& sender){m_Sender = sender;}
 signals:
     /****************************************************************************/
     /*!

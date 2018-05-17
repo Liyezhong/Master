@@ -175,14 +175,14 @@ void TestSchedulerMainThreadController::TestSlots()
 
     Global::AckOKNOK ack;
     m_pSchedulerMainController->OnAcknowledge(1,ack);
-    ControlCommandType_t ctrlCmd = m_pSchedulerMainController->PeekNonDeviceCommand();
+    ControlCommandType_t ctrlCmd = m_pSchedulerMainController->NonDeviceCmdConverter();
     SchedulerCommandShPtr_t cmd;
     m_pSchedulerMainController->PopDeviceControlCmdQueue(cmd);
     m_pSchedulerMainController->HandlePowerFailure(ctrlCmd, cmd);
 
     m_pSchedulerMainController->UpdateStationReagentStatus(true);
 
-    ctrlCmd = m_pSchedulerMainController->PeekNonDeviceCommand();
+    ctrlCmd = m_pSchedulerMainController->NonDeviceCmdConverter();
     m_pSchedulerMainController->PopDeviceControlCmdQueue(cmd);
     //m_pSchedulerMainController->HandleRunState(ctrlCmd, cmd);
 

@@ -59,10 +59,10 @@
 //#include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
 #include "DeviceControl/Test/Mock/MockDeviceControl.h"
 #endif
-#include "float.h"
+
 #include "Global/Include/EventObject.h"
 #include "Scheduler/Include/HeatingStrategy.h"
-#include <unistd.h>
+
 #include <QtAlgorithms>
 #include "Global/Include/SystemPaths.h"
 #include "Global/Include/Utils.h"
@@ -71,8 +71,11 @@
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
 #include <Scheduler/Include/SchedulerStateHandler.h>
 #include <Scheduler/Include/ProgramSelfTest.h>
-#include "DeviceControl/Test/Mock/MockDeviceControl.h"
+
 #include "DeviceControl/Include/Simulation/DeviceControlSim.h"
+
+#include "Scheduler/Include/InstrumentManager.h"
+#include "Scheduler/Include/EventDispatcher.h"
 
 using namespace DataManager;
 
@@ -116,6 +119,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         ,m_InternalErrorRecv(false)
         ,m_bWaitToPause(false)
         ,m_ReagentExpiredFlag("")
+        ,m_pEventDispatcher(new EventDispatcher())
 {
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
     m_IsPrecheckMoveRV = false;
@@ -231,6 +235,7 @@ void SchedulerMainThreadController::RegisterCommands()
 
 void SchedulerMainThreadController::CreateAndInitializeObjects()
 {
+    m_pEventDispatcher->Start();
     QString mode = mp_DataManager->GetDeviceConfigurationInterface()->GetDeviceConfiguration()->GetValue("Mode");
 
 #ifdef GOOGLE_MOCK
@@ -268,6 +273,8 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
 
     // now register commands
     RegisterCommands();
+
+//    m_pInstrumentManager = new InstrumentManager("Instrument", this);
 
     //InitializeDevice();
 
@@ -428,7 +435,7 @@ void SchedulerMainThreadController::OnTickTimer()
             cmdName = cmd->GetName();
         }
 
-        HandleSelfTestWorkFlow(cmdName, retCode);
+//        HandleSelfTestWorkFlow(cmdName, retCode);
     }
     else
     {
@@ -1671,6 +1678,9 @@ void SchedulerMainThreadController::OnTakeOutSpecimenFinished(Global::tRefType R
 
 void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetCode, QList<QString> retorts)
 {
+    // Create Instrument
+//    m_pInstrumentManager->Initialize(retorts);
+
     // Turn off local/remote alarm by default
     CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, m_Sender);
     cmd->SetRmtLocOpcode(-1);
@@ -1748,6 +1758,12 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
 
     qDebug()<<"************************ DCL configuration finished....: state handler size:"<<m_SchedulerStateHandlerList.size();
     m_TickTimer.start();
+//    m_pInstrumentManager = new InstrumentManager("Common", m_pEventDispatcher, this);
+
+//    m_pInstrumentManager->Initialize(retorts);
+//        m_pInstrumentManager->CreateStateMachine();
+//    m_pInstrumentManager->Start();
+
 }
 
 void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
@@ -1974,6 +1990,7 @@ void SchedulerMainThreadController::PushDeviceControlCmdQueue(Scheduler::Schedul
 {
     m_MutexDeviceControlCmdQueue.lock();
     m_DeviceControlCmdQueue.push_back(CmdPtr);
+    m_pEventDispatcher->IncomingEvent(TPCmdEvent<Scheduler::SchedulerCommandShPtr_t>::CreateEvent(CmdPtr));
     m_MutexDeviceControlCmdQueue.unlock();
 }
 

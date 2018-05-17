@@ -388,6 +388,8 @@ public:
     /****************************************************************************/
     void UpdateOvenParamAt110V();
 
+    void SetSender(const QString sender){m_Sender = sender;}
+
 private slots:
     /****************************************************************************/
     /*!

@@ -60,6 +60,7 @@ namespace DataManager
     class CReagent;
 }
 
+
 namespace Scheduler {
 
 class SchedulerCommandProcessorBase;
@@ -67,6 +68,11 @@ class CSchedulerStateMachine;
 class HeatingStrategy;
 class CProgramSelfTest;
 class CSchedulerStateHandler;
+class InstrumentManager;
+class EventDispatcher;
+
+class TestInstrumentManager;
+
 
 const qint64 TIME_FOR_FIX_TIME = 180;    ///< seconds for fix time
 const quint64 EVENTID_ALARM_FOR_DRAIN = 610000100; ///< Event ID for alarm Draining
@@ -187,6 +193,7 @@ typedef struct {
     ControlCommandType_t Cmd;
 }NonDeviceCommand_t;
 
+
     /****************************************************************************/
     /**
      * @brief Controller class for the main scheduler thread.
@@ -196,6 +203,7 @@ typedef struct {
     class SchedulerMainThreadController : public Threads::ThreadController {
         Q_OBJECT
 
+        friend class TestInstrumentManager;
 #ifdef GOOGLE_MOCK
 		// add "friend class TestSchedulerController" for UT
         friend class TestSchedulerMainThreadController;
@@ -276,6 +284,12 @@ typedef struct {
         bool    m_IsSelfTestDone;
         QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;  ///< for self-test
 
+
+        /***********************refactoring**************/
+        InstrumentManager* m_pInstrumentManager;
+        EventDispatcher* m_pEventDispatcher;
+
+
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
@@ -313,7 +327,7 @@ typedef struct {
          *  \return from PeekNonDeviceCommand
          */
         /****************************************************************************/
-        NonDeviceCommand_t PeekNonDeviceCommand();
+        NonDeviceCommand_t NonDeviceCmdConverter(/*Global::CommandShPtr_t pt*/);
 
          /****************************************************************************/
          /*!
@@ -422,6 +436,8 @@ typedef struct {
          /****************************************************************************/
          //void MoveRVToInit();
 
+         void d();
+         
     private slots:
 
          /****************************************************************************/
@@ -638,6 +654,8 @@ protected:
          */
         /****************************************************************************/
         quint32 GetEventKey(){ return m_EventKey; }
+
+        bool IsSelfTestDone ()const {return m_IsSelfTestDone;}
 
         /****************************************************************************/
         /**

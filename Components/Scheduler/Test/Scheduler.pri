@@ -16,10 +16,10 @@ INCLUDEPATH += /usr/local/include
 ### stuff for adding libraries ####
 ###################################
 #Add google-mock related libraries into our project
-PRE_TARGETDEPS  += /usr/local/lib/libgmock.a
-LIBS            += /usr/local/lib/libgmock.a
-PRE_TARGETDEPS  += /usr/local/lib/libgtest.a
-LIBS            += /usr/local/lib/libgtest.a
+PRE_TARGETDEPS  += ../../../../Shared/ExternalPackages/gmock/lib/gmock/libgmock.a
+LIBS            += ../../../../Shared/ExternalPackages/gmock/lib/gmock/libgmock.a
+PRE_TARGETDEPS  += ../../../../Shared/ExternalPackages/gmock/lib/gtest/libgtest.a
+LIBS            += ../../../../Shared/ExternalPackages/gmock/lib/gtest/libgtest.a
 
 EXTRACOMPONENTDIR = ../../../../Shared/Master/Components
 

@@ -48,6 +48,7 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     ,m_ASB3SwitchType(0)
     ,m_ASB5SwitchType(0)
     ,m_IsLoged(0)
+    ,m_Sender("")
 {
     CONNECTSIGNALSLOT(this, SigSelfTestDone(bool), mp_SchedulerThreadController, OnSelfTestDone(bool));    
 }
@@ -159,7 +160,7 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                 }
             }
             break;
-        case START_HEATING_ACMODE:
+        case START_HEATING_ACMODE:            
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("RV", true);
             mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_ROTARYVALVE_TEMP);
             if(DCL_ERR_FCT_CALL_SUCCESS == ret)

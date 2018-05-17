@@ -64,7 +64,8 @@ HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
                                 :mp_SchedulerController(schedController),
                                 mp_SchedulerCommandProcessor(SchedCmdProcessor),
                                 mp_DataManager(DataManager),
-                                m_OvenSensorsCheck(std::string("000000"))
+                                m_OvenSensorsCheck(std::string("000000")),
+                                m_Sender("")
 {
     CONNECTSIGNALSLOT(mp_SchedulerCommandProcessor, ReportLevelSensorStatus1(), this, OnReportLevelSensorStatus1());
     m_CurScenario = 0;

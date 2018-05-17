@@ -735,6 +735,7 @@ private:
     void ExecuteCmd(Scheduler::SchedulerCommandShPtr_t& scmd);
     SchedulerCommandProcessor(const SchedulerCommandProcessor&);                      ///< Not implemented.
     const SchedulerCommandProcessor& operator=(const SchedulerCommandProcessor&);     ///< Not implemented.
+    void SetSender(const QString& sender){mp_IDeviceProcessing->WithSender(sender);}
 
 private:
     SchedulerMainThreadController *mp_SchedulerThreadController;       ///<  Definition/Declaration of variable mp_SchedulerThreadController
