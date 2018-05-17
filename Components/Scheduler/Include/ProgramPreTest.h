@@ -114,7 +114,7 @@ signals:
      *
      */
     /****************************************************************************/
-    void TasksDone();
+    void TasksDone(const QString& RetortID);
 
 private:
     //!< state list of the state machine

@@ -124,7 +124,28 @@ LIBS += -pthread
 LIBS += -ldl
 
 ################ external libraries and headers
-LIBS += ../../../../Shared/ExternalPackages/xsde/libxsde/xsde/libxsde.a
-INCLUDEPATH += ../../../../Shared/ExternalPackages/xsde/libxsde/
-DEPENDPATH8[ += ../../../../Shared/ExternalPackages/xsde/libxsde/
+XSDEDir =
+
+contains(QMAKE_HOST.arch, x86):{
+    CONFIG += 32bit
+}
+
+contains(QMAKE_HOST.arch, x86_64):{
+    CONFIG += 64bit
+}
+
+
+CONFIG(32bit) {
+    XSDEDir = ../../../../Shared/ExternalPackages/xsde/xsde-3.2.0-i686-linux-gnu/libxsde
+}
+
+CONFIG(64bit) {
+    XSDEDir = ../../../../Shared/ExternalPackages/xsde/xsde-3.2.0-x86_64-linux-gnu/libxsde
+}
+
+INCLUDEPATH += $$XSDEDir
+DEPENDPATH +=  $$XSDEDir
+
+LIBS += $$XSDEDir/xsde/libxsde.a
+QMAKE_PRE_LINK = make -C $$XSDEDir
 

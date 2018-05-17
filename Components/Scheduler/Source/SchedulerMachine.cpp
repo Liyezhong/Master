@@ -43,6 +43,7 @@
 #include "Scheduler/Include/RcReHeating.h"
 #include "EventHandler/Include/StateHandler.h"
 #include "Scheduler/Include/SchedulerStateHandler.h"
+#include <HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h>
 #include <QDebug>
 #include <QDateTime>
 #include <QCoreApplication>
@@ -171,7 +172,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmInitState->addTransition(this, SIGNAL(SigRunBottleCheck()), mp_PssmBottleCheckState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
 
-    mp_PssmPreTestState->addTransition(mp_ProgramPreTest.data(), SIGNAL(TasksDone()), mp_PssmFillingHeatingRVState.data());
+    mp_PssmPreTestState->addTransition(mp_ProgramPreTest.data(), SIGNAL(TasksDone(const QString&)), mp_PssmFillingHeatingRVState.data());
 
     CONNECTSIGNALSLOT(mp_PssmFillingHeatingRVState.data(), entered(), mp_SchedulerStateHandler, OnFillingHeatingRV());
 
@@ -450,6 +451,13 @@ void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
 
 void CSchedulerStateMachine::OnRVMoveToSeal()
 {
+    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, mp_SchedulerStateHandler->GetRetortName(),
+                                                                                                  "", "RV move to seal",
+                                                                                                  mp_SchedulerStateHandler->GetCurProgramStepIndex(), 0));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
+    mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
     //Update Scheduler's current scenario
     mp_SchedulerThreadController->UpdateCurrentScenario();
     mp_SchedulerThreadController->CheckResuemFromPause(PSSM_RV_MOVE_TO_SEAL);
@@ -460,6 +468,13 @@ void CSchedulerStateMachine::OnRVMoveToSeal()
 void CSchedulerStateMachine::InitRVMoveToTubeState()
 {
     qDebug()<<"************** init rv move to tube state";
+    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, mp_SchedulerStateHandler->GetRetortName(),
+                                                                                                  "", "RV move to tube",
+                                                                                                  mp_SchedulerStateHandler->GetCurProgramStepIndex(), 0));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
+    mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
     //Update scheduler's current scenario
     mp_SchedulerThreadController->UpdateCurrentScenario();
     mp_SchedulerThreadController->CheckResuemFromPause(PSSM_RV_MOVE_TO_TUBE);
@@ -506,6 +521,13 @@ void CSchedulerStateMachine::OnEnterBottleCheckState()
 
 void CSchedulerStateMachine::OnRVMoveToNextTube()
 {
+    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, mp_SchedulerStateHandler->GetRetortName(),
+                                                                                                  "", "RV pos-change",
+                                                                                                  mp_SchedulerStateHandler->GetCurProgramStepIndex(), 0));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = mp_SchedulerThreadController->GetNewCommandRef();
+    mp_SchedulerThreadController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
     // Update Scheduler's current scenario
     mp_SchedulerThreadController->UpdateCurrentScenario();
     mp_SchedulerThreadController->CheckResuemFromPause(PSSM_RV_POS_CHANGE);
@@ -2249,7 +2271,8 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
     {
         if ((QDateTime::currentMSecsSinceEpoch() - m_PssmMVTubePressureTime) > 30*1000)
         {
-            m_PssmMVTubeSeq = 0;
+            //m_PssmMVTubeSeq = 0;
+            m_PssmMVTubeSeq++;//for demo
             if (isAbortState)
             {
                 m_PssmAbortingInMoveToTube = true;
@@ -2282,7 +2305,8 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
         {
             if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
-                m_PssmMVTubeSeq = 0;
+                //m_PssmMVTubeSeq = 0;
+                m_PssmMVTubeSeq++;//for demo
                 if (isAbortState)
                 {
                     m_PssmAbortingInMoveToTube = true;
@@ -2335,7 +2359,7 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
             {
                 if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
-                    m_PssmMVTubeSeq = 0;
+                    m_PssmMVTubeSeq = 3;//retry move
                     mp_SchedulerThreadController->SendOutErrMsg(retCode);
                 }
             }

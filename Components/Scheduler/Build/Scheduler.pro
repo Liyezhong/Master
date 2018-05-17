@@ -4,6 +4,8 @@
 
 TARGET = Scheduler
 
+#DEFINES += GOOGLE_MOCK
+
 INCLUDEPATH += ../../../../Shared/Common/Components \
 
 SOURCES += ../Source/*.cpp \
@@ -14,13 +16,17 @@ SOURCES += ../Source/*.cpp \
 
 HEADERS += ../Include/*.h \
            ../../../../Shared/Master/Components/DeviceControl/Include/Interface/*.h \
-../../../../Shared/Master/Components/DeviceControl/Test/Mock/*.h \
            ../../../../Shared/Master/Components/DeviceControl/Include/Global/*.h \
             ../Commands/Include/*.h \
             ../Include/States/Instrument/*.h \
             ../Include/States/*.h \
 
 DEFINES += QSTATEMACHINE_DEBUG
+
+defined(GOOGLE_MOCK) {
+HEADERS +=
+          ../../../../Shared/Master/Components/DeviceControl/Test/Mock/*.h
+}
 
 RESOURCES +=
 
