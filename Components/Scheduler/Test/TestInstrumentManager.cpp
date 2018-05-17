@@ -44,6 +44,7 @@ private Q_SLOTS:
     void utInstrumentSelfTestDone();
     void utInstrumentHandleLoadRequest();
     void utInstrumentHandleStartRequest();
+    void utTPExecutorHandleStartRequest();
 
 private:
     InstrumentManager* m_pInstrumentManager;
@@ -188,7 +189,7 @@ void TestInstrumentManager::utInstrumentHandleStartRequest()
     QObject::connect(m_pInstrumentManager->m_pBusy, SIGNAL(entered()), this, SLOT(OnBusyEntered()));
     m_pEventDispatcher->IncomingEvent(TPCmdEvent<Global::CommandShPtr_t>
                                       ::CreateEvent("Common", Global::CommandShPtr_t(
-                                                        new MsgClasses::CmdProgramAction("Common", 500, "L01", DataManager::ProgramActionType_t::PROGRAM_START, 500, 6000, ""))));
+                                                        new MsgClasses::CmdProgramAction("Retort_A", 500, "L01", DataManager::ProgramActionType_t::PROGRAM_START, 500, 6000, ""))));
 
     while (!BusyEntered)
     {
@@ -212,6 +213,38 @@ void TestInstrumentManager::utInstrumentHandleStartRequest()
     }
 
     QVERIFY2(pBusy->objectName() == "Instrument_Busy_State", "Failure");
+}
+
+void TestInstrumentManager::utTPExecutorHandleStartRequest()
+{
+    // act
+    QObject::connect(m_pInstrumentManager->m_pBusy, SIGNAL(entered()), this, SLOT(OnBusyEntered()));
+    m_pEventDispatcher->IncomingEvent(TPCmdEvent<Global::CommandShPtr_t>
+                                      ::CreateEvent("Common", Global::CommandShPtr_t(
+                                                        new MsgClasses::CmdProgramAction("Retort_A", 500, "L01", DataManager::ProgramActionType_t::PROGRAM_START, 500, 6000, ""))));
+
+    while (!BusyEntered)
+    {
+
+#ifdef Q_OS_WIN
+    Sleep(uint(100));
+#else
+    struct timespec ts = { 1000 / 1000, (100 % 1000) * 1000 * 1000 };
+    nanosleep(&ts, NULL);
+#endif
+
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
+    }
+
+    // assert
+    QAbstractState* pBusy = nullptr;
+    foreach(auto p, m_pInstrumentManager->m_pStateMachine->configuration())
+    {
+        qDebug() << p->objectName();
+        pBusy = p;
+    }
+
+    QVERIFY2(pBusy->objectName() == "TPExecutor_Busy_State", "Failure");
 }
 
 

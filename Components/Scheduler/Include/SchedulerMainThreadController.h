@@ -327,7 +327,7 @@ typedef struct {
          *  \return from PeekNonDeviceCommand
          */
         /****************************************************************************/
-        NonDeviceCommand_t NonDeviceCmdConverter(/*Global::CommandShPtr_t pt*/);
+        NonDeviceCommand_t PeekNonDeviceCommand();
 
          /****************************************************************************/
          /*!

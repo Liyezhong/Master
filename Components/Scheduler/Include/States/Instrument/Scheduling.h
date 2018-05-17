@@ -17,5 +17,6 @@ protected:
     void RepeatAction(TPTransition_t& pTransition) override;
 
 };
+
 }
 #endif // SCHEDULING_H

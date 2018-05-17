@@ -2,7 +2,8 @@
 #include <QtDebug>
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 
-using namespace Scheduler;
+namespace Scheduler{
+
 Init::Init(IEventHandler* pHandler, SchedulerMainThreadController* controller)
     :StateBase<Scheduler::SchedulerCommandShPtr_t>(pHandler, controller),
      m_pSelfTest(nullptr)
@@ -68,4 +69,5 @@ void Init::onExit(QEvent *event)
 {
     IState::onEntry(event);
     qDebug() << "Exitting Init state";
+}
 }

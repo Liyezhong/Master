@@ -42,7 +42,7 @@ INCLUDEPATH += ../../../../Shared/Common/Components/
 INCLUDEPATH += ../..
 INCLUDEPATH += ../Include
 INCLUDEPATH += ../../../../Common/Components/ \
-               ../../../../Shared/ExternalPackages/xsde/libxsde
+               ../../../../Shared/ExternalPackages/xsde/xsde-3.2.0-x86_64-linux-gnu/libxsde/
 
 HEADERS += ../Include/*.h \
             ../../../../Shared/Master/Components/DeviceControl/Include/Interface/*.h \
@@ -54,5 +54,5 @@ HEADERS += ../Include/*.h \
 UseDepLibs(Global DataLogging Threads NetCommands DeviceControl DataManager RemoteCareManager \
            RemoteCareController HeartBeatManager EventHandler ExternalProcessController\
            NetworkComponents StateMachines PasswordManager SWUpdateManager ExportController EncryptionDecryption)
-LIBS += ../../../../Shared/ExternalPackages/xsde/libxsde/xsde/libxsde.a
+LIBS += ../../../../Shared/ExternalPackages/xsde/xsde-3.2.0-x86_64-linux-gnu/libxsde/xsde/libxsde.a
 LIBS += -ldl

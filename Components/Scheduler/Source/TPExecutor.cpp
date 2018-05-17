@@ -1,4 +1,5 @@
 #include "Scheduler/Include/TPExecutor.h"
+#include "Scheduler/Include/TPEvent.h"
 
 namespace Scheduler {
 
@@ -9,21 +10,13 @@ TPExecutor::TPExecutor(const QString& name, EventDispatcher* pEventDispatcher)
 
 bool TPExecutor::HandleEvent(QEvent* event)
 {
-//    if(event->type() == TPEventType)
-//    {
-//        auto evt = dynamic_cast<QStateMachine::WrappedEvent*>(event);
-//        if(evt != nullptr)
-//            return true;
+    auto tpsmEvent = dynamic_cast<TPSMEvent*>(event);
+    if(tpsmEvent != nullptr && m_pStateMachine->isRunning())
+    {
+        qDebug() << tpsmEvent->toString();
 
-//        auto eventArgs = static_cast<TPCmdEvent<Global::CommandShPtr_t>*>(evt->object());
-
-//        if(eventArgs != nullptr && eventArgs->Data().GetPointerToUserData()->GetName() == "MsgClasses::CmdProgramAction")
-//        {
-//             qDebug()<<"Handled Event type: " << eventArgs->Data()->GetName() << "by Handler: " << m_Name;
-//             eventArgs->SetHandled();
-//             return true;
-//        }
-//    }
+        m_pStateMachine->postEvent(event);
+    }
 
     return IEventHandler::HandleEvent(event);
 }

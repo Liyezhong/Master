@@ -21,14 +21,12 @@ void InstrumentManager::Initialize(QList<QString> retorts)
 
         if (!retort.isEmpty())
         {
-//            qDebug()<<"Get retort name:"<<retort;
             if (m_TPExecutorList.find(retort) == m_TPExecutorList.end())
             {
                 auto executor = QSharedPointer<TPExecutor>(new TPExecutor(retort, m_pEventDispatcher));
                 m_TPExecutorList.insert(retort, executor);
                 m_pEventDispatcher->Register(executor);
             }
-
         }
     }
 }

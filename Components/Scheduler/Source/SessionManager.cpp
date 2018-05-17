@@ -1,5 +1,5 @@
-#include "SessionManager.h"
-#include "Session.h"
+#include "Scheduler/Include/SessionManager.h"
+#include "Scheduler/Include/Session.h"
 #include <QSharedPointer>
 
 using namespace DataManager;
