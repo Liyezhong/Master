@@ -101,11 +101,11 @@ void TPExecutor::CreateStateMachine()
     m_pNextAction->addTransition(new EventTransition(TPTransition_t::Execute, m_pNextAction, m_pExecuting));
     m_pNextAction->addTransition(new EventTransition(TPTransition_t::Timeout, m_pNextAction, nullptr));
 
-    m_pExecuting->addTransition(new EventTransition(TPTransition_t::ActionDone, m_pExecuting, m_pSoaking));
+    m_pExecuting->addTransition(new EventTransition(TPTransition_t::ActionDone, m_pExecuting, m_pNextAction));
     m_pExecuting->addTransition(new EventTransition(TPTransition_t::Timeout, m_pExecuting, nullptr));;
 
-    m_pSoaking->addTransition(new EventTransition(TPTransition_t::SoakingDone, m_pSoaking, m_pNextAction));
-    m_pSoaking->addTransition(new EventTransition(TPTransition_t::Timeout, m_pSoaking, nullptr));
+//    m_pSoaking->addTransition(new EventTransition(TPTransition_t::SoakingDone, m_pSoaking, m_pNextAction));
+//    m_pSoaking->addTransition(new EventTransition(TPTransition_t::Timeout, m_pSoaking, nullptr));
 
 }
 

@@ -16,7 +16,7 @@ public:
 
     int CreateSession(const QString& protocoId, const QString& retortId);
     void DestroySession(int sessionId);
-    Session const* GetSessionById(int sessionId);
+    Session* GetSessionById(int sessionId);
 private:
 
     QHash<int, QSharedPointer<Session>> m_SessionList;

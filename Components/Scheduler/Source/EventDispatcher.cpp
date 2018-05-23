@@ -46,7 +46,7 @@ void EventDispatcher::Remove(QSharedPointer<IEventHandler> pEventHandler)
 void EventDispatcher::Start()
 {
     CONNECTSIGNALSLOT(&m_Timer, timeout(), this, OnTickTimer());
-    m_Timer.setInterval(500);
+    m_Timer.setInterval(TICKTIMERINTERVAL);
     m_Timer.start();
 }
 

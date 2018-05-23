@@ -8,11 +8,13 @@
 #include <QSharedPointer>
 #include <QStateMachine>
 
+#define TICKTIMERINTERVAL 500
 namespace Scheduler{
 class TPEvent;
 class IEventHandler;
 class TestInstrumentManager;
 class TPEvent;
+
 
 class EventDispatcher: public QObject
 {
@@ -43,6 +45,7 @@ private:
     QMutex m_EventQueueMutex;
     QTimer m_Timer;
     TPEvent* m_pDummyEvent;
+
 };
 }
 

@@ -34,14 +34,13 @@ public:
     StateBase(IEventHandler* pHandler, Scheduler::SchedulerMainThreadController* controller);
     D* Data(){return data;}
 
-    virtual void RepeatAction(TPTransition_t& pTransition);
 protected:
     void onEntry(QEvent* event) override;
     void onExit(QEvent* event) override;
     bool HandleEvent(TPEvent* event) override;
 
     virtual bool HandleEvent(TPEventArgs<D>* event, TPTransition_t& pTransition) = 0;
-
+    virtual void RepeatAction(TPTransition_t& pTransition);
 protected:
     D* data;
     Scheduler::SchedulerMainThreadController* m_pController;

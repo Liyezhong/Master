@@ -5,22 +5,22 @@
 using namespace DataManager;
 namespace Scheduler{
 
-int SessionManager::SeqNo = -1;
+int SessionManager::SessionNo = -1;
 SessionManager::SessionManager(CDataManager* pDataManager)
     :m_pDataManager(pDataManager)
 {
     m_SessionList.clear();
 }
 
-int SessionManager::CreateSession(quint32 protocoId, const QString &retortId)
+int SessionManager::CreateSession(const QString& protocoId, const QString &retortId)
 {
-    auto pProgram = m_pDataManager->GetProgramList()->GetProgram(protocoId);
+    auto* pProgram = m_pDataManager->GetProgramList()->GetProgram(protocoId);
     QList<QSharedPointer<const CProgramStep>> programSteps;
 
-    auto session = new Session(retortId, QSharedPointer<CProgram>(pProgram));
-    m_SessionList.insert(SeqNo++, QSharedPointer<Session>(session));
+    auto session = new Session(retortId, const_cast<CProgram*>(pProgram));
+    m_SessionList.insert(SessionNo++,QSharedPointer<Session>(session));
 
-    return SeqNo;
+    return SessionNo;
 }
 
 void SessionManager::DestroySession(int sessionId)

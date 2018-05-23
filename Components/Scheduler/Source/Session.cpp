@@ -3,10 +3,10 @@
 
 namespace Scheduler{
 
-Session::Session(const QString& retortId, QSharedPointer<CProgram> pProgram)
+Session::Session(const QString& retortId, CProgram* pProgram)
     : m_RetortId(retortId)
 {
-    m_pProgram = pProgram.data();
+    m_pProgram = pProgram;
     m_pProgramStepInfo = new ProgramStepInfor{};
 
     m_ActionList.clear();
