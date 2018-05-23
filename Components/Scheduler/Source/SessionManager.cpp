@@ -15,15 +15,8 @@ SessionManager::SessionManager(CDataManager* pDataManager)
 int SessionManager::CreateSession(quint32 protocoId, const QString &retortId)
 {
     auto pProgram = m_pDataManager->GetProgramList()->GetProgram(protocoId);
-    QList<QSharedPointer<const CProgramStep>> programSteps;
 
-    for (int i = 0; i < pProgram->GetNumberOfSteps(); i++)
-    {
-        auto pProgramStep = pProgram->GetProgramStep(i);
-        programSteps << QSharedPointer<const CProgramStep>(pProgramStep);
-    }
-
-    auto session = new Session(retortId, QSharedPointer<CProgram>(pProgram), programSteps);
+    auto session = new Session(retortId, QSharedPointer<CProgram>(pProgram));
     m_SessionList.insert(SeqNo++, QSharedPointer<Session>(session));
 
     return SeqNo;

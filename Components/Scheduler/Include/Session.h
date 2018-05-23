@@ -27,16 +27,17 @@ typedef struct {
 class Session
 {
 public:
-    Session(const QString& retortId, QSharedPointer<CProgram> pProgram, const QList<QSharedPointer<const CProgramStep>>& programSteps);
+    Session(const QString& retortId, QSharedPointer<CProgram> pProgram);
     ~Session();
 
+    const QString& GetRetortID() const {return m_RetortId;}
     CProgram* GetProgram() {return m_pProgram;}
 
     QList<QSharedPointer<const CProgramStep>> GetProgramStep() {return m_pProgramSteps;}
 
     ProgramStepInfor* GetProgramStepInfo(){return m_pProgramStepInfo;}
 
-    QList<QSharedPointer<IAction>> GetActionList(){return m_ActionList;}
+    QList<QSharedPointer<IAction>>& GetActionList(){return m_ActionList;}
 
 
     Q_DISABLE_COPY(Session);

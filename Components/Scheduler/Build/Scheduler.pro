@@ -10,8 +10,8 @@ INCLUDEPATH += ../../../../Shared/Common/Components \
 
 SOURCES += ../Source/*.cpp \
             ../Commands/Source/*.cpp \
-            ../Source/States/Instrument/*.cpp \
-            ../Source/States/TPExecutor/*.cpp \
+            #../Source/States/Instrument/*.cpp \
+            #../Source/States/TPExecutor/*.cpp \
             ../Source/States/*.cpp \
 
 
@@ -19,8 +19,8 @@ HEADERS += ../Include/*.h \
            ../../../../Shared/Master/Components/DeviceControl/Include/Interface/*.h \
            ../../../../Shared/Master/Components/DeviceControl/Include/Global/*.h \
             ../Commands/Include/*.h \
-            ../Include/States/Instrument/*.h \
-            ../Include/States/TPExecutor/*.h \
+            #../Include/States/Instrument/*.h \
+            #../Include/States/TPExecutor/*.h \
             ../Include/States/*.h \
 
 DEFINES += QSTATEMACHINE_DEBUG

@@ -7,6 +7,7 @@
 
 
 namespace Scheduler{
+
 class Session;
 class SessionManager
 {
@@ -17,6 +18,7 @@ public:
     void DestroySession(int sessionId);
     Session* GetSessionById(int sessionId);
 private:
+
     QHash<int, QSharedPointer<Session>> m_SessionList;
     DataManager::CDataManager* m_pDataManager;
     static int SeqNo;
