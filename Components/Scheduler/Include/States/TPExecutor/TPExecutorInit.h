@@ -1,11 +1,10 @@
-#ifndef INIT_H
-#define INIT_H
+#ifndef TPEXECUTOR_INIT_H
+#define TPEXECUTOR_INIT_H
 #include <QDebug>
 #include "Scheduler/Include/States/StateBase.h"
-#include "Scheduler/Include/ProgramSelfTest.h"
 
 namespace Scheduler{
-namespace Instrument{
+namespace TPExecutorStates{
 class Init: public StateBase<Scheduler::SchedulerCommandShPtr_t>
 {
 public:
@@ -19,14 +18,10 @@ protected:
 
     void RepeatAction(TPTransition_t& pTransition) override;
 
-    void onExit(QEvent* event) override;
     Q_DISABLE_COPY(Init)
 
-signals:
-    void OnSelfTestDone(bool);
-public:
-    CProgramSelfTest* m_pSelfTest;
 };
+
 }
 }
-#endif // INIT_H
+#endif // TPEXECUTOR_INIT_H

@@ -23,7 +23,6 @@ HEADERS += ../Include/*.h \
             ../Include/States/TPExecutor/*.h \
             ../Include/States/*.h \
 
-DEFINES += QSTATEMACHINE_DEBUG
 
 defined(GOOGLE_MOCK) {
 HEADERS +=

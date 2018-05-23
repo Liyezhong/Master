@@ -1,20 +1,23 @@
 #include "Scheduler/Include/SessionManager.h"
 #include "Scheduler/Include/Session.h"
-#include <QSharedPointer>
+
 
 using namespace DataManager;
 namespace Scheduler{
 
-int SessionManager::SeqNo = -1;
+int SessionManager::SessionNo = -1;
 SessionManager::SessionManager(CDataManager* pDataManager)
     :m_pDataManager(pDataManager)
 {
     m_SessionList.clear();
 }
 
-int SessionManager::CreateSession(quint32 protocoId, const QString &retortId)
+int SessionManager::CreateSession(const QString& protocoId, const QString &retortId)
 {
     auto pProgram = m_pDataManager->GetProgramList()->GetProgram(protocoId);
+    if(pProgram == nullptr)
+        return -1;
+
     QList<QSharedPointer<const CProgramStep>> programSteps;
 
     for (int i = 0; i < pProgram->GetNumberOfSteps(); i++)
@@ -23,10 +26,10 @@ int SessionManager::CreateSession(quint32 protocoId, const QString &retortId)
         programSteps << QSharedPointer<const CProgramStep>(pProgramStep);
     }
 
-    auto session = new Session(retortId, QSharedPointer<CProgram>(pProgram), programSteps);
-    m_SessionList.insert(SeqNo++, QSharedPointer<Session>(session));
+    auto session = new Session(retortId, pProgram);
+    m_SessionList.insert(SessionNo++, QSharedPointer<Session>(session));
 
-    return SeqNo;
+    return SessionNo;
 }
 
 void SessionManager::DestroySession(int sessionId)
@@ -34,7 +37,7 @@ void SessionManager::DestroySession(int sessionId)
     m_SessionList.remove(sessionId);
 }
 
-Session *SessionManager::GetSessionById(int sessionId)
+Session const* SessionManager::GetSessionById(int sessionId)
 {
     return m_SessionList.find(sessionId).value().data();
 }

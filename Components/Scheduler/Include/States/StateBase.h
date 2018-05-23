@@ -19,7 +19,7 @@ public:
           m_Transition(TPTransition_t::Unknown)
     {
     }
-    virtual bool HandleEvent(QEvent* e){}
+    virtual bool HandleEvent(TPEvent* e){ return false;}
 
 protected:
     IEventHandler* m_pHandler;
@@ -38,9 +38,9 @@ public:
 protected:
     void onEntry(QEvent* event) override;
     void onExit(QEvent* event) override;
-    bool HandleEvent(QEvent* event) override;
+    bool HandleEvent(TPEvent* event) override;
 
-    virtual bool HandleEvent(TPCmdEvent<D>* event, TPTransition_t& pTransition) = 0;
+    virtual bool HandleEvent(TPEventArgs<D>* event, TPTransition_t& pTransition) = 0;
 
 protected:
     D* data;

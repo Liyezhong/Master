@@ -1992,7 +1992,7 @@ void SchedulerMainThreadController::PushDeviceControlCmdQueue(Scheduler::Schedul
 {
     m_MutexDeviceControlCmdQueue.lock();
     m_DeviceControlCmdQueue.push_back(CmdPtr);
-    m_pEventDispatcher->IncomingEvent(TPCmdEvent<Scheduler::SchedulerCommandShPtr_t>::CreateEvent(CmdPtr));
+    m_pEventDispatcher->IncomingEvent(TPEventArgs<Scheduler::SchedulerCommandShPtr_t>::CreateEvent(CmdPtr));
     m_MutexDeviceControlCmdQueue.unlock();
 }
 

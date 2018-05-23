@@ -10,6 +10,8 @@
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "HimalayaMasterThread/Include/HimalayaMasterThreadController.h"
 #include "Scheduler/Commands/Include/CmdRVSetTemperatureSwitchState.h"
+#include "Scheduler/Include/SessionManager.h"
+#include "Scheduler/Include/TPExecutor.h"
 
 #ifndef Q_OS_WIN
 #include <sys/time.h>
@@ -26,12 +28,21 @@ namespace Scheduler{
     QCoreApplication::exec(); \
 }
 
+#define SLEEP(TIMEOUT, CONDITIONS) \
+{ \
+    while (CONDITIONS) \
+    { \
+        QCoreApplication::processEvents(QEventLoop::AllEvents, TIMEOUT); \
+    } \
+}
+
 class TestInstrumentManager : public QObject
 {
     Q_OBJECT
 
 public:
     TestInstrumentManager();
+    ~TestInstrumentManager();
 
 protected Q_SLOTS:
     void OnIdleEntered();
@@ -45,6 +56,8 @@ private Q_SLOTS:
     void utInstrumentHandleLoadRequest();
     void utInstrumentHandleStartRequest();
     void utTPExecutorHandleStartRequest();
+    void utTPExecutorProtocolCompleted();
+
 
 private:
     InstrumentManager* m_pInstrumentManager;
@@ -58,6 +71,7 @@ private:
     Himalaya::HimalayaMasterThreadController* mp_HMThreadController;
     SchedulerMainThreadController* m_pController;
     DataManager::CDataManager* m_pDataManager;
+    SessionManager* m_pSessionManager;
 };
 
 TestInstrumentManager::TestInstrumentManager()
@@ -72,7 +86,8 @@ TestInstrumentManager::TestInstrumentManager()
     m_pEventDispatcher = m_pController->m_pEventDispatcher;
 //    m_pEventDispatcher->moveToThread(m_pTestThread);
     m_pTestThread->start();
-    m_pInstrumentManager = new InstrumentManager("Common", m_pEventDispatcher, m_pController);
+    m_pSessionManager = new SessionManager(m_pDataManager);
+    m_pInstrumentManager = new InstrumentManager("Common", m_pEventDispatcher, m_pController, m_pSessionManager);
     IdleEntered = false;
     SchedulingEntered = false;
     BusyEntered = false;
@@ -97,9 +112,8 @@ void TestInstrumentManager::testCase1()
 void TestInstrumentManager::utHandleGuiCmd()
 {
     // arrange
-    m_pInstrumentManager->Start();
 
-    auto event = TPCmdEvent<Global::CommandShPtr_t>::CreateEvent(
+    auto event = TPEventArgs<Global::CommandShPtr_t>::CreateEvent(
                 Scheduler::SchedulerCommandShPtr_t(new Scheduler::CmdRVSetTemperatureSwitchState(500, "Retort_A")));
     m_pEventDispatcher->IncomingEvent(event);
 
@@ -113,7 +127,7 @@ void TestInstrumentManager::utHandleGuiCmd()
 void TestInstrumentManager::utInstrumentSelfTestDone()
 {
     // arrange
-    m_pInstrumentManager->CreateStateMachine();
+
     QObject::connect(m_pInstrumentManager->m_pIdle, SIGNAL(entered()), this, SLOT(OnIdleEntered()));
 
     // act
@@ -157,7 +171,7 @@ void TestInstrumentManager::utInstrumentHandleLoadRequest()
     QObject::connect(m_pInstrumentManager->m_pScheduling, SIGNAL(entered()), this, SLOT(OnSchedulingEntered()));
 //    auto req = new TPCmdEvent<Global::CommandShPtr_t>("Common", Global::CommandShPtr_t(new MsgClasses::CmdProgramSelected("Common", 500, "L01", 0)));
 
-    m_pEventDispatcher->IncomingEvent(TPCmdEvent<Global::CommandShPtr_t>::CreateEvent("Common", Global::CommandShPtr_t(new MsgClasses::CmdProgramSelected("Common", 500, "L01", 0))));
+    m_pEventDispatcher->IncomingEvent(TPEventArgs<Global::CommandShPtr_t>::CreateEvent("Common", Global::CommandShPtr_t(new MsgClasses::CmdProgramSelected("Common", 500, "L01", 0))));
 
     while (!SchedulingEntered)
     {
@@ -187,7 +201,7 @@ void TestInstrumentManager::utInstrumentHandleStartRequest()
 {
     // act
     QObject::connect(m_pInstrumentManager->m_pBusy, SIGNAL(entered()), this, SLOT(OnBusyEntered()));
-    m_pEventDispatcher->IncomingEvent(TPCmdEvent<Global::CommandShPtr_t>
+    m_pEventDispatcher->IncomingEvent(TPEventArgs<Global::CommandShPtr_t>
                                       ::CreateEvent("Common", Global::CommandShPtr_t(
                                                         new MsgClasses::CmdProgramAction("Retort_A", 500, "L01", DataManager::ProgramActionType_t::PROGRAM_START, 500, 6000, ""))));
 
@@ -217,34 +231,47 @@ void TestInstrumentManager::utInstrumentHandleStartRequest()
 
 void TestInstrumentManager::utTPExecutorHandleStartRequest()
 {
+    // arrange
+    BusyEntered = false;
+
     // act
-    QObject::connect(m_pInstrumentManager->m_pBusy, SIGNAL(entered()), this, SLOT(OnBusyEntered()));
-    m_pEventDispatcher->IncomingEvent(TPCmdEvent<Global::CommandShPtr_t>
+    QObject::connect(m_pInstrumentManager->GetTPExecutor("Retort_A")->m_pBusy, SIGNAL(entered()), this, SLOT(OnBusyEntered()));
+    m_pEventDispatcher->IncomingEvent(TPEventArgs<Global::CommandShPtr_t>
                                       ::CreateEvent("Common", Global::CommandShPtr_t(
                                                         new MsgClasses::CmdProgramAction("Retort_A", 500, "L01", DataManager::ProgramActionType_t::PROGRAM_START, 500, 6000, ""))));
 
-    while (!BusyEntered)
-    {
-
-#ifdef Q_OS_WIN
-    Sleep(uint(100));
-#else
-    struct timespec ts = { 1000 / 1000, (100 % 1000) * 1000 * 1000 };
-    nanosleep(&ts, NULL);
-#endif
-
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 500);
-    }
+    SLEEP(500, !BusyEntered)
 
     // assert
     QAbstractState* pBusy = nullptr;
-    foreach(auto p, m_pInstrumentManager->m_pStateMachine->configuration())
+    foreach(auto p, m_pInstrumentManager->GetTPExecutor("Retort_A")->m_pStateMachine->configuration())
     {
         qDebug() << p->objectName();
         pBusy = p;
     }
 
-    QVERIFY2(pBusy->objectName() == "TPExecutor_Busy_State", "Failure");
+    QVERIFY2(pBusy->objectName() == "TPExecutor_NextAction_State", "Failure");
+}
+
+void TestInstrumentManager::utTPExecutorProtocolCompleted()
+{
+    // arrange
+    IdleEntered = false;
+
+    // act
+    QObject::connect(m_pInstrumentManager->GetTPExecutor("Retort_A")->m_pIdle, SIGNAL(entered()), this, SLOT(OnIdleEntered()));
+
+    SLEEP(500, !IdleEntered)
+
+    // assert
+    QAbstractState* pIdle = nullptr;
+    foreach(auto p, m_pInstrumentManager->GetTPExecutor("Retort_A")->m_pStateMachine->configuration())
+    {
+        qDebug() << p->objectName();
+        pIdle = p;
+    }
+
+    QVERIFY2(pIdle->objectName() == "TPExecutor_Idle_State", "Failure");
 }
 
 
@@ -266,6 +293,14 @@ void TestInstrumentManager::OnBusyEntered()
 void TestInstrumentManager::OnDCLConfigurationDone()
 {
     configed = true;
+}
+
+TestInstrumentManager::~TestInstrumentManager()
+{
+    delete m_pController;
+    delete mp_HMThreadController;
+    delete m_pDataManager;
+    delete m_pInstrumentManager;
 }
 }
 

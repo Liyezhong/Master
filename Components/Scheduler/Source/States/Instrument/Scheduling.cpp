@@ -1,6 +1,7 @@
 #include "Scheduler/Include/States/Instrument/Scheduling.h"
 
 namespace Scheduler{
+namespace Instrument{
 
 Scheduling::Scheduling(IEventHandler* pHandler, SchedulerMainThreadController* controller)
     :StateBase<Global::CommandShPtr_t>(pHandler, controller)
@@ -20,12 +21,14 @@ void Scheduling::onEntry(QEvent *event)
 
 void Scheduling::RepeatAction(TPTransition_t &pTransition)
 {
-    pTransition = TPTransition_t::Done;
+
 }
 
-bool Scheduling::HandleEvent(TPCmdEvent<Global::CommandShPtr_t> *event, TPTransition_t &pTransition)
+bool Scheduling::HandleEvent(TPEventArgs<Global::CommandShPtr_t> *event, TPTransition_t &pTransition)
 {
-
+     pTransition = TPTransition_t::Done;
+    return false;
 }
 
+}
 }

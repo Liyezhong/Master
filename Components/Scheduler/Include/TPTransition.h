@@ -15,7 +15,7 @@ class EventTransition: public QAbstractTransition
 {
 
 public:
-    EventTransition(const TPTransition_t& transition, IState* m_pSource, IState* pTarget);
+    EventTransition(const TPTransition_t& transition, QState* m_pSource, QState* pTarget = nullptr);
 
 protected:
     bool eventTest(QEvent *e) Q_DECL_OVERRIDE;
@@ -23,10 +23,9 @@ protected:
     void onTransition(QEvent* e) override;
 
 private:
-
+    QState* m_pSource;
+    QState* m_pTarget;
     TPTransition_t m_value;
-    IState* m_pSource;
-    IState* m_pTarget;
 };
 }
 

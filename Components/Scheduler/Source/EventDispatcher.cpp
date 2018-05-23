@@ -10,7 +10,7 @@ EventDispatcher::EventDispatcher()
     : m_Timer(this)
 {
     m_EventHandlerList.clear();
-    m_pDummyEvent = new TPSMEvent(TPTransition_t::Self, nullptr);
+    m_pDummyEvent = new TPEvent(TPTransition_t::Self, nullptr);
 }
 
 EventDispatcher::~EventDispatcher()
@@ -56,54 +56,80 @@ void EventDispatcher::Stop()
     m_Timer.stop();
 }
 
-void EventDispatcher::IncomingEvent(TPSMEvent* event)
+void EventDispatcher::IncomingEvent(TPEvent* event)
 {
-    TPInternalEventBase* eventArgs = nullptr;
     if(event != nullptr)
-    {
-        eventArgs = static_cast<TPInternalEventBase*>(event->m_pData);
-        if(eventArgs == nullptr)
+    {        
+        if(event->EventArgs() == nullptr)
+        {
+            qDebug() << "Invalid event args";
             return;
+        }
+    }
+    qDebug() << "IncomingEvent: " << event->EventArgs()->toString();
+    QMutexLocker lock(&m_EventQueueMutex);
+    m_EventQueue.push_back(event);
+}
+
+bool EventDispatcher::RemovePendingEvent(TPEvent *event)
+{
+    QMutexLocker lock(&m_EventQueueMutex);
+    if(!m_EventQueue.contains(event))
+    {
+        return false;
     }
 
-    QMutexLocker lock(&m_EventQueueMutex);
-    m_EventQueue.enqueue(event);
+    auto* data = dynamic_cast<TPEventArgsBase*>(event->EventArgs());
+    if(data == nullptr)
+    {
+        qDebug() << "Garbage detected!!!";
+        m_EventQueue.removeOne(event);
+        return true;
+    }
+    else if (data->Sender().isEmpty() || data->Handled())
+    {
+        qDebug() << "Handled event removed";
+        m_EventQueue.removeOne(event);
+        delete event;
+        event = nullptr;
+        return true;
+    }
+
+    lock.unlock();
+
+    return false;
 }
 
 void EventDispatcher::OnTickTimer()
 {
-
     qDebug() << QDateTime::currentDateTime().toString() << " OnTickTimer";
+
+    foreach(auto handler, m_EventHandlerList)
+    {
+        handler->HandleEvent(new TPEvent(TPTransition_t::Timeout, nullptr));
+    }
 
 
     if(!m_EventQueue.isEmpty())
-    {
-        QMutexLocker lock(&m_EventQueueMutex);
-        auto evt = m_EventQueue.dequeue();
-        auto eventArgs = dynamic_cast<TPSMEvent*>(evt);
-        if(eventArgs != nullptr && eventArgs->m_pData->Sender().isEmpty())
+    {        
+        auto evt = m_EventQueue.first();
+
+        if(RemovePendingEvent(evt))
         {
-            qDebug() << "EventDispatcher: sender is empty";
             return;
         }
 
         foreach(auto handler, m_EventHandlerList)
         {
-            if(handler->Name() == eventArgs->m_pData->Sender())
+            if(handler->objectName() == evt->EventArgs()->Sender())
             {
-                qDebug() << " OnTickTimer Active";
-                 handler->HandleEvent(evt);
-                return;
+                if(handler->HandleEvent(evt))
+                {
+                    ;
+                }
             }
         }
     }
-
-    foreach(auto handler, m_EventHandlerList)
-    {
-        qDebug() << " OnTickTimer Dummy";
-        handler->HandleEvent(new TPSMEvent(TPTransition_t::Self, nullptr));
-    }
-
 }
 
 }

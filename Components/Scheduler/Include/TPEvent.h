@@ -13,19 +13,23 @@ class IEventHandler;
 typedef enum
 {
     Unknown,
+    Initial,
     Done,
     Self,
     Error,
     Timeout,
     Load,
-    Start
+    Start,
+    Execute,
+    ActionDone,
+    SoakingDone
 }TPTransition_t;
 
-class TPInternalEventBase: public QObject
+class TPEventArgsBase: public QObject
 {
     Q_OBJECT
 public:
-    TPInternalEventBase(const QString& sender)
+    TPEventArgsBase(const QString& sender)
           :m_Sender(sender),
           m_Handled(false)
     {
@@ -33,71 +37,85 @@ public:
         m_SeqNo++;
     }
 
-//    TPEventType Type() const {return m_Type;}
-
     QString Sender() const {return m_Sender;}
 
     void SetHandled() {m_Handled = true;}
 
+    bool Handled() const{return m_Handled;}
+
     virtual QString toString()
     {
-        return QString("Type: %1, Sender: %2, Timestamp: %3, SeqNo: %4").arg(m_Sender).arg(m_Timestamp.toString()).arg(m_SeqNo);
+        return QString("Sender: %1, Timestamp: %2, SeqNo: %3").arg(m_Sender).arg(m_Timestamp.toString()).arg(m_SeqNo);
     }
 
-    Q_DISABLE_COPY(TPInternalEventBase);
+    Q_DISABLE_COPY(TPEventArgsBase);
+
 protected:
-//    TPEventType m_Type;
     QString m_Sender;
     bool m_Handled;
     QDateTime m_Timestamp;
     static quint32 m_SeqNo;
 };
 
-struct TPSMEvent: public QEvent
+class TPEvent: public QEvent
 {
-    TPSMEvent(const TPTransition_t& val, TPInternalEventBase* pData = nullptr)
+public:
+    TPEvent(const TPTransition_t& val, TPEventArgsBase* pData = nullptr)
         : QEvent((QEvent::Type)(QEvent::User + 1)),
-          value(val),
-          m_pData(pData)
+          m_Transition(val),
+          m_EventArgs(pData)
     {}
 
-    TPTransition_t value;
-    TPInternalEventBase* m_pData;
+    ~TPEvent()
+    {
+        if(m_EventArgs != nullptr)
+        {
+            qDebug() << "~TPEvent()";
+            delete m_EventArgs;
+            m_EventArgs = nullptr;
+        }
+    }
 
-    QString toString(){return QString("TPSMEvent- type{%1}transition{%2}").arg(QEvent::type()).arg(value);}
+    const TPTransition_t& Value(){return m_Transition;}
+    TPEventArgsBase* EventArgs()  {return m_EventArgs;}
+    QString toString(){return QString("TPSMEvent- type{%1}transition{%2}").arg(QEvent::type()).arg(m_Transition);}
+
+private:
+    TPTransition_t m_Transition;
+    TPEventArgsBase* m_EventArgs;
 };
 
 
 
 template <class T>
-class TPCmdEvent: public TPInternalEventBase
+class TPEventArgs: public TPEventArgsBase
 {
 public:
-    TPCmdEvent(const QString& sender, T cmd)
-        :TPInternalEventBase(sender)
+    TPEventArgs(const QString& sender, T cmd)
+        :TPEventArgsBase(sender)
     {
         m_Data = cmd;
     }
 
     T Data() {return m_Data;}
 
-    static TPSMEvent* CreateEvent(Scheduler::SchedulerCommandShPtr_t cmd)
+    static TPEvent* CreateEvent(Scheduler::SchedulerCommandShPtr_t cmd)
     {
-        auto object = new TPCmdEvent<Scheduler::SchedulerCommandShPtr_t>(cmd->GetSender(), cmd);
-        return new TPSMEvent(TPTransition_t::Self, object);
+        auto object = new TPEventArgs<Scheduler::SchedulerCommandShPtr_t>(cmd->GetSender(), cmd);
+        return new TPEvent(TPTransition_t::Self, object);
     }
 
-    static TPSMEvent* CreateEvent(const QString& retortId, Global::CommandShPtr_t cmd)
+    static TPEvent* CreateEvent(const QString& retortId, Global::CommandShPtr_t cmd)
     {
-        auto object = new TPCmdEvent<Global::CommandShPtr_t>(retortId, cmd);
-        return new TPSMEvent(TPTransition_t::Self, object);
+        auto object = new TPEventArgs<Global::CommandShPtr_t>(retortId, cmd);
+        return new TPEvent(TPTransition_t::Self, object);
     }
 
-    Q_DISABLE_COPY(TPCmdEvent)
+    Q_DISABLE_COPY(TPEventArgs)
 
 private:
     T m_Data;
-    QEvent* event;
+
 };
 
 }

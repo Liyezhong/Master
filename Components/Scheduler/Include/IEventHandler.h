@@ -20,17 +20,13 @@ public:
 
     virtual void Stop();
 
-
     virtual bool HandleEvent(QEvent* event);
 
     virtual void RegisterEventFilter();
 
     virtual void CreateStateMachine() = 0;
 
-    QString Name() const{return m_Name;}
-
 protected:
-    QString m_Name;
     EventDispatcher* m_pEventDispatcher;
     QStateMachine* m_pStateMachine;
 
