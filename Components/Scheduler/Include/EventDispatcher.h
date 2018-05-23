@@ -12,7 +12,7 @@ namespace Scheduler{
 class TPEvent;
 class IEventHandler;
 class TestInstrumentManager;
-struct TPSMEvent;
+class TPEvent;
 
 class EventDispatcher: public QObject
 {
@@ -29,18 +29,20 @@ public:
 
     void Stop();
 
-    void IncomingEvent(TPSMEvent* event);
+    void IncomingEvent(TPEvent* event);
+
+    bool RemovePendingEvent(TPEvent* event);
 
 protected slots:
-    void OnTickTimer();
+    void OnTickTimer();   
 
 private:
     QList<QSharedPointer<IEventHandler>> m_EventHandlerList;
-    QQueue<TPSMEvent*> m_EventQueue;
+    QQueue<TPEvent*> m_EventQueue;
     QMutex m_EventDispatcherMutex;
     QMutex m_EventQueueMutex;
     QTimer m_Timer;
-    TPSMEvent* m_pDummyEvent;
+    TPEvent* m_pDummyEvent;
 };
 }
 

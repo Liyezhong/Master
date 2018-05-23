@@ -15,25 +15,28 @@ namespace Scheduler{
 class TestInstrumentManager;
 class TPExecutor;
 class SchedulerMainThreadController;
-
+class SessionManager;
 
 class InstrumentManager: public IEventHandler
 {
     friend class TestInstrumentManager;
 public:
-    InstrumentManager(const QString& name, EventDispatcher* pParent, SchedulerMainThreadController* pController = nullptr);
+    InstrumentManager(const QString& name, EventDispatcher* pParent,
+                      SchedulerMainThreadController* pController = nullptr, SessionManager* pSessionManager = nullptr);
+
+    ~InstrumentManager();
 
     void Initialize(QList<QString>);
 
-    TPExecutor* GetTPExecutor(const QString& Id) {return m_TPExecutorList.find(Id).value().data();}
-
-    void Start() override;
-
-    void Stop() override;
+    TPExecutor* GetTPExecutor(const QString& Id);
 
     void CreateStateMachine() override;
 
-    bool HandleEvent(QEvent* event) override;
+    int CreateSession(const QString& retortId, const QString& protocolId);
+
+    void StartProtocol(const QString& retortId);
+
+    SchedulerMainThreadController* Controller(){return m_pController;}
 
 private:
     Q_DISABLE_COPY(InstrumentManager)
@@ -43,11 +46,12 @@ private:
     QHash<QString, QSharedPointer<TPExecutor>> m_TPExecutorList;
 
     SchedulerMainThreadController* m_pController;
+    SessionManager* m_pSessionManager;
 
-    Init* m_pInit;
-    Idle* m_pIdle;
-    Busy* m_pBusy;
-    Scheduling* m_pScheduling;
+    Instrument::Init* m_pInit;
+    Instrument::Idle* m_pIdle;
+    Instrument::Busy* m_pBusy;
+    Instrument::Scheduling* m_pScheduling;
 
 };
 

@@ -1,15 +1,14 @@
-#ifndef SCHEDULING_H
-#define SCHEDULING_H
+#ifndef TPEXECUTOR_SOAKING_H
+#define TPEXECUTOR_SOAKING_H
 #include "Scheduler/Include/States/StateBase.h"
 
 namespace Scheduler{
-namespace Instrument{
-
-class Scheduling: public StateBase<Global::CommandShPtr_t>
+namespace TPExecutorStates{
+class Soaking: public StateBase<Global::CommandShPtr_t>
 {
 public:
-    Scheduling(IEventHandler* pHandler, SchedulerMainThreadController* controller);
-    ~Scheduling();
+    Soaking(IEventHandler* pHandler, SchedulerMainThreadController* controller);
+    ~Soaking();
 
 protected:
     void onEntry(QEvent* event) override;
@@ -18,7 +17,6 @@ protected:
     void RepeatAction(TPTransition_t& pTransition) override;
 
 };
-
 }
 }
-#endif // SCHEDULING_H
+#endif // TPEXECUTOR_SOAKING_H

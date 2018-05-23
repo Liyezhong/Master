@@ -25,8 +25,8 @@ DEFINES -= GOOGLE_MOCK
 DEFINES += QSTATEMACHINE_DEBUG
 CONFIG +=QSTATEMACHINE_DEBUG
 
-SOURCES += ../Source/*.cpp
-SOURCES += ../Commands/Source/*.cpp
+#SOURCES += ../Source/*.cpp
+#SOURCES += ../Commands/Source/*.cpp
 SOURCES += TestInstrumentManager.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
