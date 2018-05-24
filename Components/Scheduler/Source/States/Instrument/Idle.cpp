@@ -23,9 +23,9 @@ bool Idle::HandleEvent(TPEventArgs<Global::CommandShPtr_t> *event, TPTransition_
     auto pSelectedcmd = dynamic_cast<MsgClasses::CmdProgramSelected*>(event->Data().GetPointerToUserData());
     if(pSelectedcmd != nullptr)
     {
-
         m_pManager->CreateSession(pSelectedcmd->GetRetortId(), pSelectedcmd->GetProgramID());
-        event->SetHandled();
+
+//        event->SetHandled();
         pTransition = TPTransition_t::Load;
         return true;
     }
@@ -36,6 +36,7 @@ bool Idle::HandleEvent(TPEventArgs<Global::CommandShPtr_t> *event, TPTransition_
         if(actionCmd->ProgramActionType() == DataManager::ProgramActionType_t::PROGRAM_START)
         {
             event->SetHandled();
+
             m_pManager->StartProtocol(actionCmd->GetRetortName());
             pTransition = TPTransition_t::Start;
             return true;
@@ -51,4 +52,5 @@ void Idle::RepeatAction(TPTransition_t &pTransition)
 
 
 }
+
 }

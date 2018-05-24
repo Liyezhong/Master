@@ -97,7 +97,15 @@ public:
         m_Data = cmd;
     }
 
+    TPEventArgs(const QString& sender, Global::tRefType ref, T cmd)
+        :TPEventArgsBase(sender)
+    {
+        m_Data = cmd;
+        m_Ref = ref;
+    }
+
     T Data() {return m_Data;}
+    Global::tRefType Ref() {return m_Ref;}
 
     static TPEvent* CreateEvent(Scheduler::SchedulerCommandShPtr_t cmd)
     {
@@ -105,9 +113,9 @@ public:
         return new TPEvent(TPTransition_t::Self, object);
     }
 
-    static TPEvent* CreateEvent(const QString& retortId, Global::CommandShPtr_t cmd)
+    static TPEvent* CreateEvent(const QString& retortId, Global::tRefType ref, Global::CommandShPtr_t cmd)
     {
-        auto object = new TPEventArgs<Global::CommandShPtr_t>(retortId, cmd);
+        auto object = new TPEventArgs<Global::CommandShPtr_t>(retortId, ref, cmd);
         return new TPEvent(TPTransition_t::Self, object);
     }
 
@@ -115,7 +123,7 @@ public:
 
 private:
     T m_Data;
-
+    Global::tRefType m_Ref;
 };
 
 }

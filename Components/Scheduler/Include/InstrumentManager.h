@@ -21,12 +21,12 @@ class InstrumentManager: public IEventHandler
 {
     friend class TestInstrumentManager;
 public:
-    InstrumentManager(const QString& name, EventDispatcher* pParent,
-                      SchedulerMainThreadController* pController = nullptr, SessionManager* pSessionManager = nullptr);
+    static InstrumentManager* Create(EventDispatcher* pParent, const QList<QString>& config,
+                                     SchedulerMainThreadController* pController = nullptr, SessionManager* pSessionManager = nullptr);
 
     ~InstrumentManager();
 
-    void Initialize(QList<QString>);
+    void Initialize();
 
     TPExecutor* GetTPExecutor(const QString& Id);
 
@@ -39,6 +39,9 @@ public:
     SchedulerMainThreadController* Controller(){return m_pController;}
 
 private:
+    InstrumentManager(const QString& name, EventDispatcher* pParent, const QList<QString>& config,
+                      SchedulerMainThreadController* pController = nullptr, SessionManager* pSessionManager = nullptr);
+
     Q_DISABLE_COPY(InstrumentManager)
 
 
@@ -53,6 +56,8 @@ private:
     Instrument::Busy* m_pBusy;
     Instrument::Scheduling* m_pScheduling;
 
+    static InstrumentManager* m_pInstance;
+    QList<QString> m_pConfig;
 };
 
 }

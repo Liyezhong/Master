@@ -2,6 +2,9 @@
 #define SCHEDULING_H
 #include "Scheduler/Include/States/StateBase.h"
 
+namespace MsgClasses{
+class CmdProgramSelected;
+}
 namespace Scheduler{
 namespace Instrument{
 
@@ -17,6 +20,8 @@ protected:
     bool HandleEvent(TPEventArgs<Global::CommandShPtr_t>* event, TPTransition_t& pTransition) override;
     void RepeatAction(TPTransition_t& pTransition) override;
 
+private:
+    void ProgramSelectedReply(Global::tRefType ref, const MsgClasses::CmdProgramSelected& cmd, unsigned int timeProposed);
 };
 
 }

@@ -13,8 +13,6 @@ Init::Init(IEventHandler* pHandler, SchedulerMainThreadController* controller)
     setObjectName("Instrument_Init_State");
 //    m_pSelfTest = new CProgramSelfTest(controller);
 //    m_pSelfTest->SetSender(pHandler->objectName());
-
-
 }
 
 Init::~Init()

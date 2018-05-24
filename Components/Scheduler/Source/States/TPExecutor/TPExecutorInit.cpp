@@ -19,7 +19,7 @@ Init::~Init()
 void Init::onEntry(QEvent *event)
 {
     StateBase<Scheduler::SchedulerCommandShPtr_t>::onEntry(event);
-
+    addTransition(new EventTransition(TPTransition_t::Timeout, this));
 }
 
 bool Init::HandleEvent(TPEventArgs<Scheduler::SchedulerCommandShPtr_t> *event, TPTransition_t& pTransition)
@@ -32,7 +32,8 @@ bool Init::HandleEvent(TPEventArgs<Scheduler::SchedulerCommandShPtr_t> *event, T
 }
 void Init::RepeatAction(TPTransition_t& pTransition)
 {
-    StateBase::RepeatAction(pTransition);   
+    StateBase::RepeatAction(pTransition);
+    pTransition = TPTransition_t::Initial;
 }
 
 
