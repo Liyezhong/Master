@@ -30,7 +30,7 @@ public:
     Session(const QString& retortId, CProgram* pProgram);
     ~Session();
 
-    const QString& GetRetortID() const {return m_RetortId;}
+    const QString& GetRetortID() {return m_RetortId;}
     CProgram* GetProgram() {return m_pProgram;}
 
     QList<QSharedPointer<const CProgramStep>> GetProgramStep() {return m_pProgramSteps;}
@@ -38,6 +38,16 @@ public:
     ProgramStepInfor* GetProgramStepInfo(){return m_pProgramStepInfo;}
 
     QList<QSharedPointer<IAction>>& GetActionList(){return m_ActionList;}
+    
+    enum Status 
+    {
+        Initial,                
+        Running,
+        Completed,
+        Error
+    };
+    
+    
 
     Q_DISABLE_COPY(Session)
 private:

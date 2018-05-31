@@ -19,6 +19,7 @@ public:
 
 private:
     InstrumentManager* m_pManager;
+    int start;
 };
 }
 }

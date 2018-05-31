@@ -7,7 +7,8 @@ namespace Scheduler{
 namespace Instrument{
 
 Scheduling::Scheduling(IEventHandler* pHandler, SchedulerMainThreadController* controller)
-    :StateBase<Global::CommandShPtr_t>(pHandler, controller)
+    :StateBase<Global::CommandShPtr_t>(pHandler, controller),
+      commandPtr(nullptr)
 {
     setObjectName("Instrument_Scheduling_State");
 }
@@ -20,11 +21,22 @@ Scheduling::~Scheduling()
 void Scheduling::onEntry(QEvent *event)
 {
     StateBase<Global::CommandShPtr_t>::onEntry(event);
+
+    commandPtr = nullptr;
+    ref = -1;
+}
+
+void Scheduling::onExit(QEvent *event)
+{
+    if(commandPtr != nullptr)
+    {
+        IState::m_pController->SendCommand(ref, Global::CommandShPtr_t(commandPtr));
+    }
 }
 
 void Scheduling::RepeatAction(TPTransition_t &pTransition)
 {
-    
+
 }
 
 void Scheduling::ProgramSelectedReply(Global::tRefType ref, const MsgClasses::CmdProgramSelected& cmd, unsigned int timeProposed)
@@ -35,15 +47,15 @@ void Scheduling::ProgramSelectedReply(Global::tRefType ref, const MsgClasses::Cm
 
     //send back the proposed program end time
     QList<QString> stationList;
-    MsgClasses::CmdProgramSelectedReply* commandPtr(new MsgClasses::CmdProgramSelectedReply(5000, cmd.GetRetortId(), timeProposed,
+    stationList << "S6";
+    commandPtr = new MsgClasses::CmdProgramSelectedReply(5000, cmd.GetRetortId(), timeProposed,
                                                                                 paraffinMeltCostedtime,
                                                                                 costedTimeBeforeParaffin,
                                                                                 whichStep,
                                                                                 0,
                                                                                 stationList,
-                                                                                0));
-    Q_ASSERT(commandPtr);
-    IState::m_pController->SendCommand(ref, Global::CommandShPtr_t(commandPtr));
+                                                                                0);
+
 }
 
 bool Scheduling::HandleEvent(TPEventArgs<Global::CommandShPtr_t> *event, TPTransition_t &pTransition)
@@ -51,15 +63,17 @@ bool Scheduling::HandleEvent(TPEventArgs<Global::CommandShPtr_t> *event, TPTrans
     auto pSelectedcmd = dynamic_cast<MsgClasses::CmdProgramSelected*>(event->Data().GetPointerToUserData());
     if(pSelectedcmd != nullptr)
     {
+        ref = event->Ref();
         auto timeProposed = 500;
-        ProgramSelectedReply(event->Ref(), *pSelectedcmd, timeProposed);
-        pTransition = TPTransition_t::Done;
+        ProgramSelectedReply(ref, *pSelectedcmd, timeProposed);
         event->SetHandled();
+        pTransition = TPTransition_t::Done;
         return true;
     }
 
     return false;
 }
+
 
 }
 }

@@ -14,9 +14,10 @@ class SessionManager
 public:
     SessionManager(DataManager::CDataManager* pDataManager);
 
-    int CreateSession(const QString& protocoId, const QString& retortId);
+    int CreateSession(const QString &retortId, const QString& protocoId);
     void DestroySession(int sessionId);
     Session* GetSessionById(int sessionId);
+    Session* GetSessionByRetortId(const QString& retrotId);
 private:
 
     QHash<int, QSharedPointer<Session>> m_SessionList;
