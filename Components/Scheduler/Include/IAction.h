@@ -9,6 +9,7 @@
 namespace Scheduler {
 
 class SchedulerCommandProcessorBase;
+class Session;
 
 /****************************************************************************/
 /*!
@@ -33,13 +34,13 @@ typedef enum
     STATE_FILLING_LEVELSENSOR_HEATING,
     STATE_FILLING,
     STATE_RV_MOVE_TO_SEAL
-}ActionState_t;
+}FillSubState_t;
 
 
 class IAction
 {
 public:
-    IAction(SchedulerCommandProcessorBase* commandProcessor, const QString RetortID, ActionType_t type);
+    IAction(SchedulerCommandProcessorBase* commandProcessor, Session* session, ActionType_t type);
     virtual ~IAction();
 
     virtual void Execute(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -62,14 +63,16 @@ public:
     void SetFininshed(bool finished) {m_finished = finished;}
     bool IsFinished() const {return m_finished;}
 
+    ActionType_t GetActionType() const {return m_type;}
+
 private:
     void Fill(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
-    void Drain();
-    void Purge();
+    void Drain(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+    void Purge(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     DeviceControl::RVPosition_t GetRVPosition(const QString& stationID, bool isTube);
+    bool IsRVRightPosition(DeviceControl::RVPosition_t position);
 protected:
-    QString m_retortID;
     QString m_reagentID;
     QString m_stationID;
     ActionType_t m_type;
@@ -78,7 +81,8 @@ protected:
     quint32 m_durationSec;
     QTime m_startTime;
     QTime m_endTime;
-    ActionState_t m_currentState;
+    FillSubState_t m_currentState;
+    Session* mp_session;
     SchedulerCommandProcessorBase* mp_SchedulerCommandProcessor;
 
     //mutable DeviceControl::ReturnCode_t m_result;   ///<  Definition/Declaration of variable m_result

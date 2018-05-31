@@ -17,8 +17,10 @@ int SessionManager::CreateSession(const QString &retortId, const QString& protoc
     auto* pProgram = m_pDataManager->GetProgramList()->GetProgram(protocoId);
     QList<QSharedPointer<const CProgramStep>> programSteps;
 
-    auto session = new Session(retortId, const_cast<CProgram*>(pProgram));
-    m_SessionList.insert(SessionNo++,QSharedPointer<Session>(session));
+    //auto session = new Session(retortId, const_cast<CProgram*>(pProgram));
+    SessionNo++;
+
+    m_SessionList.insert(SessionNo,QSharedPointer<Session>(new Session(retortId, const_cast<CProgram*>(pProgram))));
 
     return SessionNo;
 }
@@ -30,7 +32,15 @@ void SessionManager::DestroySession(int sessionId)
 
 Session* SessionManager::GetSessionById(int sessionId)
 {
-    return m_SessionList.find(sessionId).value().data();
+    //return m_SessionList.find(sessionId).value().data();
+    if (m_SessionList.find(sessionId) != m_SessionList.end())
+    {
+        return m_SessionList.find(sessionId).value().data();
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 Session* SessionManager::GetSessionByRetortId(const QString &retortId)
