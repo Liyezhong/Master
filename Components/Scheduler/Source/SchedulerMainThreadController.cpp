@@ -78,6 +78,7 @@
 
 #include "Scheduler/Include/InstrumentManager.h"
 #include "Scheduler/Include/EventDispatcher.h"
+#include "Scheduler/Include/SessionManager.h"
 
 using namespace DataManager;
 
@@ -237,7 +238,7 @@ void SchedulerMainThreadController::RegisterCommands()
 
 void SchedulerMainThreadController::CreateAndInitializeObjects()
 {
-    m_pEventDispatcher->Start();
+
     QString mode = mp_DataManager->GetDeviceConfigurationInterface()->GetDeviceConfiguration()->GetValue("Mode");
 
 #ifdef GOOGLE_MOCK
@@ -256,7 +257,7 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     m_SchedulerCommandProcessorThread->start();
 
     //timer setting
-    CONNECTSIGNALSLOT(&m_TickTimer, timeout(), this, OnTickTimer());
+//    CONNECTSIGNALSLOT(&m_TickTimer, timeout(), this, OnTickTimer());
     qRegisterMetaType<QList<QString>>("QList<QString>");
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor,DCLConfigurationFinished(ReturnCode_t, QList<QString>),this,OnDCLConfigurationFinished(ReturnCode_t, QList<QString>));
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, DeviceProcessDestroyed(),this, DevProcDestroyed());
@@ -267,7 +268,8 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportError(quint32, quint16, quint16, quint16, QDateTime),this, OnReportError(quint32, quint16, quint16, quint16, QDateTime));
     CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, ResetActiveCarbonFilterLifeTime(quint32),
                      this, ResetActiveCarbonFilterLifetime(quint32));
-    m_TickTimer.setInterval(500);
+
+
 
     //command queue reset
     m_SchedulerCmdQueue.clear();
@@ -276,7 +278,9 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     // now register commands
     RegisterCommands();
 
-//    m_pInstrumentManager = new InstrumentManager("Instrument", this);
+    // Start time
+    m_pEventDispatcher->Start();
+    m_pSessionManager = new SessionManager(mp_DataManager);
 
     //InitializeDevice();
 
@@ -1499,10 +1503,14 @@ void SchedulerMainThreadController::CheckCarbonFilterExpired()
 void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
                                                     const MsgClasses::CmdProgramAction &Cmd)
 {
-    m_Mutex.lock();
-    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdProgramAction(Cmd.GetRetortName(), Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ProgramActionType(),
-                                                                                        Cmd.DelayTime(), Cmd.ProgramRunDuration(), Cmd.GetReagentExpiredFlag())));
-    m_Mutex.unlock();
+//    m_Mutex.lock();
+    m_pEventDispatcher->IncomingEvent(TPEventArgs<Global::CommandShPtr_t>
+                                      ::CreateEvent(m_pInstrumentManager->objectName(), Ref,
+                                                    Global::CommandShPtr_t(new MsgClasses::CmdProgramAction(Cmd.GetRetortName(), Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ProgramActionType(),
+            Cmd.DelayTime(), Cmd.ProgramRunDuration(), Cmd.GetReagentExpiredFlag()))));
+//    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdProgramAction(Cmd.GetRetortName(), Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ProgramActionType(),
+//                                                                                        Cmd.DelayTime(), Cmd.ProgramRunDuration(), Cmd.GetReagentExpiredFlag())));
+//    m_Mutex.unlock();
     this->SendAcknowledgeOK(Ref);
 
     QString ProgramName;
@@ -1622,6 +1630,9 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
     QString curProgramID = Cmd.GetProgramID();
     qDebug()<<"************* on program selected id:"<<curProgramID;
     qDebug()<<"************* on program selected retort:"<<Cmd.GetRetortId();
+    m_pEventDispatcher->IncomingEvent(TPEventArgs<Global::CommandShPtr_t>::CreateEvent(m_pInstrumentManager->objectName(), Ref,
+                                            Global::CommandShPtr_t(new MsgClasses::CmdProgramSelected(
+                                           Cmd.GetRetortId(), Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ParaffinStepIndex()))));
 
     CSchedulerStateHandler* stateHandler = m_SchedulerStateHandlerList[Cmd.GetRetortId()].data();
     if (stateHandler)
@@ -1680,8 +1691,7 @@ void SchedulerMainThreadController::OnTakeOutSpecimenFinished(Global::tRefType R
 
 void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetCode, QList<QString> retorts)
 {
-    // Create Instrument
-//    m_pInstrumentManager->Initialize(retorts);
+
 
     // Turn off local/remote alarm by default
     CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, m_Sender);
@@ -1737,35 +1747,17 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         return;
     }
 #endif
+    // Create Instrument
+    m_pInstrumentManager = InstrumentManager::Create(m_pEventDispatcher, retorts, this, m_pSessionManager);
+    if(m_pInstrumentManager != nullptr)
+    {
+        m_pInstrumentManager->Initialize();
+    }
+
     mp_ProgramSelfTest = QSharedPointer<CProgramSelfTest>(new CProgramSelfTest(this));
 
 	// Create HeatingStrategy
     mp_HeatingStrategy = QSharedPointer<HeatingStrategy>(new HeatingStrategy(this, m_SchedulerCommandProcessor, mp_DataManager));
-//    m_SchedulerMachine = new CSchedulerStateMachine(this);
-//    //for debug
-//    LogDebug(QString("Current state of Scheduler is: %1").arg(m_SchedulerMachine->GetCurrentState()));
-//    m_SchedulerMachine->Start();
-//    //m_TickTimer.start();
-   foreach(auto retort, retorts)
-   {
-
-       if (!retort.isEmpty())
-       {
-           qDebug()<<"Get retort name:"<<retort;
-           if (m_SchedulerStateHandlerList.find(retort) == m_SchedulerStateHandlerList.end())
-               m_SchedulerStateHandlerList.insert(retort,
-                                                  QSharedPointer<CSchedulerStateHandler>(new CSchedulerStateHandler(retort, this, mp_DataManager)));
-       }
-   }
-
-    qDebug()<<"************************ DCL configuration finished....: state handler size:"<<m_SchedulerStateHandlerList.size();
-    m_TickTimer.start();
-//    m_pInstrumentManager = new InstrumentManager("Common", m_pEventDispatcher, this);
-
-//    m_pInstrumentManager->Initialize(retorts);
-//        m_pInstrumentManager->CreateStateMachine();
-//    m_pInstrumentManager->Start();
-
 }
 
 void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)

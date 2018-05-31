@@ -9,15 +9,31 @@ namespace Scheduler{
 
 using namespace Instrument;
 
-InstrumentManager::InstrumentManager(const QString& name, EventDispatcher* pParent, SchedulerMainThreadController* pController, SessionManager* pSessionManager)
+InstrumentManager* InstrumentManager::m_pInstance = nullptr;
+InstrumentManager::InstrumentManager(const QString& name, EventDispatcher* pParent
+                                     , const QList<QString>& config, SchedulerMainThreadController* pController, SessionManager* pSessionManager)
     : IEventHandler (name, pParent),
       m_pController(pController),
       m_pSessionManager(pSessionManager),
       m_pInit(nullptr),
       m_pIdle(nullptr),
-      m_pScheduling(nullptr)
+      m_pScheduling(nullptr),
+      m_pConfig(config)
 {
 
+}
+
+InstrumentManager *InstrumentManager::Create(EventDispatcher *pParent, const QList<QString> &config, SchedulerMainThreadController *pController, SessionManager *pSessionManager)
+{
+    if(m_pInstance != nullptr)
+    {
+        return m_pInstance;
+    }
+
+    auto nameItor = config.last();
+    m_pInstance = new InstrumentManager(nameItor, pParent, config, pController, pSessionManager);
+
+    return m_pInstance;
 }
 
 InstrumentManager::~InstrumentManager()
@@ -44,11 +60,19 @@ InstrumentManager::~InstrumentManager()
     }
 }
 
-void InstrumentManager::Initialize(QList<QString> retorts)
+void InstrumentManager::Initialize()
 {    
     m_pEventDispatcher->Register(QSharedPointer<IEventHandler>(this));
     CreateStateMachine();
     Start();
+
+    auto begin = m_pConfig.begin();
+
+    QList<QString> retorts;
+    for( auto begin = m_pConfig.begin(); begin != m_pConfig.end() -1; begin ++)
+    {
+        retorts<<*begin;
+    }
     foreach(auto retort, retorts)
     {
 

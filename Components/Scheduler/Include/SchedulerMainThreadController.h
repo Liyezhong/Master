@@ -70,7 +70,7 @@ class CProgramSelfTest;
 class CSchedulerStateHandler;
 class InstrumentManager;
 class EventDispatcher;
-
+class SessionManager;
 class TestInstrumentManager;
 
 
@@ -288,6 +288,7 @@ typedef struct {
         /***********************refactoring**************/
         InstrumentManager* m_pInstrumentManager;
         EventDispatcher* m_pEventDispatcher;
+        SessionManager* m_pSessionManager;
 
 
     private:
