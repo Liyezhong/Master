@@ -71,6 +71,7 @@ private:
     void Purge(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     DeviceControl::RVPosition_t GetRVPosition(const QString& stationID, bool isTube);
+    bool IsRVRightPosition(DeviceControl::RVPosition_t position);
 protected:
     QString m_reagentID;
     QString m_stationID;

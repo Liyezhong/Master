@@ -40,6 +40,7 @@ void IAction::Execute(const QString& cmdName, ReturnCode_t retCode)
         Purge(cmdName, retCode);
     case SOAKING:
         //TO DO
+        m_finished = true;
     default:
         qDebug()<<"error type for run action.";
     }
@@ -51,9 +52,21 @@ void IAction::Fill(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
     {
     case STATE_FILLING_RVROD_HEATING:
         //to do
+        RVPosition_t position = GetRVPosition(m_stationID, true);
         if (m_stateWaitResult)
         {
-            m_currentState = STATE_FILLING_LEVELSENSOR_HEATING;
+            if (IsRVRightPosition(position))
+            {
+                m_currentState = STATE_FILLING_LEVELSENSOR_HEATING;
+                m_stateWaitResult = false;
+            }
+        }
+        else
+        {
+            CmdRVReqMoveToRVPosition* moveRVcmd = new CmdRVReqMoveToRVPosition(500, mp_session->GetRetortID());
+            moveRVcmd->SetRVPosition(position);
+            mp_SchedulerCommandProcessor->pushCmd(moveRVcmd);
+            m_stateWaitResult = true;
         }
         break;
     case STATE_FILLING_LEVELSENSOR_HEATING:
@@ -61,6 +74,7 @@ void IAction::Fill(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
         if (m_stateWaitResult)
         {
             m_currentState = STATE_FILLING;
+            m_stateWaitResult = false;
         }
         break;
     case STATE_FILLING:
@@ -72,6 +86,7 @@ void IAction::Fill(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     m_currentState = STATE_RV_MOVE_TO_SEAL;
+                    m_stateWaitResult = false;
                 }
                 else
                 {
@@ -84,33 +99,41 @@ void IAction::Fill(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
         {
             CmdALFilling* fillCmd  = new CmdALFilling(500, mp_session->GetRetortID());
             mp_SchedulerCommandProcessor->pushCmd(fillCmd);
+            m_stateWaitResult = true;
         }
         break;
     case STATE_RV_MOVE_TO_SEAL:
+
+        RVPosition_t position = GetRVPosition(m_stationID, false);
         if (m_stateWaitResult)
         {
-            m_currentState = STATE_FILLING_RVROD_HEATING;
-            m_finished = true;
+            if (IsRVRightPosition(position))
+            {
+                m_currentState = STATE_FILLING_RVROD_HEATING;
+                m_stateWaitResult = false;
+                 m_finished = true;
+            }
         }
         else
         {
             CmdRVReqMoveToRVPosition* moveRVcmd = new CmdRVReqMoveToRVPosition(500, mp_session->GetRetortID());
-            moveRVcmd->SetRVPosition(GetRVPosition(m_stationID, false));
+            moveRVcmd->SetRVPosition(position);
             mp_SchedulerCommandProcessor->pushCmd(moveRVcmd);
+            m_stateWaitResult = true;
         }
         break;
     }
-
-    m_stateWaitResult = !m_stateWaitResult;
 }
 
 void IAction::Drain(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
+    m_finished = true;
     return;
 }
 
 void IAction::Purge(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
+    m_finished = true;
     return;
 }
 
@@ -140,6 +163,11 @@ RVPosition_t IAction::GetRVPosition(const QString& stationID, bool isTube)
         }
     }
     return ret;
+}
+
+bool IsRVRightPosition(RVPosition_t position)
+{
+    return true;
 }
 
 }
