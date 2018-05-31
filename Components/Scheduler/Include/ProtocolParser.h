@@ -22,8 +22,8 @@
 
 #include <QList>
 #include <QSharedPointer>
-#include "Scheduler/Include/Session.h"
 #include "Scheduler/Include/IAction.h"
+#include "Scheduler/Include/Session.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/ProgramStep.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
 #include "HimalayaDataManager/Include/DataManager.h"
@@ -32,8 +32,6 @@ using namespace DataManager;
 
 namespace Scheduler {
 
-class Session;
-class IAction;
 class SchedulerCommandProcessorBase;
 
 #define TIME_FOR_CLEANING_DRY_STEP            720    ///< seconds spending in dry step
@@ -49,7 +47,7 @@ class SchedulerCommandProcessorBase;
 
 /****************************************************************************/
 /*!
- *  \brief  Definition/Declaration of struct ProgramStepInfor
+ *  \brief  Definition/Declaration of struct StationUseRecord
  */
 /****************************************************************************/
 typedef struct
@@ -66,11 +64,12 @@ public:
     ProtocolParser(DataManager::CDataManager* dataManager, SchedulerCommandProcessorBase* commandProcessor);
     virtual ~ProtocolParser();
 
-    void GenerateActionList(Session* session);
-    void GenerateActionList(const QString& retortID, const CProgram* program, QList<QSharedPointer<IAction>>& actionList);
-    void GenerateActionList(const QString& retortID, const CProgramStep* programStep, QList<QSharedPointer<IAction>>& actionList);
+    bool GenerateActionList(Session* session);
+    bool GenerateActionList(Session* session, const CProgram* program, QList<QSharedPointer<IAction>>& actionList);
 
 private:
+    bool GenerateActionList(Session* session, const CProgramStep* programStep, ListOfIDs_t& unusedStationIDs, QList<QSharedPointer<IAction>>& actionList);
+
     quint32 GetDruationTime(ActionType_t type);
 
     /****************************************************************************/
@@ -121,6 +120,7 @@ private:
     bool IsCleaningReagent(const QString& ReagentID);
 
 private:
+    QList<ActionType_t> m_StepActionTypes;
     DataManager::CDataManager* mp_DataManager;
     SchedulerCommandProcessorBase*  mp_SchedulerCommandProcessor;       ///<  Definition/Declaration of variable m_SchedulerCommandProcessor
 

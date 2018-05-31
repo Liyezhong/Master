@@ -4,14 +4,15 @@
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
+#include "Scheduler/Include/Session.h"
 #include <QDebug>
 
 
 using namespace DeviceControl;
 namespace Scheduler{
-IAction::IAction(SchedulerCommandProcessorBase* commandProcessor, const QString RetortID, ActionType_t type)
+IAction::IAction(SchedulerCommandProcessorBase* commandProcessor, Session* session, ActionType_t type)
     :mp_SchedulerCommandProcessor(commandProcessor),
-     m_retortID(RetortID),
+     mp_session(session),
      m_type(type),
      m_stateWaitResult(false),
      m_finished(false),
@@ -34,9 +35,9 @@ void IAction::Execute(const QString& cmdName, ReturnCode_t retCode)
         //SetResult(pIDP->ALFilling(500,true,false));
         Fill(cmdName, retCode);
     case DRAINING:
-        Drain();
+        Drain(cmdName, retCode);
     case PURGE:
-        Purge();
+        Purge(cmdName, retCode);
     case SOAKING:
         //TO DO
     default:
@@ -81,7 +82,7 @@ void IAction::Fill(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
         }
         else
         {
-            CmdALFilling* fillCmd  = new CmdALFilling(500, m_retortID);
+            CmdALFilling* fillCmd  = new CmdALFilling(500, mp_session->GetRetortID());
             mp_SchedulerCommandProcessor->pushCmd(fillCmd);
         }
         break;
@@ -93,7 +94,7 @@ void IAction::Fill(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
         }
         else
         {
-            CmdRVReqMoveToRVPosition* moveRVcmd = new CmdRVReqMoveToRVPosition(500, m_retortID);
+            CmdRVReqMoveToRVPosition* moveRVcmd = new CmdRVReqMoveToRVPosition(500, mp_session->GetRetortID());
             moveRVcmd->SetRVPosition(GetRVPosition(m_stationID, false));
             mp_SchedulerCommandProcessor->pushCmd(moveRVcmd);
         }
@@ -103,14 +104,14 @@ void IAction::Fill(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
     m_stateWaitResult = !m_stateWaitResult;
 }
 
-void IAction::Drain()
+void IAction::Drain(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
-
+    return;
 }
 
-void IAction::Purge()
+void IAction::Purge(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
-
+    return;
 }
 
 RVPosition_t IAction::GetRVPosition(const QString& stationID, bool isTube)

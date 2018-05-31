@@ -1,12 +1,14 @@
 #include "Scheduler/Include/ProtocolParser.h"
+#include "Scheduler/Include/IAction.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
+#include <QDebug>
 
 namespace Scheduler{
 
 ProtocolParser::ProtocolParser(DataManager::CDataManager* dataManager, SchedulerCommandProcessorBase* commandProcessor):
     mp_DataManager(dataManager), mp_SchedulerCommandProcessor(commandProcessor)
 {
-
+    m_StepActionTypes<<FILLING<<PURGE<<SOAKING<<DRAINING<<PURGE;
 }
 
 ProtocolParser::~ProtocolParser()
@@ -14,70 +16,78 @@ ProtocolParser::~ProtocolParser()
 
 }
 
-void ProtocolParser::GenerateActionList(Session *session)
+bool ProtocolParser::GenerateActionList(Session *session)
 {
     if (!session)
     {
-        return;
+        return false;
     }
 
-    GenerateActionList(session->GetRetortID(), session->GetProgram(), session->GetActionList());
+    return GenerateActionList(session, session->GetProgram(), session->GetActionList());
 }
 
-void ProtocolParser::GenerateActionList(const QString& retortID, const CProgram* program, QList<QSharedPointer<IAction>>& actionList)
+bool ProtocolParser::GenerateActionList(Session* session, const CProgram* program, QList<QSharedPointer<IAction>>& actionList)
 {
     if (!program)
     {
-        return;
-    }
-
-    int stepNum = program->GetNumberOfSteps();
-    if (0 == stepNum)
-    {
-        return;
-    }
-
-    actionList.clear();
-    for (int i = 0; i < stepNum; ++i)
-    {
-        const CProgramStep* step = program->GetProgramStep(i);
-        GenerateActionList(retortID, step, actionList);
-    }
-
-}
-
- void ProtocolParser::GenerateActionList(const QString& retortID, const CProgramStep* programStep, QList<QSharedPointer<IAction>>& actionList)
- {
-    if (!programStep)
-    {
-        return;
+        return false;
     }
 
     CDashboardDataStationList* pDashboardDataStationList = mp_DataManager->GetStationList();
     if (!pDashboardDataStationList)
     {
         Q_ASSERT(false);
-        return;
+        return false;
+    }
+
+    int stepNum = program->GetNumberOfSteps();
+    if (0 == stepNum)
+    {
+        return false;
+    }
+
+    actionList.clear();
+    ListOfIDs_t unusedStationIDs = pDashboardDataStationList->GetOrderedListOfDashboardStationIDs();
+    for (int i = 0; i < stepNum; ++i)
+    {
+        const CProgramStep* step = program->GetProgramStep(i);
+        if (false == GenerateActionList(session, step, unusedStationIDs, actionList))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+ bool ProtocolParser::GenerateActionList(Session* session, const CProgramStep* programStep, ListOfIDs_t& unusedStationIDs, QList<QSharedPointer<IAction>>& actionList)
+ {
+    if (!programStep)
+    {
+        return false;
     }
 
     bool isLastStep = false;
 
-    ListOfIDs_t unusedStationIDs = pDashboardDataStationList->GetOrderedListOfDashboardStationIDs();
     QList<StationUseRecord_t> usedStations;
+    QString reagentID = programStep->GetReagentID();
+    QString stationID = SelectStationFromReagentID(reagentID, unusedStationIDs, usedStations, isLastStep);
 
-    for (int i = (int)FILLING; i < ACTION_SUM; ++i)
+//    QSharedPointer<IAction> changeReagent = QSharedPointer<IAction>(new ChangeReagentAction(mp_SchedulerCommandProcessor, retortID));
+//    changeReagent->SetReagentID(reagentID);
+//    changeReagent->SetStationID(stationID);
+//    actionList.append(changeReagent);
+
+    foreach (ActionType_t type, m_StepActionTypes)
     {
-        ActionType_t type = (ActionType_t)i;
-        QSharedPointer<IAction> action = QSharedPointer<IAction>(new IAction(mp_SchedulerCommandProcessor, retortID, type));
-        QString reagentID = programStep->GetReagentID();
-        QString stationID = SelectStationFromReagentID(reagentID, unusedStationIDs, usedStations, isLastStep);
+        QSharedPointer<IAction> action = QSharedPointer<IAction>(new IAction(mp_SchedulerCommandProcessor, session, type));
 
         action.data()->SetReagentID(reagentID);
         action.data()->SetStationID(stationID);
         quint32 duration = 0;
         if (SOAKING == type)
         {
-            duration = programStep->GetDuration().toUInt();
+            duration = programStep->GetDurationInSeconds();
         }
         else
         {
@@ -86,6 +96,7 @@ void ProtocolParser::GenerateActionList(const QString& retortID, const CProgram*
         action.data()->SetDuration(duration);
         actionList.append(action);
     }
+    return true;
  }
 
  quint32 ProtocolParser::GetDruationTime(ActionType_t type)
@@ -159,13 +170,16 @@ void ProtocolParser::GenerateActionList(const QString& retortID, const CProgram*
      const QString& ReagentID = pReagent->GetReagentID();
      bool isCleaningReagent = pDataReagentGroupList->GetReagentGroup(pReagent->GetGroupID())->IsCleaningReagentGroup();
 
+     //qDebug()<<"***** station id size:"<<unusedStationIDs.size();
      for (int i = 0; i < unusedStationIDs.count(); i++)
      {
          CDashboardStation* pDashboardStation = pDashboardDataStationList->GetDashboardStation(unusedStationIDs.at(i));
          if (pDashboardStation->GetDashboardReagentID() == ReagentID)
          {
                  if (!isCleaningReagent)
+                 {
                      unusedStationIDs.removeAt(i);
+                 }
                  return pDashboardStation->GetDashboardStationID();
          }
      }
