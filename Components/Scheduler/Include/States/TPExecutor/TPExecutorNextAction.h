@@ -3,7 +3,10 @@
 #include "Scheduler/Include/States/StateBase.h"
 
 namespace Scheduler{
+class Session;
+class TPExecutor;
 namespace TPExecutorStates{
+
 class NextAction: public StateBase<Global::CommandShPtr_t>
 {
 public:
@@ -18,6 +21,8 @@ protected:
 
 private:
     int actionNum;
+    Session* m_pSession;
+    TPExecutor* m_pExecutor;
 };
 }
 }

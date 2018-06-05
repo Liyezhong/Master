@@ -1,5 +1,9 @@
 #include "Scheduler/Include/TPExecutor.h"
 #include "Scheduler/Include/TPEvent.h"
+#include "Scheduler/Include/IAction.h"
+#include "Scheduler/Include/Session.h"
+#include "Scheduler/Include/SessionManager.h"
+#include "Scheduler/Include/SchedulerMainThreadController.h"
 
 using namespace Scheduler::TPExecutorStates;
 namespace Scheduler {
@@ -15,7 +19,12 @@ TPExecutor::TPExecutor(const QString& name, EventDispatcher* pEventDispatcher, S
       m_pExecuting(nullptr)
 
 {
-
+    m_pSession = nullptr;
+    m_pAction = -1;
+    if(pController != nullptr)
+    {
+        m_pSessionManager = pController->GetSessionManager();
+    }
 }
 
 TPExecutor::~TPExecutor()
@@ -54,15 +63,24 @@ TPExecutor::~TPExecutor()
 
 bool TPExecutor::HandleEvent(QEvent* event)
 {
-//    auto tpEvent = dynamic_cast<TPEvent*>(event);
-//    if(tpEvent != nullptr && tpEvent->EventArgs() != nullptr && m_pStateMachine->isRunning())
-//    {
-//        qDebug() << tpEvent->toString();
-//        auto pCurrent = dynamic_cast<IState*>(*m_pStateMachine->configuration().begin());
-//        return pCurrent->HandleEvent(tpEvent);
-//    }
+    auto tpEvent = dynamic_cast<TPEvent*>(event);
+    if(tpEvent != nullptr && m_pStateMachine->isRunning())
+    {
+        qDebug() << tpEvent->toString();
+        qDebug() << objectName();
+        foreach(auto state, m_pStateMachine->configuration())
+        {
+            auto pCurrent = dynamic_cast<IState*>(state);
 
-    return IEventHandler::HandleEvent(event);
+            // Busy state is a sub state machine, ignore it
+            if(!pCurrent->objectName().contains("TPExecutor_Busy_State"))
+            {
+                return pCurrent->HandleEvent(tpEvent);
+            }
+        }
+    }
+
+    return false;
 }
 
 void TPExecutor::CreateStateMachine()
@@ -107,6 +125,22 @@ void TPExecutor::CreateStateMachine()
 //    m_pSoaking->addTransition(new EventTransition(TPTransition_t::SoakingDone, m_pSoaking, m_pNextAction));
 //    m_pSoaking->addTransition(new EventTransition(TPTransition_t::Timeout, m_pSoaking, nullptr));
 
+}
+
+Session *TPExecutor::GetCurrentSession()
+{
+    m_pSession =  m_pSessionManager->GetSessionByRetortId(objectName(), Session::Ready);
+    return m_pSession;
+}
+
+int TPExecutor::GetCurrentAction()
+{
+    return m_pAction;
+}
+
+void TPExecutor::SetCurrentAction(int pAction)
+{
+    m_pAction = pAction;
 }
 
 }

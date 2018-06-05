@@ -54,11 +54,11 @@ public:
     void SetDuration(quint32 duration) {m_durationSec = duration;}
     quint32 GetDuration() const {return m_durationSec;}
 
-    void SetStartTime(QTime startTime) {m_startTime = startTime;}
-    QTime GetStartTime() const {return m_startTime;}
+    void SetStartTime(QDateTime startTime) {m_startTime = startTime;}
+    QDateTime GetStartTime() const {return m_startTime;}
 
-    void SetEndTime(QTime endTime) {m_endTime = endTime;}
-    QTime GetEndTime() const {return m_endTime;}
+    void SetEndTime(QDateTime endTime) {m_endTime = endTime;}
+    QDateTime GetEndTime() const {return m_endTime;}
 
     void SetFininshed(bool finished) {m_finished = finished;}
     bool IsFinished() const {return m_finished;}
@@ -79,8 +79,8 @@ protected:
     bool m_stateWaitResult;
     bool m_finished;
     quint32 m_durationSec;
-    QTime m_startTime;
-    QTime m_endTime;
+    QDateTime m_startTime;
+    QDateTime m_endTime;
     FillSubState_t m_currentState;
     Session* mp_session;
     SchedulerCommandProcessorBase* mp_SchedulerCommandProcessor;

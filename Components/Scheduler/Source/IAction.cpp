@@ -34,6 +34,7 @@ void IAction::Execute(const QString& cmdName, ReturnCode_t retCode)
     case FILLING:
         //SetResult(pIDP->ALFilling(500,true,false));
         Fill(cmdName, retCode);
+        break;
     case DRAINING:
         Drain(cmdName, retCode);
     case PURGE:
@@ -41,6 +42,7 @@ void IAction::Execute(const QString& cmdName, ReturnCode_t retCode)
     case SOAKING:
         //TO DO
         m_finished = true;
+        break;
     default:
         qDebug()<<"error type for run action.";
     }
@@ -52,6 +54,7 @@ void IAction::Fill(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
     {
     case STATE_FILLING_RVROD_HEATING:
         //to do
+    {
         RVPosition_t position = GetRVPosition(m_stationID, true);
         if (m_stateWaitResult)
         {
@@ -68,6 +71,7 @@ void IAction::Fill(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
             mp_SchedulerCommandProcessor->pushCmd(moveRVcmd);
             m_stateWaitResult = true;
         }
+    }
         break;
     case STATE_FILLING_LEVELSENSOR_HEATING:
         //to do
@@ -165,7 +169,7 @@ RVPosition_t IAction::GetRVPosition(const QString& stationID, bool isTube)
     return ret;
 }
 
-bool IsRVRightPosition(RVPosition_t position)
+bool IAction::IsRVRightPosition(RVPosition_t position)
 {
     return true;
 }

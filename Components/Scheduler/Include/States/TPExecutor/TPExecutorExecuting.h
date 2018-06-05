@@ -1,22 +1,23 @@
 #ifndef TPEXECUTOR_EXECUTING_H
 #define TPEXECUTOR_EXECUTING_H
-#include "Scheduler/Include/States/StateBase.h"
+#include "Scheduler/Include/States/TimeoutState.h"
 
 namespace Scheduler{
 namespace TPExecutorStates{
-class Executing: public StateBase<Global::CommandShPtr_t>
+class Executing: public Scheduler::TimeoutState<Scheduler::SchedulerCommandShPtr_t>
 {
 public:
     Executing(IEventHandler* pHandler, SchedulerMainThreadController* controller);
     ~Executing();
 
 protected:
-    void onEntry(QEvent* event) override;
+    void Enter(QEvent* event) override;
 
-    bool HandleEvent(TPEventArgs<Global::CommandShPtr_t>* event, TPTransition_t& pTransition) override;
+    bool HandleEvent(TPEventArgs<Scheduler::SchedulerCommandShPtr_t>* event, TPTransition_t& pTransition) override;
+
+    void Timeout(TPTransition_t& pTransition) override;
 
     void RepeatAction(TPTransition_t& pTransition) override;
-
 };
 }
 }

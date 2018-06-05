@@ -129,14 +129,30 @@ int InstrumentManager::CreateSession(const QString& retortId, const QString& pro
     return m_pSessionManager->CreateSession(retortId, protocolId);
 }
 
-QList<Session*>& InstrumentManager::GetActiveSession()
+QList<Session*>& InstrumentManager::GetInitialSession()
 {
     m_SessionList.clear();
     foreach(auto name, m_TPExecutorList.keys())
     {
-        if(m_pSessionManager->GetSessionByRetortId(name) != nullptr)
+        auto ss = m_pSessionManager->GetSessionByRetortId(name, Session::Initial);
+        if(ss != nullptr)
         {
-            m_SessionList << m_pSessionManager->GetSessionByRetortId(name);
+            m_SessionList << ss;
+        }
+    }
+
+    return m_SessionList;
+}
+
+QList<Session*>& InstrumentManager::GetReadySession()
+{
+    m_SessionList.clear();
+    foreach(auto name, m_TPExecutorList.keys())
+    {
+        auto ss = m_pSessionManager->GetSessionByRetortId(name, Session::Ready);
+        if(ss != nullptr)
+        {
+            m_SessionList << ss;
         }
     }
 

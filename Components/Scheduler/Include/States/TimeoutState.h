@@ -10,14 +10,16 @@ class TimeoutState : public StateBase<T>
 public:
     TimeoutState(IEventHandler* pHandler, Scheduler::SchedulerMainThreadController* controller);
 
-protected:
-    virtual void Timeout(TPTransition_t& transition);
-
-    virtual void TimeInterval(int msecs);
-
+protected:    
     void onEntry(QEvent* event) override;
 
     void RepeatAction(TPTransition_t& transition) override;
+
+    virtual void Timeout(TPTransition_t& transition);
+
+    virtual void TimeInterval(qint32 secs);
+
+    virtual void Enter(QEvent* event);
 
 private:
     int m_CurrentTickCount;

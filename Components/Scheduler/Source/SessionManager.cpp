@@ -1,5 +1,5 @@
 #include "Scheduler/Include/SessionManager.h"
-#include "Scheduler/Include/Session.h"
+#include "HimalayaDataManager/Include/DataManager.h"
 #include <QSharedPointer>
 
 using namespace DataManager;
@@ -32,26 +32,27 @@ void SessionManager::DestroySession(int sessionId)
 
 Session* SessionManager::GetSessionById(int sessionId)
 {
-    //return m_SessionList.find(sessionId).value().data();
     if (m_SessionList.find(sessionId) != m_SessionList.end())
     {
         return m_SessionList.find(sessionId).value().data();
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 }
 
-Session* SessionManager::GetSessionByRetortId(const QString &retortId)
+Session* SessionManager::GetSessionByRetortId(const QString &retortId, Session::SessionStatus_t status)
 {
     foreach(auto session, m_SessionList)
     {
-        if(session.data()->GetRetortID() == retortId)
+        if(session->GetRetortID() == retortId
+                && session->GetStatus() == status)
         {
             return session.data();
         }
     }
+    return nullptr;
 }
 
 

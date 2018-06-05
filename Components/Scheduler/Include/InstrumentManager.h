@@ -33,7 +33,9 @@ public:
 
     void CreateStateMachine() override;
 
-    QList<Session*>&  GetActiveSession();
+    QList<Session*>&  GetInitialSession();
+
+    QList<Session*>&  GetReadySession();
 
     int CreateSession(const QString& retortId, const QString& protocolId);
 

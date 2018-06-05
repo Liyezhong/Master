@@ -57,6 +57,8 @@ bool ProtocolParser::GenerateActionList(Session* session, const CProgram* progra
         }
     }
 
+    session->SetStatus(Session::Ready);
+
     return true;
 }
 

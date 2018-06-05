@@ -24,6 +24,23 @@ typedef struct {
 } ProgramStepInfor;
 
 
+typedef struct Schedule
+{
+public:
+    Schedule(QDateTime startTime,  int actionNum)
+    {
+        StartTime = startTime;
+        ActionNum = actionNum;
+    }
+
+    int GetNextAction() {return ActionIndex++; }
+
+private:
+    int ActionIndex;
+    int ActionNum;
+    QDateTime StartTime;
+}Schedule_t;
+
 class Session
 {
 public:
@@ -39,15 +56,21 @@ public:
 
     QList<QSharedPointer<IAction>>& GetActionList(){return m_ActionList;}
     
-    enum Status 
+    Schedule* GetSchedule() const {return m_pSchedule;}
+
+    void SetSchedule(Schedule* pSchedule) {m_pSchedule = pSchedule;}
+
+    typedef enum Status
     {
-        Initial,                
+        Initial,
+        Ready,
         Running,
         Completed,
         Error
-    };
-    
-    
+    }SessionStatus_t;
+        
+    void SetStatus(const SessionStatus_t& status){m_Status = status;}
+    SessionStatus_t GetStatus() const { return m_Status;}
 
     Q_DISABLE_COPY(Session)
 private:
@@ -56,6 +79,8 @@ private:
     QList<QSharedPointer<const CProgramStep>> m_pProgramSteps;
     QList<QSharedPointer<IAction>> m_ActionList;
     ProgramStepInfor* m_pProgramStepInfo;
+    SessionStatus_t m_Status;
+    Schedule* m_pSchedule;
 };
 }
 #endif // SESSION_H

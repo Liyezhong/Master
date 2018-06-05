@@ -23,7 +23,7 @@ protected:
     void RepeatAction(TPTransition_t& pTransition) override;
 
 private:
-    void ProgramSelectedReply(Global::tRefType ref, const MsgClasses::CmdProgramSelected& cmd, unsigned int timeProposed);
+//    void ProgramSelectedReply(Global::tRefType ref, const MsgClasses::CmdProgramSelected& cmd, unsigned int timeProposed);
 
 private:
     Global::tRefType ref;

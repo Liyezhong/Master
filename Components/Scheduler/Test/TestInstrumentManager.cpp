@@ -99,6 +99,7 @@ void TestInstrumentManager::testCase1()
 
     SLEEP(500,  m_pController->m_pInstrumentManager == nullptr)
     m_pInstrumentManager = m_pController->m_pInstrumentManager;
+    m_pSessionManager = m_pController->m_pSessionManager;
     QObject::connect(m_pInstrumentManager->m_pIdle, SIGNAL(entered()), this, SLOT(OnIdleEntered()));
     // act
 //    m_pInstrumentManager->Initialize(retorts);
@@ -112,6 +113,8 @@ void TestInstrumentManager::utInstrumentSelfTestDone()
 {
     // arrange
     QAbstractState* pIdle = nullptr;
+
+    SLEEP(500, !m_pInstrumentManager->m_pStateMachine->isRunning())
     foreach(auto p, m_pInstrumentManager->m_pStateMachine->configuration())
     {
         qDebug() << p->objectName();
@@ -128,7 +131,7 @@ void TestInstrumentManager::utInstrumentHandleLoadRequest()
     QObject::connect(m_pInstrumentManager->m_pScheduling, SIGNAL(entered()), this, SLOT(OnSchedulingEntered()));
 //    auto req = new TPCmdEvent<Global::CommandShPtr_t>("Common", Global::CommandShPtr_t(new MsgClasses::CmdProgramSelected("Common", 500, "L01", 0)));
 
-    m_pEventDispatcher->IncomingEvent(TPEventArgs<Global::CommandShPtr_t>::CreateEvent("Common", 64, Global::CommandShPtr_t(new MsgClasses::CmdProgramSelected("Common", 500, "L01", 0))));
+    m_pEventDispatcher->IncomingEvent(TPEventArgs<Global::CommandShPtr_t>::CreateEvent("Common", 64, Global::CommandShPtr_t(new MsgClasses::CmdProgramSelected("Retort_A", 500, "L03", 0))));
 
     while (!SchedulingEntered)
     {
@@ -152,6 +155,9 @@ void TestInstrumentManager::utInstrumentHandleLoadRequest()
     }
 
     QVERIFY2(pScheduling->objectName() == "Instrument_Scheduling_State", "Failure");
+
+    auto ss = m_pSessionManager->GetSessionByRetortId("Retort_A", Session::Ready);
+    QVERIFY2(ss != nullptr, "Failure");
 }
 
 void TestInstrumentManager::utInstrumentHandleStartRequest()
@@ -160,7 +166,7 @@ void TestInstrumentManager::utInstrumentHandleStartRequest()
     QObject::connect(m_pInstrumentManager->m_pBusy, SIGNAL(entered()), this, SLOT(OnBusyEntered()));
     m_pEventDispatcher->IncomingEvent(TPEventArgs<Global::CommandShPtr_t>
                                       ::CreateEvent("Common", 64, Global::CommandShPtr_t(
-                                                        new MsgClasses::CmdProgramAction("Retort_A", 500, "L01", DataManager::ProgramActionType_t::PROGRAM_START, 500, 6000, ""))));
+                                                        new MsgClasses::CmdProgramAction("Retort_A", 500, "L03", DataManager::ProgramActionType_t::PROGRAM_START, 500, 6000, ""))));
 
     while (!BusyEntered)
     {
