@@ -22,7 +22,7 @@
 
 #include <QList>
 #include <QSharedPointer>
-#include "Scheduler/Include/IAction.h"
+#include "Scheduler/Include/Actions/IAction.h"
 #include "Scheduler/Include/Session.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/ProgramStep.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
@@ -56,6 +56,15 @@ typedef struct
     int UsedTimes;       ///<  Definition/Declaration of variable UsedTimes
 
 }StationUseRecord_t;
+
+//typedef enum
+//{
+//    TYPE_UNDEFIN = 0,
+//    FILLING,
+//    DRAINING,
+//    PURGE,
+//    SOAKING
+//}ActionType_t;
 
 
 class ProtocolParser
@@ -118,6 +127,8 @@ private:
      */
     /****************************************************************************/
     bool IsCleaningReagent(const QString& ReagentID);
+
+    IAction* CreateAction(ActionType_t type, Session* session, bool isLastStep = false);
 
 private:
     QList<ActionType_t> m_StepActionTypes;

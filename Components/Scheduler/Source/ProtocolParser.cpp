@@ -1,5 +1,7 @@
 #include "Scheduler/Include/ProtocolParser.h"
-#include "Scheduler/Include/IAction.h"
+#include "Scheduler/Include/Actions/FillAction.h"
+//#include "Scheduler/Include/Actions/DrainAction.h"
+//#include "Scheduler/Include/Actions/PurgeAction.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include <QDebug>
 
@@ -80,7 +82,7 @@ bool ProtocolParser::GenerateActionList(Session* session, const CProgram* progra
 
     foreach (ActionType_t type, m_StepActionTypes)
     {
-        QSharedPointer<IAction> action = QSharedPointer<IAction>(new IAction(mp_SchedulerCommandProcessor, session, type));
+        QSharedPointer<IAction> action = QSharedPointer<IAction>(CreateAction(type, session));
 
         action.data()->SetReagentID(reagentID);
         action.data()->SetStationID(stationID);
@@ -203,6 +205,23 @@ bool ProtocolParser::GenerateActionList(Session* session, const CProgram* progra
          }
      }
      return false;
+ }
+
+ IAction* ProtocolParser::CreateAction(ActionType_t type, Session* session, bool isLastStep)
+ {
+     IAction* action = NULL;
+     switch (type) {
+     case FILLING:
+         action = new FillAction(mp_SchedulerCommandProcessor, session);
+         break;
+     case DRAINING:
+         //action = new DrainAction(mp_SchedulerCommandProcessor, session, isLastStep);
+         break;
+     default:
+         break;
+     }
+
+     return action;
  }
 
 }

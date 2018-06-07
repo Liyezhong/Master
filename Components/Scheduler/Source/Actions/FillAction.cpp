@@ -1,6 +1,5 @@
-#include "Scheduler/Include/IAction.h"
+#include "Scheduler/Include/Actions/FillAction.h"
 #include "Scheduler/Commands/Include/CmdALFilling.h"
-#include "Scheduler/Commands/Include/CmdALDraining.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
@@ -10,52 +9,32 @@
 
 using namespace DeviceControl;
 namespace Scheduler{
-IAction::IAction(SchedulerCommandProcessorBase* commandProcessor, Session* session, ActionType_t type)
-    :mp_SchedulerCommandProcessor(commandProcessor),
-     mp_session(session),
-     m_type(type),
-     m_stateWaitResult(false),
-     m_finished(false),
-     m_reagentID(""),
-     m_currentState(STATE_FILLING_RVROD_HEATING)
+
+FillAction::FillAction(SchedulerCommandProcessorBase* commandProcessor, Session* session):
+    IAction(session),
+    ActionHelper(commandProcessor),
+    m_currentState(STATE_FILLING_RVROD_HEATING),
+    m_stateWaitResult(false)
 {
 
 }
 
-IAction::~IAction()
+FillAction::~FillAction()
 {
 
 }
 
-void IAction::Execute(const QString& cmdName, ReturnCode_t retCode)
+void FillAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
-    switch (m_type)
-    {
-    case FILLING:
-        //SetResult(pIDP->ALFilling(500,true,false));
-        Fill(cmdName, retCode);
-    case DRAINING:
-        Drain(cmdName, retCode);
-    case PURGE:
-        Purge(cmdName, retCode);
-    case SOAKING:
-        //TO DO
-        m_finished = true;
-    default:
-        qDebug()<<"error type for run action.";
-    }
-}
-
-void IAction::Fill(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
-{
+    RVPosition_t position = RV_UNDEF;
     switch (m_currentState)
     {
     case STATE_FILLING_RVROD_HEATING:
         //to do
-        RVPosition_t position = GetRVPosition(m_stationID, true);
+        position = GetRVPosition(m_stationID, true);
         if (m_stateWaitResult)
         {
-            if (IsRVRightPosition(position))
+            if (IsRVRightPosition(position, mp_session->GetRetortID()))
             {
                 m_currentState = STATE_FILLING_LEVELSENSOR_HEATING;
                 m_stateWaitResult = false;
@@ -71,6 +50,7 @@ void IAction::Fill(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
         break;
     case STATE_FILLING_LEVELSENSOR_HEATING:
         //to do
+        m_stateWaitResult = true;
         if (m_stateWaitResult)
         {
             m_currentState = STATE_FILLING;
@@ -103,15 +83,14 @@ void IAction::Fill(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
         }
         break;
     case STATE_RV_MOVE_TO_SEAL:
-
-        RVPosition_t position = GetRVPosition(m_stationID, false);
+        position = GetRVPosition(m_stationID, false);
         if (m_stateWaitResult)
         {
-            if (IsRVRightPosition(position))
+            if (IsRVRightPosition(position, mp_session->GetRetortID()))
             {
                 m_currentState = STATE_FILLING_RVROD_HEATING;
                 m_stateWaitResult = false;
-                 m_finished = true;
+                m_finished = true;
             }
         }
         else
@@ -125,49 +104,5 @@ void IAction::Fill(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
     }
 }
 
-void IAction::Drain(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
-{
-    m_finished = true;
-    return;
-}
-
-void IAction::Purge(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
-{
-    m_finished = true;
-    return;
-}
-
-RVPosition_t IAction::GetRVPosition(const QString& stationID, bool isTube)
-{
-    RVPosition_t ret = RV_UNDEF;
-    bool ok = false;
-    if (!stationID.isEmpty())
-    {
-        int position = stationID.right(stationID.length() - 1).toInt(&ok, 10);
-        if (ok)
-        {
-            int offset = 0;
-            if (isTube)
-            {
-                offset = 1;
-            }
-
-            if(stationID.left(1) == "S")
-            {
-                ret = (RVPosition_t)(position * 2 - offset);
-            }
-            else if(stationID.left(1) == "P")
-            {
-                ret = (RVPosition_t)((position + 13) * 2 - offset);
-            }
-        }
-    }
-    return ret;
-}
-
-bool IsRVRightPosition(RVPosition_t position)
-{
-    return true;
-}
 
 }

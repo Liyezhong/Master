@@ -6,12 +6,11 @@
 
 #include "HimalayaDataContainer/Containers/Programs/Include/ProgramStep.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
-#include "Scheduler/Include/IAction.h"
+#include "Scheduler/Include/Actions/IAction.h"
 
 using namespace DataManager;
 
 namespace Scheduler{
-
 
 typedef struct {
     QString stationID;       ///<  Definition/Declaration of variable stationID
@@ -39,8 +38,12 @@ public:
 
     QList<QSharedPointer<IAction>>& GetActionList(){return m_ActionList;}
 
+    int GetCurrentActionIndex() const {return m_currentActionIndex;}
+    void UpdateCurrentActionIndex(int index) {m_currentActionIndex = index;}
+
     Q_DISABLE_COPY(Session)
 private:
+    int m_currentActionIndex;
     QString m_RetortId;
     CProgram* m_pProgram;
     QList<QSharedPointer<const CProgramStep>> m_pProgramSteps;

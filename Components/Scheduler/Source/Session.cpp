@@ -4,7 +4,7 @@
 namespace Scheduler{
 
 Session::Session(const QString& retortId, CProgram* pProgram)
-    : m_RetortId(retortId)
+    : m_RetortId(retortId), m_currentActionIndex(-1)
 {
     m_pProgram = pProgram;
     m_pProgramStepInfo = new ProgramStepInfor{};

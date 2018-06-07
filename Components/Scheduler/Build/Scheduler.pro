@@ -13,6 +13,9 @@ SOURCES += ../Source/*.cpp \
             ../Source/States/Instrument/*.cpp \
             ../Source/States/TPExecutor/*.cpp \
             ../Source/States/*.cpp \
+            ../Source/Actions/*.cpp \
+    ../Source/Actions/DrainAction.cpp
+    #../Source/IAction.cpp
 
 
 HEADERS += ../Include/*.h \
@@ -22,6 +25,11 @@ HEADERS += ../Include/*.h \
             ../Include/States/Instrument/*.h \
             ../Include/States/TPExecutor/*.h \
             ../Include/States/*.h \
+            ../Include/Actions/*.h \
+    ../Include/Actions/ActionHelper.h \
+    ../Include/Actions/PurgeAction.h \
+    ../Include/Actions/DrainAction.h
+    #../Include/IAction.h
 
 
 defined(GOOGLE_MOCK) {

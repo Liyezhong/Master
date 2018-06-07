@@ -33,7 +33,7 @@ bool Idle::HandleEvent(TPEventArgs<Global::CommandShPtr_t> *event, TPTransition_
     auto actionCmd = dynamic_cast<MsgClasses::CmdProgramAction*>(event->Data().GetPointerToUserData());
     if(actionCmd != nullptr)
     {
-        if(actionCmd->ProgramActionType() == DataManager::ProgramActionType_t::PROGRAM_START)
+        if(actionCmd->ProgramActionType() == DataManager::PROGRAM_START)
         {
             event->SetHandled();
 

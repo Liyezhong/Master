@@ -70,11 +70,12 @@ void TestProtocolParser::testCase1()
     foreach(QSharedPointer<IAction>action, actionList)
     {
         ActionType_t t = action.data()->GetActionType();
-        quint32 d = action.data()->GetDuration();
-        QString r = action.data()->GetReagentID();
-        QString s = action.data()->GetStationID();
+//        quint32 d = action.data()->GetDuration();
+//        QString r = action.data()->GetReagentID();
+//        QString s = action.data()->GetStationID();
 
-        qDebug()<<QString("**** action type:%1 station:%2, reagent:%3, duration:%4").arg(t).arg(s).arg(r).arg(d);
+//        qDebug()<<QString("**** action type:%1 station:%2, reagent:%3, duration:%4").arg(t).arg(s).arg(r).arg(d);
+
     }
 }
 }
