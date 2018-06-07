@@ -8,7 +8,8 @@ namespace Scheduler{
 IAction::IAction(Session* session):
      mp_session(session),
      m_finished(false),
-     m_reagentID("")
+     m_reagentID(""),
+     m_stationID("")
 {
 
 }
