@@ -756,6 +756,10 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
                                                    .arg(qSharedPointerDynamicCast<CmdRTSetTemperatureSwitchState>(scmd)->GetHeaterVoltage())
                                                    .arg(qSharedPointerDynamicCast<CmdRTSetTemperatureSwitchState>(scmd)->GetAutoType()) );
         }
+        else if ("Scheduler::ALPurge" == cmdName)
+        {
+            scmd->SetResult( DCL_ERR_FCT_CALL_SUCCESS );
+        }
 }
 
 template <class DP>

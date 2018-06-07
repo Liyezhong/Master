@@ -14,7 +14,9 @@ SOURCES += ../Source/*.cpp \
             ../Source/States/TPExecutor/*.cpp \
             ../Source/States/*.cpp \
             ../Source/Actions/*.cpp \
-    ../Source/Actions/DrainAction.cpp
+    ../Source/Actions/DrainAction.cpp \
+    ../Source/Actions/SoakAction.cpp \
+    ../Commands/Source/CmdALPurge.cpp
     #../Source/IAction.cpp
 
 
@@ -28,7 +30,9 @@ HEADERS += ../Include/*.h \
             ../Include/Actions/*.h \
     ../Include/Actions/ActionHelper.h \
     ../Include/Actions/PurgeAction.h \
-    ../Include/Actions/DrainAction.h
+    ../Include/Actions/DrainAction.h \
+    ../Include/Actions/SoakAction.h \
+    ../Commands/Include/CmdALPurge.h
     #../Include/IAction.h
 
 

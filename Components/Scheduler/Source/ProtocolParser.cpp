@@ -1,7 +1,8 @@
 #include "Scheduler/Include/ProtocolParser.h"
 #include "Scheduler/Include/Actions/FillAction.h"
-//#include "Scheduler/Include/Actions/DrainAction.h"
-//#include "Scheduler/Include/Actions/PurgeAction.h"
+#include "Scheduler/Include/Actions/DrainAction.h"
+#include "Scheduler/Include/Actions/PurgeAction.h"
+#include "Scheduler/Include/Actions/SoakAction.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include <QDebug>
 
@@ -53,7 +54,8 @@ bool ProtocolParser::GenerateActionList(Session* session, const CProgram* progra
     for (int i = 0; i < stepNum; ++i)
     {
         const CProgramStep* step = program->GetProgramStep(i);
-        if (false == GenerateActionList(session, step, unusedStationIDs, actionList))
+        bool isLastStep = (i == (stepNum - 1));
+        if (false == GenerateActionList(session, step, unusedStationIDs, actionList, isLastStep))
         {
             return false;
         }
@@ -64,14 +66,13 @@ bool ProtocolParser::GenerateActionList(Session* session, const CProgram* progra
     return true;
 }
 
- bool ProtocolParser::GenerateActionList(Session* session, const CProgramStep* programStep, ListOfIDs_t& unusedStationIDs, QList<QSharedPointer<IAction>>& actionList)
+ bool ProtocolParser::GenerateActionList(Session* session, const CProgramStep* programStep, ListOfIDs_t& unusedStationIDs,
+                                         QList<QSharedPointer<IAction>>& actionList, bool isLastStep)
  {
     if (!programStep)
     {
         return false;
     }
-
-    bool isLastStep = false;
 
     QList<StationUseRecord_t> usedStations;
     QString reagentID = programStep->GetReagentID();
@@ -84,7 +85,7 @@ bool ProtocolParser::GenerateActionList(Session* session, const CProgram* progra
 
     foreach (ActionType_t type, m_StepActionTypes)
     {
-        QSharedPointer<IAction> action = QSharedPointer<IAction>(CreateAction(type, session));
+        QSharedPointer<IAction> action = QSharedPointer<IAction>(CreateAction(type, session, isLastStep));
 
         action.data()->SetReagentID(reagentID);
         action.data()->SetStationID(stationID);
@@ -217,7 +218,13 @@ bool ProtocolParser::GenerateActionList(Session* session, const CProgram* progra
          action = new FillAction(mp_SchedulerCommandProcessor, session);
          break;
      case DRAINING:
-         //action = new DrainAction(mp_SchedulerCommandProcessor, session, isLastStep);
+         action = new DrainAction(mp_SchedulerCommandProcessor, session, isLastStep);
+         break;
+     case PURGE:
+         action = new PurgeAction(mp_SchedulerCommandProcessor, session);
+         break;
+     case SOAKING:
+         action = new SoakAction(mp_SchedulerCommandProcessor, session);
          break;
      default:
          break;

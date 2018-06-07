@@ -10,7 +10,7 @@ class SchedulerCommandProcessorBase;
 
 typedef enum
 {
-    STATE_UNDEFIN = 0,
+    STATE_DRAINING_UNDEFIN = 0,
     STATE_DRAINING_RVROD,
     STATE_DRAINING
 }DrainState_t;
@@ -18,7 +18,7 @@ typedef enum
 class DrainAction: public IAction, public ActionHelper
 {
 public:
-    DrainAction(SchedulerCommandProcessorBase* commandProcessor, Session* session);
+    DrainAction(SchedulerCommandProcessorBase* commandProcessor, Session* session, bool isLastStep = false);
     virtual ~DrainAction();
 
     virtual void Execute(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -26,6 +26,7 @@ public:
 private:
     DrainState_t m_currentState;
     bool m_stateWaitResult;
+    bool m_isLastStep;
 };
 
 }

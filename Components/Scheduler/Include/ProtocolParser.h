@@ -77,7 +77,8 @@ public:
     bool GenerateActionList(Session* session, const CProgram* program, QList<QSharedPointer<IAction>>& actionList);
 
 private:
-    bool GenerateActionList(Session* session, const CProgramStep* programStep, ListOfIDs_t& unusedStationIDs, QList<QSharedPointer<IAction>>& actionList);
+    bool GenerateActionList(Session* session, const CProgramStep* programStep, ListOfIDs_t& unusedStationIDs,
+                            QList<QSharedPointer<IAction>>& actionList, bool isLastStep);
 
     quint32 GetDruationTime(ActionType_t type);
 

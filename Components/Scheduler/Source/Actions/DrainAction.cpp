@@ -9,13 +9,14 @@
 using namespace DeviceControl;
 namespace Scheduler{
 
-DrainAction::DrainAction(SchedulerCommandProcessorBase* commandProcessor, Session* session):
+DrainAction::DrainAction(SchedulerCommandProcessorBase* commandProcessor, Session* session, bool isLastStep):
     IAction(session),
     ActionHelper(commandProcessor),
     m_currentState(STATE_DRAINING_RVROD),
-    m_stateWaitResult(false)
+    m_stateWaitResult(false),
+    m_isLastStep(isLastStep)
 {
-
+    m_type = DRAINING;
 }
 
 DrainAction::~DrainAction()
@@ -26,6 +27,7 @@ DrainAction::~DrainAction()
 void DrainAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
     RVPosition_t position = RV_UNDEF;
+    qDebug()<<"************************ drain action:"<<m_currentState;
     switch (m_currentState)
     {
     case STATE_DRAINING_RVROD:

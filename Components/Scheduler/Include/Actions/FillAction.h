@@ -10,7 +10,7 @@ class SchedulerCommandProcessorBase;
 
 typedef enum
 {
-    STATE_UNDEFIN = 0,
+    STATE_FILLING_UNDEFIN = 0,
     STATE_FILLING_RVROD_HEATING,
     STATE_FILLING_LEVELSENSOR_HEATING,
     STATE_FILLING,
