@@ -3,20 +3,24 @@
 
 #include <QObject>
 #include <QSharedPointer>
-#include "HimalayaDataManager/Include/DataManager.h"
+#include "Scheduler/Include/Session.h"
 
+namespace DataManager
+{
+class CDataManager;
+}
 
 namespace Scheduler{
 
-class Session;
 class SessionManager
 {
 public:
     SessionManager(DataManager::CDataManager* pDataManager);
 
-    int CreateSession(const QString& protocoId, const QString& retortId);
+    int CreateSession(const QString &retortId, const QString& protocoId);
     void DestroySession(int sessionId);
     Session* GetSessionById(int sessionId);
+    Session* GetSessionByRetortId(const QString& retrotId, Session::SessionStatus_t status);
 private:
 
     QHash<int, QSharedPointer<Session>> m_SessionList;

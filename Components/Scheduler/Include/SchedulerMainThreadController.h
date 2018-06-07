@@ -71,6 +71,7 @@ class CSchedulerStateHandler;
 class InstrumentManager;
 class EventDispatcher;
 class SessionManager;
+class ProtocolParser;
 class TestInstrumentManager;
 
 
@@ -289,7 +290,7 @@ typedef struct {
         InstrumentManager* m_pInstrumentManager;
         EventDispatcher* m_pEventDispatcher;
         SessionManager* m_pSessionManager;
-
+        ProtocolParser* m_pProtocolParser;
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -1053,6 +1054,10 @@ protected:
          */
         /****************************************************************************/
         inline quint16 RetortLockStatus() { return m_RetortLockStatus; }
+
+        SessionManager* GetSessionManager() {return m_pSessionManager;}
+
+        ProtocolParser* GetProtocolParser() {return m_pProtocolParser;}
 
     public slots:
 

@@ -16,6 +16,7 @@ class TestInstrumentManager;
 class TPExecutor;
 class SchedulerMainThreadController;
 class SessionManager;
+class Session;
 
 class InstrumentManager: public IEventHandler
 {
@@ -31,6 +32,10 @@ public:
     TPExecutor* GetTPExecutor(const QString& Id);
 
     void CreateStateMachine() override;
+
+    QList<Session*>&  GetInitialSession();
+
+    QList<Session*>&  GetReadySession();
 
     int CreateSession(const QString& retortId, const QString& protocolId);
 
@@ -58,6 +63,7 @@ private:
 
     static InstrumentManager* m_pInstance;
     QList<QString> m_pConfig;
+    QList<Session*> m_SessionList;
 };
 
 }

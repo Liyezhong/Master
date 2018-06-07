@@ -1,12 +1,16 @@
 #include "Scheduler/Include/States/Instrument/Busy.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
+#include "Scheduler/Include/InstrumentManager.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "Scheduler/Include/SchedulerMainThreadController.h"
+#include "Scheduler/Include/Session.h"
 
 namespace Scheduler{
 namespace Instrument{
 
 Busy::Busy(IEventHandler* pHandler, SchedulerMainThreadController* controller)
-    :StateBase<Global::CommandShPtr_t>(pHandler, controller)
+    :Idle(pHandler, controller)
 {
     setObjectName("Instrument_Busy_State");
 }
@@ -19,36 +23,15 @@ Busy::~Busy()
 void Busy::onEntry(QEvent *event)
 {
     StateBase<Global::CommandShPtr_t>::onEntry(event);
-}
 
-bool Busy::HandleEvent(TPEventArgs<Global::CommandShPtr_t> *event, TPTransition_t &pTransition)
-{
-    auto pSelectedcmd = dynamic_cast<MsgClasses::CmdProgramSelected*>(event->Data().GetPointerToUserData());
-    if(pSelectedcmd != nullptr)
+    foreach(auto session, Idle::m_pManager->GetInitialSession())
     {
-        event->SetHandled();
-        pTransition = TPTransition_t::Load;
-        return true;
+        MsgClasses::CmdProgramAcknowledge* commandPtr(
+                    new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY, session->GetRetortID()));
+        Q_ASSERT(commandPtr);
+        Global::tRefType Ref = IState::m_pController->GetNewCommandRef();
+        IState::m_pController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
     }
-
-    auto actionCmd = dynamic_cast<MsgClasses::CmdProgramAction*>(event->Data().GetPointerToUserData());
-    if(actionCmd != nullptr)
-    {
-        if(actionCmd->ProgramActionType() == DataManager::ProgramActionType_t::PROGRAM_START)
-        {
-            event->SetHandled();
-            // Start a protocol running
-            pTransition = TPTransition_t::Start;
-        }
-    }
-
-    return false;
-}
-
-void Busy::RepeatAction(TPTransition_t &pTransition)
-{
-    // check if session is done
-    pTransition = TPTransition_t::Done;
 }
 
 }

@@ -129,6 +129,36 @@ int InstrumentManager::CreateSession(const QString& retortId, const QString& pro
     return m_pSessionManager->CreateSession(retortId, protocolId);
 }
 
+QList<Session*>& InstrumentManager::GetInitialSession()
+{
+    m_SessionList.clear();
+    foreach(auto name, m_TPExecutorList.keys())
+    {
+        auto ss = m_pSessionManager->GetSessionByRetortId(name, Session::Initial);
+        if(ss != nullptr)
+        {
+            m_SessionList << ss;
+        }
+    }
+
+    return m_SessionList;
+}
+
+QList<Session*>& InstrumentManager::GetReadySession()
+{
+    m_SessionList.clear();
+    foreach(auto name, m_TPExecutorList.keys())
+    {
+        auto ss = m_pSessionManager->GetSessionByRetortId(name, Session::Ready);
+        if(ss != nullptr)
+        {
+            m_SessionList << ss;
+        }
+    }
+
+    return m_SessionList;
+}
+
 void InstrumentManager::StartProtocol(const QString& retortId)
 {
     m_pEventDispatcher->IncomingEvent(new TPEvent(TPTransition_t::Self, new TPEventArgs<ControlCommandType_t>(retortId, ControlCommandType_t::CTRL_CMD_START)));

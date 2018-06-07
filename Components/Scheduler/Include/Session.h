@@ -23,13 +23,30 @@ typedef struct {
 } ProgramStepInfor;
 
 
+typedef struct Schedule
+{
+public:
+    Schedule(QDateTime startTime,  int actionNum)
+    {
+        StartTime = startTime;
+        ActionNum = actionNum;
+    }
+
+    int GetNextAction() {return ActionIndex++; }
+
+private:
+    int ActionIndex;
+    int ActionNum;
+    QDateTime StartTime;
+}Schedule_t;
+
 class Session
 {
 public:
     Session(const QString& retortId, CProgram* pProgram);
     ~Session();
 
-    const QString& GetRetortID() const {return m_RetortId;}
+    const QString& GetRetortID() {return m_RetortId;}
     CProgram* GetProgram() {return m_pProgram;}
 
     QList<QSharedPointer<const CProgramStep>> GetProgramStep() {return m_pProgramSteps;}
@@ -37,6 +54,22 @@ public:
     ProgramStepInfor* GetProgramStepInfo(){return m_pProgramStepInfo;}
 
     QList<QSharedPointer<IAction>>& GetActionList(){return m_ActionList;}
+    
+    Schedule* GetSchedule() const {return m_pSchedule;}
+
+    void SetSchedule(Schedule* pSchedule) {m_pSchedule = pSchedule;}
+
+    typedef enum Status
+    {
+        Initial,
+        Ready,
+        Running,
+        Completed,
+        Error
+    }SessionStatus_t;
+        
+    void SetStatus(const SessionStatus_t& status){m_Status = status;}
+    SessionStatus_t GetStatus() const { return m_Status;}
 
     int GetCurrentActionIndex() const {return m_currentActionIndex;}
     void UpdateCurrentActionIndex(int index) {m_currentActionIndex = index;}
@@ -49,6 +82,8 @@ private:
     QList<QSharedPointer<const CProgramStep>> m_pProgramSteps;
     QList<QSharedPointer<IAction>> m_ActionList;
     ProgramStepInfor* m_pProgramStepInfo;
+    SessionStatus_t m_Status;
+    Schedule* m_pSchedule;
 };
 }
 #endif // SESSION_H

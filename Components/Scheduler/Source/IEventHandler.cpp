@@ -46,7 +46,7 @@ bool IEventHandler::HandleEvent(QEvent* event)
     auto* tpEvent = dynamic_cast<TPEvent*>(event);
     if(tpEvent != nullptr && m_pStateMachine->isRunning())
     {
-        qDebug() << tpEvent->toString();
+//        qDebug() << tpEvent->toString();
         if(tpEvent->Value() != TPTransition_t::Timeout)
         {
             qDebug() << "Handle external request/response";
@@ -55,7 +55,7 @@ bool IEventHandler::HandleEvent(QEvent* event)
         }
         else
         {
-            qDebug() << "Broadcast timer tick event";
+//            qDebug() << "Broadcast timer tick event";
             m_pStateMachine->postEvent(event);
         }
     }

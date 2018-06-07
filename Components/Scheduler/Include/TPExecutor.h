@@ -11,6 +11,9 @@
 #include "Scheduler/Include/States/TPExecutor/TPExecutorBusy.h"
 
 namespace Scheduler{
+class IAction;
+class Session;
+class SessionManager;
 
 class TPExecutor: public IEventHandler
 {
@@ -23,6 +26,11 @@ public:
     bool HandleEvent(QEvent* event) override;
 
     void CreateStateMachine() override;
+
+    Session* GetCurrentSession();
+
+    int GetCurrentAction();
+    void SetCurrentAction(int pAction);
     Q_DISABLE_COPY(TPExecutor)
 
 private:
@@ -33,6 +41,9 @@ private:
     TPExecutorStates::NextAction* m_pNextAction;
     TPExecutorStates::Soaking* m_pSoaking;
     TPExecutorStates::Executing* m_pExecuting;
+    SessionManager* m_pSessionManager;
+    Session* m_pSession;
+    int m_pAction;
 };
 }
 

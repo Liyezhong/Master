@@ -102,7 +102,7 @@ bool EventDispatcher::RemovePendingEvent(TPEvent *event)
 
 void EventDispatcher::OnTickTimer()
 {
-    qDebug() << QDateTime::currentDateTime().toString() << " OnTickTimer";
+//    qDebug() << QDateTime::currentDateTime().toString() << " OnTickTimer";
 
     foreach(auto handler, m_EventHandlerList)
     {

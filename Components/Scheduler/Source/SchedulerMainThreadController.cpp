@@ -69,7 +69,7 @@
 #include "Global/Include/Commands/CmdShutDown.h"
 #include <DataManager/CommandInterface/Include/UserSettingsCommandInterface.h>
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
-#include <Scheduler/Include/SchedulerStateHandler.h>
+//#include <Scheduler/Include/SchedulerStateHandler.h>
 #include <Scheduler/Include/ProgramSelfTest.h>
 #ifdef GOOGLE_MOCK
 #include "DeviceControl/Test/Mock/MockDeviceControl.h"
@@ -79,6 +79,7 @@
 #include "Scheduler/Include/InstrumentManager.h"
 #include "Scheduler/Include/EventDispatcher.h"
 #include "Scheduler/Include/SessionManager.h"
+#include "Scheduler/Include/ProtocolParser.h"
 
 using namespace DataManager;
 
@@ -98,9 +99,9 @@ namespace Scheduler {
  /****************************************************************************/
 static bool QPairComp(const QPair<QString, QString>& va1, const QPair<QString, QString>& va2)
 {
-    RVPosition_t tube1 = CSchedulerStateHandler::GetRVTubePositionByStationID(va1.first);
-    RVPosition_t tube2 = CSchedulerStateHandler::GetRVTubePositionByStationID(va2.first);
-    return tube1 < tube2;
+//    RVPosition_t tube1 = CSchedulerStateHandler::GetRVTubePositionByStationID(va1.first);
+//    RVPosition_t tube2 = CSchedulerStateHandler::GetRVTubePositionByStationID(va2.first);
+//    return tube1 < tube2;
 }
 
 SchedulerMainThreadController::SchedulerMainThreadController(
@@ -123,6 +124,9 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         ,m_bWaitToPause(false)
         ,m_ReagentExpiredFlag("")
         ,m_pEventDispatcher(new EventDispatcher())
+        ,m_pInstrumentManager(nullptr)
+        ,m_pSessionManager(nullptr)
+        ,m_pProtocolParser(nullptr)
 {
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
     m_IsPrecheckMoveRV = false;
@@ -199,6 +203,29 @@ SchedulerMainThreadController::~SchedulerMainThreadController()
 //        m_SchedulerMachine = NULL;
 //    }
 //    CATCHALL_DTOR();
+
+    if(m_pEventDispatcher != nullptr)
+    {
+        delete m_pEventDispatcher;
+        m_pEventDispatcher = nullptr;
+    }
+
+    if(m_pInstrumentManager != nullptr)
+    {
+        delete m_pInstrumentManager;
+        m_pInstrumentManager = nullptr;
+    }
+
+    if(m_pSessionManager != nullptr)
+    {
+        delete m_pSessionManager;
+        m_pSessionManager = nullptr;
+    }
+    if(m_pProtocolParser != nullptr)
+    {
+        delete m_pProtocolParser;
+        m_pProtocolParser = nullptr;
+    }
 }
 
 void SchedulerMainThreadController::RegisterCommands()
@@ -281,6 +308,7 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     // Start time
     m_pEventDispatcher->Start();
     m_pSessionManager = new SessionManager(mp_DataManager);
+    m_pProtocolParser = new ProtocolParser(mp_DataManager, m_SchedulerCommandProcessor);
 
     //InitializeDevice();
 
@@ -445,27 +473,27 @@ void SchedulerMainThreadController::OnTickTimer()
     }
     else
     {
-        if (cmd != NULL)
-        {
-            qDebug()<<"************** handler state command. sender: "<<cmd->GetSender()<<cmd->GetName();
-        }
-        qDebug()<<"************** handler state command. RetortName: "<<newControllerCmd.Retort_name<<newControllerCmd.Cmd;
+//        if (cmd != NULL)
+//        {
+//            qDebug()<<"************** handler state command. sender: "<<cmd->GetSender()<<cmd->GetName();
+//        }
+//        qDebug()<<"************** handler state command. RetortName: "<<newControllerCmd.Retort_name<<newControllerCmd.Cmd;
 
-        QMap<QString, QSharedPointer<CSchedulerStateHandler>>::const_iterator itr;
-        for (itr = m_SchedulerStateHandlerList.constBegin(); itr != m_SchedulerStateHandlerList.constEnd(); ++itr)
-        {
-            CSchedulerStateHandler* stateHandler = itr.value().data();
-            QString RetortName = stateHandler->GetRetortName();
-            if (newControllerCmd.Retort_name == RetortName)
-            {
-                stateHandler->HandleStateCommand(newControllerCmd.Cmd, cmd);
-            }
-            else
-            {
-                stateHandler->HandleStateCommand(CTRL_CMD_NONE, cmd);
-            }
+//        QMap<QString, QSharedPointer<CSchedulerStateHandler>>::const_iterator itr;
+//        for (itr = m_SchedulerStateHandlerList.constBegin(); itr != m_SchedulerStateHandlerList.constEnd(); ++itr)
+//        {
+//            CSchedulerStateHandler* stateHandler = itr.value().data();
+//            QString RetortName = stateHandler->GetRetortName();
+//            if (newControllerCmd.Retort_name == RetortName)
+//            {
+//                stateHandler->HandleStateCommand(newControllerCmd.Cmd, cmd);
+//            }
+//            else
+//            {
+//                stateHandler->HandleStateCommand(CTRL_CMD_NONE, cmd);
+//            }
 
-        }
+//        }
     }
 }
 
@@ -569,12 +597,12 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
 
 void SchedulerMainThreadController::OnStartStateHandler()
 {
-    qDebug()<<"********* Start state handler.";
-    QMap<QString, QSharedPointer<CSchedulerStateHandler>>::const_iterator itr;
-    for (itr = m_SchedulerStateHandlerList.constBegin(); itr != m_SchedulerStateHandlerList.constEnd(); ++itr)
-    {
-        itr.value().data()->Start();
-    }
+//    qDebug()<<"********* Start state handler.";
+//    QMap<QString, QSharedPointer<CSchedulerStateHandler>>::const_iterator itr;
+//    for (itr = m_SchedulerStateHandlerList.constBegin(); itr != m_SchedulerStateHandlerList.constEnd(); ++itr)
+//    {
+//        itr.value().data()->Start();
+//    }
 }
 
 #if 0
@@ -1030,7 +1058,7 @@ NonDeviceCommand_t SchedulerMainThreadController::PeekNonDeviceCommand()
             //if (PSSM_PAUSE != m_CurrentStepState)
             {
                 //m_NewProgramID = pCmdProgramAction->GetProgramID();
-                m_SchedulerStateHandlerList[cmd_type.Retort_name]->SetNewProgramID(pCmdProgramAction->GetProgramID());
+//                m_SchedulerStateHandlerList[cmd_type.Retort_name]->SetNewProgramID(pCmdProgramAction->GetProgramID());
                 //m_delayTime = pCmdProgramAction->DelayTime();
                 m_ReagentExpiredFlag = pCmdProgramAction->GetReagentExpiredFlag();
                 LogDebug(QString("Get the delay time: %1 seconds.").arg(pCmdProgramAction->DelayTime()));
@@ -1639,7 +1667,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
     {
         m_CurrentBottlePosition.ReagentGrpId = "";
         m_CurrentBottlePosition.RvPos = RV_UNDEF;
-        stateHandler->ProgramSelectedReply(Ref, curProgramID, Cmd.ParaffinStepIndex());
+//        stateHandler->ProgramSelectedReply(Ref, curProgramID, Cmd.ParaffinStepIndex());
     }
 }
 

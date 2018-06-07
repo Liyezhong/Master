@@ -1,12 +1,12 @@
 #ifndef BUSY_H
 #define BUSY_H
-#include "Scheduler/Include/States/StateBase.h"
+#include "Scheduler/Include/States/Instrument/Idle.h"
 
 
 namespace Scheduler{
 namespace Instrument{
 
-class Busy: public StateBase<Global::CommandShPtr_t>
+class Busy: public Idle
 {
 public:
     Busy(IEventHandler* pHandler, SchedulerMainThreadController* controller);
@@ -14,10 +14,6 @@ public:
 
 protected:
     void onEntry(QEvent* event) override;
-
-    bool HandleEvent(TPEventArgs<Global::CommandShPtr_t>* event, TPTransition_t& pTransition) override;
-
-    void RepeatAction(TPTransition_t& pTransition) override;
 
 };
 }
