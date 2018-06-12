@@ -1,6 +1,8 @@
 #include "Scheduler/Include/States/TPExecutor/TPExecutorNextAction.h"
 #include "Scheduler/Include/Session.h"
 #include "Scheduler/Include/TPExecutor.h"
+#include "Scheduler/Include/SchedulerMainThreadController.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 
 namespace Scheduler{
 namespace TPExecutorStates{
@@ -55,7 +57,20 @@ void NextAction::RepeatAction(TPTransition_t &pTransition)
     }
     else if(m_pSession != nullptr)
     {
+        actionNum--;
         pTransition = TPTransition_t::Done;
+    }
+}
+
+void NextAction::onExit(QEvent *event)
+{
+    if(actionNum < 0)
+    {
+        MsgClasses::CmdProgramAcknowledge* commandPtrFinish
+                (new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED, IState::m_pHandler->objectName()));
+        Q_ASSERT(commandPtrFinish);
+        Global::tRefType Ref = IState::m_pController->GetNewCommandRef();
+        IState::m_pController->SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
     }
 }
 

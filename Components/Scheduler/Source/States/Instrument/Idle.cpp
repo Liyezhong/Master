@@ -46,12 +46,15 @@ void Idle::onEntry(QEvent *event)
 
 bool Idle::HandleEvent(TPEventArgs<Global::CommandShPtr_t> *event, TPTransition_t& pTransition)
 {
+    qDebug() << " Instrument HandleEvent threadid: " << QThread::currentThreadId();
     auto pSelectedcmd = dynamic_cast<MsgClasses::CmdProgramSelected*>(event->Data().GetPointerToUserData());
     if(pSelectedcmd != nullptr)
     {
-        m_pManager->CreateSession(pSelectedcmd->GetRetortId(), pSelectedcmd->GetProgramID());
+        auto id = m_pManager->CreateSession(pSelectedcmd->GetRetortId(), pSelectedcmd->GetProgramID());
+        auto session = m_pManager->GetInitialSession();
 
-        ProgramSelectedReply(ref, *pSelectedcmd, 500);
+        if(session.count() > 0)
+            ProgramSelectedReply(ref, *pSelectedcmd, session.first()->GetProposedTime());
         event->SetHandled();
         pTransition = TPTransition_t::Load;
         return true;
@@ -99,6 +102,7 @@ void Idle::RepeatAction(TPTransition_t &pTransition)
 
 void Idle::onExit(QEvent *event)
 {
+    qDebug() << " Instrument threadid: " << QThread::currentThreadId();
     if(commandPtr != nullptr)
     {
         IState::m_pController->SendCommand(ref, Global::CommandShPtr_t(commandPtr));

@@ -25,9 +25,11 @@ typedef enum
     SoakingDone
 }TPTransition_t;
 
+
 class TPEventArgsBase: public QObject
 {
     Q_OBJECT
+    Q_ENUM(TPTransition_t)
 public:
     TPEventArgsBase(const QString& sender)
           :m_Sender(sender),
@@ -48,7 +50,7 @@ public:
         return QString("Sender: %1, Timestamp: %2, SeqNo: %3").arg(m_Sender).arg(m_Timestamp.toString()).arg(m_SeqNo);
     }
 
-    Q_DISABLE_COPY(TPEventArgsBase);
+    Q_DISABLE_COPY(TPEventArgsBase)
 
 protected:
     QString m_Sender;
@@ -70,7 +72,7 @@ public:
     {
         if(m_EventArgs != nullptr)
         {
-            qDebug() << "~TPEvent()";
+//            qDebug() << "~TPEvent()";
             delete m_EventArgs;
             m_EventArgs = nullptr;
         }

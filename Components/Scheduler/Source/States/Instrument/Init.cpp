@@ -36,39 +36,21 @@ void Init::onEntry(QEvent *event)
 
 bool Init::HandleEvent(TPEventArgs<Scheduler::SchedulerCommandShPtr_t> *event, TPTransition_t& pTransition)
 {
-//    auto data = event->Data();
-//    ReturnCode_t retCode;
-//    event->Data()->GetResult(retCode);
-
-//    m_pSelfTest->HandleWorkFlow(event->Data()->GetName(), retCode);
-
-//    pTransition = TPTransition_t::Unknown;
-
-//    event->SetHandled();
-
-//    return true;
     return false;
 }
 
 void Init::RepeatAction(TPTransition_t& pTransition)
 {
     StateBase::RepeatAction(pTransition);
-    qDebug() << "RepeatAction init";
 
-//    if(IState::m_pController->IsSelfTestDone())
-//    {
-        pTransition = TPTransition_t::Done;
-
-        qDebug() << "Transition: TPTransition_t::Done";
-//    }
-//    m_pSelfTest->HandleWorkFlow("", DCL_ERR_FCT_CALL_FAILED);
+    pTransition = TPTransition_t::Done;
 }
 
 
 void Init::onExit(QEvent *event)
 {
-    IState::onEntry(event);
-    qDebug() << "Exitting Init state";
+    IState::onExit(event);
+
 }
 }
 }

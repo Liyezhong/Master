@@ -63,11 +63,11 @@ TPExecutor::~TPExecutor()
 
 bool TPExecutor::HandleEvent(QEvent* event)
 {
-    auto tpEvent = dynamic_cast<TPEvent*>(event);
+    auto* tpEvent = dynamic_cast<TPEvent*>(event);
     if(tpEvent != nullptr && m_pStateMachine->isRunning())
     {
-        qDebug() << tpEvent->toString();
-        qDebug() << objectName();
+//        qDebug(StatesDebug) << tpEvent->toString();
+//        qDebug(StatesDebug) << objectName();
         foreach(auto state, m_pStateMachine->configuration())
         {
             auto pCurrent = dynamic_cast<IState*>(state);

@@ -19,6 +19,7 @@ public:
           m_Transition(TPTransition_t::Unknown)
     {
     }
+
     virtual bool HandleEvent(TPEvent* e){ return false;}
 
 protected:

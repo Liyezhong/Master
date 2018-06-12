@@ -309,7 +309,6 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     m_pEventDispatcher->Start();
     m_pSessionManager = new SessionManager(mp_DataManager);
     m_pProtocolParser = new ProtocolParser(mp_DataManager, m_SchedulerCommandProcessor);
-
     //InitializeDevice();
 
     //For Event-Scenaro-Error map list, we store it into m_pXMLEventList
@@ -1732,19 +1731,19 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         RaiseEvent(EVENT_SCHEDULER_SLAVE_BOARD_INITIALIZED_SUCCESSFULLY);//log
         ReturnCode_t retCode;
         //hardware not ready yet
-        m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, m_Sender));
-        SchedulerCommandShPtr_t resPerTurnOnRelay;
-        PopDeviceControlCmdQueue(resPerTurnOnRelay, "Scheduler::PerTurnOnMainRelay");
-        (void)resPerTurnOnRelay->GetResult(retCode); 
-        if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            RaiseEvent(EVENT_SCHEDULER_OPEN_MAIN_RELAY_FAILURE, QStringList()<<QString::number(retCode)); //log and GUI
-        }
-        else
-        {
-            RaiseEvent(EVENT_SCHEDULER_OPEN_MAIN_RELAY_SUCCESSFULLY);//log
-            working = true;
-        }
+//        m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, m_Sender));
+//        SchedulerCommandShPtr_t resPerTurnOnRelay;
+//        PopDeviceControlCmdQueue(resPerTurnOnRelay, "Scheduler::PerTurnOnMainRelay");
+//        (void)resPerTurnOnRelay->GetResult(retCode);
+//        if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+//        {
+//            RaiseEvent(EVENT_SCHEDULER_OPEN_MAIN_RELAY_FAILURE, QStringList()<<QString::number(retCode)); //log and GUI
+//        }
+//        else
+//        {
+//            RaiseEvent(EVENT_SCHEDULER_OPEN_MAIN_RELAY_SUCCESSFULLY);//log
+//            working = true;
+//        }
     }
     else
     {
@@ -2010,10 +2009,10 @@ void SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::Schedule
 
 void SchedulerMainThreadController::PushDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t CmdPtr)
 {
-    m_MutexDeviceControlCmdQueue.lock();
-    m_DeviceControlCmdQueue.push_back(CmdPtr);
+//    m_MutexDeviceControlCmdQueue.lock();
+//    m_DeviceControlCmdQueue.push_back(CmdPtr);
     m_pEventDispatcher->IncomingEvent(TPEventArgs<Scheduler::SchedulerCommandShPtr_t>::CreateEvent(CmdPtr));
-    m_MutexDeviceControlCmdQueue.unlock();
+//    m_MutexDeviceControlCmdQueue.unlock();
 }
 
 void SchedulerMainThreadController::RcBottleCheckI()

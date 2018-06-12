@@ -74,6 +74,20 @@ public:
     int GetCurrentActionIndex() const {return m_currentActionIndex;}
     void UpdateCurrentActionIndex(int index) {m_currentActionIndex = index;}
 
+    int GetProposedTime()
+    {
+        int duration = -1;
+        if(m_ActionList.isEmpty())
+            return duration;
+
+        foreach(auto action, m_ActionList)
+        {
+            duration += action->GetDuration();
+        }
+
+        return duration;
+    }
+
     Q_DISABLE_COPY(Session)
 private:
     int m_currentActionIndex;
