@@ -121,12 +121,21 @@ void SchedulerLogging::LogHeader(const QString& header)
     }
 }
 
-void SchedulerLogging::Log(const QString& message)
+void SchedulerLogging::Log(const QString& message, bool timeStamp)
 {
     if (m_Log4DemoFile.isOpen())
     {
-        QString timeStamp = Global::AdjustedTime::Instance().GetCurrentDateTime().toString("[yyyy-MM-dd hh:mm:ss.zzz]");
-        QString Line = timeStamp + "\t" + message + "\n";
+
+        QString Line;
+        if (timeStamp)
+        {
+            QString timeStamp = Global::AdjustedTime::Instance().GetCurrentDateTime().toString("[yyyy-MM-dd hh:mm:ss.zzz]");
+            Line = timeStamp + "\t" + message + "\n";
+        }
+        else
+        {
+            Line = message + "\n\n";
+        }
         QWriteLocker locker(&m_lock);
         m_Log4DemoFile.write(Line.toUtf8());
         if(!Flush())
