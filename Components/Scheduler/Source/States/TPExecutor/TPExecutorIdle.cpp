@@ -1,6 +1,8 @@
 #include "Scheduler/Include/States/TPExecutor/TPExecutorIdle.h"
 #include "Scheduler/Include/Session.h"
 #include "Scheduler/Include/TPExecutor.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "Scheduler/Include/SchedulerMainThreadController.h"
 
 
 namespace Scheduler{
@@ -14,6 +16,8 @@ Idle::Idle(IEventHandler* pHandler, SchedulerMainThreadController* controller)
 void Idle::onEntry(QEvent *event)
 {
     StateBase<ControlCommandType_t>::onEntry(event);
+
+    commandStartPtr = nullptr;
 }
 
 bool Idle::HandleEvent(TPEventArgs<ControlCommandType_t> *event, TPTransition_t& pTransition)
@@ -27,6 +31,9 @@ bool Idle::HandleEvent(TPEventArgs<ControlCommandType_t> *event, TPTransition_t&
             auto session = handler->GetCurrentSession();
             //todo: check if session is not scheduled
         }
+
+        commandStartPtr = new MsgClasses::CmdProgramAcknowledge
+                (500, DataManager::ProgramAcknownedgeType_t::PROGRAM_RUN_BEGIN, IState::m_pHandler->objectName());
         event->SetHandled();
         pTransition = TPTransition_t::Start;
         return true;
@@ -34,9 +41,14 @@ bool Idle::HandleEvent(TPEventArgs<ControlCommandType_t> *event, TPTransition_t&
     return false;
 }
 
-//void Idle::RepeatAction(TPTransition_t &pTransition)
-//{
-////    pTransition = TPTransition_t::Start;
-//}
+void Idle::onExit(QEvent* event)
+{
+    if(commandStartPtr != nullptr)
+    {
+        Global::tRefType fRef = IState::m_pController->GetNewCommandRef();
+        IState::m_pController->SendCommand(ref, Global::CommandShPtr_t(commandStartPtr));
+        commandStartPtr = nullptr;
+    }
+}
 }
 }

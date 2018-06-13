@@ -35,6 +35,7 @@
 #include "Scheduler/Include/SchedulerLogging.h"
 #include "Scheduler/Include/EventScenarioErrorXMLInfo.h"
 
+
 using namespace DeviceControl;
 
 namespace DataManager

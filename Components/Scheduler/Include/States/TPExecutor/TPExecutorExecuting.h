@@ -18,6 +18,8 @@ protected:
     void Timeout(TPTransition_t& pTransition) override;
 
     void RepeatAction(TPTransition_t& pTransition) override;
+
+    void onExit(QEvent* event) override;
 };
 }
 }

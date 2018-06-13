@@ -7,6 +7,8 @@
 #include <QQueue>
 #include <QSharedPointer>
 #include <QStateMachine>
+#include <QLoggingCategory>
+
 
 #define TICKTIMERINTERVAL 500
 namespace Scheduler{
@@ -15,6 +17,7 @@ class IEventHandler;
 class TestInstrumentManager;
 class TPEvent;
 
+Q_DECLARE_LOGGING_CATEGORY(StatesDebug)
 
 class EventDispatcher: public QObject
 {
@@ -36,7 +39,7 @@ public:
     bool RemovePendingEvent(TPEvent* event);
 
 protected slots:
-    void OnTickTimer();   
+    void OnTickTimer();
 
 private:
     QList<QSharedPointer<IEventHandler>> m_EventHandlerList;

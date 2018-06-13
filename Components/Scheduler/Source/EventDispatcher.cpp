@@ -3,14 +3,19 @@
 #include "Scheduler/Include/IEventHandler.h"
 #include "Scheduler/Include/TPEvent.h"
 #include "Scheduler/Include/TPTransition.h"
+#include <QCoreApplication>
+
 
 namespace Scheduler {
+
+Q_LOGGING_CATEGORY(StatesDebug, "InstrementStates")
 
 EventDispatcher::EventDispatcher()
     : m_Timer(this)
 {
     m_EventHandlerList.clear();
     m_pDummyEvent = new TPEvent(TPTransition_t::Self, nullptr);
+    QLoggingCategory::setFilterRules("InstrementStates.debug=false");
 }
 
 EventDispatcher::~EventDispatcher()
@@ -82,13 +87,13 @@ bool EventDispatcher::RemovePendingEvent(TPEvent *event)
     auto* data = dynamic_cast<TPEventArgsBase*>(event->EventArgs());
     if(data == nullptr)
     {
-        qDebug() << "Garbage detected!!!";
+        qDebug(StatesDebug) << "Garbage detected!!!";
         m_EventQueue.removeOne(event);
         return true;
     }
     else if (data->Sender().isEmpty() || data->Handled())
     {
-        qDebug() << "Handled event removed";
+        qDebug(StatesDebug) << "Handled event removed";
         m_EventQueue.removeOne(event);
         delete event;
         event = nullptr;
@@ -102,7 +107,9 @@ bool EventDispatcher::RemovePendingEvent(TPEvent *event)
 
 void EventDispatcher::OnTickTimer()
 {
-//    qDebug() << QDateTime::currentDateTime().toString() << " OnTickTimer";
+    qDebug(StatesDebug) << " OnTickTimer threadid: " << QThread::currentThreadId();
+
+
 
     foreach(auto handler, m_EventHandlerList)
     {
@@ -121,11 +128,12 @@ void EventDispatcher::OnTickTimer()
 
         foreach(auto handler, m_EventHandlerList)
         {
-            if(handler->objectName() == evt->EventArgs()->Sender())
+            if(evt->EventArgs() != nullptr
+                    && handler->objectName() == evt->EventArgs()->Sender())
             {
                 if(handler->HandleEvent(evt))
                 {
-                    ;
+
                 }
             }
         }

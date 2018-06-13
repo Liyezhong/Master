@@ -19,6 +19,8 @@ protected:
     bool HandleEvent(TPEventArgs<Global::CommandShPtr_t>* event, TPTransition_t& pTransition) override;
     void RepeatAction(TPTransition_t& pTransition) override;
 
+    void onExit(QEvent* event) override;
+
 private:
     int actionNum;
     Session* m_pSession;

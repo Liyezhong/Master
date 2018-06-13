@@ -34,7 +34,7 @@ bool StateBase<D>::HandleEvent(TPEvent *event)
 
         if(wrappedEvent->Value() == TPTransition_t::Timeout)
         {
-            qDebug() << objectName() << "RepeatAction";
+//            qDebug() << objectName() << "RepeatAction";
             RepeatAction(m_Transition);
             if(m_Transition != TPTransition_t::Unknown)
             {
@@ -50,8 +50,8 @@ bool StateBase<D>::HandleEvent(TPEvent *event)
 
 template <class D>
 void StateBase<D>::RepeatAction(TPTransition_t& pTransition)
-{    
-    qDebug() << "RepeatAction in state " << objectName() << "==> transition: " << m_Transition;
+{
+    qDebug(StatesDebug) << "RepeatAction in state " << objectName() << "==> transition: " << m_Transition;
     pTransition = TPTransition_t::Unknown;
 }
 

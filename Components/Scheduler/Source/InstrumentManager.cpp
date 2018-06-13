@@ -121,6 +121,7 @@ void InstrumentManager::CreateStateMachine()
     m_pScheduling->addTransition(new EventTransition(TPTransition_t::Self, m_pScheduling, nullptr));
 
     m_pBusy->addTransition(new EventTransition(TPTransition_t::Done, m_pBusy, m_pIdle));
+    m_pBusy->addTransition(new EventTransition(TPTransition_t::Load, m_pBusy, m_pScheduling));
     m_pBusy->addTransition(new EventTransition(TPTransition_t::Self, m_pBusy, nullptr));
 }
 

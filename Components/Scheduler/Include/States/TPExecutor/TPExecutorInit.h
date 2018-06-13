@@ -1,6 +1,5 @@
 #ifndef TPEXECUTOR_INIT_H
 #define TPEXECUTOR_INIT_H
-#include <QDebug>
 #include "Scheduler/Include/States/StateBase.h"
 
 namespace Scheduler{

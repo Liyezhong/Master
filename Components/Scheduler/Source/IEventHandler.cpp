@@ -28,7 +28,7 @@ void IEventHandler::Start()
 }
 
 void IEventHandler::Stop()
-{    
+{
     if(m_pStateMachine != nullptr && m_pStateMachine->isRunning())
     {
         m_pStateMachine->stop();
@@ -42,7 +42,7 @@ void IEventHandler::RegisterEventFilter()
 }
 
 bool IEventHandler::HandleEvent(QEvent* event)
-{    
+{
     auto* tpEvent = dynamic_cast<TPEvent*>(event);
     if(tpEvent != nullptr && m_pStateMachine->isRunning())
     {
@@ -50,7 +50,7 @@ bool IEventHandler::HandleEvent(QEvent* event)
         if(tpEvent->Value() != TPTransition_t::Timeout)
         {
             qDebug() << "Handle external request/response";
-            auto pCurrent = dynamic_cast<IState*>(*m_pStateMachine->configuration().begin());
+            auto* pCurrent = dynamic_cast<IState*>(*m_pStateMachine->configuration().begin());
             return pCurrent->HandleEvent(tpEvent);
         }
         else

@@ -3,6 +3,9 @@
 #include "Scheduler/Include/States/StateBase.h"
 #include "Scheduler/Include/SchedulerStateMachineStates.h"
 
+namespace MsgClasses {
+class CmdProgramAcknowledge;
+}
 namespace Scheduler{
 namespace TPExecutorStates{
 class Idle : public StateBase<ControlCommandType_t>
@@ -12,7 +15,11 @@ public:
 
     void onEntry(QEvent* event) override;
     bool HandleEvent(TPEventArgs<ControlCommandType_t>* event, TPTransition_t& pTransition) override;
-//    void RepeatAction(TPTransition_t& pTranstion) override;
+    void onExit(QEvent* event) override;
+
+private:
+    Global::tRefType ref;
+    MsgClasses::CmdProgramAcknowledge* commandStartPtr;
 };
 }
 }

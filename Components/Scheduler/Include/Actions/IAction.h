@@ -54,8 +54,26 @@ public:
 
     ActionType_t GetActionType() const {return m_type;}
 
-    QString ActionName();
+    QString GetActionName()
+    {
+        switch(m_type)
+        {
+        case FILLING:
+            return "FILLING";
 
+        case DRAINING:
+            return "DRAINING";
+
+        case PURGE:
+            return "PURGE";
+
+        case SOAKING:
+            return "SOAKING";
+        default:
+            return "UNKNOW_ACTION";
+        }
+    }
+ 
     QString toString();
 
 protected:
