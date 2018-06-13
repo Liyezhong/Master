@@ -74,6 +74,12 @@ public:
     int GetCurrentActionIndex() const {return m_currentActionIndex;}
     void UpdateCurrentActionIndex(int index) {m_currentActionIndex = index;}
 
+    qint64 SessionID() const {return m_SessionID;}
+
+    QString toString();
+
+    void Log2File();
+
     Q_DISABLE_COPY(Session)
 private:
     int m_currentActionIndex;
@@ -84,6 +90,7 @@ private:
     ProgramStepInfor* m_pProgramStepInfo;
     SessionStatus_t m_Status;
     Schedule* m_pSchedule;
+    qint64 m_SessionID;
 };
 }
 #endif // SESSION_H

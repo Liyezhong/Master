@@ -54,6 +54,10 @@ public:
 
     ActionType_t GetActionType() const {return m_type;}
 
+    QString ActionName();
+
+    QString toString();
+
 protected:
     QString m_reagentID;
     QString m_stationID;

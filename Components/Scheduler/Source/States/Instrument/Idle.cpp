@@ -41,6 +41,7 @@ void Idle::onEntry(QEvent *event)
         Q_ASSERT(commandPtr);
         Global::tRefType Ref = IState::m_pController->GetNewCommandRef();
         IState::m_pController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+        session->Log2File();
     }
 }
 
@@ -64,7 +65,8 @@ bool Idle::HandleEvent(TPEventArgs<Global::CommandShPtr_t> *event, TPTransition_
         {
             event->SetHandled();
 
-            m_pManager->StartProtocol(actionCmd->GetRetortName());
+            QString RetortName = actionCmd->GetRetortName();
+            m_pManager->StartProtocol(RetortName);
             pTransition = TPTransition_t::Start;
             return true;
         }

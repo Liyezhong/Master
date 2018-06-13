@@ -22,7 +22,6 @@
 #include <DataLogging/Include/DayEventLogger.h>
 namespace Scheduler{
 
-
 /****************************************************************************/
 /**
  * \brief This class logs all the logging messages i.e. scheduling results.
@@ -74,6 +73,11 @@ public:
     /****************************************************************************/
     void logSensorData(const QString& message);
 
+    void LogHeader(const QString& header);
+    void Log(const QString& message);
+    void Log4DualRetort(const QString& RetortID, const QString& message);
+
+    void CloseLog();
 
 private:
     /****************************************************************************/
@@ -98,12 +102,16 @@ private:
      */
     /****************************************************************************/
     void operator=(SchedulerLogging const& rhs);
+
+    bool Flush();
     DataLogging::DayEventLogger *mp_DayEventLogger;
     QString m_serialNumber;
     QString m_SWVersion;
     QStringList m_LoggingBuffer;
     quint32 m_BufferSize;
 
+    QFile   m_Log4DemoFile;
+    QReadWriteLock m_lock;
 };
 
 }//end of namespace Scheduler

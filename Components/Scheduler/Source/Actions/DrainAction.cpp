@@ -4,6 +4,7 @@
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "Scheduler/Include/Session.h"
+#include "Scheduler/Include/SchedulerLogging.h"
 #include <QDebug>
 
 using namespace DeviceControl;
@@ -42,6 +43,8 @@ void DrainAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t re
         }
         else
         {
+            SchedulerLogging::getInstance().Log4DualRetort(mp_session->GetRetortID(), QString("Execute drain action: reagent:%1, station:%2, seq:%3")
+                                                           .arg(m_reagentID).arg(m_stationID).arg(m_currentState));
             CmdRVReqMoveToRVPosition* moveRVcmd = new CmdRVReqMoveToRVPosition(500, mp_session->GetRetortID());
             moveRVcmd->SetRVPosition(position);
             mp_SchedulerCommandProcessor->pushCmd(moveRVcmd);
@@ -54,6 +57,7 @@ void DrainAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t re
             if( "Scheduler::ALDraining" == cmdName)
             {
                 qDebug()<<"************************ drain result:"<<retCode;
+                SchedulerLogging::getInstance().Log4DualRetort(mp_session->GetRetortID(), QString("Drain finished, result:%1").arg(retCode));
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     m_currentState = STATE_DRAINING_RVROD;

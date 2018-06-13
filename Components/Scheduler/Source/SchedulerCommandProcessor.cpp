@@ -78,6 +78,7 @@
 #include "Scheduler/Commands/Include/CmdIDSealingCheck.h"
 #include "Scheduler/Commands/Include/CmdRmtLocAlarm.h"
 #include "Scheduler/Commands/Include/CmdALControlValve.h"
+#include "Scheduler/Commands/Include/CmdALPurge.h"
 #include "Scheduler/Commands/Include/CmdRVSetTemperatureSwitchState.h"
 #include "Scheduler/Commands/Include/CmdRTSetTemperatureSwitchState.h"
 #include "future"
@@ -758,7 +759,8 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
         }
         else if ("Scheduler::ALPurge" == cmdName)
         {
-            scmd->SetResult( DCL_ERR_FCT_CALL_SUCCESS );
+            //scmd->SetResult( DCL_ERR_FCT_CALL_SUCCESS );
+            scmd->SetResult( mp_IDeviceProcessing->WithSender(sender)->ALPurge(qSharedPointerDynamicCast<CmdALPurge>(scmd)->GetPurgeTimes()));
         }
 }
 

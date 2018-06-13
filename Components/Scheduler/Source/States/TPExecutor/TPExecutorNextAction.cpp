@@ -49,7 +49,9 @@ void NextAction::RepeatAction(TPTransition_t &pTransition)
 {
     if(actionNum > 0)
     {
-        m_pExecutor->SetCurrentAction(m_pSession->GetActionList().count()- actionNum);
+        int actionIndex = m_pSession->GetActionList().count()- actionNum;
+        m_pExecutor->SetCurrentAction(actionIndex);
+        m_pSession->UpdateCurrentActionIndex(actionIndex);
         pTransition = TPTransition_t::Execute;
         actionNum--;
     }

@@ -19,9 +19,7 @@ int SessionManager::CreateSession(const QString &retortId, const QString& protoc
 
     //auto session = new Session(retortId, const_cast<CProgram*>(pProgram));
     SessionNo++;
-
     m_SessionList.insert(SessionNo,QSharedPointer<Session>(new Session(retortId, const_cast<CProgram*>(pProgram))));
-
     return SessionNo;
 }
 

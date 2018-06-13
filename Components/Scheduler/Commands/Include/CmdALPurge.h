@@ -102,6 +102,26 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function GetPurgeTimes
+     *
+     *  \return from GetPurgeTimes
+     */
+    /****************************************************************************/
+    quint8 GetPurgeTimes(){return m_PurgeTimes;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetPurgeTimes
+     *
+     *  \param PurgeTimes = quint8 type parameter
+     *
+     *  \return from SetPurgeTimes
+     */
+    /****************************************************************************/
+    void SetPurgeTimes(quint8 PurgeTimes){m_PurgeTimes = PurgeTimes;}
+
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function GetStrResult
      *
      *  \return from GetStrResult
@@ -117,6 +137,7 @@ private:
 
     mutable DeviceControl::ReturnCode_t m_result;   ///<  Definition/Declaration of variable m_result
     mutable quint32 m_DelayTime;                    ///<  Definition/Declaration of variable m_DelayTime
+    mutable quint8  m_PurgeTimes;                    ///<  Definition/Declaration of variable m_DelayTime
 
 };
 }

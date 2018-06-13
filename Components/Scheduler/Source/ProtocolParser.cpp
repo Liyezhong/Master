@@ -4,6 +4,7 @@
 #include "Scheduler/Include/Actions/PurgeAction.h"
 #include "Scheduler/Include/Actions/SoakAction.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
+#include "Scheduler/Include/SchedulerLogging.h"
 #include <QDebug>
 
 namespace Scheduler{
@@ -100,6 +101,7 @@ bool ProtocolParser::GenerateActionList(Session* session, const CProgram* progra
         }
         action.data()->SetDuration(duration);
         actionList.append(action);
+        //SchedulerLogging::getInstance().Log(action.data()->toString());
     }
     return true;
  }

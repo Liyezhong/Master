@@ -5,6 +5,7 @@
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "Scheduler/Include/Session.h"
+#include "Scheduler/Include/SchedulerLogging.h"
 #include <QDebug>
 
 
@@ -29,6 +30,7 @@ void FillAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t ret
 {
     RVPosition_t position = RV_UNDEF;
     qDebug()<<"************************ fill action:"<<m_currentState;
+
     switch (m_currentState)
     {
     case STATE_FILLING_RVROD_HEATING:
@@ -44,6 +46,8 @@ void FillAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t ret
         }
         else
         {
+            SchedulerLogging::getInstance().Log4DualRetort(mp_session->GetRetortID(), QString("Start fill action: reagent:%1, station:%2, seq:%3")
+                                                           .arg(m_reagentID).arg(m_stationID).arg(m_currentState));
             CmdRVReqMoveToRVPosition* moveRVcmd = new CmdRVReqMoveToRVPosition(500, mp_session->GetRetortID());
             moveRVcmd->SetRVPosition(position);
             mp_SchedulerCommandProcessor->pushCmd(moveRVcmd);
@@ -93,6 +97,8 @@ void FillAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t ret
                 m_currentState = STATE_FILLING_RVROD_HEATING;
                 m_stateWaitResult = false;
                 m_finished = true;
+
+                SchedulerLogging::getInstance().Log4DualRetort(mp_session->GetRetortID(), QString("Filling finished"));
             }
         }
         else

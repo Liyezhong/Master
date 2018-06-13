@@ -77,6 +77,16 @@ void SchedulerLogging::InitLog(const QString& serialNumber, const QString& SWVer
             mp_DayEventLogger->AppendLine(HeaderString, true);
         }
     }
+
+    QString DemoLogFile = "SkylineDemo_" + m_serialNumber + Global::AdjustedTime::Instance().GetCurrentDateTime().toString("yyyyMMdd") + ".log";
+
+    QString CompleteFileName4Demo(QDir::cleanPath(Dir.absoluteFilePath(DemoLogFile)));
+    m_Log4DemoFile.setFileName(CompleteFileName4Demo);
+    if(!m_Log4DemoFile.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+    {
+        //Global::EventObject::Instance().RaiseEvent(EVENT_DATALOGGING_ERROR_FILE_CREATE, Global::FmtArgs() << FileName, true);
+    }
+
 }
 
 
@@ -97,5 +107,52 @@ void SchedulerLogging::logSensorData(const QString& message)
     }
 }
 
+void SchedulerLogging::LogHeader(const QString& header)
+{
+    if (m_Log4DemoFile.isOpen())
+    {
+        QString tag("########");
+        QString Line = tag + header + tag;
+        QWriteLocker locker(&m_lock);
+        m_Log4DemoFile.write(Line.toUtf8());
+        if(!Flush()) {
+            //error.
+        }
+    }
+}
+
+void SchedulerLogging::Log(const QString& message)
+{
+    if (m_Log4DemoFile.isOpen())
+    {
+        QString timeStamp = Global::AdjustedTime::Instance().GetCurrentDateTime().toString("[yyyy-MM-dd hh:mm:ss.zzz]");
+        QString Line = timeStamp + "\t" + message + "\n";
+        QWriteLocker locker(&m_lock);
+        m_Log4DemoFile.write(Line.toUtf8());
+        if(!Flush())
+        {
+            //error.
+        }
+    }
+}
+
+void SchedulerLogging::Log4DualRetort(const QString& RetortID, const QString& message)
+{
+    QString logMsg = QString("[%1]:  %2").arg(RetortID).arg(message);
+    Log(logMsg);
+}
+
+bool SchedulerLogging::Flush()
+{
+    return m_Log4DemoFile.flush() || (fsync(m_Log4DemoFile.handle()) != -1);
+}
+
+void SchedulerLogging::CloseLog()
+{
+    if (m_Log4DemoFile.isOpen())
+    {
+        m_Log4DemoFile.close();
+    }
+}
 
 }//end of namespace Scheduler
