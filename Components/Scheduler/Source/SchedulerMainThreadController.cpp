@@ -1969,6 +1969,21 @@ void SchedulerMainThreadController::DataManager(DataManager::CDataManager *p_Dat
     qSort(m_DashboardStationList.begin(), m_DashboardStationList.end(), QPairComp);
 }
 
+QString SchedulerMainThreadController::GetReagentName(const QString& ReagentID)
+{
+    if (!mp_DataManager)
+        return "";
+
+    if (CDataReagentList* pReagentList =  mp_DataManager->GetReagentList())
+    {
+        const CReagent* pReagent = pReagentList->GetReagent(ReagentID);
+        if (pReagent)
+            return pReagent->GetReagentName();
+    }
+
+    return "";
+}
+
 bool SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd)
 {
     bool ret = false;

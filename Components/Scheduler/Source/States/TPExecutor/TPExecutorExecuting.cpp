@@ -31,8 +31,8 @@ void Executing::Enter(QEvent *event)
         auto action = executor->GetCurrentSession()->GetActionList()[executor->GetCurrentAction()];
 
         MsgClasses::CmdCurrentProgramStepInfor* commandPtr
-                (new MsgClasses::CmdCurrentProgramStepInfor(5000, IState::m_pHandler->objectName(), action->GetReagentID(), action->GetActionName(),
-                                                            0, action->GetDuration()));
+                (new MsgClasses::CmdCurrentProgramStepInfor(5000, IState::m_pHandler->objectName(), IState::m_pController->GetReagentName(action->GetReagentID()),
+                                                            action->GetActionName(), 0, action->GetDuration()));
         Q_ASSERT(commandPtr);
         Global::tRefType Ref = IState::m_pController->GetNewCommandRef();
         IState::m_pController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));

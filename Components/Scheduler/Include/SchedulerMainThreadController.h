@@ -1047,6 +1047,17 @@ protected:
 
         /****************************************************************************/
         /*!
+         *  \brief  Definition/Declaration of function GetReagentName
+         *
+         *  \param ReagentID = const QString type parameter
+         *
+         *  \return from GetReagentName
+         */
+        /****************************************************************************/
+        QString GetReagentName(const QString& ReagentID);
+
+        /****************************************************************************/
+        /*!
          *  \brief Get the status of retort lock
          *
          *  \return 1 indicates the retort lid is open. 0 as closed

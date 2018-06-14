@@ -68,6 +68,7 @@ void NextAction::RepeatAction(TPTransition_t &pTransition)
 
 void NextAction::onExit(QEvent *event)
 {
+    Q_UNUSED(event);
     if(actionNum < 0)
     {
         MsgClasses::CmdProgramAcknowledge* commandPtrFinish
@@ -75,6 +76,7 @@ void NextAction::onExit(QEvent *event)
         Q_ASSERT(commandPtrFinish);
         Global::tRefType Ref = IState::m_pController->GetNewCommandRef();
         IState::m_pController->SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+        m_pSession->RemoveFile();
 
         SchedulerLogging::getInstance().Log4DualRetort(m_pSession->GetRetortID(), QString("******************Finished program %1.").arg(m_pSession->GetProgram()->GetName()));
     }
@@ -82,7 +84,9 @@ void NextAction::onExit(QEvent *event)
 
 bool NextAction::HandleEvent(TPEventArgs<Global::CommandShPtr_t> *event, TPTransition_t &pTransition)
 {
-    qDebug()<<"*********** handle next action."<<pTransition;
+    //qDebug()<<"*********** handle next action."<<pTransition;
+    Q_UNUSED(event);
+    Q_UNUSED(pTransition);
 }
 
 }
