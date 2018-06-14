@@ -80,6 +80,7 @@ void InstrumentManager::Initialize()
         {
             if (m_TPExecutorList.find(retort) == m_TPExecutorList.end())
             {
+                qDebug()<<"**** created exector:"<<retort;
                 auto executor = QSharedPointer<TPExecutor>(new TPExecutor(retort, m_pEventDispatcher, m_pController));
                 executor->CreateStateMachine();
                 executor->Start();

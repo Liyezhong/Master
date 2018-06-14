@@ -93,6 +93,7 @@ public:
     QString toString();
 
     void Log2File();
+    void RemoveFile();
 
     Q_DISABLE_COPY(Session)
 private:

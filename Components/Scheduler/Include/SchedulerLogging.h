@@ -74,7 +74,7 @@ public:
     void logSensorData(const QString& message);
 
     void LogHeader(const QString& header);
-    void Log(const QString& message);
+    void Log(const QString& message, bool timeStamp = true);
     void Log4DualRetort(const QString& RetortID, const QString& message);
 
     void CloseLog();

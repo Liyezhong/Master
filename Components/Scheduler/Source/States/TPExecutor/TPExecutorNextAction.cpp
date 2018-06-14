@@ -3,6 +3,7 @@
 #include "Scheduler/Include/TPExecutor.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "Scheduler/Include/SchedulerLogging.h"
 
 namespace Scheduler{
 namespace TPExecutorStates{
@@ -43,6 +44,7 @@ void NextAction::onEntry(QEvent *event)
         }
 
         actionNum = m_pSession->GetActionList().count();
+        SchedulerLogging::getInstance().Log4DualRetort(m_pSession->GetRetortID(), QString("******************Program %1 started.").arg(m_pSession->GetProgram()->GetName()));
     }
 
 }
@@ -66,19 +68,25 @@ void NextAction::RepeatAction(TPTransition_t &pTransition)
 
 void NextAction::onExit(QEvent *event)
 {
+    Q_UNUSED(event);
     if(actionNum < 0)
     {
         MsgClasses::CmdProgramAcknowledge* commandPtrFinish
-                (new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED, IState::m_pHandler->objectName()));
+                (new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_NO_CONTAMINATED, IState::m_pHandler->objectName()));
         Q_ASSERT(commandPtrFinish);
         Global::tRefType Ref = IState::m_pController->GetNewCommandRef();
         IState::m_pController->SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+        m_pSession->RemoveFile();
+
+        SchedulerLogging::getInstance().Log4DualRetort(m_pSession->GetRetortID(), QString("******************Finished program %1.").arg(m_pSession->GetProgram()->GetName()));
     }
 }
 
 bool NextAction::HandleEvent(TPEventArgs<Global::CommandShPtr_t> *event, TPTransition_t &pTransition)
 {
-
+    //qDebug()<<"*********** handle next action."<<pTransition;
+    Q_UNUSED(event);
+    Q_UNUSED(pTransition);
 }
 
 }

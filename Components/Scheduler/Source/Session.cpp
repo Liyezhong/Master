@@ -69,4 +69,17 @@ void Session::Log2File()
     logFile.close();
 }
 
+void Session::RemoveFile()
+{
+    QString Path = Global::SystemPaths::Instance().GetLogfilesPath();
+    QDir Dir(Path);
+    QString FileName = "Session_" + QString::number(m_SessionID)+ ".txt";
+    QString CompleteFile(QDir::cleanPath(Dir.absoluteFilePath(FileName)));
+
+    if (QFile::exists(CompleteFile))
+    {
+        QFile::remove(CompleteFile);
+    }
+}
+
 }
