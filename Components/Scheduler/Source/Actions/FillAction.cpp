@@ -38,7 +38,8 @@ void FillAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t ret
         position = GetRVPosition(m_stationID, true);
         if (m_stateWaitResult)
         {
-            if (IsRVRightPosition(position, mp_session->GetRetortID()))
+            //if (IsRVRightPosition(position, mp_session->GetRetortID()))
+            if(1)// for merge dcl test, henry 2018-06-14
             {
                 m_currentState = STATE_FILLING_LEVELSENSOR_HEATING;
                 m_stateWaitResult = false;
@@ -92,7 +93,8 @@ void FillAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t ret
         position = GetRVPosition(m_stationID, false);
         if (m_stateWaitResult)
         {
-            if (IsRVRightPosition(position, mp_session->GetRetortID()))
+            //if (IsRVRightPosition(position, mp_session->GetRetortID()))
+            if(1)// for merge dcl test, henry 2018-06-14
             {
                 m_currentState = STATE_FILLING_RVROD_HEATING;
                 m_stateWaitResult = false;

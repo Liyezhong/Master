@@ -721,7 +721,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     {
         m_RTLevelSensor.curModuleId = "21";
         pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, m_Sender);
-        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(AL_LEVELSENSOR);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(AL_LEVELSENSOR1);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(95);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(10);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(112);
@@ -962,7 +962,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
             m_RTLevelSensor.curModuleId = lowSeq;
         }
         pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, m_Sender);
-        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(AL_LEVELSENSOR);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(AL_LEVELSENSOR1);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].TemperatureOffset);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].SlopTempChange);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].MaxTemperature);
@@ -1171,7 +1171,7 @@ ReturnCode_t HeatingStrategy::StopTemperatureControl(const QString& HeaterName)
     if ("LevelSensor" == HeaterName)
     {
         pHeatingCmd  = new CmdALSetTempCtrlOFF(500, m_Sender);
-        dynamic_cast<CmdALSetTempCtrlOFF*>(pHeatingCmd)->Settype(AL_LEVELSENSOR);
+        dynamic_cast<CmdALSetTempCtrlOFF*>(pHeatingCmd)->Settype(AL_LEVELSENSOR1);
     }
     if ("RTSide" == HeaterName)
     {
@@ -1283,7 +1283,7 @@ quint16 HeatingStrategy::CheckTemperatureOverTime(const QString& HeaterName, qre
         m_RTLevelSensor.SetTemp4Low = true;
         m_RTLevelSensor.curModuleId = m_RTLevelSensor.curModuleId.left(1)+"2";
         CmdSchedulerCommandBase* pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, m_Sender);
-        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(AL_LEVELSENSOR);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(AL_LEVELSENSOR1);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].TemperatureOffset);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].SlopTempChange);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].MaxTemperature);
@@ -1383,7 +1383,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
     if (iter != m_RTLevelSensor.functionModuleList.end())
     {
         CmdALStartTemperatureControlWithPID* pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, m_Sender);
-        pHeatingCmd->SetType(AL_LEVELSENSOR);
+        pHeatingCmd->SetType(AL_LEVELSENSOR1);
         pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset);
         pHeatingCmd->SetSlopeTempChange(iter->SlopTempChange);
         pHeatingCmd->SetMaxTemperature(iter->MaxTemperature);
@@ -2539,7 +2539,7 @@ void HeatingStrategy::OnReportLevelSensorStatus1()
     }
 
     CmdALSetTempCtrlOFF* pHeatingCmd = new CmdALSetTempCtrlOFF(500, m_Sender);
-    pHeatingCmd->Settype(AL_LEVELSENSOR);
+    pHeatingCmd->Settype(AL_LEVELSENSOR1);
     mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd, false);
 }
 

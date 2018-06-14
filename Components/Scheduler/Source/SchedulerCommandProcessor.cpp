@@ -129,7 +129,7 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor(const QString& 
     memset(&strctHWMonitor, 0, sizeof(strctHWMonitor));
 
     strctHWMonitor.PressureAL			= mp_IDeviceProcessing->WithSender(sender)->ALGetRecentPressure();
-    strctHWMonitor.TempALLevelSensor	= mp_IDeviceProcessing->WithSender(sender)->ALGetRecentTemperature(AL_LEVELSENSOR, 0);
+    strctHWMonitor.TempALLevelSensor	= mp_IDeviceProcessing->WithSender(sender)->ALGetRecentTemperature(AL_LEVELSENSOR1, 0);
     strctHWMonitor.TempALTube1			= mp_IDeviceProcessing->WithSender(sender)->ALGetRecentTemperature(AL_TUBE1,0);
     strctHWMonitor.TempALTube2			= mp_IDeviceProcessing->WithSender(sender)->ALGetRecentTemperature(AL_TUBE2,0);
     strctHWMonitor.TempRV1				= mp_IDeviceProcessing->WithSender(sender)->RVGetRecentTemperature(0);
@@ -798,7 +798,7 @@ void SchedulerCommandProcessor<DP>::OnShutDownDevice4Slot()
         mp_IDeviceProcessing->WithSender(sender)->OvenSetTempCtrlOFF(OVEN_BOTTOM);
         mp_IDeviceProcessing->WithSender(sender)->ALSetTempCtrlOFF(AL_TUBE1);
         mp_IDeviceProcessing->WithSender(sender)->ALSetTempCtrlOFF(AL_TUBE2);
-        mp_IDeviceProcessing->WithSender(sender)->ALSetTempCtrlOFF(AL_LEVELSENSOR);
+        mp_IDeviceProcessing->WithSender(sender)->ALSetTempCtrlOFF(AL_LEVELSENSOR1);
         mp_IDeviceProcessing->WithSender(sender)->RTSetTempCtrlOFF(RT_BOTTOM);
         mp_IDeviceProcessing->WithSender(sender)->RTSetTempCtrlOFF(RT_SIDE);
         mp_IDeviceProcessing->WithSender(sender)->PerTurnOffMainRelay();
@@ -808,7 +808,7 @@ void SchedulerCommandProcessor<DP>::OnShutDownDevice4Slot()
         mp_IDeviceProcessing->WithSender(sender)->OvenGetTemperatureControlState(OVEN_BOTTOM);
         mp_IDeviceProcessing->WithSender(sender)->ALGetTemperatureControlState(AL_TUBE1);
         mp_IDeviceProcessing->WithSender(sender)->ALGetTemperatureControlState(AL_TUBE2);
-        mp_IDeviceProcessing->WithSender(sender)->ALGetTemperatureControlState(AL_LEVELSENSOR);
+        mp_IDeviceProcessing->WithSender(sender)->ALGetTemperatureControlState(AL_LEVELSENSOR1);
         mp_IDeviceProcessing->WithSender(sender)->RTGetTemperatureControlState(RT_BOTTOM);
         mp_IDeviceProcessing->WithSender(sender)->RTGetTemperatureControlState(RT_SIDE);
 
@@ -820,7 +820,7 @@ void SchedulerCommandProcessor<DP>::OnShutDownDevice4Slot()
         mp_IDeviceProcessing->WithSender(sender)->OvenSetTempCtrlOFF(OVEN_BOTTOM);
         mp_IDeviceProcessing->WithSender(sender)->ALSetTempCtrlOFF(AL_TUBE1);
         mp_IDeviceProcessing->WithSender(sender)->ALSetTempCtrlOFF(AL_TUBE2);
-        mp_IDeviceProcessing->WithSender(sender)->ALSetTempCtrlOFF(AL_LEVELSENSOR);
+        mp_IDeviceProcessing->WithSender(sender)->ALSetTempCtrlOFF(AL_LEVELSENSOR1);
         mp_IDeviceProcessing->WithSender(sender)->RTSetTempCtrlOFF(RT_BOTTOM);
         mp_IDeviceProcessing->WithSender(sender)->RTSetTempCtrlOFF(RT_SIDE);
         mp_IDeviceProcessing->WithSender(sender)->PerTurnOffMainRelay();
@@ -830,7 +830,7 @@ void SchedulerCommandProcessor<DP>::OnShutDownDevice4Slot()
         mp_IDeviceProcessing->WithSender(sender)->OvenGetTemperatureControlState(OVEN_BOTTOM);
         mp_IDeviceProcessing->WithSender(sender)->ALGetTemperatureControlState(AL_TUBE1);
         mp_IDeviceProcessing->WithSender(sender)->ALGetTemperatureControlState(AL_TUBE2);
-        mp_IDeviceProcessing->WithSender(sender)->ALGetTemperatureControlState(AL_LEVELSENSOR);
+        mp_IDeviceProcessing->WithSender(sender)->ALGetTemperatureControlState(AL_LEVELSENSOR1);
         mp_IDeviceProcessing->WithSender(sender)->RTGetTemperatureControlState(RT_BOTTOM);
         mp_IDeviceProcessing->WithSender(sender)->RTGetTemperatureControlState(RT_SIDE);
 
