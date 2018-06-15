@@ -28,7 +28,7 @@ FillAction::~FillAction()
 
 void FillAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
-    RVPosition_t position = RV_UNDEF;
+    RVPosition_t position = RV_POSITION_UNDEF;
     qDebug()<<"************************ fill action:"<<m_currentState;
 
     switch (m_currentState)

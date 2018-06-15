@@ -179,7 +179,7 @@ DeviceControl::RVPosition_t CProgramStatusInfor::GetLastRVPosition()
     DeviceControl::RVPosition_t pos =  (DeviceControl::RVPosition_t)(value.toUInt(&ok));
     if(!ok)
     {
-        pos = DeviceControl::RV_UNDEF;
+        pos = DeviceControl::RV_POSITION_UNDEF;
     }
     return pos;
 }

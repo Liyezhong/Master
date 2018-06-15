@@ -18,7 +18,7 @@ ActionHelper::~ActionHelper()
 
 DeviceControl::RVPosition_t ActionHelper::GetRVPosition(const QString& stationID, bool isTube)
 {
-    RVPosition_t ret = RV_UNDEF;
+    RVPosition_t ret = RV_POSITION_UNDEF;
     bool ok = false;
     if (!stationID.isEmpty())
     {

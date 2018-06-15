@@ -1862,11 +1862,14 @@ void CSchedulerStateMachine::HandleRsMoveToPSeal(const QString& cmdName,  Device
         if(0 == startReq)
         {
             CmdRVReqMoveToRVPosition* CmdMvRV = new CmdRVReqMoveToRVPosition(500, m_Sender);
-            CmdMvRV->SetRVPosition(DeviceControl::RV_SEAL_16);
+            //TBD.. temporary modification by henry, 2018-06-15
+            //CmdMvRV->SetRVPosition(DeviceControl::RV_SEAL_16);
+            CmdMvRV->SetRVPosition(DeviceControl::RV_POSITION_17);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(CmdMvRV);
             startReq++;
         }
-        else if(DeviceControl::RV_SEAL_16 == mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).PositionRV)
+        else if(DeviceControl::RV_POSITION_17 == mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).PositionRV)
+        //else if(DeviceControl::RV_SEAL_16 == mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor(m_Sender).PositionRV)
         {
             startReq = 0;
             m_RsMoveToPSeal = REALSE_PRESSRE;
@@ -1966,7 +1969,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
         if (m_BottleCheckStationIter != mp_SchedulerThreadController->GetDashboardStationList().end())
         {
             RVPosition_t tubePos = mp_SchedulerStateHandler->GetRVTubePositionByStationID(m_BottleCheckStationIter->first);
-            if (tubePos != RV_UNDEF)
+            if (tubePos != RV_POSITION_UNDEF)
             {
                 mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_CHECKING);
                 QString reagentGroupId = m_BottleCheckStationIter->second;

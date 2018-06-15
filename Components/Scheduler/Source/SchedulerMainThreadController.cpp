@@ -27,6 +27,7 @@
 #include "Scheduler/Commands/Include/CmdALTurnOnFan.h"
 #include "Scheduler/Commands/Include/CmdALTurnOffFan.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
+#include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "Scheduler/Commands/Include/CmdIDBottleCheck.h"
 #include "Scheduler/Commands/Include/CmdRmtLocAlarm.h"
 #include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
@@ -1665,7 +1666,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
     if (stateHandler)
     {
         m_CurrentBottlePosition.ReagentGrpId = "";
-        m_CurrentBottlePosition.RvPos = RV_UNDEF;
+        m_CurrentBottlePosition.RvPos = RV_POSITION_UNDEF;
 //        stateHandler->ProgramSelectedReply(Ref, curProgramID, Cmd.ParaffinStepIndex());
     }
 }
@@ -1724,6 +1725,17 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
     CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, m_Sender);
     cmd->SetRmtLocOpcode(-1);
     m_SchedulerCommandProcessor->pushCmd(cmd);
+
+    //RV DCL merge test
+    /*CmdRVReqMoveToRVPosition *CmdMvRV;
+    m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, "Retort_A"));
+    quint32 rand;
+    for(quint32 i=DeviceControl::RV_POSITION_1; i<=DeviceControl::RV_POSITION_17; i++){
+        rand = qrand()%18;
+        CmdMvRV = new CmdRVReqMoveToRVPosition(500, "Retort_A");
+        CmdMvRV->SetRVPosition((RVPosition_t) rand);
+        m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
+    }*/
 
     bool working = false;
     if(RetCode == DCL_ERR_FCT_CALL_SUCCESS)
@@ -2032,7 +2044,7 @@ void SchedulerMainThreadController::PushDeviceControlCmdQueue(Scheduler::Schedul
 
 void SchedulerMainThreadController::RcBottleCheckI()
 {
-    if(m_CurrentBottlePosition.RvPos != RV_UNDEF && !m_CurrentBottlePosition.ReagentGrpId.isEmpty())
+    if(m_CurrentBottlePosition.RvPos != RV_POSITION_UNDEF && !m_CurrentBottlePosition.ReagentGrpId.isEmpty())
     {
         LogDebug(QString("BottleCheckI check for tube %1").arg(m_CurrentBottlePosition.RvPos));
         CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, m_Sender);

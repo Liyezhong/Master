@@ -1478,7 +1478,9 @@ void CSchedulerStateHandler::DoCleaningDryStep(ControlCommandType_t ctrlCmd, Sch
         break;
     case CDS_MOVE_TO_SEALING_13:
         CmdMvRV = new CmdRVReqMoveToRVPosition(500, m_RetortName);
-        CmdMvRV->SetRVPosition(DeviceControl::RV_SEAL_13);
+        //TBD.. temporary modification by Henry , no sealing and tube position, 2018-06-14
+        //CmdMvRV->SetRVPosition(DeviceControl::RV_SEAL_13);
+        CmdMvRV->SetRVPosition(DeviceControl::RV_POSITION_13);
         m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
         m_CleaningDry.CurrentState = CDS_WAIT_HIT_POSITION;
         break;
@@ -1488,7 +1490,9 @@ void CSchedulerStateHandler::DoCleaningDryStep(ControlCommandType_t ctrlCmd, Sch
             (void)cmd->GetResult(retCode);
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-                m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_SEAL_13);
+                //TBD.. temporary modification by Henry , no sealing and tube position, 2018-06-14
+                //m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_SEAL_13);
+                m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_POSITION_13);
                 m_CleaningDry.CurrentState = CDS_WAIT_HIT_TEMPERATURE;
             }
             else if (DCL_ERR_DEV_RV_MOTOR_LOSTCURRENTPOSITION == retCode)
@@ -1588,7 +1592,9 @@ void CSchedulerStateHandler::DoCleaningDryStep(ControlCommandType_t ctrlCmd, Sch
         break;
     case CDS_MOVE_TO_TUBE_13:
         CmdMvRV = new CmdRVReqMoveToRVPosition(500, m_RetortName);
-        CmdMvRV->SetRVPosition(DeviceControl::RV_TUBE_13);
+        //TBD.. temporary modification by Henry , no sealing and tube position, 2018-06-14
+        //CmdMvRV->SetRVPosition(DeviceControl::RV_TUBE_13);
+        CmdMvRV->SetRVPosition(DeviceControl::RV_POSITION_13);
         m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
         m_CleaningDry.CurrentState = CDS_WAIT_HIT_TUBE_13;
         break;
@@ -1598,7 +1604,9 @@ void CSchedulerStateHandler::DoCleaningDryStep(ControlCommandType_t ctrlCmd, Sch
             (void)cmd->GetResult(retCode);
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-                m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_TUBE_13);
+                //TBD.. temporary modification by Henry , no sealing and tube position, 2018-06-14
+                //m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_TUBE_13);
+                m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_POSITION_13);
                 m_CleaningDry.CurrentState = CDS_SUCCESS;
             }
             else
@@ -1629,12 +1637,14 @@ void CSchedulerStateHandler::AllStop()
 
 bool CSchedulerStateHandler::IsRVRightPosition(RVPosition_type type)
 {
-    RVPosition_t targetPos = RV_UNDEF;
+    RVPosition_t targetPos = RV_POSITION_UNDEF;
     bool ret = false;
 
     if(INITIALIZE_POS == type)
     {
-        targetPos = RV_TUBE_1;
+        //TBD.. temporary modification by Henry , no sealing and tube position, 2018-06-14
+        //targetPos = RV_TUBE_1;
+        targetPos = RV_POSITION_1;
     }
     else if(TUBE_POS == type )
     {
@@ -1667,7 +1677,7 @@ bool CSchedulerStateHandler::IsRVRightPosition(RVPosition_type type)
 
 RVPosition_t CSchedulerStateHandler::GetRVTubePositionByStationID(const QString& stationID)
 {
-    RVPosition_t ret = RV_UNDEF;
+    RVPosition_t ret = RV_POSITION_UNDEF;
     bool ok;
     if(!stationID.isEmpty())
     {
@@ -1689,7 +1699,7 @@ RVPosition_t CSchedulerStateHandler::GetRVTubePositionByStationID(const QString&
 
 RVPosition_t CSchedulerStateHandler::GetRVSealPositionByStationID(const QString& stationID)
 {
-    RVPosition_t ret = RV_UNDEF;
+    RVPosition_t ret = RV_POSITION_UNDEF;
     bool ok;
     if(!stationID.isEmpty())
     {
@@ -2593,7 +2603,7 @@ bool CSchedulerStateHandler::MoveRV(RVPosition_type type)
 {
     /*lint -e593 */
     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, m_RetortName);
-    RVPosition_t targetPos = RV_UNDEF;
+    RVPosition_t targetPos = RV_POSITION_UNDEF;
 
     if(TUBE_POS == type ) //tube position
     {
@@ -2614,7 +2624,7 @@ bool CSchedulerStateHandler::MoveRV(RVPosition_type type)
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_MOVE_RV_TUBE_POSITION,QStringList()<<m_CurProgramStepInfo.nextStationID);
     }
 
-    if(RV_UNDEF != targetPos)
+    if(RV_POSITION_UNDEF != targetPos)
     {
         cmd->SetRVPosition(targetPos);
         m_SchedulerCommandProcessor->pushCmd(cmd);
