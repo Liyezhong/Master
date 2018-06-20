@@ -91,10 +91,6 @@
 #endif
 #include"DeviceControl/Include/Simulation/DeviceControlSim.h"
 
-
-namespace DeviceControl {
-hwconfigType* IDeviceControl::m_pDeviceConfig = NULL;
-}
 namespace Scheduler{
 /*lint -e534 */
 /*lint -e613 */
@@ -285,10 +281,10 @@ void SchedulerCommandProcessor<DP>::DevProcConfigurationAckn4Slot(quint32 instan
         //some error happens
     }
 
-    auto config = mp_IDeviceProcessing->GetDeviceConfig();
-    for(auto retort = config->parameter_master().retorts().retort().begin(); retort != config->parameter_master().retorts().retort().end(); retort++)
+    Retorts* retorts = mp_IDeviceProcessing->GetRetorts();
+    foreach (auto retort, retorts->m_Retorts)
     {
-        m_Sender << QString::fromStdString((*retort).name());
+        m_Sender << retort.Name;
     }
     emit DCLConfigurationFinished(hdlInfo, m_Sender);
 }
@@ -820,7 +816,7 @@ void SchedulerCommandProcessor<DP>::OnShutDownDevice4Slot()
         mp_IDeviceProcessing->WithSender(sender)->OvenSetTempCtrlOFF(OVEN_BOTTOM);
         mp_IDeviceProcessing->WithSender(sender)->ALSetTempCtrlOFF(AL_TUBE1);
         mp_IDeviceProcessing->WithSender(sender)->ALSetTempCtrlOFF(AL_TUBE2);
-        mp_IDeviceProcessing->WithSender(sender)->ALSetTempCtrlOFF(AL_LEVELSENSOR1);
+        mp_IDeviceProcessing->WithSender(sender)->ALSetTempCtrlOFF(AL_LEVELSENSOR2);
         mp_IDeviceProcessing->WithSender(sender)->RTSetTempCtrlOFF(RT_BOTTOM);
         mp_IDeviceProcessing->WithSender(sender)->RTSetTempCtrlOFF(RT_SIDE);
         mp_IDeviceProcessing->WithSender(sender)->PerTurnOffMainRelay();
@@ -830,7 +826,7 @@ void SchedulerCommandProcessor<DP>::OnShutDownDevice4Slot()
         mp_IDeviceProcessing->WithSender(sender)->OvenGetTemperatureControlState(OVEN_BOTTOM);
         mp_IDeviceProcessing->WithSender(sender)->ALGetTemperatureControlState(AL_TUBE1);
         mp_IDeviceProcessing->WithSender(sender)->ALGetTemperatureControlState(AL_TUBE2);
-        mp_IDeviceProcessing->WithSender(sender)->ALGetTemperatureControlState(AL_LEVELSENSOR1);
+        mp_IDeviceProcessing->WithSender(sender)->ALGetTemperatureControlState(AL_LEVELSENSOR2);
         mp_IDeviceProcessing->WithSender(sender)->RTGetTemperatureControlState(RT_BOTTOM);
         mp_IDeviceProcessing->WithSender(sender)->RTGetTemperatureControlState(RT_SIDE);
 

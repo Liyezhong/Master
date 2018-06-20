@@ -15,7 +15,7 @@ public:
     ActionHelper(SchedulerCommandProcessorBase* commandProcessor);
     virtual ~ActionHelper();
 
-    DeviceControl::RVPosition_t GetRVPosition(const QString& stationID, bool isTube);
+    DeviceControl::RVPosition_t GetRVPosition(const QString& stationID);
     bool IsRVRightPosition(DeviceControl::RVPosition_t position, const QString& retortID);
 
 protected:

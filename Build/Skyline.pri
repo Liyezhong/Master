@@ -19,8 +19,7 @@ QT += core \
 INCLUDEPATH += ../.. \
                ../../../../Shared/Common/Components \
                ../../../../Shared/Master/Components \
-               ../../../../Master/Include/ \
-               ../../../../Shared/ExternalPackages/xsde/xsde-3.2.0-x86_64-linux-gnu/libxsde/
+               ../../../../Master/Include/
 
 DEPENDPATH +=  ../.. \
                ../../../../Shared/Common/Components \

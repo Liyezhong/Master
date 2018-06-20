@@ -7,6 +7,7 @@
 #include "Scheduler/Include/TPExecutor.h"
 #include "Scheduler/Include/Actions/IAction.h"
 #include "Scheduler/Include/Session.h"
+#include "Scheduler/Include/SchedulerLogging.h"
 
 namespace Scheduler{
 namespace TPExecutorStates{
@@ -68,6 +69,14 @@ bool Executing::HandleEvent(TPEventArgs<Scheduler::SchedulerCommandShPtr_t> *eve
 
 void Executing::Timeout(TPTransition_t &pTransition)
 {
+    auto executor = dynamic_cast<Scheduler::TPExecutor*>(IState::m_pHandler);
+    if (executor != nullptr)
+    {
+        auto action = executor->GetCurrentSession()->GetActionList()[executor->GetCurrentAction()];
+        qDebug()<<"Executing action timeout:"<<action.data()->GetActionName();
+        SchedulerLogging::getInstance().Log4DualRetort(executor->GetCurrentSession()->GetRetortID(), QString("Executing action:%1 timeout.")
+                                                       .arg(action.data()->GetActionName()));
+    }
 
     pTransition = TPTransition_t::ActionDone;
 }

@@ -101,7 +101,6 @@ bool ProtocolParser::GenerateActionList(Session* session, const CProgram* progra
         }
         action.data()->SetDuration(duration);
         actionList.append(action);
-        //SchedulerLogging::getInstance().Log(action.data()->toString());
     }
     return true;
  }

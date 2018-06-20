@@ -32,7 +32,7 @@ void DrainAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t re
     switch (m_currentState)
     {
     case STATE_DRAINING_RVROD:
-        position = GetRVPosition(m_stationID, true);
+        position = GetRVPosition(m_stationID);
         if (m_stateWaitResult)
         {
             if (IsRVRightPosition(position, mp_session->GetRetortID()))

@@ -30,12 +30,11 @@ void FillAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t ret
 {
     RVPosition_t position = RV_POSITION_UNDEF;
     qDebug()<<"************************ fill action:"<<m_currentState;
-
     switch (m_currentState)
     {
     case STATE_FILLING_RVROD_HEATING:
         //to do
-        position = GetRVPosition(m_stationID, true);
+        position = GetRVPosition(m_stationID);
         if (m_stateWaitResult)
         {
             //if (IsRVRightPosition(position, mp_session->GetRetortID()))
@@ -70,10 +69,11 @@ void FillAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t ret
             if( "Scheduler::ALFilling" == cmdName)
             {
                 qDebug()<<"************************ fill result:"<<retCode;
+                SchedulerLogging::getInstance().Log4DualRetort(mp_session->GetRetortID(), QString("Filling finished, result:%1").arg(retCode));
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
-                    m_currentState = STATE_RV_MOVE_TO_SEAL;
-                    m_stateWaitResult = false;
+                    m_stateWaitResult = false;                    
+                    m_finished = true;
                 }
                 else
                 {
@@ -89,30 +89,7 @@ void FillAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t ret
             m_stateWaitResult = true;
         }
         break;
-    case STATE_RV_MOVE_TO_SEAL:
-        position = GetRVPosition(m_stationID, false);
-        if (m_stateWaitResult)
-        {
-            //if (IsRVRightPosition(position, mp_session->GetRetortID()))
-            if(1)// for merge dcl test, henry 2018-06-14
-            {
-                m_currentState = STATE_FILLING_RVROD_HEATING;
-                m_stateWaitResult = false;
-                m_finished = true;
-
-                SchedulerLogging::getInstance().Log4DualRetort(mp_session->GetRetortID(), QString("Filling finished"));
-            }
-        }
-        else
-        {
-            CmdRVReqMoveToRVPosition* moveRVcmd = new CmdRVReqMoveToRVPosition(500, mp_session->GetRetortID());
-            moveRVcmd->SetRVPosition(position);
-            mp_SchedulerCommandProcessor->pushCmd(moveRVcmd);
-            m_stateWaitResult = true;
-        }
-        break;
     }
 }
-
 
 }

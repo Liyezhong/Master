@@ -16,7 +16,7 @@ ActionHelper::~ActionHelper()
 
 }
 
-DeviceControl::RVPosition_t ActionHelper::GetRVPosition(const QString& stationID, bool isTube)
+DeviceControl::RVPosition_t ActionHelper::GetRVPosition(const QString& stationID)
 {
     RVPosition_t ret = RV_POSITION_UNDEF;
     bool ok = false;
@@ -25,20 +25,15 @@ DeviceControl::RVPosition_t ActionHelper::GetRVPosition(const QString& stationID
         int position = stationID.right(stationID.length() - 1).toInt(&ok, 10);
         if (ok)
         {
-            int offset = 0;
-            if (isTube)
-            {
-                offset = 1;
-            }
-
-            if(stationID.left(1) == "S")
-            {
-                ret = (RVPosition_t)(position * 2 - offset);
-            }
-            else if(stationID.left(1) == "P")
-            {
-                ret = (RVPosition_t)((position + 13) * 2 - offset);
-            }
+//            if(stationID.left(1) == "S")
+//            {
+//                ret = (RVPosition_t)(position * 2);
+//            }
+//            else if(stationID.left(1) == "P")
+//            {
+//                ret = (RVPosition_t)((position + 13) * 2);
+//            }
+            ret = (RVPosition_t)position;
         }
     }
     return ret;

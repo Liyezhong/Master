@@ -13,8 +13,7 @@ typedef enum
     STATE_FILLING_UNDEFIN = 0,
     STATE_FILLING_RVROD_HEATING,
     STATE_FILLING_LEVELSENSOR_HEATING,
-    STATE_FILLING,
-    STATE_RV_MOVE_TO_SEAL
+    STATE_FILLING
 }FillState_t;
 
 class FillAction: public IAction, public ActionHelper

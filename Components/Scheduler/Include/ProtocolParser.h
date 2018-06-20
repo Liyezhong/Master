@@ -43,7 +43,7 @@ class SchedulerCommandProcessorBase;
 #define TIME_FOR_DRAIN                        60     ///< seconds for draing
 #define TIME_FOR_MOVE_NEXT_TUBE               8      ///< seconds for move next tube
 #define TIME_FOR_COOLING_DOWN                 1200   ///< seconds for cooling down
-#define TIME_FOR_PURGE                        10     ///< seconds for purge
+#define TIME_FOR_PURGE                        20     ///< seconds for purge
 
 /****************************************************************************/
 /*!
