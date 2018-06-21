@@ -1734,9 +1734,10 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         rand = qrand()%18;
         CmdMvRV = new CmdRVReqMoveToRVPosition(500, "Retort_A");
         CmdMvRV->SetRVPosition((RVPosition_t) rand);
+        CmdMvRV->SetCheckAbsolutePosition(true);
         m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
-    }*/
-
+    }
+   */
     bool working = false;
     if(RetCode == DCL_ERR_FCT_CALL_SUCCESS)
     {

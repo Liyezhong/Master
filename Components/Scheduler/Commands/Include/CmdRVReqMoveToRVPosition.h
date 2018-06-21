@@ -100,7 +100,25 @@ public:
 	 */
 	/****************************************************************************/
 	void SetRVPosition(DeviceControl::RVPosition_t RVPosition){m_RVPosition = RVPosition;}
-	
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetCheckAbsolutePosition
+     *
+     *  \param checkAbsPos = bool type parameter
+     *
+     *  \return none
+     */
+    /****************************************************************************/
+    void SetCheckAbsolutePosition(bool checkAbsPos){m_CheckAbsolutePosition = checkAbsPos;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetCheckAbsolutePosition
+     *
+     *  \return from GetCheckAbsolutePosition
+     */
+    /****************************************************************************/
+    bool GetCheckAbsolutePosition(){return m_CheckAbsolutePosition;}
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function GetParameters
@@ -126,7 +144,8 @@ private:
 
 	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
 	mutable DeviceControl::RVPosition_t m_RVPosition;       ///<  Definition/Declaration of variable m_RVPosition
-	
+    bool m_CheckAbsolutePosition;       ///<  Definition/Declaration of variable m_RVPosition
+
 };
 
 
