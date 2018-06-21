@@ -30,6 +30,8 @@ QString CmdRVReqMoveToRVPosition::NAME = "Scheduler::RVReqMoveToRVPosition";
 CmdRVReqMoveToRVPosition::CmdRVReqMoveToRVPosition(int Timeout, const QString& sender):
     CmdSchedulerCommandBase(Timeout, sender)
 {
+    //default is checking Absolute Position
+    m_CheckAbsolutePosition = true;
 }
 
 CmdRVReqMoveToRVPosition::~CmdRVReqMoveToRVPosition(){}

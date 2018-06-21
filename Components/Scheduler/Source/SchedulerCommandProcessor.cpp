@@ -507,8 +507,10 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
         }
         else if  ("Scheduler::RVReqMoveToRVPosition" == cmdName)
         {
-            scmd->SetResult( mp_IDeviceProcessing->WithSender(sender)->RVReqMoveToRVPosition( qSharedPointerDynamicCast<CmdRVReqMoveToRVPosition>(scmd)->GetRVPosition() ) );
-            mp_SchedulerThreadController->LogDebug(QString("==CMD==:Move RV to pos:%1").arg(qSharedPointerDynamicCast<CmdRVReqMoveToRVPosition>(scmd)->GetRVPosition()));
+            scmd->SetResult( mp_IDeviceProcessing->WithSender(sender)->RVReqMoveToRVPosition( qSharedPointerDynamicCast<CmdRVReqMoveToRVPosition>(scmd)->GetRVPosition(),
+                                                                                              qSharedPointerDynamicCast<CmdRVReqMoveToRVPosition>(scmd)->GetCheckAbsolutePosition()) );
+            mp_SchedulerThreadController->LogDebug(QString("==CMD==:Move RV to pos:%1").arg(qSharedPointerDynamicCast<CmdRVReqMoveToRVPosition>(scmd)->GetRVPosition(),
+                                                                                            qSharedPointerDynamicCast<CmdRVReqMoveToRVPosition>(scmd)->GetCheckAbsolutePosition()));
         }
         else if  ("Scheduler::RVReqMoveToCurrentTubePosition" == cmdName)
         {
