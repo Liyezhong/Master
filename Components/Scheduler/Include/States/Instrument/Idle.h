@@ -28,6 +28,7 @@ private:
 protected:
     InstrumentManager* m_pManager;
     int start;
+    bool m_SelfTestFinished;
     Global::tRefType ref;
     MsgClasses::CmdProgramSelectedReply* commandPtr;
 };

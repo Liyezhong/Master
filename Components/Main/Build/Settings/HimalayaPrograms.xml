@@ -54,7 +54,7 @@
         </Program>
         <Program ID="U1" Name="test" NameID="" Icon="Icon1" LeicaProgram="false" Favorite="true">
             <StepList NextStepID="1">
-                <Step ID="0" ReagentID="L1" Duration="1m" Temperature="-1" Pressure="Off" Vacuum="Off"/>
+                <Step ID="0" ReagentID="L1" Duration="4m" Temperature="-1" Pressure="Off" Vacuum="Off"/>
             </StepList>
         </Program>
     </ProgramList>

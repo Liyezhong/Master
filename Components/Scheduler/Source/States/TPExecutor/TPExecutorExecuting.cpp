@@ -38,7 +38,8 @@ void Executing::Enter(QEvent *event)
         Global::tRefType Ref = IState::m_pController->GetNewCommandRef();
         IState::m_pController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
-        TimeInterval(action->GetDuration());
+        quint32 TimeBuff = 5;// 5 seconds buff time
+        TimeInterval(action->GetDuration() + TimeBuff);
         action->Execute("", DeviceControl::DCL_ERR_FCT_CALL_FAILED);
     }
 }

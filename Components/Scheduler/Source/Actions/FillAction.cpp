@@ -2,6 +2,7 @@
 #include "Scheduler/Commands/Include/CmdALFilling.h"
 #include "Scheduler/Commands/Include/CmdALDraining.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
+#include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "Scheduler/Include/Session.h"
@@ -37,8 +38,16 @@ void FillAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t ret
         position = GetRVPosition(m_stationID);
         if (m_stateWaitResult)
         {
-            //if (IsRVRightPosition(position, mp_session->GetRetortID()))
-            if(1)// for merge dcl test, henry 2018-06-14
+            if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+            {
+                if(DCL_ERR_DEV_RV_MOTOR_LOSTCURRENTPOSITION == retCode)
+                {
+                    mp_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_session->GetRetortID()));
+                    m_stateWaitResult = false;
+                }
+            }
+
+            if (IsRVRightPosition(position, mp_session->GetRetortID()))
             {
                 m_currentState = STATE_FILLING_LEVELSENSOR_HEATING;
                 m_stateWaitResult = false;
@@ -46,6 +55,7 @@ void FillAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t ret
         }
         else
         {
+            //mp_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_session->GetRetortID()));
             SchedulerLogging::getInstance().Log4DualRetort(mp_session->GetRetortID(), QString("Start fill action: reagent:%1, station:%2, seq:%3")
                                                            .arg(m_reagentID).arg(m_stationID).arg(m_currentState));
             CmdRVReqMoveToRVPosition* moveRVcmd = new CmdRVReqMoveToRVPosition(500, mp_session->GetRetortID());

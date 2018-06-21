@@ -29,6 +29,7 @@ QString CmdALDraining::NAME = "Scheduler::ALDraining";
 
 CmdALDraining::CmdALDraining(int Timeout, const QString& sender):
     CmdSchedulerCommandBase(Timeout, sender),m_TargetPressure(AL_TARGET_PRESSURE_POSITIVE), m_IgnorePressure(false)
+  , m_DelayTime(0)
 {
 }
 

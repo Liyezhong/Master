@@ -27,24 +27,20 @@ DrainAction::~DrainAction()
 
 void DrainAction::Execute(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
-    RVPosition_t position = RV_POSITION_UNDEF;
+    RVPosition_t position = GetRVPosition(m_stationID);
     qDebug()<<"************************ drain action:"<<m_currentState;
     switch (m_currentState)
     {
     case STATE_DRAINING_RVROD:
-        position = GetRVPosition(m_stationID);
-        if (m_stateWaitResult)
-        {
-            if (IsRVRightPosition(position, mp_session->GetRetortID()))
-            {
-                m_currentState = STATE_DRAINING;
-                m_stateWaitResult = false;
-            }
-        }
-        else
+        if (IsRVRightPosition(position, mp_session->GetRetortID()))
         {
             SchedulerLogging::getInstance().Log4DualRetort(mp_session->GetRetortID(), QString("Execute drain action: reagent:%1, station:%2, seq:%3")
                                                            .arg(m_reagentID).arg(m_stationID).arg(m_currentState));
+            m_currentState = STATE_DRAINING;
+            m_stateWaitResult = false;
+        }
+        else
+        {
             CmdRVReqMoveToRVPosition* moveRVcmd = new CmdRVReqMoveToRVPosition(500, mp_session->GetRetortID());
             moveRVcmd->SetRVPosition(position);
             mp_SchedulerCommandProcessor->pushCmd(moveRVcmd);

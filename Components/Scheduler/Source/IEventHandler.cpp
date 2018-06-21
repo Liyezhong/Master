@@ -49,8 +49,8 @@ bool IEventHandler::HandleEvent(QEvent* event)
 //        qDebug() << tpEvent->toString();
         if(tpEvent->Value() != TPTransition_t::Timeout)
         {
-            qDebug() << "Handle external request/response";
             auto* pCurrent = dynamic_cast<IState*>(*m_pStateMachine->configuration().begin());
+            qDebug() << "Handle external request/response:"<<pCurrent->objectName();
             return pCurrent->HandleEvent(tpEvent);
         }
         else

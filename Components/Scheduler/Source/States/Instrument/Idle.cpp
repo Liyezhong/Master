@@ -5,6 +5,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "Scheduler/Include/InstrumentManager.h"
+#include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "Scheduler/Include/Session.h"
 
 namespace Scheduler{
@@ -16,6 +17,7 @@ Idle::Idle(IEventHandler* pHandler, SchedulerMainThreadController* controller)
     setObjectName("Instrument_Idle_State");
     m_pManager = dynamic_cast<InstrumentManager*>(pHandler);
     start = 1;
+    m_SelfTestFinished = false;
     commandPtr = nullptr;
     ref = -1;
 }
@@ -26,6 +28,7 @@ void Idle::onEntry(QEvent *event)
 
     if(start)
     {
+        //IState::m_pController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, "Common"));
         MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_SELFTEST_PASSED));
         Q_ASSERT(commandPtr);
         Global::tRefType Ref = IState::m_pController->GetNewCommandRef();
@@ -74,6 +77,8 @@ bool Idle::HandleEvent(TPEventArgs<Global::CommandShPtr_t> *event, TPTransition_
             return true;
         }
     }
+
+    event->SetHandled();
     return false;
 }
 

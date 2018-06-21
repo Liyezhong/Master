@@ -36,6 +36,7 @@ void Init::onEntry(QEvent *event)
 
 bool Init::HandleEvent(TPEventArgs<Scheduler::SchedulerCommandShPtr_t> *event, TPTransition_t& pTransition)
 {
+    qDebug()<<"*** Init handler..";
     return false;
 }
 

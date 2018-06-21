@@ -111,10 +111,10 @@ bool ProtocolParser::GenerateActionList(Session* session, const CProgram* progra
     switch(type)
     {
     case FILLING:
-        druation = TIME_FOR_HEATING_LEVEL_SENSOR + TIME_FOR_FILLING + TIME_FOR_MOVE_SEAL;
+        druation = TIME_FOR_HEATING_LEVEL_SENSOR + TIME_FOR_FILLING + TIME_FOR_RV_MOVE_POS;
         break;
     case DRAINING:
-        druation = TIME_FOR_MOVE_TUBE + TIME_FOR_DRAIN;
+        druation =  TIME_FOR_DRAIN;
         break;
     case PURGE:
         druation = TIME_FOR_PURGE;

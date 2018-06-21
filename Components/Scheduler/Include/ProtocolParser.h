@@ -37,10 +37,9 @@ class SchedulerCommandProcessorBase;
 #define TIME_FOR_CLEANING_DRY_STEP            720    ///< seconds spending in dry step
 #define TIME_FOR_HEATING_LEVEL_SENSOR         30     ///< seconds for heating level sensor
 #define TIME_FOR_FILLING                      60     ///< seconds for filling
-#define TIME_FOR_MOVE_SEAL                    3      ///< seconds for move seal
 #define TIME_FOR_PRESSURE_CHECK               15     ///< seconds for pressure check before move tube
-#define TIME_FOR_MOVE_TUBE                    5      ///< seconds for move tube
-#define TIME_FOR_DRAIN                        60     ///< seconds for draing
+#define TIME_FOR_RV_MOVE_POS                  5      ///< seconds for move tube
+#define TIME_FOR_DRAIN                        150     ///< seconds for draing
 #define TIME_FOR_MOVE_NEXT_TUBE               8      ///< seconds for move next tube
 #define TIME_FOR_COOLING_DOWN                 1200   ///< seconds for cooling down
 #define TIME_FOR_PURGE                        20     ///< seconds for purge
