@@ -7,6 +7,7 @@
 #include "HimalayaDataContainer/Containers/Programs/Include/ProgramStep.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
 #include "Scheduler/Include/Actions/IAction.h"
+#include <QTime>
 
 using namespace DataManager;
 
@@ -87,6 +88,18 @@ public:
 
         return duration;
     }
+	
+		QTime GetProgramStartTime() {return programStartTime;}
+	
+    QTime GetProgramEndTime()
+    {
+        return m_ActionList[m_ActionList.size() - 1].data()->GetEndTime();
+    }
+
+    void SetProgramStartTime(QTime t)
+    {
+        programStartTime = t;
+    }
 
     qint64 SessionID() const {return m_SessionID;}
 
@@ -102,6 +115,8 @@ private:
     CProgram* m_pProgram;
     QList<QSharedPointer<const CProgramStep>> m_pProgramSteps;
     QList<QSharedPointer<IAction>> m_ActionList;
+public:
+    QTime programStartTime;
     ProgramStepInfor* m_pProgramStepInfo;
     SessionStatus_t m_Status;
     Schedule* m_pSchedule;

@@ -40,14 +40,17 @@ public:
     void SetStationID(const QString& stationID) {m_stationID = stationID;}
     QString GetStationID() const {return m_stationID;}
 
-    void SetDuration(quint32 duration) {m_durationSec = duration;}
-    quint32 GetDuration() const {return m_durationSec;}
+    void SetDuration(quint32 duration) {m_durationSec = duration; m_offset = 0;}
+    quint32 GetDuration() const {return m_durationSec + m_offset;}
+    void SetOffsetSecond(int timeSecond) {m_offset = timeSecond;}
+    int GetOffsetSecond() {return m_offset;}
 
-    void SetStartTime(QDateTime startTime) {m_startTime = startTime;}
-    QDateTime GetStartTime() const {return m_startTime;}
+    QTime GetStartTime();
+    QTime GetEndTime();
 
-    void SetEndTime(QDateTime endTime) {m_endTime = endTime;}
-    QDateTime GetEndTime() const {return m_endTime;}
+    QTime GetStepStartTime();
+    QTime GetStepEndTime();
+    int   GetActionIndex();
 
     void SetFininshed(bool finished) {m_finished = finished;}
     bool IsFinished() const {return m_finished;}
@@ -82,9 +85,10 @@ protected:
     ActionType_t m_type;
     bool m_finished;
     quint32 m_durationSec;
-    QDateTime m_startTime;
-    QDateTime m_endTime;
+//    QDateTime m_startTime;
+//    QDateTime m_endTime;
     Session* mp_session;
+	int m_offset;
 
     //mutable DeviceControl::ReturnCode_t m_result;   ///<  Definition/Declaration of variable m_result
 };

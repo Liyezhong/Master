@@ -31,4 +31,72 @@ QString IAction::toString()
     return out;
 }
 
+
+
+int IAction::GetActionIndex()
+{
+    for (int i = 0; i < mp_session->GetActionList().size(); i++) {
+        IAction *action = mp_session->GetActionList()[i].data();
+        if (action == this)
+            return i;
+    }
+
+    return -1;
+}
+
+QTime IAction::GetStartTime()
+{
+   QTime startTime = mp_session->GetProgramStartTime();
+   QTime t = startTime;
+   for (int i = 0; i < mp_session->GetActionList().size(); i++) {
+       IAction *action = mp_session->GetActionList()[i].data();
+       if (action == this)
+           break;
+       else
+            t = t.addSecs(action->GetDuration());
+   }
+
+   return t;
+}
+
+QTime IAction::GetEndTime()
+{
+   return GetStartTime().addSecs(this->GetDuration());
+}
+
+QTime IAction::GetStepStartTime()
+{
+    QTime startTime = mp_session->GetProgramStartTime();
+    QTime t = startTime;
+
+    int index = GetActionIndex();
+    if (index == -1)
+        return startTime;
+
+    for (int i = index - 1; i >= 0; i--) {
+        IAction *action = mp_session->GetActionList()[i].data();
+        if (action->m_stationID != this->m_stationID)
+            return action->GetEndTime();
+    }
+
+    return mp_session->GetProgramStartTime();
+}
+
+QTime IAction::GetStepEndTime()
+{
+    QTime startTime = mp_session->GetProgramStartTime();
+    QTime t = startTime;
+
+    int index = GetActionIndex();
+    if (index == -1)
+        return startTime;
+
+    for (int i = index + 1; i < mp_session->GetActionList().size(); i++) {
+        IAction *action = mp_session->GetActionList()[i].data();
+        if (action->m_stationID != this->m_stationID)
+            return action->GetStartTime();
+    }
+
+    return mp_session->GetProgramEndTime();
+}
 }
